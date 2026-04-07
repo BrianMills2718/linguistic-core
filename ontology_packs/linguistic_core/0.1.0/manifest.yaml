@@ -1,0 +1,21 @@
+pack:
+  id: linguistic_core
+  version: 0.1.0
+  name: linguistic_core
+  description: Foundational predicate vocabulary synthesized from PropBank, FrameNet,
+    and SUMO. Provides 4,669 predicates and 11,890 semantic role slots for use as
+    the base pack from which domain packs extend.
+build:
+  compiler_version: 0.1.0
+  built_at: '2026-04-07T18:55:11Z'
+  source_inputs:
+  - system: onto_canon_sumo_plus
+    version: '2026-02-15'
+    path: data/sumo_plus.db
+capabilities:
+  assertion_type: n-ary
+  type_system: sumo
+content:
+  predicate_types: predicate_types.jsonl
+  role_types: role_types.jsonl
+  source_mappings: source_mappings.jsonl
