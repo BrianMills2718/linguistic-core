@@ -5,6 +5,8 @@ emits the ``linguistic_core/0.1.0/`` pack files:
 
 - ``predicate_types.jsonl`` — 4,669 predicates with semantic metadata
 - ``role_types.jsonl`` — 11,890 role slots with FrameNet named labels
+- ``predicate_role_edges.jsonl`` — predicate-specific role-slot declarations
+- ``entity_types.jsonl`` — SUMO role-filler types referenced by role slots
 - ``source_mappings.jsonl`` — provenance: predicate → PropBank sense,
   role slot → PropBank ARG position
 - ``manifest.yaml`` — pack identity and content inventory
@@ -113,9 +115,13 @@ def compile_pack(
                 "status": "active",
             })
 
-        # --- role_types.jsonl + source_mappings + blank check ---
+        # --- role_types.jsonl + predicate_role_edges + constraints + source_mappings ---
         seen_role_ids: set[str] = set()
+        seen_entity_type_ids: set[str] = set()
         role_rows = []
+        entity_type_rows = []
+        predicate_role_edge_rows = []
+        constraint_rows = []
         source_mapping_rows = []
         blank_count = 0
 
@@ -127,6 +133,7 @@ def compile_pack(
                     "canonical_kind": "predicate_type",
                     "source_system": "propbank_nltk",
                     "source_id": pred["propbank_sense_id"],
+                    "pack_predicate_id": _predicate_id(pred["name"]),
                     "mapping_type": "derived_from",
                     "confidence": "corpus_derived",
                 })
@@ -153,6 +160,31 @@ def compile_pack(
                         "status": "active",
                     })
 
+                required = bool(slot.required)
+                predicate_role_edge_rows.append({
+                    "predicate_id": _predicate_id(pred["name"]),
+                    "role_id": rid,
+                    "required": required,
+                    "min_count": 1 if required else 0,
+                    "max_count": 1,
+                })
+
+                if slot.type_constraint and slot.type_constraint.strip():
+                    type_id = _sumo_type_id(slot.type_constraint)
+                    if type_id not in seen_entity_type_ids:
+                        seen_entity_type_ids.add(type_id)
+                        entity_type_rows.append({
+                            "type_id": type_id,
+                            "preferred_label": slot.type_constraint,
+                            "status": "active",
+                        })
+                    constraint_rows.append({
+                        "constraint_type": "role_expected_entity_type",
+                        "predicate_id": _predicate_id(pred["name"]),
+                        "role_id": rid,
+                        "expected_type": type_id,
+                    })
+
                 # Per-slot source mapping: predicate+role → PropBank ARG position
                 if pred["propbank_sense_id"]:
                     source_mapping_rows.append({
@@ -175,6 +207,9 @@ def compile_pack(
         "predicate_count": predicate_count,
         "role_slot_count": role_slot_count,
         "role_type_count": len(role_rows),
+        "entity_type_count": len(entity_type_rows),
+        "predicate_role_edge_count": len(predicate_role_edge_rows),
+        "constraint_count": len(constraint_rows),
         "source_mapping_count": len(source_mapping_rows),
         "blank_named_label_count": blank_count,
     }
@@ -189,6 +224,14 @@ def compile_pack(
 
     # Write role_types.jsonl
     _write_jsonl(output_dir / "role_types.jsonl", role_rows)
+
+    # Write runtime-required pack content files
+    _write_jsonl(output_dir / "entity_types.jsonl", entity_type_rows)
+    _write_jsonl(output_dir / "value_types.jsonl", [])
+    _write_jsonl(output_dir / "hierarchy_edges.jsonl", [])
+    _write_jsonl(output_dir / "predicate_role_edges.jsonl", predicate_role_edge_rows)
+    _write_jsonl(output_dir / "aliases.jsonl", [])
+    _write_jsonl(output_dir / "constraints.jsonl", constraint_rows)
 
     # Write source_mappings.jsonl
     _write_jsonl(output_dir / "source_mappings.jsonl", source_mapping_rows)
@@ -221,9 +264,15 @@ def compile_pack(
             "type_system": "sumo",
         },
         "content": {
+            "entity_types": "entity_types.jsonl",
             "predicate_types": "predicate_types.jsonl",
             "role_types": "role_types.jsonl",
+            "value_types": "value_types.jsonl",
+            "hierarchy_edges": "hierarchy_edges.jsonl",
+            "predicate_role_edges": "predicate_role_edges.jsonl",
             "source_mappings": "source_mappings.jsonl",
+            "aliases": "aliases.jsonl",
+            "constraints": "constraints.jsonl",
         },
     }
     with open(output_dir / "manifest.yaml", "w") as f:
@@ -237,6 +286,11 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
     with open(path, "w", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _sumo_type_id(type_name: str) -> str:
+    """Return the lc.sumo namespace ID for a SUMO role-filler type."""
+    return f"lc:sumo_type.{type_name.strip()}"
 
 
 def main() -> None:
@@ -276,6 +330,9 @@ def main() -> None:
     print(f"  predicates:       {stats['predicate_count']:,}")
     print(f"  role slots:       {stats['role_slot_count']:,}")
     print(f"  role types:       {stats['role_type_count']:,}")
+    print(f"  entity types:     {stats['entity_type_count']:,}")
+    print(f"  role edges:       {stats['predicate_role_edge_count']:,}")
+    print(f"  constraints:      {stats['constraint_count']:,}")
     print(f"  source mappings:  {stats['source_mapping_count']:,}")
     if stats["blank_named_label_count"]:
         print(f"  BLANK labels:     {stats['blank_named_label_count']:,}  ← FIX REQUIRED")
