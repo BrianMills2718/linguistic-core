@@ -18,6 +18,7 @@ from pathlib import Path
 import pytest
 
 from onto_canon6.config import repo_root
+from onto_canon6.ontology_runtime import load_ontology_pack
 from onto_canon6.packs.role_slots_lookup import RoleSlot, RoleSlotsError, RoleSlotsLookup
 
 _DB = repo_root() / "data" / "sumo_plus.db"
@@ -232,6 +233,37 @@ class TestLinguisticCorePack:
         assert manifest["capabilities"]["type_system"] == "sumo"
         assert "predicate_types" in manifest["content"]
         assert "role_types" in manifest["content"]
+        assert "predicate_role_edges" in manifest["content"]
+        assert "constraints" in manifest["content"]
+
+    def test_predicate_role_edges_fund_provide_money(self) -> None:
+        """fund_provide_money should declare semantic role edges for runtime loading."""
+        edges = [
+            json.loads(line)
+            for line in (_PACK_DIR / "predicate_role_edges.jsonl").read_text().splitlines()
+        ]
+        fund_edges = [
+            edge
+            for edge in edges
+            if edge["predicate_id"] == "lc:fund_provide_money"
+        ]
+        assert {edge["role_id"] for edge in fund_edges} == {
+            "lc.role.supplier",
+            "lc.role.imposed_purpose",
+            "lc.role.purpose",
+        }
+        assert all(edge["max_count"] == 1 for edge in fund_edges)
+
+    def test_linguistic_core_loads_as_runtime_pack(self) -> None:
+        """The compiled pack should satisfy the ontology runtime loader contract."""
+        pack = load_ontology_pack("linguistic_core", "0.1.0")
+
+        assert len(pack.predicate_ids) == 4669
+        assert "lc:fund_provide_money" in pack.predicate_ids
+        assert "supplier" in pack.role_ids
+        fund_rule = pack.predicate_rules["lc:fund_provide_money"]
+        assert fund_rule.allowed_roles == ("imposed_purpose", "purpose", "supplier")
+        assert fund_rule.role_filler_types["supplier"] == "lc:sumo_type.Organization"
 
     def test_predicate_types_have_lc_prefix(self) -> None:
         """All predicate_types.jsonl entries should use the lc: namespace."""
