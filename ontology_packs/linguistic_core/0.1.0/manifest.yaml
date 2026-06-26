@@ -7,7 +7,7 @@ pack:
     the base pack from which domain packs extend.
 build:
   compiler_version: 0.1.0
-  built_at: '2026-04-07T18:55:11Z'
+  built_at: '2026-06-26T19:01:59Z'
   source_inputs:
   - system: onto_canon_sumo_plus
     version: '2026-02-15'
@@ -16,6 +16,12 @@ capabilities:
   assertion_type: n-ary
   type_system: sumo
 content:
+  entity_types: entity_types.jsonl
   predicate_types: predicate_types.jsonl
   role_types: role_types.jsonl
+  value_types: value_types.jsonl
+  hierarchy_edges: hierarchy_edges.jsonl
+  predicate_role_edges: predicate_role_edges.jsonl
   source_mappings: source_mappings.jsonl
+  aliases: aliases.jsonl
+  constraints: constraints.jsonl
