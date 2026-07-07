@@ -1,12 +1,15 @@
 """Compile the linguistic_core ontology pack from sumo_plus.db.
 
 Reads the ``predicates`` and ``role_slots`` tables from ``sumo_plus.db`` and
-emits the ``linguistic_core/0.1.0/`` pack files:
+emits the ``linguistic_core/<version>/`` pack files:
 
 - ``predicate_types.jsonl`` — 4,669 predicates with semantic metadata
 - ``role_types.jsonl`` — 11,890 role slots with FrameNet named labels
 - ``predicate_role_edges.jsonl`` — predicate-specific role-slot declarations
-- ``entity_types.jsonl`` — SUMO role-filler types referenced by role slots
+- ``entity_types.jsonl`` — SUMO role-filler types referenced by role slots,
+  plus their full SUMO ancestor closure (Plan 0116 Slice A)
+- ``hierarchy_edges.jsonl`` — ``subtype_of`` edges over that closure so
+  ancestor-aware validation can run from the exported pack, not the raw DB
 - ``source_mappings.jsonl`` — provenance: predicate → PropBank sense,
   role slot → PropBank ARG position
 - ``manifest.yaml`` — pack identity and content inventory
@@ -44,8 +47,8 @@ sys.path.insert(0, str(_REPO_ROOT / "src"))
 from onto_canon6.packs.role_slots_lookup import RoleSlotsError, RoleSlotsLookup
 
 _DEFAULT_DB = _REPO_ROOT / "data" / "sumo_plus.db"
-_DEFAULT_OUTPUT = _REPO_ROOT / "ontology_packs" / "linguistic_core" / "0.1.0"
-_PACK_VERSION = "0.1.0"
+_DEFAULT_OUTPUT = _REPO_ROOT / "ontology_packs" / "linguistic_core" / "0.2.0"
+_PACK_VERSION = "0.2.0"
 _COMPILER_VERSION = "0.1.0"
 
 
@@ -203,11 +206,18 @@ def compile_pack(
         print(f"ERROR: {blank_count} blank named_label values found. Aborting.", file=sys.stderr)
         sys.exit(1)
 
+    # Plan 0116 Slice A: ancestor-close the role-filler types and export the
+    # SUMO hierarchy so pack-based validation can be ancestor-aware.
+    seed_type_names = {row["preferred_label"] for row in entity_type_rows}
+    ancestor_rows, hierarchy_edge_rows = _build_hierarchy(db_path, seed_type_names)
+    entity_type_rows = entity_type_rows + ancestor_rows
+
     stats = {
         "predicate_count": predicate_count,
         "role_slot_count": role_slot_count,
         "role_type_count": len(role_rows),
         "entity_type_count": len(entity_type_rows),
+        "hierarchy_edge_count": len(hierarchy_edge_rows),
         "predicate_role_edge_count": len(predicate_role_edge_rows),
         "constraint_count": len(constraint_rows),
         "source_mapping_count": len(source_mapping_rows),
@@ -228,7 +238,7 @@ def compile_pack(
     # Write runtime-required pack content files
     _write_jsonl(output_dir / "entity_types.jsonl", entity_type_rows)
     _write_jsonl(output_dir / "value_types.jsonl", [])
-    _write_jsonl(output_dir / "hierarchy_edges.jsonl", [])
+    _write_jsonl(output_dir / "hierarchy_edges.jsonl", hierarchy_edge_rows)
     _write_jsonl(output_dir / "predicate_role_edges.jsonl", predicate_role_edge_rows)
     _write_jsonl(output_dir / "aliases.jsonl", [])
     _write_jsonl(output_dir / "constraints.jsonl", constraint_rows)
@@ -279,6 +289,63 @@ def compile_pack(
         yaml.dump(manifest, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
 
     return stats
+
+
+def _build_hierarchy(
+    db_path: Path,
+    seed_type_names: set[str],
+) -> tuple[list[dict], list[dict]]:
+    """Return (ancestor_entity_type_rows, hierarchy_edge_rows) for the seeds.
+
+    Ancestor-closes the seed SUMO type names through ``type_ancestors``, then
+    emits ``subtype_of`` edges from ``type_hierarchy`` restricted to the
+    closure, so every role-filler type in the pack reaches its SUMO roots
+    through exported edges (ADR-0028 item 1: "with hierarchy exported").
+    """
+
+    import sqlite3
+
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    try:
+        closure = set(seed_type_names)
+        placeholders = ",".join("?" for _ in seed_type_names)
+        for row in conn.execute(
+            f"SELECT DISTINCT ancestor_id FROM type_ancestors WHERE type_id IN ({placeholders})",
+            sorted(seed_type_names),
+        ):
+            closure.add(str(row["ancestor_id"]))
+
+        edge_rows = []
+        for row in conn.execute("SELECT child, parent FROM type_hierarchy"):
+            child = str(row["child"])
+            parent = str(row["parent"])
+            if child in closure and parent in closure:
+                edge_rows.append({
+                    "edge_type": "subtype_of",
+                    "child_id": _sumo_type_id(child),
+                    "parent_id": _sumo_type_id(parent),
+                })
+    finally:
+        conn.close()
+
+    ancestor_rows = [
+        {
+            "type_id": _sumo_type_id(name),
+            "preferred_label": name,
+            "status": "active",
+        }
+        for name in sorted(closure - seed_type_names)
+    ]
+    edge_rows.sort(key=lambda row: (row["child_id"], row["parent_id"]))
+    seen: set[tuple[str, str]] = set()
+    deduped_edges = []
+    for row in edge_rows:
+        key = (row["child_id"], row["parent_id"])
+        if key not in seen:
+            seen.add(key)
+            deduped_edges.append(row)
+    return ancestor_rows, deduped_edges
 
 
 def _write_jsonl(path: Path, rows: list[dict]) -> None:
