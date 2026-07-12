@@ -13,6 +13,7 @@ import sqlite3
 import subprocess
 import sys
 from pathlib import Path
+from typing import cast
 
 import pytest
 from pydantic import ValidationError
@@ -22,6 +23,7 @@ from onto_canon6.packs.semantic_provenance import (
     SemanticMappingRecord,
     SemanticSourceDescriptor,
     compile_predicate_provenance,
+    render_provenance_text,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -33,7 +35,10 @@ PREDICATE_ID = "abandon_leave_behind"
 def _json_fixture(name: str) -> dict[str, object]:
     """Load one strict JSON fixture for contract validation."""
 
-    return json.loads((FIXTURE_DIR / name).read_text(encoding="utf-8"))
+    return cast(
+        dict[str, object],
+        json.loads((FIXTURE_DIR / name).read_text(encoding="utf-8")),
+    )
 
 
 def _sha256(path: Path) -> str:
@@ -57,6 +62,8 @@ def test_approved_predicate_compiles_to_reviewed_fixture() -> None:
     ("fixture_name", "model_type"),
     [
         ("fabricated_verified_version.json", SemanticSourceDescriptor),
+        ("fabricated_verified_license.json", SemanticSourceDescriptor),
+        ("donor_asserted_from_current_reference.json", SemanticSourceDescriptor),
         ("missing_mapping_evidence.json", SemanticMappingRecord),
         ("runtime_alias_true.json", SemanticMappingRecord),
         ("dangling_canonical_id.json", PredicateProvenanceBundle),
@@ -70,6 +77,50 @@ def test_negative_contract_fixtures_fail_loud(
 
     with pytest.raises(ValidationError):
         model_type.model_validate(_json_fixture(fixture_name))
+
+
+@pytest.mark.parametrize(
+    ("version_status", "license_status", "historical_evidence_kind"),
+    [
+        ("verified", "unknown", "none"),
+        ("verified", "unknown", "current_reference_only"),
+        ("donor_asserted", "unknown", "none"),
+        ("donor_asserted", "unknown", "current_reference_only"),
+        ("unknown", "verified", "none"),
+        ("unknown", "verified", "current_reference_only"),
+    ],
+)
+def test_certainty_requires_historical_evidence_cross_product(
+    version_status: str,
+    license_status: str,
+    historical_evidence_kind: str,
+) -> None:
+    """Every known historical version/license state rejects non-historical evidence."""
+
+    payload: dict[str, object] = {
+        "source_key": "adversarial_source",
+        "resource_name": "Adversarial source",
+        "resource_version": "1.0" if version_status != "unknown" else None,
+        "resource_version_status": version_status,
+        "license_id": "MIT" if license_status == "verified" else None,
+        "license_status": license_status,
+        "artifact_sha256": None,
+        "official_reference": (
+            "https://example.com/current"
+            if historical_evidence_kind == "current_reference_only"
+            else None
+        ),
+        "official_reference_scope": (
+            "current_reference_only"
+            if historical_evidence_kind == "current_reference_only"
+            else None
+        ),
+        "historical_evidence_kind": historical_evidence_kind,
+        "evidence_ref": "adversarial non-historical evidence",
+    }
+
+    with pytest.raises(ValidationError):
+        SemanticSourceDescriptor.model_validate(payload)
 
 
 def test_shared_framenet_frame_is_traceability_not_alias() -> None:
@@ -95,6 +146,39 @@ def test_shared_framenet_frame_is_traceability_not_alias() -> None:
         for row in bundle.mappings
         if row.source_key == "framenet_candidate"
     )
+    frame_less = compile_predicate_provenance(
+        DB_PATH,
+        predicate_id="abandon_surrender_give",
+    )
+    assert "FrameNet mappings are" not in render_provenance_text(frame_less)
+
+
+def test_frame_mapping_carries_approved_row_method_fields() -> None:
+    """The mapping row itself exposes method and unknown scope as approved (AC-6)."""
+
+    bundle = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID)
+    frame_mapping = next(
+        row for row in bundle.mappings if row.source_key == "framenet_candidate"
+    )
+
+    assert frame_mapping.row_mapping_method_ref == "llm:gemini/gemini-2.5-flash"
+    assert frame_mapping.row_mapping_method_scope == "unknown"
+    assert "mapping_source" in frame_mapping.evidence_ref
+
+
+def test_bundle_rejects_mapping_method_drift_from_donor_row() -> None:
+    """A mapping cannot silently contradict its enclosing donor-row metadata."""
+
+    payload = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID).model_dump(
+        mode="json"
+    )
+    frame_mapping = next(
+        row for row in payload["mappings"] if row["source_key"] == "framenet_candidate"
+    )
+    frame_mapping["row_mapping_method_ref"] = "deterministic:invented"
+
+    with pytest.raises(ValidationError):
+        PredicateProvenanceBundle.model_validate(payload)
 
 
 def test_mapping_kind_and_relation_cannot_be_conflated() -> None:
@@ -205,3 +289,28 @@ def test_inspector_unknown_predicate_fails_explicitly() -> None:
     assert result.returncode != 0
     assert "CANON_LINEAGE_UNKNOWN_CANONICAL_ID" in result.stderr
     assert result.stdout == ""
+
+
+def test_text_inspector_preserves_approved_claim_boundaries() -> None:
+    """The real text renderer exposes every reviewed lineage and warning category."""
+
+    bundle = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID)
+    rendered = render_provenance_text(bundle)
+    required_fragments = (
+        "kind: predicate_type",
+        "lineage_status: mixed",
+        "direct_build_input:",
+        "sha256: 9a6da4825eb9e4f4d81d1263e5c2ee6847bb85a1b899727e6be929658e1da0f6",
+        "upstream_version_status: donor_asserted",
+        "license_status: unknown",
+        "source_release: unknown",
+        "source_verified: no",
+        "row_mapping_method: llm:gemini/gemini-2.5-flash",
+        "row_mapping_method_scope: unknown",
+        "warnings:",
+        "not independently verified",
+        "cannot be attributed to a specific relationship",
+        "not historical evidence",
+    )
+    for fragment in required_fragments:
+        assert fragment in rendered

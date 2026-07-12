@@ -92,21 +92,52 @@ class SemanticSourceDescriptor(BaseModel):
     def _version_and_license_claims_are_evidenced(self) -> "SemanticSourceDescriptor":
         """Reject current-reference laundering and internally inconsistent certainty."""
 
+        historical_evidence = {"artifact_checksum", "donor_manifest"}
         if self.resource_version_status == "unknown" and self.resource_version is not None:
             raise ValueError("unknown resource version status requires resource_version=null")
         if self.resource_version_status in {"verified", "donor_asserted"} and self.resource_version is None:
             raise ValueError("known resource version status requires resource_version")
-        if self.resource_version_status == "verified" and self.historical_evidence_kind not in {
-            "artifact_checksum",
-            "donor_manifest",
-        }:
-            raise ValueError("verified historical version requires artifact or donor-manifest evidence")
+        if (
+            self.resource_version_status in {"verified", "donor_asserted"}
+            and self.historical_evidence_kind not in historical_evidence
+        ):
+            raise ValueError(
+                "known historical version requires artifact or donor-manifest evidence"
+            )
         if self.license_status == "verified" and not self.license_id:
             raise ValueError("verified license status requires license_id")
+        if (
+            self.license_status == "verified"
+            and self.historical_evidence_kind not in historical_evidence
+        ):
+            raise ValueError(
+                "verified historical license requires artifact or donor-manifest evidence"
+            )
         if self.license_status == "unknown" and self.license_id is not None:
             raise ValueError("unknown license status requires license_id=null")
+        if self.license_status == "reference_only" and (
+            self.license_id is None
+            or self.official_reference_scope != "current_reference_only"
+            or self.historical_evidence_kind != "current_reference_only"
+        ):
+            raise ValueError(
+                "reference-only license requires a current-reference-only source and license_id"
+            )
         if self.official_reference is None and self.official_reference_scope is not None:
             raise ValueError("official_reference_scope requires official_reference")
+        if self.official_reference_scope == "historical_source" and (
+            self.historical_evidence_kind not in historical_evidence
+        ):
+            raise ValueError(
+                "historical-source reference requires artifact or donor-manifest evidence"
+            )
+        if self.historical_evidence_kind == "current_reference_only" and (
+            self.official_reference is None
+            or self.official_reference_scope != "current_reference_only"
+        ):
+            raise ValueError(
+                "current-reference-only evidence requires a current-reference-only official reference"
+            )
         if self.historical_evidence_kind == "artifact_checksum" and self.artifact_sha256 is None:
             raise ValueError("artifact-checksum evidence requires artifact_sha256")
         return self
@@ -127,6 +158,14 @@ class SemanticMappingRecord(BaseModel):
         min_length=1,
         description="Evidence basis without laundering it into calibrated probability.",
     )
+    row_mapping_method_ref: str | None = Field(
+        default=None,
+        description="Donor row mapping-method tag when relevant to this candidate mapping.",
+    )
+    row_mapping_method_scope: Literal["relation", "predicate_row", "unknown"] | None = Field(
+        default=None,
+        description="Proven semantic scope of the row method, or unknown when undocumented.",
+    )
     evidence_ref: str = Field(min_length=1, description="Exact donor field or artifact supporting the row.")
     runtime_alias: Literal[False] = Field(
         default=False,
@@ -146,6 +185,10 @@ class SemanticMappingRecord(BaseModel):
             raise ValueError(
                 f"{self.canonical_kind} cannot use semantic relation {self.relation}"
             )
+        if (self.row_mapping_method_ref is None) != (self.row_mapping_method_scope is None):
+            raise ValueError("row mapping method reference and scope must be supplied together")
+        if self.row_mapping_method_ref is not None and self.relation != "candidate_alignment":
+            raise ValueError("row mapping method metadata is valid only for candidate alignments")
         return self
 
 
@@ -238,6 +281,15 @@ class PredicateProvenanceBundle(BaseModel):
                 raise ValueError(f"duplicate semantic mapping: {key}")
             mapping_keys.add(key)
             mapped_canonical_ids.add(mapping.canonical_id)
+            if mapping.relation == "candidate_alignment":
+                if mapping.row_mapping_method_ref != self.donor_predicate.row_mapping_method_ref:
+                    raise ValueError(
+                        "candidate mapping method must match donor predicate metadata"
+                    )
+                if mapping.row_mapping_method_scope != self.donor_predicate.row_mapping_method_scope:
+                    raise ValueError(
+                        "candidate mapping method scope must match donor predicate metadata"
+                    )
         if allowed_ids - mapped_canonical_ids:
             raise ValueError(
                 f"bundle terms missing semantic mappings: {sorted(allowed_ids - mapped_canonical_ids)}"
@@ -304,6 +356,9 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
 
     sources = [_donor_source(db_sha256)]
     mappings: list[SemanticMappingRecord] = []
+    mapping_method_ref = (
+        str(predicate["mapping_source"]) if predicate["mapping_source"] is not None else None
+    )
     propbank_sense_id = predicate["propbank_sense_id"]
     if propbank_sense_id:
         sources.append(_propbank_source())
@@ -329,8 +384,16 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
                 source_id=str(predicate["frame_id"]),
                 relation="candidate_alignment",
                 derivation_method="donor_asserted",
-                confidence_basis="donor predicate row contains frame_id; upstream verification is absent",
-                evidence_ref=f"sqlite:predicates[name={predicate_id}].frame_id",
+                confidence_basis=(
+                    "donor predicate row contains frame_id plus row mapping metadata; "
+                    "upstream verification and the mapping-method semantic scope are absent"
+                ),
+                row_mapping_method_ref=mapping_method_ref,
+                row_mapping_method_scope="unknown" if mapping_method_ref is not None else None,
+                evidence_ref=(
+                    f"sqlite:predicates[name={predicate_id}]"
+                    "{frame_id,mapping_confidence,mapping_source}"
+                ),
             )
         )
     if any(type_constraint is not None for _, _, _, type_constraint in normalized_roles):
@@ -379,9 +442,6 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
                     )
                 )
 
-    mapping_method_ref = (
-        str(predicate["mapping_source"]) if predicate["mapping_source"] is not None else None
-    )
     return PredicateProvenanceBundle(
         schema_version=_SCHEMA_VERSION,
         pack_candidate=_PACK_CANDIDATE,
@@ -405,20 +465,58 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
 
 
 def render_provenance_text(bundle: PredicateProvenanceBundle) -> str:
-    """Render a compact human-readable view of one typed provenance bundle."""
+    """Render the approved human-readable provenance contract without hiding unknowns."""
 
+    donor = next(source for source in bundle.sources if source.source_key == "onto_canon_sumo_plus")
+    lineage_statuses = {source.resource_version_status for source in bundle.sources}
+    lineage_status = (
+        next(iter(lineage_statuses)) if len(lineage_statuses) == 1 else "mixed"
+    )
     lines = [
         f"canonical_id: {bundle.predicate_id}",
+        "kind: predicate_type",
         f"pack: {bundle.pack_candidate}",
-        f"row_mapping_method: {bundle.donor_predicate.row_mapping_method_ref or 'unknown'}",
-        f"row_mapping_method_scope: {bundle.donor_predicate.row_mapping_method_scope or 'unknown'}",
+        f"lineage_status: {lineage_status}",
+        "",
+        "direct_build_input:",
+        f"  source: {donor.source_key}",
+        f"  sha256: {donor.artifact_sha256 or 'unknown'}",
+        f"  upstream_version_status: {donor.resource_version_status}",
+        f"  upstream_version: {donor.resource_version or 'unknown'}",
+        f"  license_status: {donor.license_status}",
+        f"  license: {donor.license_id or 'unknown'}",
+        "",
         "semantic_mappings:",
     ]
+    source_by_key = {source.source_key: source for source in bundle.sources}
     for mapping in bundle.mappings:
+        source = source_by_key[mapping.source_key]
         lines.append(
             f"  - {mapping.source_key}:{mapping.source_id} "
             f"({mapping.relation}; method={mapping.derivation_method}; runtime_alias=no)"
         )
+        lines.append(f"    source_release: {source.resource_version or 'unknown'}")
+        lines.append(f"    source_verified: {'yes' if source.resource_version_status == 'verified' else 'no'}")
+        if mapping.row_mapping_method_ref is not None:
+            lines.append(f"    row_mapping_method: {mapping.row_mapping_method_ref}")
+            lines.append(
+                f"    row_mapping_method_scope: {mapping.row_mapping_method_scope or 'unknown'}"
+            )
+    warnings: list[str] = []
+    if any(mapping.source_key == "framenet_candidate" for mapping in bundle.mappings):
+        warnings.append(
+            "FrameNet mappings are donor-asserted candidate alignments, not independently verified."
+        )
+    if bundle.donor_predicate.row_mapping_method_scope == "unknown":
+        warnings.append(
+            "Row mapping tags with unknown scope cannot be attributed to a specific relationship."
+        )
+    if any(source.official_reference_scope == "current_reference_only" for source in bundle.sources):
+        warnings.append(
+            "Current official-resource metadata is reference-only, not historical evidence."
+        )
+    if warnings:
+        lines.extend(["", "warnings:", *(f"  - {warning}" for warning in warnings)])
     return "\n".join(lines)
 
 
