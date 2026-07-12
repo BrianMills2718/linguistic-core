@@ -11,6 +11,7 @@ import hashlib
 import sqlite3
 from pathlib import Path
 from typing import Literal
+from urllib.parse import quote
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
@@ -307,7 +308,8 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
     if not db_path.exists():
         raise CanonProvenanceError(f"CANON_PROVENANCE_DB_MISSING path={db_path}")
     db_sha256 = hashlib.sha256(db_path.read_bytes()).hexdigest()
-    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    encoded_db_path = quote(db_path.resolve().as_posix(), safe="/")
+    conn = sqlite3.connect(f"file:{encoded_db_path}?mode=ro", uri=True)
     conn.row_factory = sqlite3.Row
     try:
         predicate = conn.execute(

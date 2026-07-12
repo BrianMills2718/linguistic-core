@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -222,6 +223,19 @@ def test_noncanonical_db_does_not_inherit_canonical_donor_version(tmp_path: Path
     donor = next(source for source in bundle.sources if source.source_key == "onto_canon_sumo_plus")
     assert donor.resource_version is None
     assert donor.resource_version_status == "unknown"
+
+
+def test_read_only_database_uri_quotes_reserved_path_characters(tmp_path: Path) -> None:
+    """Valid filesystem paths containing SQLite URI delimiters open the intended database."""
+
+    copied_db = tmp_path / "donor?copy#one.sqlite3"
+    shutil.copy2(DB_PATH, copied_db)
+
+    bundle = compile_predicate_provenance(copied_db, predicate_id=PREDICATE_ID)
+
+    assert bundle.predicate_id == f"lc:{PREDICATE_ID}"
+    donor = next(source for source in bundle.sources if source.source_key == "onto_canon_sumo_plus")
+    assert donor.artifact_sha256 == _sha256(copied_db)
 
 
 def test_inspector_is_agent_drivable_and_database_is_unchanged() -> None:
