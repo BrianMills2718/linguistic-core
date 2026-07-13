@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import sqlite3
+from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
@@ -23,12 +24,13 @@ HistoricalEvidenceKind = Literal[
     "current_reference_only",
     "none",
 ]
-CanonicalKind = Literal["predicate_type", "role_slot", "entity_type"]
+CanonicalKind = Literal["predicate_type", "role_slot", "entity_type", "hierarchy_edge"]
 MappingRelation = Literal[
     "derived_from",
     "candidate_alignment",
     "typed_by",
     "positional_role",
+    "subtype_of",
 ]
 DerivationMethod = Literal[
     "direct_identifier",
@@ -170,6 +172,12 @@ class SemanticMappingRecord(BaseModel):
         default=None,
         description="Proven semantic scope of the row method, or unknown when undocumented.",
     )
+    row_mapping_confidence: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Uncalibrated donor row confidence when present on a candidate alignment.",
+    )
     evidence_ref: str = Field(min_length=1, description="Exact donor field or artifact supporting the row.")
     source_verified: Literal[False] = Field(
         default=False,
@@ -188,6 +196,7 @@ class SemanticMappingRecord(BaseModel):
             "predicate_type": {"derived_from", "candidate_alignment"},
             "role_slot": {"positional_role"},
             "entity_type": {"typed_by"},
+            "hierarchy_edge": {"subtype_of"},
         }
         if self.relation not in allowed_relations[self.canonical_kind]:
             raise ValueError(
@@ -197,6 +206,8 @@ class SemanticMappingRecord(BaseModel):
             raise ValueError("row mapping method reference and scope must be supplied together")
         if self.row_mapping_method_ref is not None and self.relation != "candidate_alignment":
             raise ValueError("row mapping method metadata is valid only for candidate alignments")
+        if self.row_mapping_confidence is not None and self.relation != "candidate_alignment":
+            raise ValueError("row mapping confidence is valid only for candidate alignments")
         source_contracts: dict[str, dict[CanonicalKind, set[MappingRelation]]] = {
             "onto_canon_sumo_plus": {
                 "predicate_type": {"derived_from"},
@@ -207,7 +218,10 @@ class SemanticMappingRecord(BaseModel):
                 "role_slot": {"positional_role"},
             },
             "framenet_candidate": {"predicate_type": {"candidate_alignment"}},
-            "sumo_donor_types": {"entity_type": {"typed_by"}},
+            "sumo_donor_types": {
+                "entity_type": {"typed_by"},
+                "hierarchy_edge": {"subtype_of"},
+            },
         }
         source_contract = source_contracts.get(self.source_key)
         if source_contract is None:
@@ -342,6 +356,10 @@ class PredicateProvenanceBundle(BaseModel):
                     raise ValueError(
                         "candidate mapping method scope must match donor predicate metadata"
                     )
+                if mapping.row_mapping_confidence != self.donor_predicate.row_mapping_confidence:
+                    raise ValueError(
+                        "candidate mapping confidence must match donor predicate metadata"
+                    )
         if allowed_ids - mapped_canonical_ids:
             raise ValueError(
                 f"bundle terms missing semantic mappings: {sorted(allowed_ids - mapped_canonical_ids)}"
@@ -356,6 +374,60 @@ class PredicateProvenanceBundle(BaseModel):
         return self
 
 
+class SemanticSourcesDocument(BaseModel):
+    """Versioned source registry emitted beside one linguistic-core pack."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["predicate_canon_semantic_sources.v1"] = Field(
+        description="Version of the pack-level semantic source registry."
+    )
+    pack_id: Literal["linguistic_core"] = Field(description="Owning ontology pack ID.")
+    pack_version: str = Field(
+        pattern=r"^[0-9]+\.[0-9]+\.[0-9]+$",
+        description="Exact side-by-side pack version described by this registry.",
+    )
+    direct_build_input: SemanticSourceDescriptor = Field(
+        description="Byte-bound donor artifact used directly by the compiler."
+    )
+    semantic_sources: tuple[SemanticSourceDescriptor, ...] = Field(
+        min_length=3,
+        description="Closed external semantic source descriptors referenced by mappings.",
+    )
+
+    @model_validator(mode="after")
+    def _source_registry_is_complete(self) -> "SemanticSourcesDocument":
+        """Require the exact reviewed V1 registry without duplicate source keys."""
+
+        if self.direct_build_input.source_key != "onto_canon_sumo_plus":
+            raise ValueError("direct build input must be onto_canon_sumo_plus")
+        keys = [source.source_key for source in self.semantic_sources]
+        if keys != ["framenet_candidate", "propbank_nltk", "sumo_donor_types"]:
+            raise ValueError("semantic_sources must be sorted and complete for V1")
+        return self
+
+
+def compile_semantic_sources_document(
+    db_path: Path,
+    *,
+    pack_version: str,
+) -> SemanticSourcesDocument:
+    """Compile the byte-bound, closed V1 source registry for one pack build."""
+
+    return SemanticSourcesDocument(
+        schema_version="predicate_canon_semantic_sources.v1",
+        pack_id="linguistic_core",
+        pack_version=pack_version,
+        direct_build_input=_donor_source(_db_sha256(db_path)),
+        semantic_sources=tuple(
+            sorted(
+                (_propbank_source(), _framenet_source(), _sumo_source()),
+                key=lambda source: source.source_key,
+            )
+        ),
+    )
+
+
 def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> PredicateProvenanceBundle:
     """Compile one read-only provenance bundle from ``sumo_plus.db``.
 
@@ -363,16 +435,7 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
     historical versions and row-mapping scope remain explicit.
     """
 
-    if not db_path.exists():
-        raise CanonProvenanceError(f"CANON_PROVENANCE_DB_MISSING path={db_path}")
-    if not db_path.is_file():
-        raise CanonProvenanceError(f"CANON_PROVENANCE_DB_NOT_FILE path={db_path}")
-    try:
-        db_sha256 = hashlib.sha256(db_path.read_bytes()).hexdigest()
-    except OSError as exc:
-        raise CanonProvenanceError(
-            f"CANON_PROVENANCE_DB_READ_ERROR path={db_path} detail={exc}"
-        ) from exc
+    db_sha256 = _db_sha256(db_path)
     encoded_db_path = quote(db_path.resolve().as_posix(), safe="/")
     try:
         conn = sqlite3.connect(f"file:{encoded_db_path}?mode=ro", uri=True)
@@ -415,7 +478,9 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
         for role in roles
     ]
     canonical_predicate_id = f"lc:{donor_predicate_name}"
-    role_ids = tuple(_role_id(named_label) for named_label, _, _, _ in normalized_roles)
+    role_ids = tuple(
+        dict.fromkeys(_role_id(named_label) for named_label, _, _, _ in normalized_roles)
+    )
     type_ids = tuple(
         dict.fromkeys(
             _sumo_type_id(type_constraint)
@@ -477,6 +542,10 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
                 ),
                 row_mapping_method_ref=mapping_method_ref,
                 row_mapping_method_scope="unknown" if mapping_method_ref is not None else None,
+                row_mapping_confidence=_optional_db_confidence(
+                    predicate["mapping_confidence"],
+                    field="predicates.mapping_confidence",
+                ),
                 evidence_ref=(
                     f"sqlite:predicates[name={predicate_id}]"
                     "{frame_id,mapping_confidence,mapping_source}"
@@ -807,6 +876,39 @@ def _required_db_token(value: object, *, field: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise CanonProvenanceError(f"CANON_PROVENANCE_INVALID_DONOR_FIELD field={field}")
     return value.strip()
+
+
+def _db_sha256(db_path: Path) -> str:
+    """Return a cached hash keyed by resolved path and exact filesystem state."""
+
+    if not db_path.exists():
+        raise CanonProvenanceError(f"CANON_PROVENANCE_DB_MISSING path={db_path}")
+    if not db_path.is_file():
+        raise CanonProvenanceError(f"CANON_PROVENANCE_DB_NOT_FILE path={db_path}")
+    try:
+        stat = db_path.stat()
+        return _cached_file_sha256(
+            str(db_path.resolve()),
+            stat.st_size,
+            stat.st_mtime_ns,
+        )
+    except OSError as exc:
+        raise CanonProvenanceError(
+            f"CANON_PROVENANCE_DB_READ_ERROR path={db_path} detail={exc}"
+        ) from exc
+
+
+@lru_cache(maxsize=8)
+def _cached_file_sha256(resolved_path: str, size: int, mtime_ns: int) -> str:
+    """Hash one immutable build input; size/mtime make cache invalidation explicit."""
+
+    del size, mtime_ns
+    try:
+        return hashlib.sha256(Path(resolved_path).read_bytes()).hexdigest()
+    except OSError as exc:
+        raise CanonProvenanceError(
+            f"CANON_PROVENANCE_DB_READ_ERROR path={resolved_path} detail={exc}"
+        ) from exc
 
 
 def _optional_db_token(value: object, *, field: str) -> str | None:

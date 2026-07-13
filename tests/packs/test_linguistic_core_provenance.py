@@ -383,6 +383,21 @@ def test_predicates_without_external_ids_retain_donor_lineage(predicate_id: str)
     )
 
 
+def test_case_collapsed_role_ids_preserve_each_donor_position() -> None:
+    """Two donor labels that canonicalize together retain both positional lineage rows."""
+
+    bundle = compile_predicate_provenance(DB_PATH, predicate_id="be_copula")
+
+    assert bundle.role_ids.count("lc.role.attribute") == 1
+    donor_positions = {
+        mapping.source_id
+        for mapping in bundle.mappings
+        if mapping.canonical_id == "lc:be_copula:lc.role.attribute"
+        and mapping.source_key == "onto_canon_sumo_plus"
+    }
+    assert donor_positions == {"be_copula:ARG1", "be_copula:ARG2"}
+
+
 def test_inspector_is_agent_drivable_and_database_is_unchanged() -> None:
     """The CLI emits typed JSON while preserving the donor DB byte-for-byte (AC-7)."""
 

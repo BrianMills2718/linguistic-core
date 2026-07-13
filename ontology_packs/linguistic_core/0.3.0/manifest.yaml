@@ -1,0 +1,46 @@
+pack:
+  id: linguistic_core
+  version: 0.3.0
+  name: linguistic_core
+  description: Foundational predicate vocabulary compiled from the predecessor Predicate
+    Canon with donor-derived PropBank identifiers, FrameNet candidate alignments,
+    and SUMO type lineage. Provides 4,669 predicates and 11,890 semantic role slots;
+    historical upstream versions remain explicit unknowns.
+build:
+  compiler_version: 0.2.0
+  built_at: '2026-07-12T19:00:00Z'
+  source_inputs:
+  - system: onto_canon_sumo_plus
+    version: '2026-02-15'
+    path: data/sumo_plus.db
+    version_status: donor_asserted
+    artifact_sha256: 9a6da4825eb9e4f4d81d1263e5c2ee6847bb85a1b899727e6be929658e1da0f6
+  artifact_sha256:
+    aliases.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    constraints.jsonl: eef1656308200af5704d93caf8109eb4124c02e9da5ca7a5e2d4b076fa160a78
+    entity_types.jsonl: 5275e082047f685be90eebfc21b7e225cd21a9375b386ed6b823aeafcacfb557
+    hierarchy_edges.jsonl: 8e3e0710c22bfda0f2ab4ac40c84564cb5c3a33a52c26eed658568ce9f487250
+    predicate_role_edges.jsonl: 26969c58d9fc0096fa0abf8ed5815115882956d1e1f6711309b217937d2d328b
+    predicate_types.jsonl: 78d71b76233818f7a8ae9fca853d80aa6fc089bd55d815b514e58ebcd724778d
+    role_types.jsonl: ae43fe23d8b2daed1b4c0e1935f1c88203b7425e5d2f61bfafb0d14c08137855
+    semantic_mappings.jsonl: 16f18feafe28a2cce14e8e25f417c082f8dd910b2fd6b859b01d337d86b0c6a9
+    semantic_sources.yaml: e98c9cace433280879fbc7b17441832aeea54143f8089684bbcd4bbafcfda5db
+    source_mappings.jsonl: 9b6c5f10d9b553bbe318db94207d563c1ae45a059b96a70a1dbb5d7f3c2bf10e
+    value_types.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+capabilities:
+  assertion_type: n-ary
+  type_system: sumo
+content:
+  entity_types: entity_types.jsonl
+  predicate_types: predicate_types.jsonl
+  role_types: role_types.jsonl
+  value_types: value_types.jsonl
+  hierarchy_edges: hierarchy_edges.jsonl
+  predicate_role_edges: predicate_role_edges.jsonl
+  source_mappings: source_mappings.jsonl
+  aliases: aliases.jsonl
+  constraints: constraints.jsonl
+provenance:
+  schema_version: predicate_canon_provenance_assets.v1
+  semantic_sources: semantic_sources.yaml
+  semantic_mappings: semantic_mappings.jsonl

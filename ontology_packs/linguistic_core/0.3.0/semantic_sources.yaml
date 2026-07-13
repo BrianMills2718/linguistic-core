@@ -1,0 +1,49 @@
+schema_version: predicate_canon_semantic_sources.v1
+pack_id: linguistic_core
+pack_version: 0.3.0
+direct_build_input:
+  source_key: onto_canon_sumo_plus
+  resource_name: onto-canon predecessor Predicate Canon database
+  resource_version: '2026-02-15'
+  resource_version_status: donor_asserted
+  license_id: null
+  license_status: unknown
+  artifact_sha256: 9a6da4825eb9e4f4d81d1263e5c2ee6847bb85a1b899727e6be929658e1da0f6
+  official_reference: null
+  official_reference_scope: null
+  historical_evidence_kind: artifact_checksum
+  evidence_ref: data/PROVENANCE.md+data/sumo_plus.db
+semantic_sources:
+- source_key: framenet_candidate
+  resource_name: Berkeley FrameNet candidate alignment
+  resource_version: null
+  resource_version_status: unknown
+  license_id: null
+  license_status: unknown
+  artifact_sha256: null
+  official_reference: https://berkeleyfn.framenetbr.ufjf.br/framenet_data
+  official_reference_scope: current_reference_only
+  historical_evidence_kind: current_reference_only
+  evidence_ref: sqlite:predicates.frame_id
+- source_key: propbank_nltk
+  resource_name: PropBank
+  resource_version: null
+  resource_version_status: unknown
+  license_id: null
+  license_status: unknown
+  artifact_sha256: null
+  official_reference: https://github.com/propbank/propbank-frames
+  official_reference_scope: current_reference_only
+  historical_evidence_kind: current_reference_only
+  evidence_ref: sqlite:predicates.source+propbank_sense_id
+- source_key: sumo_donor_types
+  resource_name: SUMO lineage in donor type constraints
+  resource_version: null
+  resource_version_status: unknown
+  license_id: null
+  license_status: unknown
+  artifact_sha256: null
+  official_reference: https://www.ontologyportal.org/
+  official_reference_scope: current_reference_only
+  historical_evidence_kind: current_reference_only
+  evidence_ref: sqlite:role_slots.type_constraint+type_hierarchy
