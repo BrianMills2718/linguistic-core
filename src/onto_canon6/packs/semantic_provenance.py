@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
 
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, ValidationError, model_validator
 
 ResourceVersionStatus = Literal["verified", "donor_asserted", "unknown"]
 LicenseStatus = Literal["verified", "reference_only", "unknown"]
@@ -37,6 +37,7 @@ DerivationMethod = Literal[
     "llm",
     "unknown",
 ]
+LineageStatus = Literal["donor_asserted", "unknown", "mixed"]
 
 _PACK_CANDIDATE: Literal["linguistic_core@0.3.0-candidate"] = (
     "linguistic_core@0.3.0-candidate"
@@ -94,6 +95,14 @@ class SemanticSourceDescriptor(BaseModel):
         """Reject current-reference laundering and internally inconsistent certainty."""
 
         historical_evidence = {"artifact_checksum", "donor_manifest"}
+        if self.resource_version_status == "verified":
+            raise ValueError(
+                "predicate_canon_provenance.v1 has no trusted registry for verified versions"
+            )
+        if self.license_status == "verified":
+            raise ValueError(
+                "predicate_canon_provenance.v1 has no trusted registry for verified licenses"
+            )
         if self.resource_version_status == "unknown" and self.resource_version is not None:
             raise ValueError("unknown resource version status requires resource_version=null")
         if self.resource_version_status in {"verified", "donor_asserted"} and self.resource_version is None:
@@ -104,15 +113,6 @@ class SemanticSourceDescriptor(BaseModel):
         ):
             raise ValueError(
                 "known historical version requires artifact or donor-manifest evidence"
-            )
-        if self.license_status == "verified" and not self.license_id:
-            raise ValueError("verified license status requires license_id")
-        if (
-            self.license_status == "verified"
-            and self.historical_evidence_kind not in historical_evidence
-        ):
-            raise ValueError(
-                "verified historical license requires artifact or donor-manifest evidence"
             )
         if self.license_status == "unknown" and self.license_id is not None:
             raise ValueError("unknown license status requires license_id=null")
@@ -141,6 +141,9 @@ class SemanticSourceDescriptor(BaseModel):
             )
         if self.historical_evidence_kind == "artifact_checksum" and self.artifact_sha256 is None:
             raise ValueError("artifact-checksum evidence requires artifact_sha256")
+        if self.artifact_sha256 is not None and self.historical_evidence_kind not in historical_evidence:
+            raise ValueError("artifact_sha256 requires artifact or donor-manifest evidence")
+        _validate_known_source_identity(self)
         return self
 
 
@@ -168,6 +171,10 @@ class SemanticMappingRecord(BaseModel):
         description="Proven semantic scope of the row method, or unknown when undocumented.",
     )
     evidence_ref: str = Field(min_length=1, description="Exact donor field or artifact supporting the row.")
+    source_verified: Literal[False] = Field(
+        default=False,
+        description="V1 has no trusted upstream verification registry; mappings remain unverified.",
+    )
     runtime_alias: Literal[False] = Field(
         default=False,
         description="Traceability records are never runtime lookup aliases.",
@@ -190,6 +197,26 @@ class SemanticMappingRecord(BaseModel):
             raise ValueError("row mapping method reference and scope must be supplied together")
         if self.row_mapping_method_ref is not None and self.relation != "candidate_alignment":
             raise ValueError("row mapping method metadata is valid only for candidate alignments")
+        source_contracts: dict[str, dict[CanonicalKind, set[MappingRelation]]] = {
+            "onto_canon_sumo_plus": {
+                "predicate_type": {"derived_from"},
+                "role_slot": {"positional_role"},
+            },
+            "propbank_nltk": {
+                "predicate_type": {"derived_from"},
+                "role_slot": {"positional_role"},
+            },
+            "framenet_candidate": {"predicate_type": {"candidate_alignment"}},
+            "sumo_donor_types": {"entity_type": {"typed_by"}},
+        }
+        source_contract = source_contracts.get(self.source_key)
+        if source_contract is None:
+            raise ValueError(f"unsupported semantic source key: {self.source_key}")
+        expected_relations = source_contract.get(self.canonical_kind, set())
+        if self.relation not in expected_relations:
+            raise ValueError(
+                f"source {self.source_key} cannot map {self.canonical_kind} via {self.relation}"
+            )
         return self
 
 
@@ -233,10 +260,19 @@ class PredicateProvenanceBundle(BaseModel):
     pack_candidate: Literal["linguistic_core@0.3.0-candidate"] = Field(
         description="Unpublished side-by-side pack target for Plan 0140."
     )
+    kind: Literal["predicate_type"] = Field(
+        description="Canonical object kind exposed explicitly on JSON and text surfaces."
+    )
+    lineage_status: LineageStatus = Field(
+        description="Derived aggregate of source version-status claims."
+    )
     predicate_id: str = Field(min_length=1, description="Canonical lc:-namespaced predicate ID.")
     role_ids: tuple[str, ...] = Field(description="Canonical role IDs declared by this predicate.")
     type_ids: tuple[str, ...] = Field(description="Canonical SUMO-derived filler type IDs.")
     donor_predicate: DonorPredicateMetadata = Field(description="Unmodified row-level donor metadata.")
+    direct_build_input: SemanticSourceDescriptor = Field(
+        description="Byte-bound donor artifact used directly to compile this lineage."
+    )
     sources: tuple[SemanticSourceDescriptor, ...] = Field(
         min_length=1,
         description="All donor and semantic sources referenced by mappings.",
@@ -244,6 +280,9 @@ class PredicateProvenanceBundle(BaseModel):
     mappings: tuple[SemanticMappingRecord, ...] = Field(
         min_length=1,
         description="Traceability-only semantic mappings for this predicate slice.",
+    )
+    warnings: tuple[str, ...] = Field(
+        description="Explicit claim-boundary warnings derived from present evidence."
     )
 
     @model_validator(mode="after")
@@ -257,6 +296,18 @@ class PredicateProvenanceBundle(BaseModel):
         source_keys = [source.source_key for source in self.sources]
         if len(set(source_keys)) != len(source_keys):
             raise ValueError("source keys must be unique")
+        if self.direct_build_input.source_key != "onto_canon_sumo_plus":
+            raise ValueError("direct build input must be onto_canon_sumo_plus")
+        matching_direct_sources = [
+            source for source in self.sources if source.source_key == self.direct_build_input.source_key
+        ]
+        if matching_direct_sources != [self.direct_build_input]:
+            raise ValueError("direct build input must exactly match its source descriptor")
+        expected_lineage_status = _aggregate_lineage_status(self.sources)
+        if self.lineage_status != expected_lineage_status:
+            raise ValueError(
+                f"lineage_status must be derived from sources: {expected_lineage_status}"
+            )
         role_mapping_ids = {f"{self.predicate_id}:{role_id}" for role_id in self.role_ids}
         allowed_ids = {self.predicate_id, *self.type_ids, *role_mapping_ids}
         mapping_keys: set[tuple[str, str, str, str]] = set()
@@ -295,6 +346,13 @@ class PredicateProvenanceBundle(BaseModel):
             raise ValueError(
                 f"bundle terms missing semantic mappings: {sorted(allowed_ids - mapped_canonical_ids)}"
             )
+        expected_warnings = _provenance_warnings(
+            mappings=self.mappings,
+            sources=self.sources,
+            donor_predicate=self.donor_predicate,
+        )
+        if self.warnings != expected_warnings:
+            raise ValueError("warnings must be derived exactly from bundle evidence")
         return self
 
 
@@ -307,9 +365,19 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
 
     if not db_path.exists():
         raise CanonProvenanceError(f"CANON_PROVENANCE_DB_MISSING path={db_path}")
-    db_sha256 = hashlib.sha256(db_path.read_bytes()).hexdigest()
+    if not db_path.is_file():
+        raise CanonProvenanceError(f"CANON_PROVENANCE_DB_NOT_FILE path={db_path}")
+    try:
+        db_sha256 = hashlib.sha256(db_path.read_bytes()).hexdigest()
+    except OSError as exc:
+        raise CanonProvenanceError(
+            f"CANON_PROVENANCE_DB_READ_ERROR path={db_path} detail={exc}"
+        ) from exc
     encoded_db_path = quote(db_path.resolve().as_posix(), safe="/")
-    conn = sqlite3.connect(f"file:{encoded_db_path}?mode=ro", uri=True)
+    try:
+        conn = sqlite3.connect(f"file:{encoded_db_path}?mode=ro", uri=True)
+    except sqlite3.Error as exc:
+        raise CanonProvenanceError(f"CANON_PROVENANCE_DB_ERROR detail={exc}") from exc
     conn.row_factory = sqlite3.Row
     try:
         predicate = conn.execute(
@@ -356,34 +424,51 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
         )
     )
 
-    sources = [_donor_source(db_sha256)]
-    mappings: list[SemanticMappingRecord] = []
-    mapping_method_ref = (
-        str(predicate["mapping_source"]) if predicate["mapping_source"] is not None else None
+    direct_build_input = _donor_source(db_sha256)
+    sources = [direct_build_input]
+    mappings: list[SemanticMappingRecord] = [
+        SemanticMappingRecord(
+            canonical_id=canonical_predicate_id,
+            canonical_kind="predicate_type",
+            source_key="onto_canon_sumo_plus",
+            source_id=donor_predicate_name,
+            relation="derived_from",
+            derivation_method="direct_identifier",
+            confidence_basis="canonical predicate is compiled directly from the donor predicate row",
+            evidence_ref=f"sqlite:predicates[name={predicate_id}].name",
+        )
+    ]
+    mapping_method_ref = _optional_db_token(
+        predicate["mapping_source"],
+        field="predicates.mapping_source",
     )
-    propbank_sense_id = predicate["propbank_sense_id"]
-    if propbank_sense_id:
+    propbank_sense_id = _optional_db_token(
+        predicate["propbank_sense_id"],
+        field="predicates.propbank_sense_id",
+    )
+    if propbank_sense_id is not None:
         sources.append(_propbank_source())
         mappings.append(
             SemanticMappingRecord(
                 canonical_id=canonical_predicate_id,
                 canonical_kind="predicate_type",
                 source_key="propbank_nltk",
-                source_id=str(propbank_sense_id),
+                source_id=propbank_sense_id,
                 relation="derived_from",
                 derivation_method="direct_identifier",
                 confidence_basis="donor predicate row stores the exact PropBank sense identifier",
                 evidence_ref=f"sqlite:predicates[name={predicate_id}].propbank_sense_id",
             )
         )
-    if predicate["frame_id"]:
+    frame_id = _optional_db_token(predicate["frame_id"], field="predicates.frame_id")
+    if frame_id is not None:
         sources.append(_framenet_source())
         mappings.append(
             SemanticMappingRecord(
                 canonical_id=canonical_predicate_id,
                 canonical_kind="predicate_type",
                 source_key="framenet_candidate",
-                source_id=str(predicate["frame_id"]),
+                source_id=frame_id,
                 relation="candidate_alignment",
                 derivation_method="donor_asserted",
                 confidence_basis=(
@@ -403,7 +488,22 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
 
     for named_label, arg_position, role_source, type_constraint in normalized_roles:
         role_id = _role_id(named_label)
-        if propbank_sense_id:
+        mappings.append(
+            SemanticMappingRecord(
+                canonical_id=f"{canonical_predicate_id}:{role_id}",
+                canonical_kind="role_slot",
+                source_key="onto_canon_sumo_plus",
+                source_id=f"{donor_predicate_name}:{arg_position}",
+                relation="positional_role",
+                derivation_method="direct_identifier",
+                confidence_basis="canonical role slot is compiled directly from the donor role row",
+                evidence_ref=(
+                    f"sqlite:role_slots[event_sense_id={predicate_id},"
+                    f"arg_position={arg_position}]"
+                ),
+            )
+        )
+        if propbank_sense_id is not None:
             mappings.append(
                 SemanticMappingRecord(
                     canonical_id=f"{canonical_predicate_id}:{role_id}",
@@ -444,41 +544,53 @@ def compile_predicate_provenance(db_path: Path, *, predicate_id: str) -> Predica
                     )
                 )
 
-    return PredicateProvenanceBundle(
-        schema_version=_SCHEMA_VERSION,
-        pack_candidate=_PACK_CANDIDATE,
-        predicate_id=canonical_predicate_id,
-        role_ids=role_ids,
-        type_ids=type_ids,
-        donor_predicate=DonorPredicateMetadata(
-            donor_predicate_id=donor_predicate_name,
-            donor_source=donor_source,
-            row_mapping_method_ref=mapping_method_ref,
-            row_mapping_method_scope="unknown" if mapping_method_ref is not None else None,
-            row_mapping_confidence=(
-                float(predicate["mapping_confidence"])
-                if predicate["mapping_confidence"] is not None
-                else None
-            ),
+    donor_predicate = DonorPredicateMetadata(
+        donor_predicate_id=donor_predicate_name,
+        donor_source=donor_source,
+        row_mapping_method_ref=mapping_method_ref,
+        row_mapping_method_scope="unknown" if mapping_method_ref is not None else None,
+        row_mapping_confidence=_optional_db_confidence(
+            predicate["mapping_confidence"],
+            field="predicates.mapping_confidence",
         ),
-        sources=tuple(sources),
-        mappings=tuple(mappings),
     )
+    source_tuple = tuple(sources)
+    mapping_tuple = tuple(mappings)
+    lineage_status = _aggregate_lineage_status(source_tuple)
+    try:
+        return PredicateProvenanceBundle(
+            schema_version=_SCHEMA_VERSION,
+            pack_candidate=_PACK_CANDIDATE,
+            kind="predicate_type",
+            lineage_status=lineage_status,
+            predicate_id=canonical_predicate_id,
+            role_ids=role_ids,
+            type_ids=type_ids,
+            donor_predicate=donor_predicate,
+            direct_build_input=direct_build_input,
+            sources=source_tuple,
+            mappings=mapping_tuple,
+            warnings=_provenance_warnings(
+                mappings=mapping_tuple,
+                sources=source_tuple,
+                donor_predicate=donor_predicate,
+            ),
+        )
+    except ValidationError as exc:
+        raise CanonProvenanceError(
+            f"CANON_PROVENANCE_CONTRACT_ERROR predicate_id={predicate_id} detail={exc}"
+        ) from exc
 
 
 def render_provenance_text(bundle: PredicateProvenanceBundle) -> str:
     """Render the approved human-readable provenance contract without hiding unknowns."""
 
-    donor = next(source for source in bundle.sources if source.source_key == "onto_canon_sumo_plus")
-    lineage_statuses = {source.resource_version_status for source in bundle.sources}
-    lineage_status = (
-        next(iter(lineage_statuses)) if len(lineage_statuses) == 1 else "mixed"
-    )
+    donor = bundle.direct_build_input
     lines = [
         f"canonical_id: {bundle.predicate_id}",
-        "kind: predicate_type",
+        f"kind: {bundle.kind}",
         f"pack: {bundle.pack_candidate}",
-        f"lineage_status: {lineage_status}",
+        f"lineage_status: {bundle.lineage_status}",
         "",
         "direct_build_input:",
         f"  source: {donor.source_key}",
@@ -504,22 +616,46 @@ def render_provenance_text(bundle: PredicateProvenanceBundle) -> str:
             lines.append(
                 f"    row_mapping_method_scope: {mapping.row_mapping_method_scope or 'unknown'}"
             )
+    if bundle.warnings:
+        lines.extend(["", "warnings:", *(f"  - {warning}" for warning in bundle.warnings)])
+    return "\n".join(lines)
+
+
+def _provenance_warnings(
+    *,
+    mappings: tuple[SemanticMappingRecord, ...],
+    sources: tuple[SemanticSourceDescriptor, ...],
+    donor_predicate: DonorPredicateMetadata,
+) -> tuple[str, ...]:
+    """Derive stable claim-boundary warnings from present typed evidence."""
+
     warnings: list[str] = []
-    if any(mapping.source_key == "framenet_candidate" for mapping in bundle.mappings):
+    if any(mapping.source_key == "framenet_candidate" for mapping in mappings):
         warnings.append(
             "FrameNet mappings are donor-asserted candidate alignments, not independently verified."
         )
-    if bundle.donor_predicate.row_mapping_method_scope == "unknown":
+    if donor_predicate.row_mapping_method_scope == "unknown":
         warnings.append(
             "Row mapping tags with unknown scope cannot be attributed to a specific relationship."
         )
-    if any(source.official_reference_scope == "current_reference_only" for source in bundle.sources):
+    if any(source.official_reference_scope == "current_reference_only" for source in sources):
         warnings.append(
             "Current official-resource metadata is reference-only, not historical evidence."
         )
-    if warnings:
-        lines.extend(["", "warnings:", *(f"  - {warning}" for warning in warnings)])
-    return "\n".join(lines)
+    return tuple(warnings)
+
+
+def _aggregate_lineage_status(
+    sources: tuple[SemanticSourceDescriptor, ...],
+) -> LineageStatus:
+    """Return the only V1 aggregate statuses allowed by the source registry."""
+
+    statuses = {source.resource_version_status for source in sources}
+    if statuses == {"donor_asserted"}:
+        return "donor_asserted"
+    if statuses == {"unknown"}:
+        return "unknown"
+    return "mixed"
 
 
 def _donor_source(db_sha256: str) -> SemanticSourceDescriptor:
@@ -599,6 +735,60 @@ def _unknown_historical_source(
     )
 
 
+def _validate_known_source_identity(source: SemanticSourceDescriptor) -> None:
+    """Bind each closed V1 source key to its reviewed descriptor identity."""
+
+    external_contracts: dict[str, tuple[str, HttpUrl, str]] = {
+        "propbank_nltk": (
+            "PropBank",
+            _PROPBANK_REFERENCE,
+            "sqlite:predicates.source+propbank_sense_id",
+        ),
+        "framenet_candidate": (
+            "Berkeley FrameNet candidate alignment",
+            _FRAMENET_REFERENCE,
+            "sqlite:predicates.frame_id",
+        ),
+        "sumo_donor_types": (
+            "SUMO lineage in donor type constraints",
+            _SUMO_REFERENCE,
+            "sqlite:role_slots.type_constraint+type_hierarchy",
+        ),
+    }
+    if source.source_key == "onto_canon_sumo_plus":
+        if (
+            source.resource_name != "onto-canon predecessor Predicate Canon database"
+            or source.license_status != "unknown"
+            or source.official_reference is not None
+            or source.historical_evidence_kind != "artifact_checksum"
+            or source.evidence_ref != "data/PROVENANCE.md+data/sumo_plus.db"
+        ):
+            raise ValueError("onto_canon_sumo_plus descriptor identity mismatch")
+        if source.resource_version_status == "donor_asserted" and (
+            source.resource_version != "2026-02-15"
+            or source.artifact_sha256 != _CANONICAL_DONOR_SHA256
+        ):
+            raise ValueError("canonical donor assertion requires its exact version and checksum")
+        return
+    contract = external_contracts.get(source.source_key)
+    if contract is None:
+        raise ValueError(f"unsupported semantic source key: {source.source_key}")
+    resource_name, official_reference, evidence_ref = contract
+    if (
+        source.resource_name != resource_name
+        or source.resource_version is not None
+        or source.resource_version_status != "unknown"
+        or source.license_id is not None
+        or source.license_status != "unknown"
+        or source.artifact_sha256 is not None
+        or source.official_reference != official_reference
+        or source.official_reference_scope != "current_reference_only"
+        or source.historical_evidence_kind != "current_reference_only"
+        or source.evidence_ref != evidence_ref
+    ):
+        raise ValueError(f"{source.source_key} descriptor identity mismatch")
+
+
 def _role_id(named_label: str) -> str:
     """Return the existing linguistic-core role ID for a donor named label."""
 
@@ -617,3 +807,29 @@ def _required_db_token(value: object, *, field: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise CanonProvenanceError(f"CANON_PROVENANCE_INVALID_DONOR_FIELD field={field}")
     return value.strip()
+
+
+def _optional_db_token(value: object, *, field: str) -> str | None:
+    """Return one optional donor token while rejecting malformed present values."""
+
+    if value is None:
+        return None
+    return _required_db_token(value, field=field)
+
+
+def _optional_db_confidence(value: object, *, field: str) -> float | None:
+    """Return a finite donor confidence in [0, 1] or fail with typed context."""
+
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (str, int, float)):
+        raise CanonProvenanceError(f"CANON_PROVENANCE_INVALID_DONOR_FIELD field={field}")
+    try:
+        confidence = float(value)
+    except (TypeError, ValueError) as exc:
+        raise CanonProvenanceError(
+            f"CANON_PROVENANCE_INVALID_DONOR_FIELD field={field}"
+        ) from exc
+    if not 0.0 <= confidence <= 1.0:
+        raise CanonProvenanceError(f"CANON_PROVENANCE_INVALID_DONOR_FIELD field={field}")
+    return confidence

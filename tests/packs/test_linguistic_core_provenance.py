@@ -20,6 +20,7 @@ import pytest
 from pydantic import ValidationError
 
 from onto_canon6.packs.semantic_provenance import (
+    CanonProvenanceError,
     PredicateProvenanceBundle,
     SemanticMappingRecord,
     SemanticSourceDescriptor,
@@ -67,7 +68,6 @@ def test_approved_predicate_compiles_to_reviewed_fixture() -> None:
         ("donor_asserted_from_current_reference.json", SemanticSourceDescriptor),
         ("missing_mapping_evidence.json", SemanticMappingRecord),
         ("runtime_alias_true.json", SemanticMappingRecord),
-        ("dangling_canonical_id.json", PredicateProvenanceBundle),
     ],
 )
 def test_negative_contract_fixtures_fail_loud(
@@ -78,6 +78,27 @@ def test_negative_contract_fixtures_fail_loud(
 
     with pytest.raises(ValidationError):
         model_type.model_validate(_json_fixture(fixture_name))
+
+
+def test_arbitrary_checksum_cannot_self_verify_version_or_license() -> None:
+    """V1 rejects verified claims because no trusted checksum registry exists."""
+
+    payload = {
+        "source_key": "propbank_nltk",
+        "resource_name": "Fake PropBank",
+        "resource_version": "999.0",
+        "resource_version_status": "verified",
+        "license_id": "CC0-1.0",
+        "license_status": "verified",
+        "artifact_sha256": "0" * 64,
+        "official_reference": None,
+        "official_reference_scope": None,
+        "historical_evidence_kind": "artifact_checksum",
+        "evidence_ref": "self-attested arbitrary checksum",
+    }
+
+    with pytest.raises(ValidationError, match="no trusted registry"):
+        SemanticSourceDescriptor.model_validate(payload)
 
 
 @pytest.mark.parametrize(
@@ -182,6 +203,63 @@ def test_bundle_rejects_mapping_method_drift_from_donor_row() -> None:
         PredicateProvenanceBundle.model_validate(payload)
 
 
+def test_bundle_rejects_dangling_canonical_id() -> None:
+    """A mapping cannot escape the canonical terms owned by its bundle."""
+
+    payload = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID).model_dump(
+        mode="json"
+    )
+    payload["mappings"][0]["canonical_id"] = "lc:not_in_bundle"
+
+    with pytest.raises(ValidationError, match="outside bundle"):
+        PredicateProvenanceBundle.model_validate(payload)
+
+
+def test_bundle_rejects_claim_boundary_drift() -> None:
+    """JSON claim summaries cannot contradict their typed source evidence."""
+
+    payload = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID).model_dump(
+        mode="json"
+    )
+    payload["lineage_status"] = "unknown"
+    payload["warnings"] = []
+
+    with pytest.raises(ValidationError, match="lineage_status"):
+        PredicateProvenanceBundle.model_validate(payload)
+
+
+def test_source_family_and_relation_cannot_be_crossed() -> None:
+    """A PropBank derivation cannot be relabeled as a FrameNet relationship."""
+
+    payload = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID).model_dump(
+        mode="json"
+    )
+    propbank_mapping = next(
+        row for row in payload["mappings"] if row["source_key"] == "propbank_nltk"
+    )
+    propbank_mapping["source_key"] = "framenet_candidate"
+
+    with pytest.raises(ValidationError, match="cannot map"):
+        PredicateProvenanceBundle.model_validate(payload)
+
+
+def test_known_source_key_binds_descriptor_identity() -> None:
+    """A trusted source key cannot be paired with a fabricated name, URL, or evidence."""
+
+    payload = compile_predicate_provenance(DB_PATH, predicate_id=PREDICATE_ID).model_dump(
+        mode="json"
+    )
+    propbank_source = next(
+        source for source in payload["sources"] if source["source_key"] == "propbank_nltk"
+    )
+    propbank_source["resource_name"] = "Berkeley FrameNet (fabricated relabel)"
+    propbank_source["official_reference"] = "https://example.com/not-propbank"
+    propbank_source["evidence_ref"] = "fabricated"
+
+    with pytest.raises(ValidationError, match="propbank_nltk descriptor identity mismatch"):
+        PredicateProvenanceBundle.model_validate(payload)
+
+
 def test_mapping_kind_and_relation_cannot_be_conflated() -> None:
     """A role or type row cannot borrow a predicate mapping relation."""
 
@@ -238,6 +316,73 @@ def test_read_only_database_uri_quotes_reserved_path_characters(tmp_path: Path) 
     assert donor.artifact_sha256 == _sha256(copied_db)
 
 
+def test_database_path_must_be_a_regular_file(tmp_path: Path) -> None:
+    """A directory is rejected with a typed diagnostic before SQLite URI handling."""
+
+    with pytest.raises(CanonProvenanceError, match="CANON_PROVENANCE_DB_NOT_FILE"):
+        compile_predicate_provenance(tmp_path, predicate_id=PREDICATE_ID)
+
+
+def test_malformed_optional_donor_value_fails_with_field_context(tmp_path: Path) -> None:
+    """Present-but-invalid confidence data never leaks a raw conversion exception."""
+
+    db_path = tmp_path / "malformed.sqlite3"
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.execute(
+            "CREATE TABLE predicates (name TEXT PRIMARY KEY, propbank_sense_id TEXT, "
+            "frame_id TEXT, source TEXT, mapping_confidence REAL, mapping_source TEXT)"
+        )
+        conn.execute(
+            "CREATE TABLE role_slots (event_sense_id TEXT, named_label TEXT, "
+            "arg_position TEXT, type_constraint TEXT, source TEXT)"
+        )
+        conn.execute(
+            "INSERT INTO predicates VALUES "
+            "('bad_event', 'bad-01', NULL, 'propbank:nltk', 'not-a-number', NULL)"
+        )
+        conn.execute(
+            "INSERT INTO role_slots VALUES "
+            "('bad_event', 'Agent', 'ARG0', 'AutonomousAgent', 'propbank:nltk')"
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    with pytest.raises(
+        CanonProvenanceError,
+        match="CANON_PROVENANCE_INVALID_DONOR_FIELD field=predicates.mapping_confidence",
+    ):
+        compile_predicate_provenance(db_path, predicate_id="bad_event")
+
+
+@pytest.mark.parametrize(
+    "predicate_id",
+    [
+        "degrade_reduce_quality",
+        "rebrand_rename_remarket",
+        "redesignate_rename_officially",
+    ],
+)
+def test_predicates_without_external_ids_retain_donor_lineage(predicate_id: str) -> None:
+    """Every real donor predicate remains inspectable without invented external IDs."""
+
+    bundle = compile_predicate_provenance(DB_PATH, predicate_id=predicate_id)
+
+    assert bundle.predicate_id == f"lc:{predicate_id}"
+    assert all(
+        canonical_id in {mapping.canonical_id for mapping in bundle.mappings}
+        for canonical_id in {
+            bundle.predicate_id,
+            *(f"{bundle.predicate_id}:{role_id}" for role_id in bundle.role_ids),
+        }
+    )
+    assert not any(
+        mapping.source_key in {"propbank_nltk", "framenet_candidate"}
+        for mapping in bundle.mappings
+    )
+
+
 def test_inspector_is_agent_drivable_and_database_is_unchanged() -> None:
     """The CLI emits typed JSON while preserving the donor DB byte-for-byte (AC-7)."""
 
@@ -270,6 +415,11 @@ def test_inspector_is_agent_drivable_and_database_is_unchanged() -> None:
     assert result.returncode == 0, result.stderr
     parsed = PredicateProvenanceBundle.model_validate_json(result.stdout)
     assert parsed.predicate_id == "lc:abandon_leave_behind"
+    assert parsed.kind == "predicate_type"
+    assert parsed.lineage_status == "mixed"
+    assert parsed.direct_build_input.source_key == "onto_canon_sumo_plus"
+    assert parsed.warnings
+    assert all(mapping.source_verified is False for mapping in parsed.mappings)
     assert before == after
 
 
