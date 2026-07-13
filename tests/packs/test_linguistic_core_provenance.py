@@ -19,6 +19,7 @@ from typing import cast
 import pytest
 from pydantic import ValidationError
 
+from onto_canon6.packs.lineage_inspector import CanonLineageReport
 from onto_canon6.packs.semantic_provenance import (
     CanonProvenanceError,
     PredicateProvenanceBundle,
@@ -411,9 +412,9 @@ def test_inspector_is_agent_drivable_and_database_is_unchanged() -> None:
             "--pack-id",
             "linguistic_core",
             "--pack-version",
-            "0.3.0-candidate",
-            "--sumo-db-path",
-            str(DB_PATH),
+            "0.3.0",
+            "--packs-root",
+            str(REPO_ROOT / "ontology_packs"),
             "--canonical-id",
             f"lc:{PREDICATE_ID}",
             "--output",
@@ -428,12 +429,10 @@ def test_inspector_is_agent_drivable_and_database_is_unchanged() -> None:
     after = _sha256(DB_PATH)
 
     assert result.returncode == 0, result.stderr
-    parsed = PredicateProvenanceBundle.model_validate_json(result.stdout)
-    assert parsed.predicate_id == "lc:abandon_leave_behind"
-    assert parsed.kind == "predicate_type"
-    assert parsed.lineage_status == "mixed"
-    assert parsed.direct_build_input.source_key == "onto_canon_sumo_plus"
-    assert parsed.warnings
+    parsed = CanonLineageReport.model_validate_json(result.stdout)
+    assert parsed.query.identifier == "lc:abandon_leave_behind"
+    assert parsed.pack_version == "0.3.0"
+    assert parsed.runtime_aliases_used is False
     assert all(mapping.source_verified is False for mapping in parsed.mappings)
     assert before == after
 
@@ -450,9 +449,9 @@ def test_inspector_unknown_predicate_fails_explicitly() -> None:
             "--pack-id",
             "linguistic_core",
             "--pack-version",
-            "0.3.0-candidate",
-            "--sumo-db-path",
-            str(DB_PATH),
+            "0.3.0",
+            "--packs-root",
+            str(REPO_ROOT / "ontology_packs"),
             "--canonical-id",
             "lc:not_real",
             "--output",
