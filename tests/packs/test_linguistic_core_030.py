@@ -186,6 +186,42 @@ def test_manifest_hashes_cover_exact_nonmanifest_inventory(compiled_pair: Compil
     }
 
 
+def test_manifest_and_platform_wording_preserve_source_claim_boundaries(
+    compiled_pair: CompiledPair,
+) -> None:
+    """Pack and platform surfaces call donor candidates neither verified nor official."""
+
+    manifest = yaml.safe_load(
+        (compiled_pair["first"] / "manifest.yaml").read_text(encoding="utf-8")
+    )
+    description = manifest["pack"]["description"]
+    assert "donor-derived PropBank identifiers" in description
+    assert "FrameNet candidate alignments" in description
+    assert "historical upstream versions remain explicit unknowns" in description
+    current_state = (REPO_ROOT / "docs" / "CURRENT_STATE.md").read_text(encoding="utf-8")
+    assert "does not expose enough evidence" in current_state
+    assert "FrameNet/SUMO relationships source-verified" in current_state
+    assert "Historical upstream\n  versions remain unknown" in current_state
+
+
+def test_overclaiming_manifest_is_rejected_even_when_other_bytes_are_valid(
+    compiled_pair: CompiledPair,
+    tmp_path: Path,
+) -> None:
+    """A pack cannot relabel donor candidate mappings as FrameNet-verified."""
+
+    candidate = tmp_path / "linguistic_core" / "0.3.0"
+    shutil.copytree(compiled_pair["first"], candidate)
+    manifest_path = candidate / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["pack"]["description"] = (
+        "FrameNet-verified predicates with official SUMO types and PropBank roles."
+    )
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+    with pytest.raises(LinguisticCoreCompileError, match="claim boundary"):
+        validate_compiled_pack(candidate, require_provenance=True)
+
+
 def test_provenance_assets_never_enter_runtime_alias_loader(compiled_pair: CompiledPair) -> None:
     """Loading 0.3.0 preserves the exact 0.2.0 runtime alias views."""
 

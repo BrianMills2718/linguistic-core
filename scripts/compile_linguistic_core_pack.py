@@ -96,6 +96,23 @@ _RELEASE_SEMANTIC_MAPPING_SHA256 = {
 }
 
 
+def _pack_description(*, successor: bool) -> str:
+    """Return wording whose provenance strength matches the emitted evidence."""
+
+    if successor:
+        return (
+            "Foundational predicate vocabulary compiled from the predecessor Predicate "
+            "Canon with donor-derived PropBank identifiers, FrameNet candidate alignments, "
+            "and SUMO type lineage. Provides 4,669 predicates and 11,890 semantic role "
+            "slots; historical upstream versions remain explicit unknowns."
+        )
+    return (
+        "Foundational predicate vocabulary synthesized from PropBank, FrameNet, "
+        "and SUMO. Provides 4,669 predicates and 11,890 semantic role slots "
+        "for use as the base pack from which domain packs extend."
+    )
+
+
 class LinguisticCoreCompileError(RuntimeError):
     """Raised when a linguistic-core build cannot be published atomically."""
 
@@ -512,16 +529,7 @@ def compile_pack(
                 "id": "linguistic_core",
                 "version": normalized_version,
                 "name": "linguistic_core",
-                "description": (
-                    "Foundational predicate vocabulary compiled from the predecessor Predicate "
-                    "Canon with donor-derived PropBank identifiers, FrameNet candidate alignments, "
-                    "and SUMO type lineage. Provides 4,669 predicates and 11,890 semantic role "
-                    "slots; historical upstream versions remain explicit unknowns."
-                    if normalized_version != _PACK_VERSION
-                    else "Foundational predicate vocabulary synthesized from PropBank, FrameNet, "
-                    "and SUMO. Provides 4,669 predicates and 11,890 semantic role slots "
-                    "for use as the base pack from which domain packs extend."
-                ),
+                "description": _pack_description(successor=normalized_version != _PACK_VERSION),
             },
             "build": build_block,
             "capabilities": {
@@ -662,6 +670,10 @@ def validate_compiled_pack(pack_dir: Path, *, require_provenance: bool) -> None:
         or source_document.pack_version != pack_block.get("version")
     ):
         raise LinguisticCoreCompileError("semantic source registry pack identity mismatch")
+    if pack_block.get("description") != _pack_description(successor=True):
+        raise LinguisticCoreCompileError(
+            "successor manifest claim boundary does not match provenance evidence"
+        )
     source_inputs = build.get("source_inputs")
     if not isinstance(source_inputs, list) or len(source_inputs) != 1:
         raise LinguisticCoreCompileError("successor manifest requires one direct source input")
