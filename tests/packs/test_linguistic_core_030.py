@@ -115,7 +115,12 @@ def test_declared_timestamp_changes_only_manifest(
         build_timestamp="2026-07-12T19:00:01Z",
     )
     baseline = compiled_pair["first"]
-    for filename in {*RUNTIME_FILES, "semantic_sources.yaml", "semantic_mappings.jsonl"}:
+    for filename in {
+        *RUNTIME_FILES,
+        "predicate_canon_index.jsonl",
+        "semantic_sources.yaml",
+        "semantic_mappings.jsonl",
+    }:
         assert (changed / filename).read_bytes() == (baseline / filename).read_bytes()
     assert (changed / "manifest.yaml").read_bytes() != (baseline / "manifest.yaml").read_bytes()
 
@@ -143,6 +148,7 @@ def test_full_inventory_counts_and_provenance_reconcile(compiled_pair: CompiledP
         "constraint_count": 11620,
         "source_mapping_count": 16546,
         "semantic_mapping_count": 46150,
+        "canon_index_count": 4669,
         "blank_named_label_count": 0,
     }
     rows = _jsonl(candidate / "semantic_mappings.jsonl")
@@ -176,6 +182,7 @@ def test_manifest_hashes_cover_exact_nonmanifest_inventory(compiled_pair: Compil
         "schema_version": "predicate_canon_provenance_assets.v1",
         "semantic_sources": "semantic_sources.yaml",
         "semantic_mappings": "semantic_mappings.jsonl",
+        "predicate_canon_index": "predicate_canon_index.jsonl",
     }
 
 

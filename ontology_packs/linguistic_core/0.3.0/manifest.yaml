@@ -20,6 +20,7 @@ build:
     constraints.jsonl: eef1656308200af5704d93caf8109eb4124c02e9da5ca7a5e2d4b076fa160a78
     entity_types.jsonl: 5275e082047f685be90eebfc21b7e225cd21a9375b386ed6b823aeafcacfb557
     hierarchy_edges.jsonl: 8e3e0710c22bfda0f2ab4ac40c84564cb5c3a33a52c26eed658568ce9f487250
+    predicate_canon_index.jsonl: c02c43e76345a40ccf0d99c9a79e65fe03c3ba478abcb88958188265ba741cf3
     predicate_role_edges.jsonl: 26969c58d9fc0096fa0abf8ed5815115882956d1e1f6711309b217937d2d328b
     predicate_types.jsonl: 78d71b76233818f7a8ae9fca853d80aa6fc089bd55d815b514e58ebcd724778d
     role_types.jsonl: ae43fe23d8b2daed1b4c0e1935f1c88203b7425e5d2f61bfafb0d14c08137855
@@ -44,3 +45,4 @@ provenance:
   schema_version: predicate_canon_provenance_assets.v1
   semantic_sources: semantic_sources.yaml
   semantic_mappings: semantic_mappings.jsonl
+  predicate_canon_index: predicate_canon_index.jsonl

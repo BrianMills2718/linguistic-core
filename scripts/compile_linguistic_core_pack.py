@@ -14,6 +14,7 @@ emits the ``linguistic_core/<version>/`` pack files:
   role slot → PropBank ARG position
 - ``semantic_sources.yaml`` — byte-bound donor plus honest external-source states
 - ``semantic_mappings.jsonl`` — traceability-only donor/PropBank/FrameNet/SUMO rows
+- ``predicate_canon_index.jsonl`` — complete non-default read-only lookup index
 - ``manifest.yaml`` — pack identity and content inventory
 
 The pack uses the ``lc:`` namespace for predicates and ``lc.role.`` namespace
@@ -56,11 +57,11 @@ import yaml
 _REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
-from onto_canon6.packs.role_slots_lookup import (  # type: ignore[import-untyped]  # noqa: E402
+from onto_canon6.packs.role_slots_lookup import (  # noqa: E402
     RoleSlotsError,
     RoleSlotsLookup,
 )
-from onto_canon6.packs.semantic_provenance import (  # type: ignore[import-untyped]  # noqa: E402
+from onto_canon6.packs.semantic_provenance import (  # noqa: E402
     SemanticMappingRecord,
     SemanticSourcesDocument,
     compile_predicate_provenance,
@@ -84,7 +85,11 @@ _RUNTIME_FILENAMES = (
     "source_mappings.jsonl",
     "value_types.jsonl",
 )
-_PROVENANCE_FILENAMES = ("semantic_mappings.jsonl", "semantic_sources.yaml")
+_PROVENANCE_FILENAMES = (
+    "predicate_canon_index.jsonl",
+    "semantic_mappings.jsonl",
+    "semantic_sources.yaml",
+)
 _CANONICAL_DONOR_FRAMENET_MAPPING_COUNT = 2263
 _RELEASE_SEMANTIC_MAPPING_SHA256 = {
     "0.3.0": "16f18feafe28a2cce14e8e25f417c082f8dd910b2fd6b859b01d337d86b0c6a9",
@@ -100,8 +105,12 @@ class DonorPredicateRow(TypedDict):
 
     name: str
     propbank_sense_id: str | None
+    process_type: str | None
     lemma: str | None
+    sense_num: int | None
     description: str | None
+    frame_id: str | None
+    mapping_confidence: float | None
     is_static: int
 
 
@@ -117,6 +126,7 @@ class CompileStats(TypedDict):
     constraint_count: int
     source_mapping_count: int
     semantic_mapping_count: int
+    canon_index_count: int
     blank_named_label_count: int
 
 
@@ -130,16 +140,35 @@ def _normalize_predicate_row(raw: dict[str, object]) -> DonorPredicateRow:
     if not isinstance(is_static, int) or isinstance(is_static, bool):
         raise LinguisticCoreCompileError(f"predicate {name} requires integer is_static")
     normalized_optional: dict[str, str | None] = {}
-    for field in ("propbank_sense_id", "lemma", "description"):
+    for field in ("propbank_sense_id", "process_type", "lemma", "description", "frame_id"):
         value = raw.get(field)
         if value is not None and not isinstance(value, str):
             raise LinguisticCoreCompileError(f"predicate {name} field {field} must be string/null")
         normalized_optional[field] = value
+    sense_num = raw.get("sense_num")
+    if sense_num is not None and (
+        not isinstance(sense_num, int) or isinstance(sense_num, bool)
+    ):
+        raise LinguisticCoreCompileError(f"predicate {name} field sense_num must be integer/null")
+    mapping_confidence = raw.get("mapping_confidence")
+    if mapping_confidence is not None and (
+        not isinstance(mapping_confidence, (int, float))
+        or isinstance(mapping_confidence, bool)
+    ):
+        raise LinguisticCoreCompileError(
+            f"predicate {name} field mapping_confidence must be number/null"
+        )
     return DonorPredicateRow(
         name=name,
         propbank_sense_id=normalized_optional["propbank_sense_id"],
+        process_type=normalized_optional["process_type"],
         lemma=normalized_optional["lemma"],
+        sense_num=sense_num,
         description=normalized_optional["description"],
+        frame_id=normalized_optional["frame_id"],
+        mapping_confidence=(
+            float(mapping_confidence) if mapping_confidence is not None else None
+        ),
         is_static=is_static,
     )
 
@@ -267,6 +296,7 @@ def compile_pack(
         predicate_role_edge_rows: list[dict[str, object]] = []
         constraint_rows: list[dict[str, object]] = []
         source_mapping_rows: list[dict[str, object]] = []
+        canon_index_rows: list[dict[str, object]] = []
         blank_count = 0
 
         # Predicate-level source mappings (predicate → PropBank sense)
@@ -285,6 +315,29 @@ def compile_pack(
         # Role-slot rows and per-slot source mappings
         for pred in predicates:
             roles = lookup.roles_for_predicate(pred["name"])
+            canon_index_rows.append(
+                {
+                    "predicate_id": pred["name"],
+                    "propbank_sense_id": pred["propbank_sense_id"],
+                    "process_type": pred["process_type"],
+                    "lemma": pred["lemma"],
+                    "sense_num": pred["sense_num"],
+                    "description": pred["description"],
+                    "frame_id": pred["frame_id"],
+                    "mapping_confidence": pred["mapping_confidence"],
+                    "is_static": bool(pred["is_static"]),
+                    "role_slots": [
+                        {
+                            "named_label": slot.named_label,
+                            "arg_position": slot.arg_position,
+                            "abstract_role": slot.abstract_role,
+                            "type_constraint": slot.type_constraint,
+                            "required": bool(slot.required),
+                        }
+                        for slot in roles
+                    ],
+                }
+            )
             for slot in roles:
                 if not slot.named_label or not slot.named_label.strip():
                     blank_count += 1
@@ -397,6 +450,7 @@ def compile_pack(
         constraint_count=len(constraint_rows),
         source_mapping_count=len(source_mapping_rows),
         semantic_mapping_count=len(semantic_mapping_rows),
+        canon_index_count=(len(canon_index_rows) if semantic_sources_document is not None else 0),
         blank_named_label_count=blank_count,
     )
 
@@ -425,6 +479,7 @@ def compile_pack(
             _write_jsonl(stage_dir / filename, runtime_rows[filename])
 
         if semantic_sources_document is not None:
+            _write_jsonl(stage_dir / "predicate_canon_index.jsonl", canon_index_rows)
             _write_jsonl(stage_dir / "semantic_mappings.jsonl", semantic_mapping_rows)
             _write_yaml(
                 stage_dir / "semantic_sources.yaml",
@@ -497,6 +552,7 @@ def compile_pack(
                 "schema_version": "predicate_canon_provenance_assets.v1",
                 "semantic_sources": "semantic_sources.yaml",
                 "semantic_mappings": "semantic_mappings.jsonl",
+                "predicate_canon_index": "predicate_canon_index.jsonl",
             }
         _write_yaml(stage_dir / "manifest.yaml", manifest)
         validate_compiled_pack(stage_dir, require_provenance=semantic_sources_document is not None)
@@ -573,6 +629,7 @@ def validate_compiled_pack(pack_dir: Path, *, require_provenance: bool) -> None:
         "schema_version": "predicate_canon_provenance_assets.v1",
         "semantic_sources": "semantic_sources.yaml",
         "semantic_mappings": "semantic_mappings.jsonl",
+        "predicate_canon_index": "predicate_canon_index.jsonl",
     }:
         raise LinguisticCoreCompileError("unsupported or incomplete provenance manifest")
     declared_hashes = build.get("artifact_sha256")
@@ -906,6 +963,7 @@ def main() -> None:
     print(f"  constraints:      {stats['constraint_count']:,}")
     print(f"  source mappings:  {stats['source_mapping_count']:,}")
     print(f"  semantic mappings:{stats['semantic_mapping_count']:>10,}")
+    print(f"  canon index rows:  {stats['canon_index_count']:,}")
     if stats["blank_named_label_count"]:
         print(f"  BLANK labels:     {stats['blank_named_label_count']:,}  ← FIX REQUIRED")
 

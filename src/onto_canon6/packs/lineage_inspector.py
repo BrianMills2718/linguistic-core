@@ -89,6 +89,7 @@ def inspect_pack_lineage(
         "schema_version": "predicate_canon_provenance_assets.v1",
         "semantic_sources": "semantic_sources.yaml",
         "semantic_mappings": "semantic_mappings.jsonl",
+        "predicate_canon_index": "predicate_canon_index.jsonl",
     } or not isinstance(build, dict):
         raise CanonLineageInspectionError("CANON_LINEAGE_INVALID_PROVENANCE_MANIFEST")
     declared_hashes = build.get("artifact_sha256")
