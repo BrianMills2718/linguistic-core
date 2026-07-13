@@ -6,6 +6,7 @@ records for one predicate, and never changes the database or runtime pack.
 
 from __future__ import annotations
 
+from collections import Counter
 import hashlib
 import json
 import os
@@ -33,6 +34,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = REPO_ROOT / "data" / "sumo_plus.db"
 FIXTURE_DIR = REPO_ROOT / "tests" / "fixtures" / "predicate_canon_provenance"
 PREDICATE_ID = "abandon_leave_behind"
+INVENTORY_PATH = REPO_ROOT / "docs" / "runs" / "2026-07-12_plan0140_donor_inventory.json"
 
 
 def _json_fixture(name: str) -> dict[str, object]:
@@ -48,6 +50,107 @@ def _sha256(path: Path) -> str:
     """Return a byte-exact file checksum for read-only verification."""
 
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _collect_donor_inventory(db_path: Path) -> dict[str, object]:
+    """Derive the complete AC-1 inventory from read-only donor and pack bytes."""
+
+    def schema_token(row: sqlite3.Row) -> str:
+        token = f"{row['name']}:{row['type']}"
+        if row["notnull"]:
+            token += ":notnull"
+        if row["pk"]:
+            token += ":pk"
+        if row["dflt_value"] is not None:
+            token += f":default={row['dflt_value']}"
+        return token
+
+    connection = sqlite3.connect(f"file:{db_path.resolve()}?mode=ro", uri=True)
+    connection.row_factory = sqlite3.Row
+    try:
+        tables = ("predicates", "role_slots", "types", "type_hierarchy")
+        table_schema = {
+            table: [schema_token(row) for row in connection.execute(f"PRAGMA table_info({table})")]
+            for table in tables
+        }
+        if any(not columns for columns in table_schema.values()):
+            raise ValueError("required donor table schema is missing")
+        counts = {
+            table: connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            for table in (*tables, "frames")
+        }
+        source_distribution = dict(
+            connection.execute(
+                "SELECT COALESCE(source, '<NULL>'), COUNT(*) "
+                "FROM predicates GROUP BY source ORDER BY COALESCE(source, '<NULL>')"
+            )
+        )
+        method_distribution = dict(
+            connection.execute(
+                "SELECT COALESCE(mapping_source, '<NULL>'), COUNT(*) "
+                "FROM predicates GROUP BY mapping_source "
+                "ORDER BY COALESCE(mapping_source, '<NULL>')"
+            )
+        )
+        null_row = connection.execute(
+            "SELECT COUNT(*) total, SUM(propbank_sense_id IS NULL) no_propbank, "
+            "SUM(frame_id IS NULL) no_frame, SUM(mapping_source IS NULL) no_mapping_method, "
+            "SUM(mapping_confidence IS NULL) no_mapping_confidence FROM predicates"
+        ).fetchone()
+        null_states = dict(null_row)
+    finally:
+        connection.close()
+    source_rows = [
+        json.loads(line)
+        for line in (
+            REPO_ROOT / "ontology_packs" / "linguistic_core" / "0.2.0" / "source_mappings.jsonl"
+        ).read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    source_systems = Counter(row["source_system"] for row in source_rows)
+    return {
+        "schema_version": "predicate_canon_donor_inventory.v1",
+        "donor_db_sha256": _sha256(db_path),
+        "table_schema": table_schema,
+        "counts": counts,
+        "predicate_source_distribution": source_distribution,
+        "mapping_method_distribution": method_distribution,
+        "null_states": null_states,
+        "compiled_0_2_0_losses": {
+            "source_mapping_count": len(source_rows),
+            "source_systems": dict(source_systems),
+            "exports_frame_id": any("frame_id" in row for row in source_rows),
+            "exports_mapping_method": any(
+                "mapping_source" in row or "derivation_method" in row for row in source_rows
+            ),
+        },
+    }
+
+
+def test_baseline_inventory_is_complete_and_hashed() -> None:
+    """Exact schema/count/distribution/null/loss inventory matches donor bytes (AC-1)."""
+
+    expected = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
+    assert _collect_donor_inventory(DB_PATH) == expected
+
+
+@pytest.mark.parametrize("mutation", ["missing_table", "changed_count"])
+def test_baseline_inventory_rejects_donor_drift(tmp_path: Path, mutation: str) -> None:
+    """Missing schema and changed rows cannot inherit the frozen donor inventory."""
+
+    changed = tmp_path / "sumo_plus.db"
+    shutil.copyfile(DB_PATH, changed)
+    with sqlite3.connect(changed) as connection:
+        if mutation == "missing_table":
+            connection.execute("DROP TABLE type_hierarchy")
+        else:
+            connection.execute("DELETE FROM predicates WHERE name = 'abandon_leave_behind'")
+    expected = json.loads(INVENTORY_PATH.read_text(encoding="utf-8"))
+    if mutation == "missing_table":
+        with pytest.raises(ValueError, match="schema is missing"):
+            _collect_donor_inventory(changed)
+    else:
+        assert _collect_donor_inventory(changed) != expected
 
 
 def test_approved_predicate_compiles_to_reviewed_fixture() -> None:
