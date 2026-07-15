@@ -1,7 +1,8 @@
 """Verify exact external linguistic source checkouts against the curated manifest.
 
 This command is offline: it never clones, downloads, mutates, or promotes a
-source. Supply one ``SOURCE_KEY=PATH`` root for every available source.
+source. Supply one ``SOURCE_KEY=PATH`` checkout or archive for every available
+source.
 """
 
 from __future__ import annotations
@@ -50,7 +51,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
         metavar="SOURCE_KEY=PATH",
-        help="Local exact checkout for an available source; repeat per source.",
+        help="Local exact checkout or archive for an available source; repeat per source.",
     )
     return parser
 

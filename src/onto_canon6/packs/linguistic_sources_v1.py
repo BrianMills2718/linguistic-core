@@ -37,6 +37,74 @@ class GitSourceIdentityV1(BaseModel):
     )
 
 
+class ArchiveSourceIdentityV1(BaseModel):
+    """Exact identity of one maintained non-Git source archive."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    archive_filename: str = Field(
+        min_length=1,
+        description="Expected basename of the retained source archive.",
+    )
+    byte_count: int = Field(gt=0, description="Exact archive byte length.")
+    sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$",
+        description="SHA-256 of the complete retained archive bytes.",
+    )
+    distribution_url: str = Field(
+        pattern=r"^https://",
+        description="Maintained distribution URL whose metadata identifies the archive.",
+    )
+
+    @model_validator(mode="after")
+    def _filename_is_a_basename(self) -> "ArchiveSourceIdentityV1":
+        path = Path(self.archive_filename)
+        if path.name != self.archive_filename or self.archive_filename in {".", ".."}:
+            raise ValueError("archive_filename must be one safe basename")
+        return self
+
+
+class DistributionMetadataEvidenceV1(BaseModel):
+    """Revision-bound upstream metadata supporting archive identity or license."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    repository_url: str = Field(
+        pattern=r"^https://",
+        description="Maintained metadata repository containing the evidence record.",
+    )
+    revision_sha: str = Field(
+        pattern=r"^[0-9a-f]{40}$",
+        description="Exact metadata-repository commit containing the evidence record.",
+    )
+    path: str = Field(
+        min_length=1,
+        description="Repository-relative metadata record path at the exact revision.",
+    )
+    sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$",
+        description="SHA-256 of the complete metadata record bytes.",
+    )
+    evidence_scope: Literal["archive_identity", "license"] = Field(
+        description="Whether the record supports archive identity or licensing."
+    )
+    license_id: str | None = Field(
+        default=None,
+        description="Exact license identifier only for metadata that states one.",
+    )
+
+    @model_validator(mode="after")
+    def _metadata_evidence_is_consistent(self) -> "DistributionMetadataEvidenceV1":
+        path = Path(self.path)
+        if path.is_absolute() or ".." in path.parts:
+            raise ValueError("metadata evidence path must be repository-relative")
+        if self.evidence_scope == "license" and self.license_id is None:
+            raise ValueError("license metadata evidence requires license_id")
+        if self.evidence_scope != "license" and self.license_id is not None:
+            raise ValueError("archive identity metadata cannot declare license_id")
+        return self
+
+
 class SelectedPayloadV1(BaseModel):
     """Canonical digest of the files selected from an exact checkout."""
 
@@ -149,6 +217,10 @@ class LinguisticSourceSnapshotV1(BaseModel):
     git_identity: GitSourceIdentityV1 | None = Field(
         default=None, description="Exact Git identity when the official source is Git-backed."
     )
+    archive_identity: ArchiveSourceIdentityV1 | None = Field(
+        default=None,
+        description="Exact archive identity when the maintained source is not Git-backed.",
+    )
     selected_payload: SelectedPayloadV1 | None = Field(
         default=None, description="Exact selected payload identity when available."
     )
@@ -161,6 +233,10 @@ class LinguisticSourceSnapshotV1(BaseModel):
     license_evidence: tuple[LicenseEvidenceV1, ...] = Field(
         default=(), description="Byte-bound evidence supporting the license disposition."
     )
+    metadata_evidence: tuple[DistributionMetadataEvidenceV1, ...] = Field(
+        default=(),
+        description="Revision-bound distribution metadata for archive identity and licensing.",
+    )
     storage_policy: StoragePolicy = Field(
         description="Whether bytes stay in an external cache or only a reference is retained."
     )
@@ -171,29 +247,51 @@ class LinguisticSourceSnapshotV1(BaseModel):
     @model_validator(mode="after")
     def _state_is_truthful(self) -> "LinguisticSourceSnapshotV1":
         if self.availability == "available":
-            if self.git_identity is None or self.selected_payload is None:
-                raise ValueError("available source requires exact Git identity and payload digest")
+            git_identity_complete = self.git_identity is not None and self.selected_payload is not None
+            git_identity_partial = (self.git_identity is None) != (self.selected_payload is None)
+            archive_identity_present = self.archive_identity is not None
+            if git_identity_partial or git_identity_complete == archive_identity_present:
+                raise ValueError(
+                    "available source requires exactly one complete Git or archive identity"
+                )
             if self.unavailable_evidence is not None:
                 raise ValueError("available source cannot carry unavailable evidence")
-            if not self.license_evidence:
-                raise ValueError("available source requires byte-bound license evidence")
+            if not self.license_evidence and not self.metadata_evidence:
+                raise ValueError("available source requires exact license evidence")
+            if archive_identity_present:
+                scopes = {item.evidence_scope for item in self.metadata_evidence}
+                if scopes != {"archive_identity", "license"}:
+                    raise ValueError(
+                        "archive source requires separate identity and license metadata evidence"
+                    )
             if self.storage_policy != "external_cache":
                 raise ValueError("available source bytes must use external_cache storage policy")
         else:
             if self.unavailable_evidence is None:
                 raise ValueError("unavailable source requires official unavailable evidence")
-            if self.git_identity is not None or self.selected_payload is not None:
-                raise ValueError("unavailable source cannot claim Git or payload identity")
-            if self.license_evidence:
-                raise ValueError("unavailable source cannot claim local license evidence")
+            if (
+                self.git_identity is not None
+                or self.archive_identity is not None
+                or self.selected_payload is not None
+            ):
+                raise ValueError("unavailable source cannot claim Git, archive, or payload identity")
+            if self.license_evidence or self.metadata_evidence:
+                raise ValueError("unavailable source cannot claim license evidence")
             if self.storage_policy != "reference_only":
                 raise ValueError("unavailable source must remain reference_only")
         if self.redistribution_allowed and self.license_disposition != "verified_redistributable":
             raise ValueError("redistribution requires verified_redistributable license evidence")
-        if self.license_disposition == "verified_redistributable" and not any(
-            item.license_id for item in self.license_evidence
-        ):
+        has_exact_license = any(item.license_id for item in self.license_evidence) or any(
+            item.license_id for item in self.metadata_evidence
+        )
+        if self.license_disposition == "verified_redistributable" and not has_exact_license:
             raise ValueError("verified redistributable source requires an exact license_id")
+        metadata_keys = [
+            (item.repository_url, item.revision_sha, item.path)
+            for item in self.metadata_evidence
+        ]
+        if len(metadata_keys) != len(set(metadata_keys)):
+            raise ValueError("distribution metadata evidence records must be unique")
         return self
 
 
@@ -244,6 +342,12 @@ class LinguisticSourceVerificationV1(BaseModel):
     )
     selected_payload_sha256: str | None = Field(
         default=None, description="Observed selected-payload aggregate SHA-256."
+    )
+    archive_byte_count: int | None = Field(
+        default=None, description="Observed exact archive byte length."
+    )
+    archive_sha256: str | None = Field(
+        default=None, description="Observed exact archive SHA-256."
     )
 
 
@@ -335,11 +439,39 @@ def _git_value(checkout: Path, revision: str) -> str:
     return completed.stdout.strip()
 
 
+def _sha256_file(path: Path) -> str:
+    """Hash a complete file without loading a potentially large archive into memory."""
+
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def _verify_available_source(
-    source: LinguisticSourceSnapshotV1, checkout: Path
+    source: LinguisticSourceSnapshotV1, source_path: Path
 ) -> LinguisticSourceVerificationV1:
+    if source.archive_identity is not None:
+        archive = source.archive_identity
+        if not source_path.is_file():
+            raise ValueError(f"{source.source_key} archive path is not a file")
+        if source_path.name != archive.archive_filename:
+            raise ValueError(f"{source.source_key} archive filename does not match manifest")
+        observed_byte_count = source_path.stat().st_size
+        observed_sha256 = _sha256_file(source_path)
+        if observed_byte_count != archive.byte_count or observed_sha256 != archive.sha256:
+            raise ValueError(f"{source.source_key} archive bytes do not match manifest")
+        return LinguisticSourceVerificationV1(
+            source_key=source.source_key,
+            status="verified",
+            archive_byte_count=observed_byte_count,
+            archive_sha256=observed_sha256,
+        )
+
     if source.git_identity is None or source.selected_payload is None:
         raise ValueError("available source lacks exact identity")
+    checkout = source_path
     observed_commit = _git_value(checkout, "HEAD")
     if observed_commit != source.git_identity.commit_sha:
         raise ValueError(f"{source.source_key} commit SHA does not match manifest")
@@ -374,7 +506,7 @@ def verify_linguistic_source_manifest_v1(
     *,
     source_roots: Mapping[str, Path],
 ) -> LinguisticSourceVerificationReportV1:
-    """Verify every available checkout and preserve explicit unavailable states."""
+    """Verify every available checkout or archive and preserve unavailable states."""
 
     declared_keys = {source.source_key for source in manifest.sources}
     extra_keys = set(source_roots) - declared_keys

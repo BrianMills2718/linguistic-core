@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import hashlib
 from pathlib import Path
 import shutil
 import subprocess
@@ -11,6 +12,8 @@ import pytest
 from pydantic import ValidationError
 
 from onto_canon6.packs.linguistic_sources_v1 import (
+    ArchiveSourceIdentityV1,
+    DistributionMetadataEvidenceV1,
     GitSourceIdentityV1,
     LicenseDisposition,
     LicenseEvidenceV1,
@@ -96,6 +99,93 @@ def test_available_source_requires_exact_identity_payload_and_license() -> None:
             storage_policy="external_cache",
             redistribution_allowed=True,
         )
+
+
+def test_archive_source_verifies_exact_bytes_and_rejects_substitution(tmp_path: Path) -> None:
+    archive = tmp_path / "framenet_v17.zip"
+    archive.write_bytes(b"exact retained FrameNet fixture")
+    identity = ArchiveSourceIdentityV1(
+        archive_filename=archive.name,
+        byte_count=archive.stat().st_size,
+        sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+        distribution_url="https://example.invalid/framenet_v17.zip",
+    )
+    metadata = (
+        DistributionMetadataEvidenceV1(
+            repository_url="https://example.invalid/metadata",
+            revision_sha="1" * 40,
+            path="index.xml",
+            sha256="2" * 64,
+            evidence_scope="archive_identity",
+        ),
+        DistributionMetadataEvidenceV1(
+            repository_url="https://example.invalid/metadata",
+            revision_sha="1" * 40,
+            path="packages/corpora/framenet_v17.xml",
+            sha256="3" * 64,
+            evidence_scope="license",
+            license_id="CC-BY-3.0",
+        ),
+    )
+    source = LinguisticSourceSnapshotV1(
+        source_key="framenet_17",
+        family="framenet",
+        release_label="1.7",
+        official_url="https://example.invalid/framenet",
+        availability="available",
+        archive_identity=identity,
+        metadata_evidence=metadata,
+        license_disposition="verified_redistributable",
+        storage_policy="external_cache",
+        redistribution_allowed=True,
+    )
+    manifest = LinguisticSourceManifestV1(sources=(source,))
+
+    verified = verify_linguistic_source_manifest_v1(
+        manifest, source_roots={"framenet_17": archive}
+    ).sources[0]
+    assert verified.status == "verified"
+    assert verified.archive_byte_count == identity.byte_count
+    assert verified.archive_sha256 == identity.sha256
+
+    wrong_name = archive.with_name("substituted-name.zip")
+    archive.rename(wrong_name)
+    with pytest.raises(ValueError, match="archive filename does not match"):
+        verify_linguistic_source_manifest_v1(
+            manifest, source_roots={"framenet_17": wrong_name}
+        )
+    wrong_name.rename(archive)
+
+    archive.write_bytes(b"substituted")
+    with pytest.raises(ValueError, match="archive bytes do not match"):
+        verify_linguistic_source_manifest_v1(
+            manifest, source_roots={"framenet_17": archive}
+        )
+
+
+def test_available_source_rejects_competing_git_and_archive_identities(
+    tmp_path: Path,
+) -> None:
+    checkout, git_identity = _fixture_checkout(tmp_path, "propbank")
+    git_source = _available_snapshot(
+        source_key="propbank",
+        family="propbank",
+        checkout=checkout,
+        identity=git_identity,
+        selection_globs=("frames/*.xml",),
+        license_paths=("LICENSE",),
+        license_disposition="verified_redistributable",
+    )
+    payload = git_source.model_dump(mode="python")
+    payload["archive_identity"] = {
+        "archive_filename": "propbank.zip",
+        "byte_count": 1,
+        "sha256": "0" * 64,
+        "distribution_url": "https://example.invalid/propbank.zip",
+    }
+
+    with pytest.raises(ValidationError, match="exactly one complete Git or archive identity"):
+        LinguisticSourceSnapshotV1.model_validate(payload)
 
 
 def test_unavailable_source_cannot_claim_payload_or_redistribution() -> None:
@@ -187,7 +277,7 @@ def test_selected_payload_rejects_directory_symlink_escape(tmp_path: Path) -> No
         compute_selected_payload_v1(checkout, selection_globs=("linked/*.xml",))
 
 
-def test_canonical_manifest_preserves_unavailable_framenet() -> None:
+def test_canonical_manifest_binds_available_framenet_archive() -> None:
     manifest = load_linguistic_source_manifest_v1(Path("config/linguistic_sources_v1.yaml"))
 
     assert tuple(source.family for source in manifest.sources) == (
@@ -196,7 +286,12 @@ def test_canonical_manifest_preserves_unavailable_framenet() -> None:
         "sumo",
     )
     framenet = manifest.source_for("framenet_17")
-    assert framenet.availability == "temporarily_unavailable"
+    assert framenet.availability == "available"
     assert framenet.git_identity is None
     assert framenet.selected_payload is None
-    assert framenet.redistribution_allowed is False
+    assert framenet.archive_identity is not None
+    assert framenet.archive_identity.byte_count == 99_207_152
+    assert framenet.archive_identity.sha256 == (
+        "22f6aad6fb799ba4dbed0440714e1118442ad7d7345351de37428581284f471c"
+    )
+    assert framenet.redistribution_allowed is True

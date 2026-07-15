@@ -28,15 +28,29 @@ sources:
     family: framenet
     release_label: "1.7"
     official_url: https://berkeleyfn.framenetbr.ufjf.br/framenet_data
-    availability: temporarily_unavailable
-    unavailable_evidence:
-      observed_at: "2026-07-15T00:00:00-07:00"
-      evidence_url: https://berkeleyfn.framenetbr.ufjf.br/node/5574
-      reason: official request/download function reports temporarily unavailable
-    license_disposition: unknown
+    availability: available
+    archive_identity:
+      archive_filename: framenet_v17.zip
+      byte_count: 99207152
+      sha256: 22f6aad6fb799ba4dbed0440714e1118442ad7d7345351de37428581284f471c
+      distribution_url: https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/framenet_v17.zip
+    metadata_evidence:
+      - repository_url: https://github.com/nltk/nltk_data
+        revision_sha: 550b6625bcef1f2abff2ff770a5a0d272c9c6b2a
+        path: index.xml
+        sha256: 97dce5e72320cd9850b7c20130196006710c18f9c03134c822a37da330198bf6
+        evidence_scope: archive_identity
+        license_id: null
+      - repository_url: https://github.com/nltk/nltk_data
+        revision_sha: 550b6625bcef1f2abff2ff770a5a0d272c9c6b2a
+        path: packages/corpora/framenet_v17.xml
+        sha256: a3ca813847c84e1487a5e2228a76dfef84713bef8fe6d7269a056800c7121c6a
+        evidence_scope: license
+        license_id: CC-BY-3.0
+    license_disposition: verified_redistributable
     license_evidence: []
-    storage_policy: reference_only
-    redistribution_allowed: false
+    storage_policy: external_cache
+    redistribution_allowed: true
 
   - source_key: sumo_root_kif
     family: sumo
