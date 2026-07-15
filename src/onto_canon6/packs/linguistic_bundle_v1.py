@@ -12,7 +12,8 @@ import gzip
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
-from typing import Literal
+import types
+from typing import get_args, get_origin, Literal, TypeVar, Union
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 import yaml
@@ -347,6 +348,45 @@ class _PredicateRoleEdgeRowV1(BaseModel):
     max_count: int | None
 
 
+_ModelT = TypeVar("_ModelT", bound=BaseModel)
+
+
+def _strip_forward_additions(value: object, annotation: object) -> object:
+    """Project input onto known model fields without requiring new Pydantic APIs."""
+
+    if isinstance(annotation, type) and issubclass(annotation, BaseModel):
+        if not isinstance(value, dict):
+            return value
+        return {
+            name: _strip_forward_additions(value[name], field.annotation)
+            for name, field in annotation.model_fields.items()
+            if name in value
+        }
+    origin = get_origin(annotation)
+    arguments = get_args(annotation)
+    if origin in {tuple, list} and isinstance(value, (list, tuple)) and arguments:
+        item_annotation = arguments[0]
+        return [_strip_forward_additions(item, item_annotation) for item in value]
+    if origin in {Union, types.UnionType}:
+        model_argument = next(
+            (
+                argument
+                for argument in arguments
+                if isinstance(argument, type) and issubclass(argument, BaseModel)
+            ),
+            None,
+        )
+        if model_argument is not None and isinstance(value, dict):
+            return _strip_forward_additions(value, model_argument)
+    return value
+
+
+def _validate_compatible(model: type[_ModelT], value: object) -> _ModelT:
+    """Ignore forward additions, then enforce the complete known V1 contract."""
+
+    return model.model_validate(_strip_forward_additions(value, model))
+
+
 def _normalized_sha256(value: object) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
@@ -455,8 +495,8 @@ def _load_projection_compatible(path: Path) -> FrameNetProjectionV1:
         payload = path.read_bytes()
         if path.suffix == ".gz":
             payload = gzip.decompress(payload)
-        return FrameNetProjectionV1.model_validate_json(payload, extra="ignore")
-    except (OSError, gzip.BadGzipFile, ValueError) as exc:
+        return _validate_compatible(FrameNetProjectionV1, json.loads(payload))
+    except (OSError, gzip.BadGzipFile, json.JSONDecodeError, ValueError) as exc:
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_INVALID_FRAMENET_PROJECTION") from exc
 
 
@@ -492,7 +532,7 @@ def _load_target_mappings(path: Path, canonical_id: str) -> tuple[SemanticMappin
         if not isinstance(untyped, dict) or untyped.get("canonical_id") != canonical_id:
             continue
         try:
-            selected.append(SemanticMappingRecord.model_validate(untyped, extra="ignore"))
+            selected.append(_validate_compatible(SemanticMappingRecord, untyped))
         except ValueError as exc:
             raise LinguisticBundleError(
                 f"LINGUISTIC_BUNDLE_INVALID_SEMANTIC_MAPPINGS line={line_number}"
@@ -580,10 +620,11 @@ def inspect_linguistic_bundle_at_root(
         pack_dir, "linguistic_trace_manifest_v1.json", declared_hashes
     )
     try:
-        trace_manifest = LinguisticTraceManifestV1.model_validate_json(
-            trace_path.read_bytes(), extra="ignore"
+        trace_manifest = _validate_compatible(
+            LinguisticTraceManifestV1,
+            json.loads(trace_path.read_bytes()),
         )
-    except (OSError, ValueError) as exc:
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_INVALID_TRACE_MANIFEST") from exc
     if trace_manifest.pack_ref != query.pack_ref:
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_TRACE_PACK_IDENTITY_MISMATCH")
@@ -736,3 +777,9 @@ def inspect_linguistic_bundle(query: LinguisticBundleQueryV1) -> LinguisticBundl
         query,
         packs_root=installed_ontology_packs_root(),
     )
+
+
+def render_linguistic_bundle_json(bundle: LinguisticBundleV1) -> str:
+    """Serialize the public bundle schema as stable, newline-terminated JSON."""
+
+    return json.dumps(bundle.model_dump(mode="json"), indent=2, sort_keys=True) + "\n"
