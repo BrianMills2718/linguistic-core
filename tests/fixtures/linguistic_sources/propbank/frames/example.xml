@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <frameset>
+  <!-- A lexical scanner must not treat <roleset id="fake.01"> as source data. -->
   <predicate lemma="audit">
     <roleset id="audit.01" name="examine records">
       <roles>
