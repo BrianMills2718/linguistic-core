@@ -1,0 +1,12 @@
+FrameNet 1.7 source-derived inspection asset
+
+Source: FrameNet 1.7, distributed through the maintained NLTK data package.
+Distribution: https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/framenet_v17.zip
+License: Creative Commons Attribution 3.0 Unported (CC-BY-3.0)
+License text: https://creativecommons.org/licenses/by/3.0/
+
+This package contains a deterministic source-native projection of FrameNet
+frames, frame elements, lexical-unit declarations, and frame relations for
+inspection. It does not contain the raw FrameNet archive, FrameNet documents,
+or lexical-unit annotation corpora. Predicate-to-FrameNet links remain donor
+candidate alignments unless a separate governed review verifies them.

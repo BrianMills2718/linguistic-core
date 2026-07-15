@@ -22,6 +22,10 @@ sys.path.insert(0, str(_REPO_ROOT / "src"))
 from onto_canon6.packs.framenet_projection_v1 import (  # noqa: E402
     compile_framenet_projection_v1,
 )
+from onto_canon6.ontology_runtime.contracts import PackRef  # noqa: E402
+from onto_canon6.packs.linguistic_bundle_v1 import (  # noqa: E402
+    build_linguistic_trace_manifest_v1,
+)
 from onto_canon6.packs.linguistic_sources_v1 import (  # noqa: E402
     load_linguistic_source_manifest_v1,
 )
@@ -57,6 +61,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--source-archive", type=Path, required=True)
     parser.add_argument("--output", type=Path, help="Complete .json or .json.gz artifact.")
+    parser.add_argument(
+        "--trace-manifest-output",
+        type=Path,
+        help="Optional linguistic_trace_manifest_v1.json written beside --output.",
+    )
+    parser.add_argument(
+        "--attribution",
+        type=Path,
+        help="Existing attribution file required with --trace-manifest-output.",
+    )
+    parser.add_argument("--pack-id", default="linguistic_core")
+    parser.add_argument("--pack-version", default="0.3.0")
     parser.add_argument("--force", action="store_true")
     return parser
 
@@ -67,12 +83,17 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.force and args.output is None:
         raise ValueError("--force requires --output")
+    if args.trace_manifest_output is not None and (
+        args.output is None or args.attribution is None
+    ):
+        raise ValueError("--trace-manifest-output requires --output and --attribution")
     if args.output is not None and not (
         args.output.name.endswith(".json") or args.output.name.endswith(".json.gz")
     ):
         raise ValueError("--output must end in .json or .json.gz")
+    source_manifest = load_linguistic_source_manifest_v1(args.manifest)
     projection = compile_framenet_projection_v1(
-        load_linguistic_source_manifest_v1(args.manifest),
+        source_manifest,
         source_archive=args.source_archive,
     )
     output_sha256: str | None = None
@@ -82,6 +103,17 @@ def main(argv: list[str] | None = None) -> int:
             payload = gzip.compress(payload, mtime=0)
         _atomic_write(args.output, payload, force=args.force)
         output_sha256 = hashlib.sha256(payload).hexdigest()
+    trace_manifest_sha256: str | None = None
+    if args.trace_manifest_output is not None:
+        trace_manifest = build_linguistic_trace_manifest_v1(
+            pack_ref=PackRef(pack_id=args.pack_id, pack_version=args.pack_version),
+            projection_path=args.output,
+            attribution_path=args.attribution,
+            source_manifest=source_manifest,
+        )
+        trace_payload = (trace_manifest.model_dump_json(indent=2) + "\n").encode("utf-8")
+        _atomic_write(args.trace_manifest_output, trace_payload, force=args.force)
+        trace_manifest_sha256 = hashlib.sha256(trace_payload).hexdigest()
     print(
         json.dumps(
             {
@@ -95,6 +127,12 @@ def main(argv: list[str] | None = None) -> int:
                 "projection_content_sha256": projection.projection_content_sha256,
                 "output_path": str(args.output) if args.output is not None else None,
                 "output_sha256": output_sha256,
+                "trace_manifest_path": (
+                    str(args.trace_manifest_output)
+                    if args.trace_manifest_output is not None
+                    else None
+                ),
+                "trace_manifest_sha256": trace_manifest_sha256,
             },
             indent=2,
             sort_keys=True,
