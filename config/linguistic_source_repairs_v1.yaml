@@ -1,0 +1,19 @@
+schema_version: linguistic-source-repairs-v1
+repairs:
+  - repair_id: propbank_check_arg1_close_tag
+    repair_kind: xml_syntax
+    source_key: propbank_frames_34
+    relative_path: frames/check.xml
+    source_file_sha256: 3189808964796cd81e962dccc2968f5cf95e51e42aaa62883e6d0e414f02389f
+    old_fragment: '<arg type="ARG1" start="4" end="4">in</rel>'
+    replacement_fragment: '<arg type="ARG1" start="4" end="4">in</arg>'
+    reason: Close the ARG1 element with its own tag; roleset declarations are unchanged.
+
+  - repair_id: propbank_rend_quote_src_attribute
+    repair_kind: xml_syntax
+    source_key: propbank_frames_34
+    relative_path: frames/rend.xml
+    source_file_sha256: e8e631ac226a54f5bb9ecfc7dbbc3cfcf2f40cfc8a00c1642394e41167ba950d
+    old_fragment: '<example name="ARG0 and ARG1" src=COCA Corpus, Biblical reference>'
+    replacement_fragment: '<example name="ARG0 and ARG1" src="COCA Corpus, Biblical reference">'
+    reason: Quote the example source attribute; roleset declarations are unchanged.
