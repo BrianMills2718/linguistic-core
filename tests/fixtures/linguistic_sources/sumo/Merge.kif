@@ -1,0 +1,2 @@
+;; Fixture-only IEEE-style license evidence.
+(subclass Process Entity)

@@ -1,0 +1,2 @@
+;; Fixture-only GPL-style license evidence.
+(subclass IntentionalProcess Process)
