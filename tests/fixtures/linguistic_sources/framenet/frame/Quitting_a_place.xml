@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frame xmlns="http://framenet.icsi.berkeley.edu" ID="100" name="Quitting_a_place">
+  <definition>
+&lt;def-root&gt;A Self_mover leaves a Source.&lt;/def-root&gt;
+  </definition>
+  <FE ID="1001" name="Self_mover" abbrev="Thm" coreType="Core">
+    <definition>&lt;def-root&gt;The independently moving entity.&lt;/def-root&gt;</definition>
+    <semType ID="10" name="Sentient"/>
+  </FE>
+  <FE ID="1002" name="Source" abbrev="Src" coreType="Core">
+    <definition>&lt;def-root&gt;The initial location.&lt;/def-root&gt;</definition>
+  </FE>
+  <lexUnit ID="1100" name="quit.v" POS="V" status="Created">
+    <definition>leave a place</definition>
+  </lexUnit>
+  <lexUnit ID="1101" name="withdraw.v" POS="V" status="Problem">
+    <definition>problem-status declaration intentionally absent from luIndex</definition>
+  </lexUnit>
+</frame>

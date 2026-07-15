@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<luIndex xmlns="http://framenet.icsi.berkeley.edu">
+  <lu ID="1100" name="quit.v" status="Created" frameID="100" frameName="Quitting_a_place"/>
+  <lu ID="2100" name="depart.v" status="Created" frameID="200" frameName="Departing"/>
+</luIndex>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frameIndex xmlns="http://framenet.icsi.berkeley.edu">
+  <frame ID="100" name="Quitting_a_place"/>
+  <frame ID="200" name="Departing"/>
+</frameIndex>
