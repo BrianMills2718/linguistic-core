@@ -7,7 +7,11 @@ import shutil
 import sqlite3
 import subprocess
 
+import pytest
+from pydantic import ValidationError
+
 from onto_canon6.packs.linguistic_source_audit_v1 import (
+    LinguisticDonorLabelAuditV1,
     audit_linguistic_donor_labels_v1,
     normalize_propbank_donor_id_v1,
     normalize_sumo_donor_id_v1,
@@ -179,3 +183,12 @@ def test_audit_classifies_every_donor_id_without_mutating_db(tmp_path: Path) -> 
     assert len(report.comparisons) == 8
     assert len(report.source_syntax_issues) == 1
     assert report.source_syntax_issues[0].relative_path == "frames/malformed.xml"
+
+    corrupted = report.model_dump(mode="json")
+    corrupted["comparisons"][0]["status"] = "missing_current_source"
+    try:
+        LinguisticDonorLabelAuditV1.model_validate(corrupted)
+    except ValidationError as error:
+        assert "comparison statuses do not reconcile" in str(error)
+    else:
+        pytest.fail("count-preserving comparison corruption was accepted")

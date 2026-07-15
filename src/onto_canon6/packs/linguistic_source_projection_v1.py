@@ -226,6 +226,56 @@ class PropBankProjectionV1(BaseModel):
         default=(), description="Duplicate upstream identities retained without collapse."
     )
 
+    @model_validator(mode="after")
+    def _content_reconciles(self) -> "PropBankProjectionV1":
+        if self.parsed_file_count + len(self.unrepaired_syntax_issues) != self.source_file_count:
+            raise ValueError("parsed and unrepaired source-file counts do not reconcile")
+        expected_completeness = (
+            "incomplete_source_syntax"
+            if self.unrepaired_syntax_issues
+            else (
+                "complete_with_declared_syntax_repairs"
+                if self.applied_repairs
+                else "complete"
+            )
+        )
+        if self.completeness != expected_completeness:
+            raise ValueError("projection completeness does not reconcile with issues/repairs")
+        record_keys = [
+            (record.roleset_id, record.source_relative_path) for record in self.rolesets
+        ]
+        if record_keys != sorted(record_keys) or len(record_keys) != len(set(record_keys)):
+            raise ValueError("projection rolesets must have sorted unique id/path keys")
+        paths_by_id: dict[str, set[str]] = {}
+        for record in self.rolesets:
+            paths_by_id.setdefault(record.roleset_id, set()).add(record.source_relative_path)
+        expected_conflicts = tuple(
+            SourceIdentityConflictV1(
+                family="propbank",
+                source_id=roleset_id,
+                source_relative_paths=tuple(sorted(paths)),
+            )
+            for roleset_id, paths in sorted(paths_by_id.items())
+            if len(paths) > 1
+        )
+        if self.identity_conflicts != expected_conflicts:
+            raise ValueError("projection identity conflicts do not reconcile with rolesets")
+        projected_content = {
+            "rolesets": [record.model_dump(mode="json") for record in self.rolesets],
+            "applied_repairs": [
+                repair.model_dump(mode="json") for repair in self.applied_repairs
+            ],
+            "unrepaired_syntax_issues": [
+                issue.model_dump(mode="json") for issue in self.unrepaired_syntax_issues
+            ],
+            "identity_conflicts": [
+                conflict.model_dump(mode="json") for conflict in self.identity_conflicts
+            ],
+        }
+        if self.projection_content_sha256 != _normalized_sha256(projected_content):
+            raise ValueError("projection content SHA-256 does not match normalized content")
+        return self
+
 
 def load_linguistic_source_repairs_v1(path: Path) -> LinguisticSourceRepairManifestV1:
     """Load one strict UTF-8 YAML repair manifest."""

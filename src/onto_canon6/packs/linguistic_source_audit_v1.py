@@ -141,12 +141,20 @@ class LinguisticDonorLabelAuditV1(BaseModel):
     def _comparisons_reconcile(self) -> "LinguisticDonorLabelAuditV1":
         if len({summary.family for summary in self.summaries}) != len(self.summaries):
             raise ValueError("audit summaries must have unique families")
-        counts: dict[SourceFamily, int] = defaultdict(int)
+        comparison_keys = [
+            (comparison.family, comparison.donor_id) for comparison in self.comparisons
+        ]
+        if len(comparison_keys) != len(set(comparison_keys)):
+            raise ValueError("audit comparisons must have unique family/donor_id keys")
+        by_family: dict[SourceFamily, list[DonorIdentifierComparisonV1]] = defaultdict(list)
         for comparison in self.comparisons:
-            counts[comparison.family] += 1
+            by_family[comparison.family].append(comparison)
         for summary in self.summaries:
-            if counts[summary.family] != summary.donor_identifier_count:
-                raise ValueError(f"comparison rows do not reconcile for {summary.family}")
+            observed = _summary(summary.family, by_family[summary.family])
+            if observed != summary:
+                raise ValueError(f"comparison statuses do not reconcile for {summary.family}")
+        if set(by_family) != {summary.family for summary in self.summaries}:
+            raise ValueError("comparison families do not reconcile with summaries")
         return self
 
     def summary_by_family(self) -> dict[SourceFamily, DonorIdentifierFamilySummaryV1]:

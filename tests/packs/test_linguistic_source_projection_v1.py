@@ -9,6 +9,7 @@ import shutil
 import subprocess
 
 import pytest
+from pydantic import ValidationError
 
 from onto_canon6.packs.linguistic_source_projection_v1 import (
     LinguisticSourceRepairManifestV1,
@@ -126,6 +127,11 @@ def test_exact_repair_compiles_roles_and_preserves_source_bytes(tmp_path: Path) 
     artifact = tmp_path / "projection.json.gz"
     artifact.write_bytes(gzip.compress(first.model_dump_json().encode("utf-8"), mtime=0))
     assert load_propbank_projection_v1(artifact) == first
+
+    corrupted = first.model_dump(mode="json")
+    corrupted["rolesets"][0]["name"] = "count-preserving corruption"
+    with pytest.raises(ValidationError, match="content SHA-256"):
+        type(first).model_validate(corrupted)
 
 
 def test_repair_rejects_wrong_hash_and_nonunique_fragment(tmp_path: Path) -> None:
