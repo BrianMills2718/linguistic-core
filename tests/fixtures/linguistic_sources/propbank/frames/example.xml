@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frameset>
+  <predicate lemma="audit">
+    <roleset id="audit.01" name="examine records">
+      <roles>
+        <role n="0" descr="examiner" />
+        <role n="1" descr="records" />
+      </roles>
+    </roleset>
+  </predicate>
+</frameset>

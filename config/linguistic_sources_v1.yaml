@@ -1,0 +1,67 @@
+schema_version: linguistic-source-manifest-v1
+sources:
+  - source_key: propbank_frames_34
+    family: propbank
+    release_label: "3.4 repository state at pinned commit"
+    official_url: https://github.com/propbank/propbank-frames
+    availability: available
+    git_identity:
+      commit_sha: c66e0ccf28b53f00051b187db83e937b5bee2e32
+      tree_sha: d1e1ef0c13c5ec6e06096b1448cb5f65d4e1b8c7
+    selected_payload:
+      selection_globs:
+        - frames/*.xml
+      digest_algorithm: path-length-bytes-sha256-v1
+      file_count: 7566
+      byte_count: 29778471
+      sha256: 22606e705b97b8d9c90f673e6a7023e4852aef736b9d935e01fd31049b29fb04
+    license_disposition: verified_redistributable
+    license_evidence:
+      - path: LICENSE
+        sha256: 1fdd47d0526982b4e71694ca4faf1de06ef8957faec92e3d023a26d187ac9cd3
+        evidence_scope: repository
+        license_id: CC-BY-SA-4.0
+    storage_policy: external_cache
+    redistribution_allowed: true
+
+  - source_key: framenet_17
+    family: framenet
+    release_label: "1.7"
+    official_url: https://berkeleyfn.framenetbr.ufjf.br/framenet_data
+    availability: temporarily_unavailable
+    unavailable_evidence:
+      observed_at: "2026-07-15T00:00:00-07:00"
+      evidence_url: https://berkeleyfn.framenetbr.ufjf.br/node/5574
+      reason: official request/download function reports temporarily unavailable
+    license_disposition: unknown
+    license_evidence: []
+    storage_policy: reference_only
+    redistribution_allowed: false
+
+  - source_key: sumo_root_kif
+    family: sumo
+    release_label: "root KIF modules at pinned commit"
+    official_url: https://github.com/ontologyportal/sumo
+    availability: available
+    git_identity:
+      commit_sha: 806b9cd57d1313309aad67dffa12871c06de0f26
+      tree_sha: c662412aa248bac1d7bae459752760757dcbfbdb
+    selected_payload:
+      selection_globs:
+        - "*.kif"
+      digest_algorithm: path-length-bytes-sha256-v1
+      file_count: 66
+      byte_count: 18606043
+      sha256: 798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272
+    license_disposition: mixed_review_required
+    license_evidence:
+      - path: Merge.kif
+        sha256: 532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307
+        evidence_scope: selected_module
+        license_id: null
+      - path: Mid-level-ontology.kif
+        sha256: 6bd907c1c2d038a4c0f4b85887dd50dfa84eb311e4265a40ff5cef102368067e
+        evidence_scope: selected_module
+        license_id: null
+    storage_policy: external_cache
+    redistribution_allowed: false
