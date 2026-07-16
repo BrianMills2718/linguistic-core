@@ -17,6 +17,7 @@ from onto_canon6.packs.sumo_crosswalk_review_v1 import (
     SumoSemanticProposalBatchV1,
     SumoSemanticProposalRunV1,
     build_sumo_crosswalk_semantic_review_queue_v1,
+    verify_sumo_semantic_proposal_trace_v1,
 )
 from onto_canon6.packs.sumo_governed_crosswalk_v1 import (
     GovernedSumoCrosswalkV1,
@@ -85,7 +86,19 @@ def _review_inputs(
         cost_usd=0.01,
         eligible_case_ids=(case.case_id,),
         withheld_case_ids=(),
-        rendered_messages=({"role": "user", "content": "fixture evidence"},),
+        rendered_messages=(
+            {
+                "role": "user",
+                "content": (
+                    "<positive_control>\n"
+                    '{"control_id":"positive_autonomous_actor","evidence":"An autonomous actor initiated the event."}'
+                    "\n</positive_control>\n"
+                    "<negative_control>\n"
+                    '{"control_id":"negative_inanimate_cause","evidence":"A storm caused the outage."}'
+                    "\n</negative_control>"
+                ),
+            },
+        ),
         raw_content=batch.model_dump_json(),
         batch=batch,
         compiled_proposals=(
@@ -122,6 +135,7 @@ def test_compiler_emits_only_rejected_or_unresolved_ineligible_state(
 ) -> None:
     trace_path, review_document, queue, decision = _review_inputs(tmp_path)
     review = build_sumo_crosswalk_review_batch_v1(
+        queue=queue,
         proposal_trace_path=trace_path,
         review_document_path=review_document,
         reviewer_ref="agent:codex:independent-review",
@@ -168,6 +182,7 @@ def test_compiler_rejects_population_trace_authority_and_evidence_corruption(
 ) -> None:
     trace_path, review_document, queue, decision = _review_inputs(tmp_path)
     review = build_sumo_crosswalk_review_batch_v1(
+        queue=queue,
         proposal_trace_path=trace_path,
         review_document_path=review_document,
         reviewer_ref="agent:codex:independent-review",
@@ -190,6 +205,7 @@ def test_compiler_rejects_population_trace_authority_and_evidence_corruption(
             proposal_trace_path=trace_path,
             review_document_path=review_document,
             review=build_sumo_crosswalk_review_batch_v1(
+                queue=queue,
                 proposal_trace_path=trace_path,
                 review_document_path=review_document,
                 reviewer_ref="agent:codex:independent-review",
@@ -203,6 +219,7 @@ def test_compiler_rejects_population_trace_authority_and_evidence_corruption(
             proposal_trace_path=trace_path,
             review_document_path=review_document,
             review=build_sumo_crosswalk_review_batch_v1(
+                queue=queue,
                 proposal_trace_path=trace_path,
                 review_document_path=review_document,
                 reviewer_ref=review.proposer_model,
@@ -239,11 +256,33 @@ def test_compiler_rejects_population_trace_authority_and_evidence_corruption(
             proposal_trace_path=trace_path,
             review_document_path=review_document,
             review=build_sumo_crosswalk_review_batch_v1(
+                queue=queue,
                 proposal_trace_path=trace_path,
                 review_document_path=review_document,
                 reviewer_ref="agent:codex:independent-review",
                 decisions=(changed_quote,),
             ),
+        )
+
+    raw_divergence = json.loads(trace_path.read_text(encoding="utf-8"))
+    raw_divergence["batch"]["proposals"][0]["disposition"] = "withhold_insufficient_evidence"
+    raw_path = tmp_path / "raw-divergence.json"
+    raw_path.write_text(json.dumps(raw_divergence), encoding="utf-8")
+    with pytest.raises(SumoGovernedCrosswalkError, match="cannot be replayed"):
+        build_sumo_crosswalk_review_batch_v1(
+            queue=queue,
+            proposal_trace_path=raw_path,
+            review_document_path=review_document,
+            reviewer_ref="agent:codex:independent-review",
+            decisions=(decision,),
+        )
+
+    substituted_queue = queue.model_copy(
+        update={"donor_db_sha256": "f" * 64}
+    )
+    with pytest.raises(ValidationError, match="identity SHA-256"):
+        SumoCrosswalkSemanticReviewQueueV1.model_validate(
+            substituted_queue.model_dump(mode="json")
         )
 
 
@@ -252,6 +291,7 @@ def test_output_contract_rejects_verification_count_and_runtime_injection(
 ) -> None:
     trace_path, review_document, queue, decision = _review_inputs(tmp_path)
     review = build_sumo_crosswalk_review_batch_v1(
+        queue=queue,
         proposal_trace_path=trace_path,
         review_document_path=review_document,
         reviewer_ref="agent:codex:independent-review",
@@ -287,6 +327,12 @@ def test_committed_review_and_crosswalk_are_exact_non_promotable_artifacts() -> 
     )
     trace_payload = trace_path.read_bytes()
     trace = SumoSemanticProposalRunV1.model_validate_json(trace_payload)
+    queue = SumoCrosswalkSemanticReviewQueueV1.model_validate_json(
+        (
+            repository
+            / "docs/runs/artifacts/plan0147_sumo_semantic_review_queue_v1.json"
+        ).read_bytes()
+    )
     review = SumoCrosswalkReviewBatchV1.model_validate_json(
         (
             repository
@@ -311,6 +357,8 @@ def test_committed_review_and_crosswalk_are_exact_non_promotable_artifacts() -> 
     ) == (0, 0, 0)
     assert crosswalk.queue_content_sha256 == review.queue_content_sha256
     assert trace.queue_content_sha256 == review.queue_content_sha256
+    assert review.queue_identity_sha256 == queue.queue_identity_sha256
+    assert crosswalk.queue_identity_sha256 == queue.queue_identity_sha256
     assert trace.trace_id == review.proposal_trace_id
     assert hashlib.sha256(trace_payload).hexdigest() == review.proposal_trace_sha256
     assert trace.lifecycle == "proposal_generated"
@@ -351,3 +399,4 @@ def test_committed_review_and_crosswalk_are_exact_non_promotable_artifacts() -> 
     }
     assert all(item.runtime_eligibility == "ineligible" for item in crosswalk.records)
     assert all(item.replacement_role is None for item in crosswalk.records)
+    verify_sumo_semantic_proposal_trace_v1(queue, trace)

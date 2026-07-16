@@ -17,6 +17,7 @@ from onto_canon6.packs.sumo_crosswalk_review_v1 import (
     SumoCrosswalkSemanticReviewCaseV1,
     SumoCrosswalkSemanticReviewQueueV1,
     SumoSemanticProposalRunV1,
+    verify_sumo_semantic_proposal_trace_v1,
 )
 
 
@@ -37,6 +38,7 @@ class _ReviewContentV1(TypedDict):
 
     schema_version: Literal["sumo-crosswalk-review-batch-v1"]
     queue_content_sha256: str
+    queue_identity_sha256: str
     proposal_trace_id: str
     proposal_trace_sha256: str
     proposal_raw_response_sha256: str
@@ -96,6 +98,9 @@ class SumoCrosswalkReviewBatchV1(BaseModel):
         default="sumo-crosswalk-review-batch-v1", description="Review batch discriminator."
     )
     queue_content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$", description="Exact queue.")
+    queue_identity_sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$", description="Exact complete queue provenance identity."
+    )
     proposal_trace_id: str = Field(min_length=1, description="Exact successful proposal trace.")
     proposal_trace_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="Complete terminal trace file digest."
@@ -213,6 +218,9 @@ class GovernedSumoCrosswalkV1(BaseModel):
         default="governed-sumo-crosswalk-v1", description="Crosswalk discriminator."
     )
     queue_content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$", description="Exact queue.")
+    queue_identity_sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$", description="Exact complete queue provenance identity."
+    )
     proposal_trace_id: str = Field(description="Exact successful proposal trace.")
     proposal_trace_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="Exact proposal trace file."
@@ -271,6 +279,7 @@ def _case_evidence(case: SumoCrosswalkSemanticReviewCaseV1) -> dict[EvidenceFiel
 
 def build_sumo_crosswalk_review_batch_v1(
     *,
+    queue: SumoCrosswalkSemanticReviewQueueV1,
     proposal_trace_path: Path,
     review_document_path: Path,
     reviewer_ref: str,
@@ -285,9 +294,14 @@ def build_sumo_crosswalk_review_batch_v1(
         raise SumoGovernedCrosswalkError("proposal trace is invalid") from exc
     if trace.raw_content is None or trace.execution_model is None:
         raise SumoGovernedCrosswalkError("proposal trace lacks terminal response identity")
+    try:
+        verify_sumo_semantic_proposal_trace_v1(queue, trace)
+    except ValueError as exc:
+        raise SumoGovernedCrosswalkError("proposal trace cannot be replayed") from exc
     content: _ReviewContentV1 = {
         "schema_version": "sumo-crosswalk-review-batch-v1",
         "queue_content_sha256": trace.queue_content_sha256,
+        "queue_identity_sha256": queue.queue_identity_sha256,
         "proposal_trace_id": trace.trace_id,
         "proposal_trace_sha256": hashlib.sha256(trace_payload).hexdigest(),
         "proposal_raw_response_sha256": hashlib.sha256(
@@ -330,6 +344,8 @@ def compile_governed_sumo_crosswalk_v1(
         raise SumoGovernedCrosswalkError("proposal trace unexpectedly claims review authority")
     if trace.queue_content_sha256 != queue.queue_content_sha256:
         raise SumoGovernedCrosswalkError("proposal trace does not bind the supplied queue")
+    if review.queue_identity_sha256 != queue.queue_identity_sha256:
+        raise SumoGovernedCrosswalkError("review does not bind complete queue provenance")
     if review.queue_content_sha256 != queue.queue_content_sha256:
         raise SumoGovernedCrosswalkError("review does not bind the supplied queue")
     if review.proposal_trace_id != trace.trace_id:
@@ -349,6 +365,10 @@ def compile_governed_sumo_crosswalk_v1(
     document_sha256 = hashlib.sha256(review_document_path.read_bytes()).hexdigest()
     if review.review_document_sha256 != document_sha256:
         raise SumoGovernedCrosswalkError("review does not bind the decision document")
+    try:
+        verify_sumo_semantic_proposal_trace_v1(queue, trace)
+    except ValueError as exc:
+        raise SumoGovernedCrosswalkError("proposal trace cannot be replayed") from exc
 
     cases = {item.case_id: item for item in queue.cases}
     eligible_ids = {
@@ -415,6 +435,7 @@ def compile_governed_sumo_crosswalk_v1(
     counts = Counter(item.state for item in record_values)
     return GovernedSumoCrosswalkV1(
         queue_content_sha256=queue.queue_content_sha256,
+        queue_identity_sha256=queue.queue_identity_sha256,
         proposal_trace_id=trace.trace_id,
         proposal_trace_sha256=trace_sha256,
         proposal_raw_response_sha256=raw_sha256,

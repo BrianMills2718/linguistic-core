@@ -7,6 +7,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import sqlite3
 import subprocess
 from typing import Literal, TypedDict
@@ -200,6 +201,12 @@ class SumoCrosswalkSemanticReviewQueueV1(BaseModel):
     queue_content_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="Normalized case-content digest."
     )
+    queue_identity_sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$",
+        description=(
+            "Normalized complete queue identity, including source and audit provenance."
+        ),
+    )
 
     @model_validator(mode="after")
     def _queue_reconciles(self) -> "SumoCrosswalkSemanticReviewQueueV1":
@@ -208,6 +215,9 @@ class SumoCrosswalkSemanticReviewQueueV1(BaseModel):
             raise ValueError("semantic review cases must be sorted and unique")
         if self.queue_content_sha256 != _normalized_sha256(self.cases):
             raise ValueError("semantic review queue content SHA-256 does not reconcile")
+        identity = self.model_dump(mode="json", exclude={"queue_identity_sha256"})
+        if self.queue_identity_sha256 != _normalized_sha256(identity):
+            raise ValueError("semantic review queue identity SHA-256 does not reconcile")
         return self
 
 
@@ -382,6 +392,21 @@ def build_sumo_crosswalk_semantic_review_queue_v1(
             )
         )
     case_values = tuple(sorted(cases, key=lambda item: item.case_id))
+    content = {
+        "schema_version": "sumo-crosswalk-semantic-review-queue-v1",
+        "crosswalk_report_content_sha256": report.report_content_sha256,
+        "donor_db_sha256": report.donor_db_sha256,
+        "propbank_commit_sha": propbank_source.source_commit_sha,
+        "propbank_tree_sha": propbank_source.source_tree_sha,
+        "propbank_payload_sha256": propbank_source.selected_payload_sha256,
+        "cases": case_values,
+        "queue_content_sha256": _normalized_sha256(case_values),
+        "population_status": "incompatible_donor_supertype",
+        "review_authority": "none_proposal_queue_only",
+        "source_tree_membership_authority": (
+            "caller_supplied_requires_independent_verification"
+        ),
+    }
     return SumoCrosswalkSemanticReviewQueueV1(
         crosswalk_report_content_sha256=report.report_content_sha256,
         donor_db_sha256=report.donor_db_sha256,
@@ -390,6 +415,7 @@ def build_sumo_crosswalk_semantic_review_queue_v1(
         propbank_payload_sha256=propbank_source.selected_payload_sha256,
         cases=case_values,
         queue_content_sha256=_normalized_sha256(case_values),
+        queue_identity_sha256=_normalized_sha256(content),
     )
 
 
@@ -754,6 +780,83 @@ def compile_sumo_semantic_proposals_v1(
         == 1
     )
     return tuple(sorted(compiled, key=lambda item: item.case_id)), controls_passed
+
+
+def _control_evidence_from_rendered_messages_v1(
+    rendered_messages: tuple[dict[str, str], ...],
+) -> tuple[str, str]:
+    """Recover the two exact preregistered control strings from recorded input."""
+
+    values: dict[str, str] = {}
+    for message in rendered_messages:
+        content = message.get("content")
+        if not isinstance(content, str):
+            raise SumoCrosswalkReviewError("rendered message lacks string content")
+        for tag, expected_id in (
+            ("positive_control", "positive_autonomous_actor"),
+            ("negative_control", "negative_inanimate_cause"),
+        ):
+            matches = re.findall(
+                rf"<{tag}>\s*(\{{.*?\}})\s*</{tag}>", content, flags=re.DOTALL
+            )
+            for encoded in matches:
+                try:
+                    control = json.loads(encoded)
+                except json.JSONDecodeError as exc:
+                    raise SumoCrosswalkReviewError(
+                        "rendered control is not valid JSON"
+                    ) from exc
+                evidence = control.get("evidence") if isinstance(control, dict) else None
+                if control.get("control_id") != expected_id or not isinstance(evidence, str):
+                    raise SumoCrosswalkReviewError("rendered control does not reconcile")
+                if expected_id in values:
+                    raise SumoCrosswalkReviewError("rendered control appears more than once")
+                values[expected_id] = evidence
+    try:
+        return values["positive_autonomous_actor"], values["negative_inanimate_cause"]
+    except KeyError as exc:
+        raise SumoCrosswalkReviewError("recorded input lacks preregistered controls") from exc
+
+
+def verify_sumo_semantic_proposal_trace_v1(
+    queue: SumoCrosswalkSemanticReviewQueueV1,
+    trace: SumoSemanticProposalRunV1,
+) -> None:
+    """Fail closed unless a successful trace replays from raw response and input."""
+
+    if trace.queue_content_sha256 != queue.queue_content_sha256:
+        raise SumoCrosswalkReviewError("proposal trace does not bind the supplied queue")
+    eligible = tuple(
+        case for case in queue.cases if case.propbank.resolution_status == "exact_current_source"
+    )
+    withheld = tuple(case for case in queue.cases if case not in eligible)
+    if trace.eligible_case_ids != tuple(case.case_id for case in eligible):
+        raise SumoCrosswalkReviewError("proposal trace eligible population does not reconcile")
+    if trace.withheld_case_ids != tuple(case.case_id for case in withheld):
+        raise SumoCrosswalkReviewError("proposal trace withheld population does not reconcile")
+    if trace.lifecycle != "proposal_generated":
+        raise SumoCrosswalkReviewError("proposal trace is not a successful controlled run")
+    if trace.raw_content is None or trace.batch is None:
+        raise SumoCrosswalkReviewError("successful proposal trace lacks raw response or batch")
+    try:
+        parsed_batch = SumoSemanticProposalBatchV1.model_validate_json(trace.raw_content)
+    except ValueError as exc:
+        raise SumoCrosswalkReviewError("raw proposal response is not the stored batch") from exc
+    if parsed_batch != trace.batch:
+        raise SumoCrosswalkReviewError("raw proposal response does not equal stored batch")
+    positive_evidence, negative_evidence = _control_evidence_from_rendered_messages_v1(
+        trace.rendered_messages
+    )
+    compiled, controls_passed = compile_sumo_semantic_proposals_v1(
+        eligible,
+        parsed_batch,
+        positive_evidence=positive_evidence,
+        negative_evidence=negative_evidence,
+    )
+    if compiled != trace.compiled_proposals:
+        raise SumoCrosswalkReviewError("stored compiled proposals do not replay from raw response")
+    if controls_passed != trace.controls_passed:
+        raise SumoCrosswalkReviewError("stored control result does not replay from raw response")
 
 
 def build_sumo_semantic_response_contract_v1(
