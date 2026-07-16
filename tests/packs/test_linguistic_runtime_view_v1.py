@@ -45,3 +45,19 @@ def test_sparse_view_rejects_row_and_hash_substitution(tmp_path: Path) -> None:
     (output / "predicate_types.jsonl").write_text('{"predicate_id":"lc:forged"}\n', encoding="utf-8")
     with pytest.raises(ValueError, match="cannot emit runtime rows"):
         validate_linguistic_runtime_view_v1(output)
+
+
+def test_sparse_view_does_not_change_explicit_030_rollback(tmp_path: Path) -> None:
+    """An RC root cannot shadow the unchanged stable runtime pack."""
+
+    output = tmp_path / "linguistic_core" / "0.4.0-rc1"
+    compile_linguistic_runtime_view_v1(_crosswalk(), output_dir=output)
+    repository_packs = Path(__file__).parents[2] / "ontology_packs"
+    clear_loader_caches()
+    rollback = load_ontology_pack(
+        "linguistic_core", "0.3.0", packs_roots=(tmp_path, repository_packs)
+    )
+    baseline = load_ontology_pack("linguistic_core", "0.3.0", packs_root=repository_packs)
+    assert rollback.predicate_ids == baseline.predicate_ids
+    assert rollback.role_ids == baseline.role_ids
+    assert len(rollback.predicate_ids) == 4669
