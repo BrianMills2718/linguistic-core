@@ -4,12 +4,14 @@
     "pack_id": "linguistic_core",
     "pack_version": "0.3.0"
   },
+  "target_pack_manifest_sha256": "a30476afa42d9d6974ab5f6734141644fba12c70341acb797dc8df549c2afd65",
   "framenet_projection": {
     "filename": "framenet_projection_v1.json.gz",
-    "sha256": "a7cebe793427614bd21dc3e36ba0dc0a1aed291e60a3f71a0ac4b520db829e93"
+    "sha256": "22ada40d9c7bc168c8fa7cdb42cb412132c5b6ad8ca25d695163c27fd0a4dc75"
   },
   "framenet_projection_content_sha256": "529be72971c63795213bf1036c4e2ba1bc11882ca1d569a97d088d61af9cec4b",
   "framenet_source_key": "framenet_17",
+  "framenet_source_archive_filename": "framenet_v17.zip",
   "framenet_source_archive_sha256": "22f6aad6fb799ba4dbed0440714e1118442ad7d7345351de37428581284f471c",
   "framenet_source_archive_byte_count": 99207152,
   "framenet_distribution_url": "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/framenet_v17.zip",
@@ -21,9 +23,12 @@
   "frame_element_relation_count": 12393,
   "attribution": {
     "filename": "framenet_attribution.txt",
-    "sha256": "c8e16bfd03f157a873bfa781ab99c0a88863b3623c74a4d9d2a0b064f2846b07"
+    "sha256": "47b4a2faa7fd825f8fc212355ea69b5fa0d2f4433d8e7120396a06c23483b963"
   },
   "license_id": "CC-BY-3.0",
   "license_url": "https://creativecommons.org/licenses/by/3.0/",
+  "attribution_title": "FrameNet 1.7",
+  "attribution_author": "Collin F. Baker",
+  "attribution_uri": "http://framenet.icsi.berkeley.edu",
   "raw_archive_packaged": false
 }

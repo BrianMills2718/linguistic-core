@@ -53,6 +53,8 @@ class FrameNetSourceRefV1(BaseModel):
         path = PurePosixPath(self.member_path)
         if path.is_absolute() or ".." in path.parts or self.member_path.endswith("/"):
             raise ValueError("FrameNet source member must be one safe file path")
+        if self.member_sha256 == "0" * 64:
+            raise ValueError("FrameNet source member SHA-256 cannot be the null digest")
         return self
 
 
@@ -203,6 +205,9 @@ class FrameNetProjectionV1(BaseModel):
         default="framenet-projection-v1", description="Projection contract discriminator."
     )
     source_key: str = Field(min_length=1, description="Pinned linguistic source key.")
+    source_archive_filename: str = Field(
+        min_length=1, description="Exact basename of the verified FrameNet archive."
+    )
     source_archive_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="SHA-256 of the verified FrameNet archive."
     )
@@ -233,6 +238,31 @@ class FrameNetProjectionV1(BaseModel):
 
     @model_validator(mode="after")
     def _projection_is_closed(self) -> "FrameNetProjectionV1":
+        archive_path = PurePosixPath(self.source_archive_filename)
+        if (
+            archive_path.name != self.source_archive_filename
+            or self.source_archive_filename in {".", ".."}
+        ):
+            raise ValueError("FrameNet source archive filename must be one safe basename")
+        source_prefix = archive_path.stem
+        if not source_prefix:
+            raise ValueError("FrameNet source archive filename must have a nonempty stem")
+        for label, source_ref, expected_path in (
+            ("frame-index", self.frame_index_ref, f"{source_prefix}/frameIndex.xml"),
+            (
+                "lexical-unit-index",
+                self.lexical_unit_index_ref,
+                f"{source_prefix}/luIndex.xml",
+            ),
+            ("relation-index", self.relation_index_ref, f"{source_prefix}/frRelation.xml"),
+        ):
+            _validate_source_ref(
+                source_ref,
+                source_key=self.source_key,
+                archive_sha256=self.source_archive_sha256,
+                expected_member_path=expected_path,
+                label=label,
+            )
         ids = [frame.frame_id for frame in self.frames]
         names = [frame.name for frame in self.frames]
         if ids != sorted(ids) or len(ids) != len(set(ids)) or len(names) != len(set(names)):
@@ -259,23 +289,87 @@ class FrameNetProjectionV1(BaseModel):
         frame_element_ids = [item.frame_element_id for item in frame_elements]
         if len(frame_element_ids) != len(set(frame_element_ids)):
             raise ValueError("FrameNet frame-element IDs must be globally unique")
+        semantic_types_by_id: dict[int, str] = {}
+        semantic_type_ids_by_name: dict[str, int] = {}
+        for frame_element in frame_elements:
+            for semantic_type in frame_element.semantic_types:
+                if (
+                    semantic_type.semantic_type_id in semantic_types_by_id
+                    and semantic_types_by_id[semantic_type.semantic_type_id]
+                    != semantic_type.name
+                ):
+                    raise ValueError("FrameNet semantic-type ID has conflicting names")
+                if (
+                    semantic_type.name in semantic_type_ids_by_name
+                    and semantic_type_ids_by_name[semantic_type.name]
+                    != semantic_type.semantic_type_id
+                ):
+                    raise ValueError("FrameNet semantic-type name has conflicting IDs")
+                semantic_types_by_id[semantic_type.semantic_type_id] = semantic_type.name
+                semantic_type_ids_by_name[semantic_type.name] = semantic_type.semantic_type_id
         frame_by_id = {frame.frame_id: frame for frame in self.frames}
-        outgoing: set[tuple[int, int, int, int]] = set()
-        incoming: set[tuple[int, int, int, int]] = set()
+        outgoing: dict[
+            tuple[int, int, int, int], FrameNetFrameRelationRefV1
+        ] = {}
+        incoming: dict[
+            tuple[int, int, int, int], FrameNetFrameRelationRefV1
+        ] = {}
         fe_relation_ids: list[int] = []
+        frame_relation_ids: set[int] = set()
+        relation_types_by_id: dict[int, tuple[str, str, str]] = {}
+        relation_type_ids_by_name: dict[str, int] = {}
         for frame in self.frames:
+            _validate_source_ref(
+                frame.source_ref,
+                source_key=self.source_key,
+                archive_sha256=self.source_archive_sha256,
+                expected_member_path=f"{source_prefix}/frame/{frame.name}.xml",
+                label="frame source reference",
+            )
             for relation in frame.outgoing_relations:
                 related = frame_by_id.get(relation.related_frame_id)
                 if related is None or related.name != relation.related_frame_name:
                     raise ValueError("FrameNet outgoing relation has a dangling endpoint")
+                if relation.source_ref != self.relation_index_ref:
+                    raise ValueError("FrameNet relation source reference does not match the index")
                 _validate_fe_relations(
                     relation,
                     sub_frame=frame,
                     super_frame=related,
                 )
-                outgoing.add(
-                    (relation.relation_type_id, relation.frame_relation_id, frame.frame_id, related.frame_id)
+                relation_type_signature = (
+                    relation.relation_type_name,
+                    relation.containing_frame_role,
+                    relation.related_frame_role,
                 )
+                if (
+                    relation.relation_type_id in relation_types_by_id
+                    and relation_types_by_id[relation.relation_type_id]
+                    != relation_type_signature
+                ):
+                    raise ValueError("FrameNet relation-type ID has conflicting metadata")
+                if (
+                    relation.relation_type_name in relation_type_ids_by_name
+                    and relation_type_ids_by_name[relation.relation_type_name]
+                    != relation.relation_type_id
+                ):
+                    raise ValueError("FrameNet relation-type name has conflicting IDs")
+                relation_types_by_id[relation.relation_type_id] = relation_type_signature
+                relation_type_ids_by_name[relation.relation_type_name] = (
+                    relation.relation_type_id
+                )
+                if relation.frame_relation_id in frame_relation_ids:
+                    raise ValueError("FrameNet frame-relation IDs must be globally unique")
+                frame_relation_ids.add(relation.frame_relation_id)
+                key = (
+                    relation.relation_type_id,
+                    relation.frame_relation_id,
+                    frame.frame_id,
+                    related.frame_id,
+                )
+                if key in outgoing:
+                    raise ValueError("FrameNet outgoing relation identity is duplicated")
+                outgoing[key] = relation
                 fe_relation_ids.extend(
                     item.frame_element_relation_id for item in relation.frame_element_relations
                 )
@@ -283,11 +377,40 @@ class FrameNetProjectionV1(BaseModel):
                 related = frame_by_id.get(relation.related_frame_id)
                 if related is None or related.name != relation.related_frame_name:
                     raise ValueError("FrameNet incoming relation has a dangling endpoint")
-                incoming.add(
-                    (relation.relation_type_id, relation.frame_relation_id, related.frame_id, frame.frame_id)
+                if relation.source_ref != self.relation_index_ref:
+                    raise ValueError("FrameNet relation source reference does not match the index")
+                _validate_fe_relations(
+                    relation,
+                    sub_frame=related,
+                    super_frame=frame,
                 )
-        if outgoing != incoming or self.frame_relation_count != len(outgoing):
+                key = (
+                    relation.relation_type_id,
+                    relation.frame_relation_id,
+                    related.frame_id,
+                    frame.frame_id,
+                )
+                if key in incoming:
+                    raise ValueError("FrameNet incoming relation identity is duplicated")
+                incoming[key] = relation
+        if outgoing.keys() != incoming.keys() or self.frame_relation_count != len(outgoing):
             raise ValueError("FrameNet incoming/outgoing relations do not reconcile")
+        for key, outgoing_relation in outgoing.items():
+            incoming_relation = incoming[key]
+            if (
+                incoming_relation.relation_type_name
+                != outgoing_relation.relation_type_name
+                or incoming_relation.containing_frame_role
+                != outgoing_relation.related_frame_role
+                or incoming_relation.related_frame_role
+                != outgoing_relation.containing_frame_role
+                or incoming_relation.frame_element_relations
+                != outgoing_relation.frame_element_relations
+                or incoming_relation.source_ref != outgoing_relation.source_ref
+            ):
+                raise ValueError(
+                    "FrameNet incoming relation mirror does not match its outgoing relation"
+                )
         if len(fe_relation_ids) != len(set(fe_relation_ids)):
             raise ValueError("FrameNet FE-relation IDs must be globally unique")
         if self.frame_element_relation_count != len(fe_relation_ids):
@@ -296,6 +419,24 @@ class FrameNetProjectionV1(BaseModel):
         if self.projection_content_sha256 != _normalized_sha256(content):
             raise ValueError("FrameNet projection content SHA-256 does not match content")
         return self
+
+
+def _validate_source_ref(
+    source_ref: FrameNetSourceRefV1,
+    *,
+    source_key: str,
+    archive_sha256: str,
+    expected_member_path: str,
+    label: str,
+) -> None:
+    """Bind one nested source claim to the projection root and exact member path."""
+
+    if (
+        source_ref.source_key != source_key
+        or source_ref.archive_sha256 != archive_sha256
+        or source_ref.member_path != expected_member_path
+    ):
+        raise ValueError(f"FrameNet {label} does not match the projection source reference")
 
 
 def _validate_fe_relations(
@@ -786,6 +927,7 @@ def compile_framenet_projection_v1(
     content = [frame.model_dump(mode="json") for frame in frames]
     return FrameNetProjectionV1(
         source_key=source.source_key,
+        source_archive_filename=archive.archive_filename,
         source_archive_sha256=archive.sha256,
         source_archive_byte_count=archive.byte_count,
         frame_index_ref=_source_ref(

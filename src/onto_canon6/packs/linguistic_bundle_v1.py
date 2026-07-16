@@ -19,7 +19,10 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 import yaml
 
 from onto_canon6.ontology_runtime.contracts import PackRef
-from onto_canon6.packaged_assets import installed_ontology_packs_root
+from onto_canon6.packaged_assets import (
+    installed_linguistic_trace_adjuncts_root,
+    installed_ontology_packs_root,
+)
 from onto_canon6.packs.framenet_projection_v1 import (
     FrameNetFrameRecordV1,
     FrameNetProjectionV1,
@@ -33,11 +36,11 @@ class LinguisticBundleError(RuntimeError):
 
 
 class LinguisticTraceFileV1(BaseModel):
-    """One package-owned trace file bound to its exact installed bytes."""
+    """One adjunct-owned trace file bound to its exact installed bytes."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    filename: str = Field(min_length=1, description="Safe filename inside the exact pack.")
+    filename: str = Field(min_length=1, description="Safe filename inside the exact adjunct.")
     sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="SHA-256 of the complete installed file."
     )
@@ -58,7 +61,11 @@ class LinguisticTraceManifestV1(BaseModel):
     schema_version: Literal["linguistic-trace-manifest-v1"] = Field(
         default="linguistic-trace-manifest-v1", description="Manifest discriminator."
     )
-    pack_ref: PackRef = Field(description="Exact installed pack owning the trace assets.")
+    pack_ref: PackRef = Field(description="Exact immutable pack targeted by the adjunct.")
+    target_pack_manifest_sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$",
+        description="SHA-256 of the immutable target pack manifest this adjunct extends.",
+    )
     framenet_projection: LinguisticTraceFileV1 = Field(
         description="Complete deterministic FrameNet projection file."
     )
@@ -66,6 +73,9 @@ class LinguisticTraceManifestV1(BaseModel):
         pattern=r"^[0-9a-f]{64}$", description="Normalized FrameNet projection content digest."
     )
     framenet_source_key: str = Field(min_length=1, description="Pinned FrameNet source key.")
+    framenet_source_archive_filename: str = Field(
+        min_length=1, description="Exact basename of the external FrameNet source archive."
+    )
     framenet_source_archive_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="SHA-256 of the external source archive."
     )
@@ -95,6 +105,16 @@ class LinguisticTraceManifestV1(BaseModel):
     )
     license_url: Literal["https://creativecommons.org/licenses/by/3.0/"] = Field(
         description="Human-readable license terms URL."
+    )
+    attribution_title: str = Field(
+        min_length=1, description="Work title supplied by exact distribution metadata."
+    )
+    attribution_author: str = Field(
+        min_length=1, description="Original author supplied by exact distribution metadata."
+    )
+    attribution_uri: str = Field(
+        pattern=r"^https?://",
+        description="Work URI supplied by exact distribution metadata.",
     )
     raw_archive_packaged: Literal[False] = Field(
         default=False, description="The external raw archive must never be installed."
@@ -184,7 +204,9 @@ class LinguisticAlignmentRefV1(BaseModel):
         description="Whether the source record itself has exact upstream identity."
     )
     verification_record_ref: str | None = Field(
-        default=None, description="Independent review record required only for verified state."
+        default=None,
+        min_length=1,
+        description="Independent review record required only for verified state.",
     )
 
     @model_validator(mode="after")
@@ -198,10 +220,15 @@ class LinguisticAlignmentRefV1(BaseModel):
         )
         if self.alignment_id != expected:
             raise ValueError("linguistic alignment ID does not match its content")
+        if any(not value.strip() or value != value.strip() for value in self.evidence_refs):
+            raise ValueError("linguistic alignment evidence refs must be nonempty and trimmed")
+        if self.verification_record_ref is not None and (
+            not self.verification_record_ref.strip()
+            or self.verification_record_ref != self.verification_record_ref.strip()
+        ):
+            raise ValueError("linguistic verification record ref must be nonempty and trimmed")
         if (self.state == "verified") != (self.verification_record_ref is not None):
             raise ValueError("verified alignment requires an independent verification record")
-        if self.source_family == "framenet" and self.state != "candidate":
-            raise ValueError("FrameNet donor alignment must remain candidate in Slice 2B")
         return self
 
 
@@ -306,6 +333,11 @@ class LinguisticBundleV1(BaseModel):
             raise ValueError("bundle predicate does not match query")
         if self.query.pack_ref != self.trace_manifest.pack_ref:
             raise ValueError("bundle query and trace manifest pack refs differ")
+        if (
+            self.trace_manifest.target_pack_manifest_sha256
+            != self.asset_digests.pack_manifest_sha256
+        ):
+            raise ValueError("bundle trace adjunct targets another pack manifest")
         role_ids = [role.role_id for role in self.roles]
         if len(role_ids) != len(set(role_ids)):
             raise ValueError("bundle canonical roles must be unique")
@@ -423,14 +455,32 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _target_pack_manifest_sha256(path: Path, pack_ref: PackRef) -> str:
+    """Validate and hash the immutable pack manifest targeted by one adjunct."""
+
+    try:
+        manifest = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, yaml.YAMLError) as exc:
+        raise LinguisticBundleError("LINGUISTIC_TRACE_INVALID_TARGET_PACK_MANIFEST") from exc
+    pack = manifest.get("pack") if isinstance(manifest, dict) else None
+    if (
+        not isinstance(pack, dict)
+        or pack.get("id") != pack_ref.pack_id
+        or pack.get("version") != pack_ref.pack_version
+    ):
+        raise LinguisticBundleError("LINGUISTIC_TRACE_TARGET_PACK_IDENTITY_MISMATCH")
+    return _sha256_file(path)
+
+
 def build_linguistic_trace_manifest_v1(
     *,
     pack_ref: PackRef,
     projection_path: Path,
     attribution_path: Path,
+    target_pack_manifest_path: Path,
     source_manifest: LinguisticSourceManifestV1,
 ) -> LinguisticTraceManifestV1:
-    """Build a strict trace manifest from completed package-owned assets."""
+    """Build a strict adjunct manifest from completed, pre-publication assets."""
 
     projection = _load_projection_compatible(projection_path)
     source = next(
@@ -440,17 +490,23 @@ def build_linguistic_trace_manifest_v1(
     if source is None or source.family != "framenet" or source.archive_identity is None:
         raise LinguisticBundleError("LINGUISTIC_TRACE_MISSING_FRAMENET_SOURCE_IDENTITY")
     archive = source.archive_identity
-    license_ids = {
-        item.license_id
-        for item in source.metadata_evidence
-        if item.evidence_scope == "license" and item.license_id is not None
-    }
+    license_metadata = tuple(
+        item for item in source.metadata_evidence if item.evidence_scope == "license"
+    )
+    attribution_title = license_metadata[0].attribution_title if license_metadata else None
+    attribution_author = license_metadata[0].attribution_author if license_metadata else None
+    attribution_uri = license_metadata[0].attribution_uri if license_metadata else None
     if (
-        archive.sha256 != projection.source_archive_sha256
+        archive.archive_filename != projection.source_archive_filename
+        or archive.sha256 != projection.source_archive_sha256
         or archive.byte_count != projection.source_archive_byte_count
         or source.license_disposition != "verified_redistributable"
         or source.redistribution_allowed is not True
-        or license_ids != {"CC-BY-3.0"}
+        or len(license_metadata) != 1
+        or license_metadata[0].license_id != "CC-BY-3.0"
+        or attribution_title is None
+        or attribution_author is None
+        or attribution_uri is None
     ):
         raise LinguisticBundleError("LINGUISTIC_TRACE_SOURCE_OR_LICENSE_MISMATCH")
     try:
@@ -458,7 +514,12 @@ def build_linguistic_trace_manifest_v1(
     except (OSError, UnicodeError) as exc:
         raise LinguisticBundleError("LINGUISTIC_TRACE_INVALID_ATTRIBUTION") from exc
     if (
-        "FrameNet 1.7" not in attribution_text
+        f"Title: {attribution_title}" not in attribution_text
+        or f"Original author: {attribution_author}" not in attribution_text
+        or (
+            f"Source URI supplied by the distributor: {attribution_uri}"
+            not in attribution_text
+        )
         or "CC-BY-3.0" not in attribution_text
         or "https://creativecommons.org/licenses/by/3.0/" not in attribution_text
         or archive.distribution_url not in attribution_text
@@ -466,12 +527,16 @@ def build_linguistic_trace_manifest_v1(
         raise LinguisticBundleError("LINGUISTIC_TRACE_INVALID_ATTRIBUTION")
     return LinguisticTraceManifestV1(
         pack_ref=pack_ref,
+        target_pack_manifest_sha256=_target_pack_manifest_sha256(
+            target_pack_manifest_path, pack_ref
+        ),
         framenet_projection=LinguisticTraceFileV1(
             filename=projection_path.name,
             sha256=_sha256_file(projection_path),
         ),
         framenet_projection_content_sha256=projection.projection_content_sha256,
         framenet_source_key=projection.source_key,
+        framenet_source_archive_filename=projection.source_archive_filename,
         framenet_source_archive_sha256=projection.source_archive_sha256,
         framenet_source_archive_byte_count=projection.source_archive_byte_count,
         framenet_distribution_url=archive.distribution_url,
@@ -487,6 +552,9 @@ def build_linguistic_trace_manifest_v1(
         ),
         license_id="CC-BY-3.0",
         license_url="https://creativecommons.org/licenses/by/3.0/",
+        attribution_title=attribution_title,
+        attribution_author=attribution_author,
+        attribution_uri=attribution_uri,
     )
 
 
@@ -578,13 +646,6 @@ def _load_pack_manifest(pack_dir: Path, query: LinguisticBundleQueryV1) -> tuple
     pack = manifest["pack"]
     if pack.get("id") != query.pack_ref.pack_id or pack.get("version") != query.pack_ref.pack_version:
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_PACK_IDENTITY_MISMATCH")
-    trace = manifest.get("linguistic_trace")
-    if (
-        not isinstance(trace, dict)
-        or trace.get("schema_version") != "linguistic-trace-manifest-v1"
-        or trace.get("manifest") != "linguistic_trace_manifest_v1.json"
-    ):
-        raise LinguisticBundleError("LINGUISTIC_BUNDLE_TRACE_MANIFEST_UNDECLARED")
     build = manifest.get("build")
     hashes = build.get("artifact_sha256") if isinstance(build, dict) else None
     if not isinstance(hashes, dict) or any(
@@ -607,19 +668,38 @@ def _verified_asset(pack_dir: Path, filename: str, declared_hashes: dict[str, st
     return path, observed
 
 
-def inspect_linguistic_bundle_at_root(
+def _verified_trace_asset(
+    trace_dir: Path, trace_file: LinguisticTraceFileV1
+) -> tuple[Path, str]:
+    """Load one adjunct-owned file against the strict trace-manifest digest."""
+
+    path = trace_dir / trace_file.filename
+    if not path.is_file():
+        raise LinguisticBundleError(
+            f"LINGUISTIC_BUNDLE_TRACE_ASSET_MISSING filename={trace_file.filename}"
+        )
+    observed = _sha256_file(path)
+    if observed != trace_file.sha256:
+        raise LinguisticBundleError(
+            f"LINGUISTIC_BUNDLE_TRACE_ASSET_HASH_MISMATCH filename={trace_file.filename}"
+        )
+    return path, observed
+
+
+def inspect_linguistic_bundle_at_roots(
     query: LinguisticBundleQueryV1,
     *,
     packs_root: Path,
+    trace_adjuncts_root: Path,
 ) -> LinguisticBundleV1:
-    """Inspect an exact pack under an explicit package-assets root."""
+    """Inspect one exact pack and its separately installed trace adjunct."""
 
     pack_dir = packs_root / query.pack_ref.pack_id / query.pack_ref.pack_version
     declared_hashes, pack_manifest_sha = _load_pack_manifest(pack_dir, query)
-    trace_path, trace_sha = _verified_asset(
-        pack_dir, "linguistic_trace_manifest_v1.json", declared_hashes
-    )
+    trace_dir = trace_adjuncts_root / query.pack_ref.pack_id / query.pack_ref.pack_version
+    trace_path = trace_dir / "linguistic_trace_manifest_v1.json"
     try:
+        trace_sha = _sha256_file(trace_path)
         trace_manifest = _validate_compatible(
             LinguisticTraceManifestV1,
             json.loads(trace_path.read_bytes()),
@@ -628,6 +708,8 @@ def inspect_linguistic_bundle_at_root(
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_INVALID_TRACE_MANIFEST") from exc
     if trace_manifest.pack_ref != query.pack_ref:
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_TRACE_PACK_IDENTITY_MISMATCH")
+    if trace_manifest.target_pack_manifest_sha256 != pack_manifest_sha:
+        raise LinguisticBundleError("LINGUISTIC_BUNDLE_TRACE_TARGET_PACK_MISMATCH")
 
     predicate_path, predicate_sha = _verified_asset(
         pack_dir, "predicate_types.jsonl", declared_hashes
@@ -639,22 +721,19 @@ def inspect_linguistic_bundle_at_root(
     mapping_path, mapping_sha = _verified_asset(
         pack_dir, "semantic_mappings.jsonl", declared_hashes
     )
-    projection_path, projection_sha = _verified_asset(
-        pack_dir, trace_manifest.framenet_projection.filename, declared_hashes
+    projection_path, projection_sha = _verified_trace_asset(
+        trace_dir, trace_manifest.framenet_projection
     )
-    attribution_path, attribution_sha = _verified_asset(
-        pack_dir, trace_manifest.attribution.filename, declared_hashes
+    _attribution_path, attribution_sha = _verified_trace_asset(
+        trace_dir, trace_manifest.attribution
     )
-    if (
-        projection_sha != trace_manifest.framenet_projection.sha256
-        or attribution_sha != trace_manifest.attribution.sha256
-    ):
-        raise LinguisticBundleError("LINGUISTIC_BUNDLE_TRACE_ASSET_DIGEST_MISMATCH")
     projection = _load_projection_compatible(projection_path)
     if (
         projection.projection_content_sha256
         != trace_manifest.framenet_projection_content_sha256
         or projection.source_key != trace_manifest.framenet_source_key
+        or projection.source_archive_filename
+        != trace_manifest.framenet_source_archive_filename
         or projection.source_archive_sha256 != trace_manifest.framenet_source_archive_sha256
         or projection.source_archive_byte_count
         != trace_manifest.framenet_source_archive_byte_count
@@ -773,9 +852,10 @@ def inspect_linguistic_bundle_at_root(
 def inspect_linguistic_bundle(query: LinguisticBundleQueryV1) -> LinguisticBundleV1:
     """Inspect one exact wheel-installed linguistic bundle."""
 
-    return inspect_linguistic_bundle_at_root(
+    return inspect_linguistic_bundle_at_roots(
         query,
         packs_root=installed_ontology_packs_root(),
+        trace_adjuncts_root=installed_linguistic_trace_adjuncts_root(),
     )
 
 

@@ -47,6 +47,9 @@ sources:
         sha256: a3ca813847c84e1487a5e2228a76dfef84713bef8fe6d7269a056800c7121c6a
         evidence_scope: license
         license_id: CC-BY-3.0
+        attribution_title: FrameNet 1.7
+        attribution_author: Collin F. Baker
+        attribution_uri: http://framenet.icsi.berkeley.edu
     license_disposition: verified_redistributable
     license_evidence: []
     storage_policy: external_cache

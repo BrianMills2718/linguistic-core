@@ -92,6 +92,21 @@ class DistributionMetadataEvidenceV1(BaseModel):
         default=None,
         description="Exact license identifier only for metadata that states one.",
     )
+    attribution_title: str | None = Field(
+        default=None,
+        min_length=1,
+        description="Work title supplied by the exact license metadata, when present.",
+    )
+    attribution_author: str | None = Field(
+        default=None,
+        min_length=1,
+        description="Original author supplied by the exact license metadata, when present.",
+    )
+    attribution_uri: str | None = Field(
+        default=None,
+        pattern=r"^https?://",
+        description="Work URI supplied by the exact license metadata, when present.",
+    )
 
     @model_validator(mode="after")
     def _metadata_evidence_is_consistent(self) -> "DistributionMetadataEvidenceV1":
@@ -102,6 +117,17 @@ class DistributionMetadataEvidenceV1(BaseModel):
             raise ValueError("license metadata evidence requires license_id")
         if self.evidence_scope != "license" and self.license_id is not None:
             raise ValueError("archive identity metadata cannot declare license_id")
+        attribution = (
+            self.attribution_title,
+            self.attribution_author,
+            self.attribution_uri,
+        )
+        if self.evidence_scope != "license" and any(value is not None for value in attribution):
+            raise ValueError("archive identity metadata cannot declare attribution fields")
+        if any(value is not None for value in attribution) and not all(
+            value is not None for value in attribution
+        ):
+            raise ValueError("license metadata attribution fields must be complete")
         return self
 
 
@@ -263,6 +289,16 @@ class LinguisticSourceSnapshotV1(BaseModel):
                 if scopes != {"archive_identity", "license"}:
                     raise ValueError(
                         "archive source requires separate identity and license metadata evidence"
+                    )
+                if self.family == "framenet" and self.redistribution_allowed and not any(
+                    item.evidence_scope == "license"
+                    and item.attribution_title is not None
+                    and item.attribution_author is not None
+                    and item.attribution_uri is not None
+                    for item in self.metadata_evidence
+                ):
+                    raise ValueError(
+                        "redistributable FrameNet archive requires complete supplied attribution"
                     )
             if self.storage_policy != "external_cache":
                 raise ValueError("available source bytes must use external_cache storage policy")

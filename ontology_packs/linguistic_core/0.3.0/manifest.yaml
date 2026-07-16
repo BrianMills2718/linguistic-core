@@ -5,8 +5,7 @@ pack:
   description: Foundational predicate vocabulary compiled from the predecessor Predicate
     Canon with donor-derived PropBank identifiers, FrameNet candidate alignments,
     and SUMO type lineage. Provides 4,669 predicates and 11,890 semantic role slots;
-    donor mapping epochs remain explicit unknowns. An exact FrameNet 1.7 inspection
-    trace is packaged separately and does not verify those semantic alignments.
+    historical upstream versions remain explicit unknowns.
 build:
   compiler_version: 0.2.0
   built_at: '2026-07-12T19:00:00Z'
@@ -20,10 +19,7 @@ build:
     aliases.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     constraints.jsonl: eef1656308200af5704d93caf8109eb4124c02e9da5ca7a5e2d4b076fa160a78
     entity_types.jsonl: 5275e082047f685be90eebfc21b7e225cd21a9375b386ed6b823aeafcacfb557
-    framenet_attribution.txt: c8e16bfd03f157a873bfa781ab99c0a88863b3623c74a4d9d2a0b064f2846b07
-    framenet_projection_v1.json.gz: a7cebe793427614bd21dc3e36ba0dc0a1aed291e60a3f71a0ac4b520db829e93
     hierarchy_edges.jsonl: 8e3e0710c22bfda0f2ab4ac40c84564cb5c3a33a52c26eed658568ce9f487250
-    linguistic_trace_manifest_v1.json: c3baedfeb2ea9d3de7a47fbe094ea5194657772a3e8312405c3a25a7f6c859fa
     predicate_canon_index.jsonl: c02c43e76345a40ccf0d99c9a79e65fe03c3ba478abcb88958188265ba741cf3
     predicate_role_edges.jsonl: 26969c58d9fc0096fa0abf8ed5815115882956d1e1f6711309b217937d2d328b
     predicate_types.jsonl: 78d71b76233818f7a8ae9fca853d80aa6fc089bd55d815b514e58ebcd724778d
@@ -50,6 +46,3 @@ provenance:
   semantic_sources: semantic_sources.yaml
   semantic_mappings: semantic_mappings.jsonl
   predicate_canon_index: predicate_canon_index.jsonl
-linguistic_trace:
-  schema_version: linguistic-trace-manifest-v1
-  manifest: linguistic_trace_manifest_v1.json
