@@ -52,6 +52,8 @@ def test_crosswalk_preserves_full_population_and_reviewed_sumo_outcomes() -> Non
     reviewed = [item for item in crosswalk.records if item.source_key == "sumo_governed_review_v1"]
     assert len(reviewed) == 34
     assert sum(item.state == "rejected" for item in reviewed) == 8
+    assert {item.review_status for item in reviewed} == {"independent_review"}
+    assert {item.review_status for item in crosswalk.records if item not in reviewed} == {"not_reviewed"}
 
 
 def test_crosswalk_rejects_promotion_and_count_preserving_corruption() -> None:

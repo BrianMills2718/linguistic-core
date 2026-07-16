@@ -36,6 +36,7 @@ class LinguisticCrosswalkRecordV1(BaseModel):
     producer_confidence: float | None = Field(default=None, ge=0, le=1)
     producer_method_scope: str | None = Field(default=None)
     evidence_ref: str = Field(min_length=1)
+    review_status: Literal["not_reviewed", "independent_review"]
     source_identity_state: SourceIdentityState
     state: CrosswalkState
     verification_basis: Literal["none"] = "none"
@@ -51,6 +52,11 @@ class LinguisticCrosswalkRecordV1(BaseModel):
             raise ValueError("compiler cannot emit verified crosswalk state")
         if self.verification_basis != "none":
             raise ValueError("compiler has no semantic verification basis")
+        is_review = self.source_key == "sumo_governed_review_v1"
+        if is_review != (self.review_status == "independent_review"):
+            raise ValueError("review status does not reconcile with the governed-review source")
+        if is_review and self.state not in {"rejected", "unresolved"}:
+            raise ValueError("governed review cannot emit a promotive state")
         return self
 
 
@@ -176,6 +182,7 @@ def compile_linguistic_crosswalk_v1(
                 producer_confidence=mapping.row_mapping_confidence,
                 producer_method_scope=mapping.row_mapping_method_scope,
                 evidence_ref=mapping.evidence_ref,
+                review_status="not_reviewed",
                 source_identity_state=identity,
                 state=state,
             )
@@ -225,6 +232,7 @@ def append_reviewed_sumo_role_records_v1(
                 producer_confidence=None,
                 producer_method_scope="reviewed_case_specific",
                 evidence_ref=f"sumo-review:{predicate_id}",
+                review_status="independent_review",
                 source_identity_state="exact_current_source",
                 state=state,
             )
