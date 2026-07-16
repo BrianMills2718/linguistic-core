@@ -1,0 +1,43 @@
+pack:
+  id: linguistic_core
+  version: 0.4.0-rc1
+  name: linguistic_core
+  description: Non-default sparse runtime view; no semantic assertions are policy-eligible.
+build:
+  compiler_version: linguistic-runtime-view-v1
+  crosswalk_content_sha256: 07971483a40105856529d0b2e6e4e372d445faa71de03105a98d3c0a067d4b2b
+  runtime_view_receipt:
+    schema_version: linguistic-runtime-view-v1
+    pack_id: linguistic_core
+    pack_version: 0.4.0-rc1
+    crosswalk_content_sha256: 07971483a40105856529d0b2e6e4e372d445faa71de03105a98d3c0a067d4b2b
+    input_record_count: 46184
+    eligible_record_count: 0
+    emitted_predicate_count: 0
+    emitted_role_count: 0
+    emitted_entity_type_count: 0
+    default_activation: false
+    content_sha256: 37abfebc4270fec593da895d7d2dc43a89a7ce9c381ba741c8638f55441ec0d2
+  artifact_sha256:
+    aliases.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    constraints.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    entity_types.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    hierarchy_edges.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    predicate_role_edges.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    predicate_types.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    role_types.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    source_mappings.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    value_types.jsonl: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+capabilities:
+  assertion_type: n-ary
+  type_system: sumo
+content:
+  entity_types: entity_types.jsonl
+  predicate_types: predicate_types.jsonl
+  role_types: role_types.jsonl
+  value_types: value_types.jsonl
+  hierarchy_edges: hierarchy_edges.jsonl
+  predicate_role_edges: predicate_role_edges.jsonl
+  source_mappings: source_mappings.jsonl
+  aliases: aliases.jsonl
+  constraints: constraints.jsonl

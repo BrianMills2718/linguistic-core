@@ -1,0 +1,41 @@
+SUMO bounded linguistic context
+Source: https://github.com/ontologyportal/sumo at 806b9cd57d1313309aad67dffa12871c06de0f26
+Source module: Merge.kif (532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307)
+Acknowledgement: Institute of Electrical and Electronics Engineers, Inc. (IEEE)
+Only derived bounded facts are packaged; the raw module and full projection are not.
+
+Exact source license notice:
+;; The SUMO is freely available, subject to the following IEEE license.
+
+;; ----------------------
+;; Copyright � 2004 by the Institute of Electrical and Electronics Engineers, Inc.
+;; Three Park Avenue
+;; New York, NY 10016-5997, USA
+;; All rights reserved.
+
+;; 1. COPYRIGHT
+;; The Institute of Electrical and Electronics Engineers, Inc., ("IEEE") owns the
+;; copyright to this Document in all forms of media. Copyright in the text retrieved,
+;; displayed or output from this Document is owned by IEEE and is protected by the
+;; copyright laws of the United States and by international treaties. The IEEE reserves
+;; all rights not expressly granted herein.
+
+;; 2. ROYALTIES
+;; The IEEE is providing the Document at no charge. However, the Document is not to be
+;; considered "Public Domain," as the IEEE is, and at all times shall remain, the sole
+;; copyright holder in the Document. The IEEE intends to revise the Document from time to
+;; time; the latest version shall be available at http://standards.ieee.org/catalog/
+
+;; 3. TERMS OF USE
+;; The IEEE hereby grants Licensee a perpetual, non-exclusive, royalty-free, world-wide
+;; right and license to copy, publish and distribute the Document in any way, and to
+;; prepare derivative works that are based on or incorporate all or part of the Document
+;; provided that the IEEE is appropriately acknowledged as the source and copyright owner
+;; in each and every use.
+
+;; 4. LIMITED WARRANTIES & LIMITATIONS OF REMEDIES
+;; LICENSOR Does not warrant or represent the accuracy or content of the document and
+;; Expressly Disclaims any Express or Implied Warranty, including any Implied Warranty of
+;; Merchantability or Fitness for a Specific Purpose or that the use of the document is
+;; free from patent infringement. The document is supplied ONLY "AS IS."
+;; ----------------------

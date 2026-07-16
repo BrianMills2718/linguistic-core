@@ -1,0 +1,424 @@
+{
+  "schema_version": "sumo-module-publication-review-v1",
+  "profile_id": "linguistic-bounded-context-v1",
+  "source_commit_sha": "806b9cd57d1313309aad67dffa12871c06de0f26",
+  "source_tree_sha": "c662412aa248bac1d7bae459752760757dcbfbdb",
+  "selected_payload_sha256": "798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272",
+  "selected_module_count": 66,
+  "approved_module_count": 1,
+  "excluded_module_count": 65,
+  "full_projection_publication_status": "blocked_mixed_license",
+  "module_dispositions": [
+    {
+      "path": "Anatomy.kif",
+      "sha256": "b764c254429aa26bfa1c87e8f816bc78ad28c2965f0ffadf3140b6640b9bfa2c",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Animals.kif",
+      "sha256": "3e2a7a7f709e33505a9368bd39e7a834013b99f58de83aae2634372d2879188c",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "ArabicCulture.kif",
+      "sha256": "28e21ec3055933e0ae4259c683e283782bb597b53087e2222d272a875dad9433",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Biography.kif",
+      "sha256": "e38dfacc70a445553bba4a9ac22db73039ae5280d33395a75b850cbbb8a9f803",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "CCTrep.kif",
+      "sha256": "c07cd0685b672746f87207f6f9fba37c623e1703afb875687b13d10aa832b06b",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Cars.kif",
+      "sha256": "3ab133b21d5c1190491e970d57a28d98268dae13d90153d3d97adf41d19700f7",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Catalog.kif",
+      "sha256": "3c5ba6fe14416f21487c7c28881d2e377ea861817307e75a20c5a36bddea4762",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Communications.kif",
+      "sha256": "dab377d39c801aa315f99eaa232b0a84a77c11ae80839a951a6ab87d177b7794",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "ComputerInput.kif",
+      "sha256": "6c8c005c0ff7ccb5d70b22509d36f5d32844f7369bfb882caadcba4901ebe283",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "ComputingBrands.kif",
+      "sha256": "c577dbd88304c15c282de3b15f1f75d651efcc82dcf3d3faa0fed1ba5d68000b",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "CountriesAndRegions.kif",
+      "sha256": "88709ebf87cc643c9fdac65957ddd7389bc3434a3db41a509227eb4e0f07c9fb",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Dining.kif",
+      "sha256": "cf49aa3c2152a1749d9254fd2c0cd94f0c645d39ec9f3c407ec6bbb394c645ef",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Economy.kif",
+      "sha256": "73dafb056b9ac888a1f6cb4ced16713dbc16e654abdf551d5fafe33e41ac7c18",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "FOAFmap.kif",
+      "sha256": "93f4029d1a561d8ee42f2a8da13209103a358bf0f5cc8791e3a49bd33afcc71f",
+      "header_class": "mixed_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Facebook.kif",
+      "sha256": "89d52e2ae1325fdd3f142c9f261708ea00757c1e8501efcef38237c8c7ee8782",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "FinancialOntology.kif",
+      "sha256": "450a0ce4e5045b26b89517eb950d6072ecd7253d928b1d756fb33d2f9bbb173e",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Food.kif",
+      "sha256": "fe56df751a89d8dc56804f7d3650f8c4fe06f861925f58a037a03f3a47bd7064",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "GentleM.kif",
+      "sha256": "d0c5ffad47c085d97b79d206f016c1d26fbfaf5c948a87fe34b1b1ffce194300",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "GeochronologicTimes.kif",
+      "sha256": "040345ec276bad36b021203e0cdc478a0c3bc10a073e68eb19704ea67fdfa295",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Geography.kif",
+      "sha256": "406dd4d58da1061787313a4b22e5f79f5406928e80f38c374d8edc849db06989",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Government.kif",
+      "sha256": "ef4658381228a62861944b6e1688d22ab7dba3e8bdd9b232525156b682c4ccd1",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Hotel.kif",
+      "sha256": "5ffe036a6953ffe3821261fdee9b12d36c97317b0b267a388c6301310bf4c83a",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "HouseholdAppliances.kif",
+      "sha256": "7bf33a6e38291edfe95b67eaa5fbcc49cf3a04579ce72be01bfc4581d5024f66",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Justice.kif",
+      "sha256": "a1eed737af90678378964d877bb9cb334d177eccad09757bc727d6eeb10d6168",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Languages.kif",
+      "sha256": "826d0718d5cf2719f72330bfbd106c5a135a672c0dfaf4368602b0bc5a379378",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Law.kif",
+      "sha256": "76fb4f6b20985d94b12abb9edb0836e0e765965b2adbda6223a494f58ac0eea5",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Media.kif",
+      "sha256": "6b83a2f3c9a45d9d73e9903a2ec0c993efe377ff5ca9c8cfb23a752431258596",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Medicine.kif",
+      "sha256": "a8f885bebbe0fbb25314f0ebdd0bbb958d750b1a36bf41043e95992adab61dae",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Merge.kif",
+      "sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+      "header_class": "ieee_custom_notice",
+      "publication_disposition": "approved_for_linguistic_bounded_context"
+    },
+    {
+      "path": "Mid-level-ontology.kif",
+      "sha256": "6bd907c1c2d038a4c0f4b85887dd50dfa84eb311e4265a40ff5cef102368067e",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Military.kif",
+      "sha256": "d3e2f9379e6c8b932378b4a6954fd1d18edc28b4be9411af6adff3f7d5f7b6de",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "MilitaryDevices.kif",
+      "sha256": "ab8b3430534ec106c1051260084bdbe3968966fc16eda4d1f3d847c4a1fc9534",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "MilitaryPersons.kif",
+      "sha256": "45d4052fbab822bbe082d6d11ad758537aa428bbe81426b0ad3fc7d5fa1c1c77",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "MilitaryProcesses.kif",
+      "sha256": "80a5e0cf6b155a2c002ee6a13aec49049e912348d52d527408dacb69a0734c0a",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "ModSim.kif",
+      "sha256": "60c5841ad3eb79f41ce238b5f0529a0fd8527445e7b5e3a7ed10868b5f4b9897",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Music.kif",
+      "sha256": "fcc0d38ccad6678a4d588190cb15f827bcb7b3d98f1d1e0d06be5d2c41292266",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "NameTermFormat.kif",
+      "sha256": "e4984a6ffa1f863d9bf9ee4b4234578bb9e618be25b00fd87eb687f6119a66a1",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "NavalModeling.kif",
+      "sha256": "04d3752bbc738c435aa2049e1b84c284c50d070187026fc8508749de77ad2f5d",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Objects.kif",
+      "sha256": "e96f706016c06ba48fedd9df29e5f3232d989b468bb91856e308e56a4169d8c6",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "People.kif",
+      "sha256": "ce82bd70b7d404a1f40a9ac3ad021bcd1d1a73910fc351c2a8a848139ed1e0f6",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "QoSontology.kif",
+      "sha256": "475abbf6a29edb5b0b8677c5b18360ea34af34f202e3b664f0867718c3c55d54",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Sports.kif",
+      "sha256": "348e4a3f486aa377881d7c671b3aef2a1c89aca2d390b5dd65ea7e5bc37ab501",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "TransnationalIssues.kif",
+      "sha256": "c520fe5fff5958e7819fae7ecdb7c0a33187301bd3eb8754906a75023cdd6c44",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "TransportDetail.kif",
+      "sha256": "2161d92ba283cab7f34d6f75c26f3179b67159adc76c684a42927805122925de",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Transportation.kif",
+      "sha256": "f04fb98a1e86861eaa4321af59c059bc9c8287d69fe123e69f58329a6a6a74ef",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Trees.kif",
+      "sha256": "219c87d87a50cb58faa5311ea7edd0bfe77f538579c62c965187c95b512586f5",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "UXExperimentalTerms.kif",
+      "sha256": "843454d75ea8251c4b2a7af23f8000d6363bcfaf729d8299140b8e048c3e3450",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "VirusProteinAndCellPart.kif",
+      "sha256": "b4a8bae1f171dcf16de933626bd7298d2121575586845bb77be78b6633da2d9a",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "WMD.kif",
+      "sha256": "0bd8a7f80055fdb5cac1db550bccc80bbd6dac99c1916253f86eea66cd20be98",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "Weather.kif",
+      "sha256": "f5dec678134f3069a8d6d08f563358bb169d59b5b13697e78deb37f864790956",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "WeatherStatecraft.kif",
+      "sha256": "cdcf1764c83fe43a79662f63e84e8c856edf8991a354944d9dc3958a088a0ccd",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "WorldAirports.kif",
+      "sha256": "3f2a1c786cb6aa55a0acd9b61e914e340e30ab2eba99dfbcfa15b2761f1f1d67",
+      "header_class": "lgpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "arteries.kif",
+      "sha256": "e4bd5c765d1f00f4fd149688c3c7e2a864b6e1cf1320d84bfbcc373876adf5e2",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "capabilities.kif",
+      "sha256": "aebc279400eabf3098e8d4851829aec9c379587fdba94f31048209bda6f547a4",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "domainEnglishFormat.kif",
+      "sha256": "f6149003c43fff8f39d56230e0369b5ba9cd1744af35e796e331e0d147bc5b08",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "emotion.kif",
+      "sha256": "940c2820ae1f107d83a79e7a9f132accd8fd66827a1c04089ec1b5a7caf16e9e",
+      "header_class": "creative_commons_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "engineering.kif",
+      "sha256": "98c85519800beb9d87b0b1fa1fb32381ad15ece5df3f9b746e96d313376faf81",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "english_format.kif",
+      "sha256": "b90dac3890d0a5ffad613e0eefc238a4c7a748a3decc3a1421ccb9a1da555930",
+      "header_class": "lgpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "mondial.kif",
+      "sha256": "539959258582dffc60fba9e9c319bae3c592d2651b11608e0c34a3451d3d4d57",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "naics.kif",
+      "sha256": "e3ca20690000a72fd0841173b82aedde6c4148844cf188464c398fce446b6b7d",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "nlg_supplement_formats.kif",
+      "sha256": "68a7c789e174c959ca59ba4b55fdf610e13b48103637b6453db471532d6fd424",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "pictureList-ImageNet.kif",
+      "sha256": "a4465c213a0081bd35b271109e7bfd14d6b117717ae4af68a12396cf94984510",
+      "header_class": "creative_commons_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "pictureList.kif",
+      "sha256": "dc5bbb1e7a63c47c391df377219c94ba96dd2d49a071aecb1ca1f004946c2a7e",
+      "header_class": "gpl_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "tinyHOL.kif",
+      "sha256": "1026f7557d67ea5afe4abe5269bdd857d6fa3d4ba4739ba7e8e1e5bee159b02c",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "tinyIntSUMO.kif",
+      "sha256": "33edd9e16f47240122cee2d716745b20f4d4f15476f7e8abe5c7d319c9535593",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    },
+    {
+      "path": "tinySUMO.kif",
+      "sha256": "37766b5241d2094e07533bd80fefb54a84e5bba9f0a3e1a4879870f854642107",
+      "header_class": "unclassified_no_header_notice",
+      "publication_disposition": "excluded_pending_module_specific_review"
+    }
+  ],
+  "published_context_content_sha256": "a36cd88db1017e3e254de0becec781382e701c38c0eaf18d3d1061004c707ebb",
+  "official_evidence": [
+    {
+      "url": "https://www.ontologyportal.org/",
+      "accessed_on": "2026-07-16",
+      "observation": "The official portal distinguishes IEEE-owned SUMO from GPL-licensed extending ontologies; that collection-level statement does not resolve every exact root module at the pinned commit."
+    },
+    {
+      "url": "https://github.com/ontologyportal/sumo",
+      "accessed_on": "2026-07-16",
+      "observation": "Official public source repository for the pinned bytes."
+    }
+  ],
+  "legal_advice_claimed": false,
+  "review_content_sha256": "e85241dc7ba60b7a8a63f73ac91da7ed37bb681e9980aabc52f376ee1cc03d45"
+}

@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from onto_canon6.packs.framenet_projection_v1 import compile_framenet_projection_v1
 from onto_canon6.packs.linguistic_sources_v1 import (
     LinguisticSourceManifestV1,
     LinguisticSourceVerificationReportV1,
@@ -327,6 +328,18 @@ def audit_linguistic_donor_labels_v1(
     sumo_ids = _sumo_symbols(
         source_roots[sumo.source_key], sumo.selected_payload.selection_globs
     )
+    framenet = sources["framenet"]
+    framenet_ids: set[str] | None = None
+    if framenet.availability == "available":
+        archive = source_roots.get(framenet.source_key)
+        if archive is None:
+            raise ValueError("available FrameNet source requires a local archive")
+        framenet_ids = {
+            frame.name
+            for frame in compile_framenet_projection_v1(
+                manifest, source_archive=archive
+            ).frames
+        }
 
     all_comparisons: list[DonorIdentifierComparisonV1] = []
     summaries: list[DonorIdentifierFamilySummaryV1] = []
@@ -344,8 +357,16 @@ def audit_linguistic_donor_labels_v1(
                 else:
                     status = "missing_current_source"
             elif family == "framenet":
-                normalized = None
-                status = "source_unavailable"
+                if framenet_ids is None:
+                    normalized = None
+                    status = "source_unavailable"
+                else:
+                    normalized = donor_id
+                    status = (
+                        "matched_current_source"
+                        if normalized in framenet_ids
+                        else "missing_current_source"
+                    )
             else:
                 normalized = normalize_sumo_donor_id_v1(donor_id)
                 if normalized is None:
