@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import json
 from pathlib import Path
 from typing import cast
@@ -16,8 +17,11 @@ from onto_canon6.packs.semantic_provenance import SemanticMappingRecord
 def _payload() -> dict[str, object]:
     """Load the exhaustive committed record rather than a reduced fixture."""
 
-    path = Path(__file__).parents[2] / "docs/runs/artifacts/plan0147_linguistic_crosswalk_v1.json"
-    return cast(dict[str, object], json.loads(path.read_text(encoding="utf-8")))
+    path = (
+        Path(__file__).parents[2] / "docs/runs/artifacts/plan0147_linguistic_crosswalk_v1.json.gz"
+    )
+    with gzip.open(path, mode="rt", encoding="utf-8") as handle:
+        return cast(dict[str, object], json.load(handle))
 
 
 def test_crosswalk_preserves_full_population_and_reviewed_sumo_outcomes() -> None:
