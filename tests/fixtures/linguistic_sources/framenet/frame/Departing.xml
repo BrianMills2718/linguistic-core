@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frame xmlns="http://framenet.icsi.berkeley.edu" ID="200" name="Departing">
+  <definition>&lt;def-root&gt;A Mover departs.&lt;/def-root&gt;</definition>
+  <FE ID="2001" name="Mover" abbrev="Mvr" coreType="Core">
+    <definition>&lt;def-root&gt;The moving entity.&lt;/def-root&gt;</definition>
+  </FE>
+  <lexUnit ID="2100" name="depart.v" POS="V" status="Created">
+    <definition>go away</definition>
+  </lexUnit>
+</frame>

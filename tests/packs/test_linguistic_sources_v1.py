@@ -125,6 +125,9 @@ def test_archive_source_verifies_exact_bytes_and_rejects_substitution(tmp_path: 
             sha256="3" * 64,
             evidence_scope="license",
             license_id="CC-BY-3.0",
+            attribution_title="FrameNet 1.7",
+            attribution_author="Fixture Author",
+            attribution_uri="https://example.invalid/framenet",
         ),
     )
     source = LinguisticSourceSnapshotV1(
@@ -295,3 +298,55 @@ def test_canonical_manifest_binds_available_framenet_archive() -> None:
         "22f6aad6fb799ba4dbed0440714e1118442ad7d7345351de37428581284f471c"
     )
     assert framenet.redistribution_allowed is True
+    license_metadata = next(
+        item for item in framenet.metadata_evidence if item.evidence_scope == "license"
+    )
+    assert license_metadata.attribution_title == "FrameNet 1.7"
+    assert license_metadata.attribution_author == "Collin F. Baker"
+    assert license_metadata.attribution_uri == "http://framenet.icsi.berkeley.edu"
+
+
+def test_redistributable_framenet_archive_requires_complete_supplied_attribution(
+    tmp_path: Path,
+) -> None:
+    """Exact license identity cannot omit supplied author/title/URI metadata."""
+
+    archive = tmp_path / "framenet_v17.zip"
+    archive.write_bytes(b"fixture")
+    identity = ArchiveSourceIdentityV1(
+        archive_filename=archive.name,
+        byte_count=archive.stat().st_size,
+        sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+        distribution_url="https://example.invalid/framenet_v17.zip",
+    )
+    metadata = (
+        DistributionMetadataEvidenceV1(
+            repository_url="https://example.invalid/metadata",
+            revision_sha="1" * 40,
+            path="index.xml",
+            sha256="2" * 64,
+            evidence_scope="archive_identity",
+        ),
+        DistributionMetadataEvidenceV1(
+            repository_url="https://example.invalid/metadata",
+            revision_sha="1" * 40,
+            path="packages/corpora/framenet_v17.xml",
+            sha256="3" * 64,
+            evidence_scope="license",
+            license_id="CC-BY-3.0",
+        ),
+    )
+
+    with pytest.raises(ValidationError, match="FrameNet archive.*complete supplied attribution"):
+        LinguisticSourceSnapshotV1(
+            source_key="framenet_17",
+            family="framenet",
+            release_label="1.7",
+            official_url="https://example.invalid/framenet",
+            availability="available",
+            archive_identity=identity,
+            metadata_evidence=metadata,
+            license_disposition="verified_redistributable",
+            storage_policy="external_cache",
+            redistribution_allowed=True,
+        )

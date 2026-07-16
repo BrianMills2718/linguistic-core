@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frameRelations xmlns="http://framenet.icsi.berkeley.edu">
+  <frameRelationType ID="1" name="Inheritance" subFrameName="Child" superFrameName="Parent">
+    <frameRelation ID="900" subID="100" supID="200" subFrameName="Quitting_a_place" superFrameName="Departing">
+      <FERelation ID="901" subID="1001" supID="2001" subFEName="Self_mover" superFEName="Mover"/>
+    </frameRelation>
+  </frameRelationType>
+</frameRelations>
