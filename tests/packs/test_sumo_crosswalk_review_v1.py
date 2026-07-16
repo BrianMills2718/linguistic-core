@@ -8,6 +8,7 @@ from pathlib import Path
 import sqlite3
 import subprocess
 
+import jsonschema
 import pytest
 from pydantic import ValidationError
 
@@ -25,6 +26,7 @@ from onto_canon6.packs.sumo_crosswalk_review_v1 import (
     SumoSemanticProposalBatchV1,
     SumoSemanticProposalRunV1,
     build_sumo_crosswalk_semantic_review_queue_v1,
+    build_sumo_semantic_response_contract_v1,
     compile_sumo_semantic_proposals_v1,
     verify_llm_client_revision_v1,
 )
@@ -272,6 +274,65 @@ def test_compiler_checks_complete_coverage_quotes_offsets_and_controls(
         negative_evidence="A storm caused the outage.",
     )
     assert controls_passed is False
+
+
+def test_queue_bound_native_schema_excludes_controls_and_requires_exact_count(
+    tmp_path: Path,
+) -> None:
+    report, database, source = _inputs(tmp_path)
+    queue = build_sumo_crosswalk_semantic_review_queue_v1(
+        report, donor_database=database, propbank_source=source
+    )
+
+    schema = build_sumo_semantic_response_contract_v1(queue.cases).model_json_schema()
+    proposals = schema["properties"]["proposals"]
+    assert proposals["minItems"] == 1
+    assert proposals["maxItems"] == 1
+    proposal_definition = next(
+        definition
+        for definition in schema["$defs"].values()
+        if "donor_predicate_id" in definition.get("properties", {})
+    )
+    identifier_schema = proposal_definition["properties"]["donor_predicate_id"]
+    allowed = identifier_schema.get("enum", [identifier_schema.get("const")])
+    assert allowed == [queue.cases[0].donor_predicate_id]
+    assert "positive_autonomous_actor" not in allowed
+    assert "negative_inanimate_cause" not in allowed
+
+    response = {
+        "proposals": [
+            {
+                "donor_predicate_id": queue.cases[0].donor_predicate_id,
+                "named_label": queue.cases[0].named_label,
+                "disposition": "withhold_insufficient_evidence",
+                "evidence_field": "propbank_argument_description",
+                "evidence_quote": "thing affecting",
+                "rationale": "The source does not require autonomy.",
+                "ambiguity_note": "Autonomy remains unresolved.",
+            }
+        ],
+        "control_results": [
+            {
+                "control_id": "positive_autonomous_actor",
+                "disposition": "retain_role_narrow_type",
+                "evidence_quote": "autonomous actor",
+            },
+            {
+                "control_id": "negative_inanimate_cause",
+                "disposition": "reject_role_mapping",
+                "evidence_quote": "storm",
+            },
+        ],
+    }
+    jsonschema.validate(response, schema)
+    response["proposals"][0]["donor_predicate_id"] = "positive_autonomous_actor"
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(response, schema)
+    with pytest.raises(ValidationError):
+        build_sumo_semantic_response_contract_v1(queue.cases).model_validate(response)
+
+    with pytest.raises(SumoCrosswalkReviewError, match="sorted unique"):
+        build_sumo_semantic_response_contract_v1((queue.cases[0], queue.cases[0]))
 
 
 def test_terminal_run_trace_rejects_inconsistent_success_or_failure() -> None:

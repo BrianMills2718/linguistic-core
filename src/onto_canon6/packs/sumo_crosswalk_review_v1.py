@@ -12,7 +12,7 @@ import subprocess
 from typing import Literal, TypedDict
 import xml.etree.ElementTree as ET
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, create_model, model_validator
 
 from onto_canon6.packs.linguistic_source_audit_v1 import (
     normalize_propbank_donor_id_v1,
@@ -756,6 +756,45 @@ def compile_sumo_semantic_proposals_v1(
     return tuple(sorted(compiled, key=lambda item: item.case_id)), controls_passed
 
 
+def build_sumo_semantic_response_contract_v1(
+    eligible: tuple[SumoCrosswalkSemanticReviewCaseV1, ...],
+) -> type[BaseModel]:
+    """Build a native schema that structurally excludes non-queue proposal IDs."""
+
+    case_ids = tuple(case.donor_predicate_id for case in eligible)
+    if not case_ids or case_ids != tuple(sorted(set(case_ids))):
+        raise SumoCrosswalkReviewError(
+            "semantic response contract requires sorted unique eligible cases"
+        )
+    contract_suffix = hashlib.sha256("\n".join(case_ids).encode()).hexdigest()[:12]
+    allowed_id_type = Literal.__getitem__(case_ids)
+    proposal_model = create_model(
+        f"QueueBoundSumoSemanticProposal_{contract_suffix}",
+        __base__=SumoSemanticDispositionProposalV1,
+        donor_predicate_id=(
+            allowed_id_type,
+            Field(
+                min_length=1,
+                description="Copy one exact allowed real donor predicate identifier.",
+            ),
+        ),
+    )
+    return create_model(
+        f"QueueBoundSumoSemanticBatch_{contract_suffix}",
+        __base__=SumoSemanticProposalBatchV1,
+        proposals=(
+            tuple[proposal_model, ...],  # type: ignore[valid-type]
+            Field(
+                min_length=len(case_ids),
+                max_length=len(case_ids),
+                description=(
+                    "Exactly one proposal for every allowed real case; controls are excluded."
+                ),
+            ),
+        ),
+    )
+
+
 def run_sumo_semantic_proposals_v1(
     queue: SumoCrosswalkSemanticReviewQueueV1,
     *,
@@ -815,8 +854,9 @@ def run_sumo_semantic_proposals_v1(
         negative_control_json=json.dumps(negative, sort_keys=True),
         review_cases_json=json.dumps(case_payload, sort_keys=True),
     )
+    response_contract = build_sumo_semantic_response_contract_v1(eligible)
     schema_json = json.dumps(
-        SumoSemanticProposalBatchV1.model_json_schema(),
+        response_contract.model_json_schema(),
         sort_keys=True,
         separators=(",", ":"),
     )
@@ -833,10 +873,10 @@ def run_sumo_semantic_proposals_v1(
         "rendered_messages": tuple(messages),
     }
     try:
-        batch, result = call_llm_structured(
+        raw_batch, result = call_llm_structured(
             config.model,
             messages,
-            SumoSemanticProposalBatchV1,
+            response_contract,
             num_retries=0,
             retry=RetryPolicy(max_retries=0),
             fallback_models=[],
@@ -866,6 +906,7 @@ def run_sumo_semantic_proposals_v1(
             **common,
         )
     else:
+        batch = SumoSemanticProposalBatchV1.model_validate(raw_batch.model_dump())
         raw_content = _optional_string(getattr(result, "content", None))
         try:
             compiled, controls_passed = compile_sumo_semantic_proposals_v1(
