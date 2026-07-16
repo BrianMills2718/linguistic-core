@@ -29,6 +29,7 @@ from onto_canon6.packs.framenet_projection_v1 import (
 )
 from onto_canon6.packs.linguistic_sources_v1 import LinguisticSourceManifestV1
 from onto_canon6.packs.semantic_provenance import SemanticMappingRecord
+from onto_canon6.packs.sumo_publication_v1 import PublishedSumoBoundedContextV1
 
 
 class LinguisticBundleError(RuntimeError):
@@ -119,6 +120,62 @@ class LinguisticTraceManifestV1(BaseModel):
     raw_archive_packaged: Literal[False] = Field(
         default=False, description="The external raw archive must never be installed."
     )
+    sumo_context: LinguisticTraceFileV1 | None = Field(
+        default=None, description="Optional reviewed bounded SUMO context file."
+    )
+    sumo_context_content_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[0-9a-f]{64}$",
+        description="Normalized bounded SUMO context digest when published.",
+    )
+    sumo_source_key: Literal["sumo_root_kif"] | None = Field(
+        default=None, description="Pinned SUMO source key when context is published."
+    )
+    sumo_source_commit_sha: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{40}$", description="Exact SUMO commit."
+    )
+    sumo_source_tree_sha: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{40}$", description="Exact SUMO tree."
+    )
+    sumo_selected_payload_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$", description="Exact root-module payload."
+    )
+    sumo_source_module: Literal["Merge.kif"] | None = Field(
+        default=None, description="Only source module approved by publication profile v1."
+    )
+    sumo_source_module_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$", description="Exact approved module digest."
+    )
+    sumo_attribution: LinguisticTraceFileV1 | None = Field(
+        default=None, description="Installed IEEE acknowledgement and exact notice."
+    )
+    sumo_license_id: Literal["LicenseRef-IEEE-SUMO-2004"] | None = Field(
+        default=None, description="Reviewed custom license reference."
+    )
+    raw_sumo_module_packaged: Literal[False] = Field(
+        default=False, description="The approved raw SUMO module is never installed."
+    )
+    full_sumo_projection_packaged: Literal[False] = Field(
+        default=False, description="The mixed-license full SUMO projection is never installed."
+    )
+
+    @model_validator(mode="after")
+    def _sumo_publication_fields_are_all_or_none(self) -> "LinguisticTraceManifestV1":
+        fields = (
+            self.sumo_context,
+            self.sumo_context_content_sha256,
+            self.sumo_source_key,
+            self.sumo_source_commit_sha,
+            self.sumo_source_tree_sha,
+            self.sumo_selected_payload_sha256,
+            self.sumo_source_module,
+            self.sumo_source_module_sha256,
+            self.sumo_attribution,
+            self.sumo_license_id,
+        )
+        if any(value is not None for value in fields) and any(value is None for value in fields):
+            raise ValueError("published SUMO trace fields must be complete or absent")
+        return self
 
 
 class LinguisticBundleQueryV1(BaseModel):
@@ -252,19 +309,42 @@ class FrameNetAlignedRecordV1(BaseModel):
 
 
 class SumoBundleContextV1(BaseModel):
-    """Honest pre-Slice-2C SUMO context without source-grounding claims."""
+    """Bounded SUMO context with coupled source-grounding and alignment states."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    status: Literal["pending_source_projection"] = Field(
+    status: Literal["pending_source_projection", "source_grounded_bounded"] = Field(
         default="pending_source_projection", description="SUMO Slice 2C is not yet complete."
     )
-    source_grounded: Literal[False] = Field(
-        default=False, description="Donor references are not exact current SUMO source records."
+    source_grounded: bool = Field(
+        default=False, description="Whether the returned source record closes to exact SUMO bytes."
     )
     donor_refs: tuple[LinguisticAlignmentRefV1, ...] = Field(
         description="Bounded donor-only SUMO references for this predicate."
     )
+    source_alignment: LinguisticAlignmentRefV1 | None = Field(
+        default=None,
+        description="Candidate alignment only when its exact defining module is published.",
+    )
+    published_context: PublishedSumoBoundedContextV1 | None = Field(
+        default=None, description="Exact approved source context when publication is available."
+    )
+
+    @model_validator(mode="after")
+    def _grounding_state_is_coherent(self) -> "SumoBundleContextV1":
+        grounded = self.published_context is not None
+        if self.source_grounded != grounded or (self.status == "source_grounded_bounded") != grounded:
+            raise ValueError("SUMO bundle grounding status does not match published context")
+        if any(
+            item.source_identity_status != "donor_only" or item.state != "unresolved"
+            for item in self.donor_refs
+        ):
+            raise ValueError("SUMO donor references must remain unresolved donor-only identities")
+        if self.source_alignment is not None:
+            raise ValueError(
+                "bounded Merge.kif context cannot claim the externally defined Leaving alignment"
+            )
+        return self
 
 
 class LinguisticBundleAssetDigestsV1(BaseModel):
@@ -290,11 +370,20 @@ class LinguisticBundleAssetDigestsV1(BaseModel):
     semantic_mappings_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="Observed semantic-mappings SHA-256."
     )
+    predicate_canon_index_sha256: str = Field(
+        pattern=r"^[0-9a-f]{64}$", description="Observed donor predicate-canon index SHA-256."
+    )
     framenet_projection_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="Observed installed FrameNet projection SHA-256."
     )
     attribution_sha256: str = Field(
         pattern=r"^[0-9a-f]{64}$", description="Observed FrameNet attribution SHA-256."
+    )
+    sumo_context_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$", description="Observed SUMO context bytes."
+    )
+    sumo_attribution_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-f]{64}$", description="Observed SUMO notice bytes."
     )
 
 
@@ -316,7 +405,9 @@ class LinguisticBundleV1(BaseModel):
         description="Exact FrameNet records paired with candidate alignments."
     )
     sumo_context: SumoBundleContextV1 = Field(description="Bounded pre-Slice-2C SUMO context.")
-    completeness: Literal["framenet_complete_sumo_pending"] = Field(
+    completeness: Literal[
+        "framenet_complete_sumo_pending", "framenet_complete_sumo_source_grounded_bounded"
+    ] = Field(
         default="framenet_complete_sumo_pending",
         description="FrameNet vertical path is complete; source-grounded SUMO is pending.",
     )
@@ -345,9 +436,17 @@ class LinguisticBundleV1(BaseModel):
             *self.propbank_refs,
             *(record.alignment for record in self.framenet_records),
             *self.sumo_context.donor_refs,
+            *(() if self.sumo_context.source_alignment is None else (self.sumo_context.source_alignment,)),
         ):
             if alignment.canonical_id != self.predicate.predicate_id:
                 raise ValueError("bundle alignment belongs to another canonical predicate")
+        grounded = self.sumo_context.source_grounded
+        if grounded != (self.completeness == "framenet_complete_sumo_source_grounded_bounded"):
+            raise ValueError("bundle completeness does not match SUMO grounding")
+        if grounded != (self.asset_digests.sumo_context_sha256 is not None):
+            raise ValueError("bundle SUMO context digest does not match grounding")
+        if grounded != (self.asset_digests.sumo_attribution_sha256 is not None):
+            raise ValueError("bundle SUMO attribution digest does not match grounding")
         return self
 
 
@@ -568,6 +667,17 @@ def _load_projection_compatible(path: Path) -> FrameNetProjectionV1:
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_INVALID_FRAMENET_PROJECTION") from exc
 
 
+def _load_published_sumo_context(path: Path) -> PublishedSumoBoundedContextV1:
+    """Load the complete known bounded SUMO publication contract."""
+
+    try:
+        return _validate_compatible(
+            PublishedSumoBoundedContextV1, json.loads(path.read_bytes())
+        )
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        raise LinguisticBundleError("LINGUISTIC_BUNDLE_INVALID_SUMO_CONTEXT") from exc
+
+
 def _load_jsonl_rows(path: Path, model: type[BaseModel]) -> tuple[BaseModel, ...]:
     try:
         lines = path.read_text(encoding="utf-8").splitlines()
@@ -721,6 +831,9 @@ def inspect_linguistic_bundle_at_roots(
     mapping_path, mapping_sha = _verified_asset(
         pack_dir, "semantic_mappings.jsonl", declared_hashes
     )
+    _canon_index_path, canon_index_sha = _verified_asset(
+        pack_dir, "predicate_canon_index.jsonl", declared_hashes
+    )
     projection_path, projection_sha = _verified_trace_asset(
         trace_dir, trace_manifest.framenet_projection
     )
@@ -748,6 +861,34 @@ def inspect_linguistic_bundle_at_roots(
         != trace_manifest.frame_element_relation_count
     ):
         raise LinguisticBundleError("LINGUISTIC_BUNDLE_PROJECTION_MANIFEST_MISMATCH")
+
+    published_sumo: PublishedSumoBoundedContextV1 | None = None
+    sumo_context_sha: str | None = None
+    sumo_attribution_sha: str | None = None
+    if trace_manifest.sumo_context is not None:
+        if trace_manifest.sumo_attribution is None:
+            raise LinguisticBundleError("LINGUISTIC_BUNDLE_INCOMPLETE_SUMO_TRACE_MANIFEST")
+        sumo_context_path, sumo_context_sha = _verified_trace_asset(
+            trace_dir, trace_manifest.sumo_context
+        )
+        _sumo_attribution_path, sumo_attribution_sha = _verified_trace_asset(
+            trace_dir, trace_manifest.sumo_attribution
+        )
+        published_sumo = _load_published_sumo_context(sumo_context_path)
+        if (
+            published_sumo.content_sha256 != trace_manifest.sumo_context_content_sha256
+            or published_sumo.source_key != trace_manifest.sumo_source_key
+            or published_sumo.source_commit_sha != trace_manifest.sumo_source_commit_sha
+            or published_sumo.source_tree_sha != trace_manifest.sumo_source_tree_sha
+            or published_sumo.selected_payload_sha256
+            != trace_manifest.sumo_selected_payload_sha256
+            or published_sumo.source_module != trace_manifest.sumo_source_module
+            or published_sumo.source_module_sha256
+            != trace_manifest.sumo_source_module_sha256
+            or published_sumo.license_id != trace_manifest.sumo_license_id
+            or published_sumo.attribution_sha256 != sumo_attribution_sha
+        ):
+            raise LinguisticBundleError("LINGUISTIC_BUNDLE_SUMO_MANIFEST_MISMATCH")
 
     predicate_rows = _load_jsonl_rows(predicate_path, _PredicateRowV1)
     predicates = [
@@ -823,18 +964,30 @@ def inspect_linguistic_bundle_at_roots(
             mapping,
             source_family="sumo",
             state="unresolved",
-            source_identity_status="pending_projection",
+            source_identity_status="donor_only",
         )
         for mapping in mappings
         if mapping.source_key == "onto_canon_sumo_plus"
     )
+    sumo_grounded = published_sumo is not None
     return LinguisticBundleV1(
         query=query,
         predicate=predicate,
         roles=tuple(roles),
         propbank_refs=propbank_refs,
         framenet_records=tuple(framenet_records),
-        sumo_context=SumoBundleContextV1(donor_refs=sumo_refs),
+        sumo_context=SumoBundleContextV1(
+            status=("source_grounded_bounded" if sumo_grounded else "pending_source_projection"),
+            source_grounded=sumo_grounded,
+            donor_refs=sumo_refs,
+            source_alignment=None,
+            published_context=published_sumo,
+        ),
+        completeness=(
+            "framenet_complete_sumo_source_grounded_bounded"
+            if sumo_grounded
+            else "framenet_complete_sumo_pending"
+        ),
         trace_manifest=trace_manifest,
         asset_digests=LinguisticBundleAssetDigestsV1(
             pack_manifest_sha256=pack_manifest_sha,
@@ -843,8 +996,11 @@ def inspect_linguistic_bundle_at_roots(
             role_types_sha256=role_sha,
             predicate_role_edges_sha256=edge_sha,
             semantic_mappings_sha256=mapping_sha,
+            predicate_canon_index_sha256=canon_index_sha,
             framenet_projection_sha256=projection_sha,
             attribution_sha256=attribution_sha,
+            sumo_context_sha256=sumo_context_sha,
+            sumo_attribution_sha256=sumo_attribution_sha,
         ),
     )
 

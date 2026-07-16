@@ -1,0 +1,25 @@
+schema_version: sumo-module-publication-config-v1
+profile_id: linguistic-bounded-context-v1
+source_key: sumo_root_kif
+source_commit_sha: 806b9cd57d1313309aad67dffa12871c06de0f26
+source_tree_sha: c662412aa248bac1d7bae459752760757dcbfbdb
+selected_payload_sha256: 798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272
+approved_modules:
+  - path: Merge.kif
+    sha256: 532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307
+    license_id: LicenseRef-IEEE-SUMO-2004
+    notice_start_line: 8
+    notice_end_line: 41
+    required_acknowledgement: Institute of Electrical and Electronics Engineers, Inc. (IEEE)
+excluded_module_policy: excluded_pending_module_specific_review
+full_projection_publication_status: blocked_mixed_license
+official_evidence:
+  - url: https://www.ontologyportal.org/
+    accessed_on: '2026-07-16'
+    observation: >-
+      The official portal distinguishes IEEE-owned SUMO from GPL-licensed
+      extending ontologies; that collection-level statement does not resolve
+      every exact root module at the pinned commit.
+  - url: https://github.com/ontologyportal/sumo
+    accessed_on: '2026-07-16'
+    observation: Official public source repository for the pinned bytes.

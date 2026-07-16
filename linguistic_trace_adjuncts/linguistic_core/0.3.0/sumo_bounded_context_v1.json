@@ -1,0 +1,197 @@
+{
+  "schema_version": "published-sumo-bounded-context-v1",
+  "profile_id": "linguistic-bounded-context-v1",
+  "source_key": "sumo_root_kif",
+  "source_commit_sha": "806b9cd57d1313309aad67dffa12871c06de0f26",
+  "source_tree_sha": "c662412aa248bac1d7bae459752760757dcbfbdb",
+  "selected_payload_sha256": "798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272",
+  "source_module": "Merge.kif",
+  "source_module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+  "license_id": "LicenseRef-IEEE-SUMO-2004",
+  "license_notice_sha256": "210b74d1794a9dce645519f2d0aad53a07d0bb49953718195c9a47008c080a6d",
+  "attribution_sha256": "dd7a938a8de788c3fde8a4266ab5555b01fab34be3b12244a684fc893541ffde",
+  "raw_source_module_packaged": false,
+  "full_projection_packaged": false,
+  "bounded_context": {
+    "source_module": "Merge.kif",
+    "translocation_type_hierarchy": [
+      "Translocation",
+      "Motion",
+      "Process",
+      "Physical",
+      "Entity"
+    ],
+    "autonomous_agent_type_hierarchy": [
+      "AutonomousAgent",
+      "Object",
+      "Physical",
+      "Entity"
+    ],
+    "case_roles": [
+      "agent",
+      "patient"
+    ],
+    "agent_constraints": [
+      {
+        "kind": "domain",
+        "relation": "agent",
+        "argument_position": 1,
+        "argument_type": "Process",
+        "source_ref": {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 767,
+          "start_line": 2598,
+          "formula_sha256": "33ecf9263caff1a4aa56019e19763f294d521e23db158c699e293d5c8e5a2754"
+        }
+      },
+      {
+        "kind": "domain",
+        "relation": "agent",
+        "argument_position": 2,
+        "argument_type": "AutonomousAgent",
+        "source_ref": {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      }
+    ],
+    "patient_constraints": [
+      {
+        "kind": "domain",
+        "relation": "patient",
+        "argument_position": 1,
+        "argument_type": "Process",
+        "source_ref": {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 797,
+          "start_line": 2660,
+          "formula_sha256": "0b947c0bf078814eb6a388d54ccf7be0eab967d1a6090e700f1218dd2d25412f"
+        }
+      },
+      {
+        "kind": "domain",
+        "relation": "patient",
+        "argument_position": 2,
+        "argument_type": "Entity",
+        "source_ref": {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 798,
+          "start_line": 2661,
+          "formula_sha256": "3ffd723b0329c5d92665e3a160dc7f965e3c771b4ec9eb6f6e85de38b8a9e3ef"
+        }
+      }
+    ]
+  },
+  "translocation_hierarchy_axioms": [
+    {
+      "child": "Translocation",
+      "parent": "Motion",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 3527,
+        "start_line": 11882,
+        "formula_sha256": "6184555909474ad532edc9d8092ff6114d34d1c8ca2acffecf4353b4cd18c5d1"
+      }
+    },
+    {
+      "child": "Motion",
+      "parent": "Process",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 3390,
+        "start_line": 11322,
+        "formula_sha256": "6c6d9a22a4f73730be528aac7cf38224fd927223545cf022ae8fd7544a00af04"
+      }
+    },
+    {
+      "child": "Process",
+      "parent": "Physical",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 522,
+        "start_line": 1746,
+        "formula_sha256": "097e9f7ab74e88122852b16bd4968fc2bf54875f07949c470522da9f68a98d3d"
+      }
+    },
+    {
+      "child": "Physical",
+      "parent": "Entity",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 237,
+        "start_line": 824,
+        "formula_sha256": "a9499f683589b36fc380ff53b206c162332141eac68dd5eed798019c3c74f694"
+      }
+    }
+  ],
+  "autonomous_agent_hierarchy_axioms": [
+    {
+      "child": "AutonomousAgent",
+      "parent": "Object",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 501,
+        "start_line": 1651,
+        "formula_sha256": "b9368628fc51eb77af15ef9e6fc15aad6f5b7b2b7ddaeb24ed83d2c3972380c2"
+      }
+    },
+    {
+      "child": "Object",
+      "parent": "Physical",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 240,
+        "start_line": 838,
+        "formula_sha256": "a317d89d3c24d8e3edf288ed829a9f8883f27293320f28db4e98d6bc9f48df6c"
+      }
+    },
+    {
+      "child": "Physical",
+      "parent": "Entity",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 237,
+        "start_line": 824,
+        "formula_sha256": "a9499f683589b36fc380ff53b206c162332141eac68dd5eed798019c3c74f694"
+      }
+    }
+  ],
+  "case_role_axioms": [
+    {
+      "instance": "agent",
+      "class_term": "CaseRole",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 765,
+        "start_line": 2596,
+        "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+      }
+    },
+    {
+      "instance": "patient",
+      "class_term": "CaseRole",
+      "source_ref": {
+        "module_path": "Merge.kif",
+        "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+        "formula_index": 795,
+        "start_line": 2658,
+        "formula_sha256": "67e6ba28335e93928a47bb5cc5f0d622db515f70f56aac709a3ef4536e62b773"
+      }
+    }
+  ],
+  "content_sha256": "a36cd88db1017e3e254de0becec781382e701c38c0eaf18d3d1061004c707ebb"
+}

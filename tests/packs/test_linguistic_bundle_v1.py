@@ -130,9 +130,31 @@ def test_concrete_bundle_separates_exact_frame_identity_from_candidate_alignment
         and relation.relation_type_name == "ReFraming_Mapping"
         for relation in aligned.frame.outgoing_relations
     )
-    assert bundle.sumo_context.status == "pending_source_projection"
-    assert bundle.sumo_context.source_grounded is False
+    assert bundle.sumo_context.status == "source_grounded_bounded"
+    assert bundle.sumo_context.source_grounded is True
+    assert [(item.source_id, item.state) for item in bundle.sumo_context.donor_refs] == [
+        ("abandon_leave_behind", "unresolved")
+    ]
+    assert all(
+        item.source_identity_status == "donor_only"
+        for item in bundle.sumo_context.donor_refs
+    )
+    assert bundle.sumo_context.source_alignment is None
+    published_sumo = bundle.sumo_context.published_context
+    assert published_sumo is not None
+    assert published_sumo.bounded_context.translocation_type_hierarchy == (
+        "Translocation",
+        "Motion",
+        "Process",
+        "Physical",
+        "Entity",
+    )
+    assert published_sumo.bounded_context.case_roles == ("agent", "patient")
+    assert "location" not in published_sumo.bounded_context.case_roles
+    assert bundle.completeness == "framenet_complete_sumo_source_grounded_bounded"
     assert bundle.trace_manifest.raw_archive_packaged is False
+    assert bundle.trace_manifest.raw_sumo_module_packaged is False
+    assert bundle.trace_manifest.full_sumo_projection_packaged is False
     assert bundle.trace_manifest.target_pack_manifest_sha256 == _sha256(
         PACK_DIR / "manifest.yaml"
     )
@@ -168,6 +190,32 @@ def test_missing_and_changed_adjunct_projection_assets_fail_closed(tmp_path: Pat
             _query(),
             packs_root=packs_root,
             trace_adjuncts_root=trace_adjuncts_root,
+        )
+
+
+def test_missing_changed_or_retargeted_sumo_assets_fail_closed(tmp_path: Path) -> None:
+    """Published SUMO context and attribution cannot be omitted or substituted."""
+
+    packs_root, trace_adjuncts_root, _pack_dir, trace_dir = _copied_bundle_roots(tmp_path)
+    context = trace_dir / "sumo_bounded_context_v1.json"
+    context.unlink()
+    with pytest.raises(LinguisticBundleError, match="TRACE_ASSET_MISSING"):
+        _inspect(
+            _query(), packs_root=packs_root, trace_adjuncts_root=trace_adjuncts_root
+        )
+
+    shutil.copy2(TRACE_DIR / "sumo_bounded_context_v1.json", context)
+    payload = json.loads(context.read_text(encoding="utf-8"))
+    payload["source_module_sha256"] = "0" * 64
+    context.write_text(json.dumps(payload), encoding="utf-8")
+    trace_path = trace_dir / "linguistic_trace_manifest_v1.json"
+    trace = json.loads(trace_path.read_text(encoding="utf-8"))
+    trace["sumo_context"]["sha256"] = _sha256(context)
+    trace["sumo_source_module_sha256"] = "0" * 64
+    trace_path.write_text(json.dumps(trace), encoding="utf-8")
+    with pytest.raises(LinguisticBundleError, match="INVALID_SUMO_CONTEXT"):
+        _inspect(
+            _query(), packs_root=packs_root, trace_adjuncts_root=trace_adjuncts_root
         )
 
 
@@ -441,5 +489,7 @@ def test_committed_pack_remains_complete_without_adjunct_assets() -> None:
         "framenet_attribution.txt",
         "framenet_projection_v1.json.gz",
         "linguistic_trace_manifest_v1.json",
+        "sumo_attribution.txt",
+        "sumo_bounded_context_v1.json",
     }
     assert trace_filenames.isdisjoint(pack_filenames)

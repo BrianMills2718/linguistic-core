@@ -1,0 +1,62 @@
+{
+  "schema_version": "linguistic-quality-preregistration-v1",
+  "stage": "pilot",
+  "claim": "After a complete-document development sample yields a fixed nonempty candidate, the candidate makes more exact predicate-role-type decisions than 0.3.0 on independently frozen same-class held-out cases, with no critical regression.",
+  "decision": "After independent eval sign-off, continue toward a non-default release, revise the candidate on development evidence, or reject the quality hypothesis.",
+  "unit_of_analysis": "One source-grounded semantic decision containing predicate, roles, type constraints, and exact supporting span.",
+  "population": "Ordinary and boundary cases from the same failure classes observed in the first accepted complete-document semantic graph.",
+  "baseline_pack_ref": "linguistic_core@0.3.0",
+  "baseline_manifest_sha256": "a30476afa42d9d6974ab5f6734141644fba12c70341acb797dc8df549c2afd65",
+  "candidate_pack_ref": "linguistic_core@0.4.0-rc1",
+  "candidate_runtime_view_sha256": "37abfebc4270fec593da895d7d2dc43a89a7ce9c381ba741c8638f55441ec0d2",
+  "candidate_emitted_predicate_count": 0,
+  "plan0141_observation_commit": "ca7b2c7c2aaa0135005ae9550adb09abcbbc7c39",
+  "plan0141_plan_blob_sha": "a8bd6bacf2c041bf82c0cb516dfdb1345201afca",
+  "plan0141_plan_content_sha256": "1e9ca3851c3d1320941b1c42bfbbc0b89329b28d49e8d4de55edbff640bc208a",
+  "dependency_observation": "bounded_source_window_only_no_accepted_complete_document",
+  "failure_taxonomy_rule": "Freeze the taxonomy from accepted complete-document development failures before repair; include at least one ordinary and one boundary held-out case per class.",
+  "split_and_leakage_rule": "An independent author freezes held-out sources, labels, hashes, and evidence spans; implementation sees development labels only, and any content or source overlap invalidates the run.",
+  "primary_metric": "Paired exact-case wins: every predicate, role, type constraint, and evidence span must match; report each case and the candidate-minus-baseline total.",
+  "secondary_metrics": [
+    "exact predicate selection by failure class",
+    "exact role and type-constraint decisions by failure class",
+    "evidence quote and offset validity",
+    "abstention and unresolved-state correctness"
+  ],
+  "controls": [
+    "known-good positive case that both builds must preserve",
+    "known-bad evidence-offset corruption that the evaluator must reject",
+    "candidate runtime digest substitution that the runner must reject",
+    "held-out label or source overlap that the leakage check must reject"
+  ],
+  "invalid_run_conditions": [
+    "missing or timed-out evaluator",
+    "missing full trace or raw output",
+    "hidden retry cache or fallback",
+    "post-result label rubric threshold or case change",
+    "empty candidate or unavailable baseline",
+    "failed positive negative corruption or leakage control"
+  ],
+  "decision_rules": [
+    "continue only if the candidate has more exact-case wins, no failure class worsens, and every critical control passes",
+    "revise only from development evidence when the run is valid but does not meet the continue rule; obtain a fresh held-out set before rerun",
+    "reject the quality claim when any critical regression occurs or independent sign-off rejects validity or representativeness"
+  ],
+  "non_claims": [
+    "production readiness",
+    "default activation",
+    "whole-corpus representativeness",
+    "semantic verification of unresolved crosswalk rows"
+  ],
+  "status": "blocked_missing_activation_inputs",
+  "missing_activation_inputs": [
+    "accepted_complete_document_development_sample",
+    "frozen_development_manifest",
+    "frozen_held_out_manifest",
+    "nonempty_policy_eligible_runtime_candidate",
+    "trace_verified_evaluator"
+  ],
+  "score": null,
+  "improvement_claim": false,
+  "content_sha256": "5310ffceabd9814a7aa9fa2d111b443427fd9ba22246fb33a9b812ca423fdff9"
+}

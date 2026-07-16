@@ -30,5 +30,23 @@
   "attribution_title": "FrameNet 1.7",
   "attribution_author": "Collin F. Baker",
   "attribution_uri": "http://framenet.icsi.berkeley.edu",
-  "raw_archive_packaged": false
+  "raw_archive_packaged": false,
+  "sumo_context": {
+    "filename": "sumo_bounded_context_v1.json",
+    "sha256": "431b05b847ab665e1f7630e2b227c6a0a89078b85ab7fde72da878b2e71dfb0d"
+  },
+  "sumo_context_content_sha256": "a36cd88db1017e3e254de0becec781382e701c38c0eaf18d3d1061004c707ebb",
+  "sumo_source_key": "sumo_root_kif",
+  "sumo_source_commit_sha": "806b9cd57d1313309aad67dffa12871c06de0f26",
+  "sumo_source_tree_sha": "c662412aa248bac1d7bae459752760757dcbfbdb",
+  "sumo_selected_payload_sha256": "798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272",
+  "sumo_source_module": "Merge.kif",
+  "sumo_source_module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+  "sumo_attribution": {
+    "filename": "sumo_attribution.txt",
+    "sha256": "dd7a938a8de788c3fde8a4266ab5555b01fab34be3b12244a684fc893541ffde"
+  },
+  "sumo_license_id": "LicenseRef-IEEE-SUMO-2004",
+  "raw_sumo_module_packaged": false,
+  "full_sumo_projection_packaged": false
 }

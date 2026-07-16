@@ -4,12 +4,14 @@
   "runtime_view_content_sha256": "37abfebc4270fec593da895d7d2dc43a89a7ce9c381ba741c8638f55441ec0d2",
   "status": "blocked_missing_activation_inputs",
   "missing_activation_inputs": [
+    "accepted_complete_document_development_sample",
     "frozen_development_manifest",
     "frozen_held_out_manifest",
+    "nonempty_policy_eligible_runtime_candidate",
     "trace_verified_evaluator"
   ],
   "quality_decision": "none",
   "improvement_claim": false,
   "fallback_chain": [],
-  "content_sha256": "3e8787c181fc1eed1d325a16e458b12284b1f1847f94ccc4759bb5192db2905e"
+  "content_sha256": "4658a1a60d1f9b7310486f4194d9c773786382d659ebe09d39c2f5a74a513b0f"
 }
