@@ -409,7 +409,7 @@ EvidenceField = Literal[
     "propbank_roleset_name",
     "propbank_argument_description",
 ]
-_PROMPT_REF = "onto_canon6_plan0147_sumo_crosswalk_semantic_review@1.0"
+_PROMPT_REF = "onto_canon6_plan0147_sumo_crosswalk_semantic_review@1"
 
 
 class SumoSemanticDispositionProposalV1(BaseModel):

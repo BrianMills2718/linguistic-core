@@ -145,7 +145,13 @@ def test_queue_preserves_missing_source_and_rejects_corruption_or_acceptance(
 
 
 def test_semantic_prompt_and_native_schema_are_bounded_and_proposal_only() -> None:
-    from llm_client import render_prompt
+    from llm_client import parse_prompt_ref, render_prompt
+    from onto_canon6.packs import sumo_crosswalk_review_v1
+
+    assert (
+        parse_prompt_ref(sumo_crosswalk_review_v1._PROMPT_REF).prompt_ref
+        == "onto_canon6_plan0147_sumo_crosswalk_semantic_review@1"
+    )
 
     messages = render_prompt(
         "prompts/linguistic/sumo_crosswalk_semantic_review_v1.yaml",
