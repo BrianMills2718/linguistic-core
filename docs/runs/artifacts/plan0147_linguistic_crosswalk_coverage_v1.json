@@ -1,0 +1,50 @@
+{
+  "schema_version": "linguistic-crosswalk-coverage-v1",
+  "donor_audit_sha256": "e5b83031422f04ca47fd917a1002efdd953a4b1b3028c1de56e14659a7925527",
+  "crosswalk_content_sha256": "07971483a40105856529d0b2e6e4e372d445faa71de03105a98d3c0a067d4b2b",
+  "families": [
+    {
+      "family": "propbank",
+      "source_identity_count": 11207,
+      "source_identity_sha256": "8cca5a2c0c23a02d879651c0ac246929a4e4f669e39847897251d92d8e4c2804",
+      "donor_identifier_count": 4666,
+      "matched_count": 3954,
+      "missing_count": 701,
+      "invalid_count": 11,
+      "unavailable_count": 0,
+      "extra_current_source_count": 7253
+    },
+    {
+      "family": "framenet",
+      "source_identity_count": 1221,
+      "source_identity_sha256": "8dd834055206826f9817a8f1d9ddf7827fe4584de49aaef9b891769ecf333357",
+      "donor_identifier_count": 1221,
+      "matched_count": 1221,
+      "missing_count": 0,
+      "invalid_count": 0,
+      "unavailable_count": 0,
+      "extra_current_source_count": 0
+    },
+    {
+      "family": "sumo",
+      "source_identity_count": 7994,
+      "source_identity_sha256": "e2cb4e4591b0b39f02d57b01d40e57dc8c1cbf867e70553435aa121292c8c869",
+      "donor_identifier_count": 7891,
+      "matched_count": 7828,
+      "missing_count": 62,
+      "invalid_count": 1,
+      "unavailable_count": 0,
+      "extra_current_source_count": 166
+    }
+  ],
+  "crosswalk_record_count": 46184,
+  "exact_current_source_count": 26540,
+  "missing_current_source_count": 2362,
+  "invalid_donor_id_count": 33,
+  "not_applicable_count": 17249,
+  "candidate_count": 2263,
+  "rejected_count": 8,
+  "unresolved_count": 43913,
+  "verified_count": 0,
+  "coverage_content_sha256": "3bbe3c85b44e641b681adfc4f872d651402f2d8c61dcb47f10687015892fa805"
+}
