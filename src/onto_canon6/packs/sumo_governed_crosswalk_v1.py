@@ -20,7 +20,6 @@ from onto_canon6.packs.sumo_crosswalk_review_v1 import (
 )
 
 
-GovernedCrosswalkState = Literal["verified", "candidate", "rejected", "unresolved"]
 ReviewDecisionState = Literal["rejected", "unresolved"]
 DecisionBasis = Literal[
     "reviewed_non_agentive_evidence",
@@ -44,6 +43,7 @@ class _ReviewContentV1(TypedDict):
     review_document_sha256: str
     proposer_model: str
     reviewer_ref: str
+    reviewer_identity_authority: Literal["caller_attested"]
     reviewer_separation: Literal[
         "different_model_from_proposer_same_operator_session"
     ]
@@ -108,6 +108,10 @@ class SumoCrosswalkReviewBatchV1(BaseModel):
     )
     proposer_model: str = Field(min_length=1, description="Observed proposal model identity.")
     reviewer_ref: str = Field(min_length=1, description="Configured reviewer identity.")
+    reviewer_identity_authority: Literal["caller_attested"] = Field(
+        default="caller_attested",
+        description="The compiler records but cannot authenticate reviewer identity.",
+    )
     reviewer_separation: Literal[
         "different_model_from_proposer_same_operator_session"
     ] = Field(description="Honest independence scope for this bounded review.")
@@ -294,6 +298,7 @@ def build_sumo_crosswalk_review_batch_v1(
         ).hexdigest(),
         "proposer_model": trace.execution_model,
         "reviewer_ref": reviewer_ref,
+        "reviewer_identity_authority": "caller_attested",
         "reviewer_separation": "different_model_from_proposer_same_operator_session",
         "decisions": decisions,
     }

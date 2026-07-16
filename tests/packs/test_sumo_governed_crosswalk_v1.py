@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from onto_canon6.packs.sumo_crosswalk_review_v1 import (
 )
 from onto_canon6.packs.sumo_governed_crosswalk_v1 import (
     GovernedSumoCrosswalkV1,
+    SumoCrosswalkReviewBatchV1,
     SumoCrosswalkReviewDecisionV1,
     SumoGovernedCrosswalkError,
     build_sumo_crosswalk_review_batch_v1,
@@ -172,6 +174,15 @@ def test_compiler_rejects_population_trace_authority_and_evidence_corruption(
         decisions=(decision,),
     )
 
+    missing = review.model_copy(update={"decisions": ()})
+    with pytest.raises(ValidationError, match="at least 1 item"):
+        compile_governed_sumo_crosswalk_v1(
+            queue,
+            proposal_trace_path=trace_path,
+            review_document_path=review_document,
+            review=missing,
+        )
+
     extra = decision.model_copy(update={"case_id": "sumo-review:extra:Cause"})
     with pytest.raises(SumoGovernedCrosswalkError, match="do not cover"):
         compile_governed_sumo_crosswalk_v1(
@@ -197,6 +208,18 @@ def test_compiler_rejects_population_trace_authority_and_evidence_corruption(
                 reviewer_ref=review.proposer_model,
                 decisions=(decision,),
             ),
+        )
+
+    substituted_trace = tmp_path / "substituted-trace.json"
+    trace_payload = json.loads(trace_path.read_text(encoding="utf-8"))
+    trace_payload["run_id"] = "substituted-run"
+    substituted_trace.write_text(json.dumps(trace_payload), encoding="utf-8")
+    with pytest.raises(SumoGovernedCrosswalkError, match="proposal trace bytes"):
+        compile_governed_sumo_crosswalk_v1(
+            queue,
+            proposal_trace_path=substituted_trace,
+            review_document_path=review_document,
+            review=review,
         )
 
     changed_document = tmp_path / "changed-review.md"
@@ -252,3 +275,79 @@ def test_output_contract_rejects_verification_count_and_runtime_injection(
     injected["records"][0]["runtime_eligibility"] = "eligible"
     with pytest.raises(ValidationError):
         GovernedSumoCrosswalkV1.model_validate(injected)
+
+
+def test_committed_review_and_crosswalk_are_exact_non_promotable_artifacts() -> None:
+    """Keep the bounded observed result schema-valid and authority-denying."""
+
+    repository = Path(__file__).parents[2]
+    trace_path = (
+        repository
+        / "docs/runs/artifacts/plan0147_sumo_semantic_proposal_v3_trace.json"
+    )
+    trace_payload = trace_path.read_bytes()
+    trace = SumoSemanticProposalRunV1.model_validate_json(trace_payload)
+    review = SumoCrosswalkReviewBatchV1.model_validate_json(
+        (
+            repository
+            / "docs/runs/2026-07-15_plan0147_sumo_semantic_review.json"
+        ).read_bytes()
+    )
+    crosswalk = GovernedSumoCrosswalkV1.model_validate_json(
+        (
+            repository
+            / "docs/runs/2026-07-15_plan0147_sumo_governed_crosswalk.json"
+        ).read_bytes()
+    )
+
+    assert len(review.decisions) == 31
+    assert review.reviewer_identity_authority == "caller_attested"
+    assert len(crosswalk.records) == 34
+    assert (crosswalk.rejected_count, crosswalk.unresolved_count) == (8, 26)
+    assert (
+        crosswalk.candidate_count,
+        crosswalk.verified_count,
+        crosswalk.runtime_eligible_count,
+    ) == (0, 0, 0)
+    assert crosswalk.queue_content_sha256 == review.queue_content_sha256
+    assert trace.queue_content_sha256 == review.queue_content_sha256
+    assert trace.trace_id == review.proposal_trace_id
+    assert hashlib.sha256(trace_payload).hexdigest() == review.proposal_trace_sha256
+    assert trace.lifecycle == "proposal_generated"
+    assert trace.controls_passed is True
+    assert trace.review_authority == "none_proposals_only"
+    assert trace.raw_content is not None
+    assert (
+        hashlib.sha256(trace.raw_content.encode("utf-8")).hexdigest()
+        == review.proposal_raw_response_sha256
+    )
+    assert crosswalk.proposal_trace_id == review.proposal_trace_id
+    assert crosswalk.proposal_trace_sha256 == review.proposal_trace_sha256
+    assert (
+        crosswalk.proposal_raw_response_sha256
+        == review.proposal_raw_response_sha256
+    )
+    assert crosswalk.review_content_sha256 == review.review_content_sha256
+    assert {
+        item.case_id for item in crosswalk.records if item.state == "rejected"
+    } == {
+        "sumo-review:affect_have_effect:Cause",
+        "sumo-review:concern_deal_with:Phenomenon",
+        "sumo-review:galvanize_cause_response:Cause",
+        "sumo-review:hamper_obstruct_hinder:Hindrance",
+        "sumo-review:lead_result_outcome:Cause",
+        "sumo-review:obstruct_to_block:Hindrance",
+        "sumo-review:pertain_have_reference:Phenomenon",
+        "sumo-review:redound_have_consequence:Cause",
+    }
+    assert {
+        item.case_id
+        for item in crosswalk.records
+        if item.decision_basis == "source_evidence_unavailable"
+    } == {
+        "sumo-review:damp_restrain_weaken:Hindrance",
+        "sumo-review:effect_cause_effect:Cause",
+        "sumo-review:usher_signal_start:Cause",
+    }
+    assert all(item.runtime_eligibility == "ineligible" for item in crosswalk.records)
+    assert all(item.replacement_role is None for item in crosswalk.records)
