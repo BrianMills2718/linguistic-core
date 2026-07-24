@@ -990,6 +990,10 @@ def run_sumo_semantic_proposals_v1(
             task="judging",
             trace_id=config.trace_id,
             max_budget=config.max_budget,
+            model_justification=(
+                "Use the configured crosswalk judge for the governed SUMO "
+                "mapping review."
+            ),
             prompt_ref=_PROMPT_REF,
         )
     except Exception as exc:
