@@ -15,10 +15,22 @@ from onto_canon6.packs.semantic_provenance import SemanticMappingRecord
 from onto_canon6.packs.sumo_governed_crosswalk_v1 import GovernedSumoCrosswalkV1
 
 
-CrosswalkState = Literal["candidate", "rejected", "unresolved", "verified"]
+CrosswalkState = Literal["candidate", "rejected", "unresolved", "tentatively_verified", "verified"]
 SourceIdentityState = Literal[
     "exact_current_source", "missing_current_source", "invalid_donor_id", "not_applicable"
 ]
+VerificationBasis = Literal["none", "automated_two_pass_review"]
+
+# Distinct source_key values whose records represent an independent-review
+# outcome layered on top of (never rewriting) an original donor mapping row.
+# `sumo_governed_review_v1` is the existing SUMO agent-role review (hard-
+# restricted to rejected/unresolved by its own append function). The new
+# `linguistic_donor_independent_review_v1` key is for the general two-pass
+# donor-mapping review added in this revision (Slice B), which may also reach
+# `tentatively_verified`.
+_REVIEW_SOURCE_KEYS = frozenset(
+    {"sumo_governed_review_v1", "linguistic_donor_independent_review_v1"}
+)
 
 
 class LinguisticCrosswalkRecordV1(BaseModel):
@@ -39,7 +51,7 @@ class LinguisticCrosswalkRecordV1(BaseModel):
     review_status: Literal["not_reviewed", "independent_review"]
     source_identity_state: SourceIdentityState
     state: CrosswalkState
-    verification_basis: Literal["none"] = "none"
+    verification_basis: VerificationBasis = "none"
 
     @model_validator(mode="after")
     def _non_promotional(self) -> "LinguisticCrosswalkRecordV1":
@@ -50,12 +62,17 @@ class LinguisticCrosswalkRecordV1(BaseModel):
             raise ValueError("crosswalk record ID does not reconcile")
         if self.state == "verified":
             raise ValueError("compiler cannot emit verified crosswalk state")
-        if self.verification_basis != "none":
-            raise ValueError("compiler has no semantic verification basis")
-        is_review = self.source_key == "sumo_governed_review_v1"
+        if self.state == "tentatively_verified":
+            if self.verification_basis != "automated_two_pass_review":
+                raise ValueError(
+                    "tentatively_verified record requires the two-pass review basis"
+                )
+        elif self.verification_basis != "none":
+            raise ValueError("compiler has no semantic verification basis for this state")
+        is_review = self.source_key in _REVIEW_SOURCE_KEYS
         if is_review != (self.review_status == "independent_review"):
             raise ValueError("review status does not reconcile with the governed-review source")
-        if is_review and self.state not in {"rejected", "unresolved"}:
+        if is_review and self.state not in {"rejected", "unresolved", "tentatively_verified"}:
             raise ValueError("governed review cannot emit a promotive state")
         return self
 
@@ -73,6 +90,7 @@ class LinguisticCrosswalkV1(BaseModel):
     candidate_count: int = Field(ge=0)
     rejected_count: int = Field(ge=0)
     unresolved_count: int = Field(ge=0)
+    tentatively_verified_count: int = Field(default=0, ge=0)
     verified_count: Literal[0] = 0
     content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -86,22 +104,36 @@ class LinguisticCrosswalkV1(BaseModel):
         if len(record_ids) != len(set(record_ids)):
             raise ValueError("crosswalk record IDs must be unique")
         if self.reviewed_record_count != sum(
-            item.source_key == "sumo_governed_review_v1" for item in self.records
+            item.source_key in _REVIEW_SOURCE_KEYS for item in self.records
         ):
             raise ValueError("reviewed crosswalk population does not reconcile")
-        counts = {
-            state: sum(item.state == state for item in self.records)
-            for state in ("candidate", "rejected", "unresolved")
-        }
-        if (self.candidate_count, self.rejected_count, self.unresolved_count) != (
+        counts = _state_counts(self.records)
+        if (
+            self.candidate_count,
+            self.rejected_count,
+            self.unresolved_count,
+            self.tentatively_verified_count,
+        ) != (
             counts["candidate"],
             counts["rejected"],
             counts["unresolved"],
+            counts["tentatively_verified"],
         ):
             raise ValueError("crosswalk state counts do not reconcile")
         if self.content_sha256 != _sha256(self.records):
             raise ValueError("crosswalk content digest does not reconcile")
         return self
+
+
+def _state_counts(
+    records: tuple[LinguisticCrosswalkRecordV1, ...],
+) -> dict[str, int]:
+    """Return the non-promotional bucket counts for one exact record population."""
+
+    return {
+        state: sum(item.state == state for item in records)
+        for state in ("candidate", "rejected", "unresolved", "tentatively_verified")
+    }
 
 
 def _sha256(value: object) -> str:
@@ -188,14 +220,16 @@ def compile_linguistic_crosswalk_v1(
             )
         )
     ordered = tuple(sorted(records, key=lambda item: item.record_id))
+    counts = _state_counts(ordered)
     return LinguisticCrosswalkV1(
         donor_audit_sha256=audit_sha,
         input_mapping_count=len(mappings),
         reviewed_record_count=0,
         records=ordered,
-        candidate_count=sum(item.state == "candidate" for item in ordered),
-        rejected_count=0,
-        unresolved_count=sum(item.state == "unresolved" for item in ordered),
+        candidate_count=counts["candidate"],
+        rejected_count=counts["rejected"],
+        unresolved_count=counts["unresolved"],
+        tentatively_verified_count=counts["tentatively_verified"],
         content_sha256=_sha256(ordered),
     )
 
@@ -238,14 +272,82 @@ def append_reviewed_sumo_role_records_v1(
             )
         )
     ordered = tuple(sorted(records, key=lambda item: item.record_id))
+    counts = _state_counts(ordered)
     return LinguisticCrosswalkV1(
         donor_audit_sha256=crosswalk.donor_audit_sha256,
         input_mapping_count=crosswalk.input_mapping_count,
         reviewed_record_count=crosswalk.reviewed_record_count + len(reviewed_roles),
         records=ordered,
-        candidate_count=sum(item.state == "candidate" for item in ordered),
-        rejected_count=sum(item.state == "rejected" for item in ordered),
-        unresolved_count=sum(item.state == "unresolved" for item in ordered),
+        candidate_count=counts["candidate"],
+        rejected_count=counts["rejected"],
+        unresolved_count=counts["unresolved"],
+        tentatively_verified_count=counts["tentatively_verified"],
+        content_sha256=_sha256(ordered),
+    )
+
+
+IndependentReviewOutcome = Literal["rejected", "unresolved", "tentatively_verified"]
+
+
+def append_independent_reviewed_donor_records_v1(
+    crosswalk: LinguisticCrosswalkV1,
+    *,
+    reviewed_donor_mappings: tuple[
+        tuple[str, str, str, IndependentReviewOutcome], ...
+    ],
+) -> LinguisticCrosswalkV1:
+    """Append exact two-pass donor-mapping review outcomes without rewriting the donor row.
+
+    Each input carries the record ID of the exact original donor-mapping row
+    under review, that row's canonical ID and canonical kind (copied through so
+    the review record still traces back to the same predicate/entity), and the
+    reconciled two-pass outcome. Mirrors ``append_reviewed_sumo_role_records_v1``:
+    this never mutates the original ``candidate``/``unresolved`` row, it only
+    appends a new, separately identified review record layered on top of it.
+    ``tentatively_verified`` means both independent passes actively supported
+    the donor mapping; it is never the reserved ``verified`` state, and
+    ``verified_count`` on the returned population stays exactly ``0``.
+    """
+
+    records = list(crosswalk.records)
+    for original_record_id, canonical_id, canonical_kind, state in reviewed_donor_mappings:
+        records.append(
+            LinguisticCrosswalkRecordV1(
+                record_id=_record_id(
+                    canonical_id,
+                    "linguistic_donor_independent_review_v1",
+                    original_record_id,
+                    "donor_mapping_review",
+                    f"donor-review:{original_record_id}",
+                ),
+                canonical_id=canonical_id,
+                canonical_kind=canonical_kind,
+                source_key="linguistic_donor_independent_review_v1",
+                source_id=original_record_id,
+                relation="donor_mapping_review",
+                producer_method="independent_review_of_proposal",
+                producer_confidence=None,
+                producer_method_scope="two_pass_donor_mapping_review",
+                evidence_ref=f"donor-review:{original_record_id}",
+                review_status="independent_review",
+                source_identity_state="exact_current_source",
+                state=state,
+                verification_basis=(
+                    "automated_two_pass_review" if state == "tentatively_verified" else "none"
+                ),
+            )
+        )
+    ordered = tuple(sorted(records, key=lambda item: item.record_id))
+    counts = _state_counts(ordered)
+    return LinguisticCrosswalkV1(
+        donor_audit_sha256=crosswalk.donor_audit_sha256,
+        input_mapping_count=crosswalk.input_mapping_count,
+        reviewed_record_count=crosswalk.reviewed_record_count + len(reviewed_donor_mappings),
+        records=ordered,
+        candidate_count=counts["candidate"],
+        rejected_count=counts["rejected"],
+        unresolved_count=counts["unresolved"],
+        tentatively_verified_count=counts["tentatively_verified"],
         content_sha256=_sha256(ordered),
     )
 
