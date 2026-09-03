@@ -1,0 +1,32 @@
+pack:
+  id: linguistic_core
+  version: 0.3.1
+  name: linguistic_core
+  description: 'Additive relations slice for linguistic_core, extending 0.3.0. Compiles SUMO relations and their positional argument-type constraints from sumo_plus.db''s relations/relation_constraints tables (unread by the base compiler), filtered to SUMO modules already cleared for publication per docs/runs/artifacts/plan0147_sumo_module_publication_v1.json (today: Merge.kif only). Excludes SUO-KIF Functions (*Fn) and relation IDs that collide with an existing linguistic_core predicate name. Provides 265 new lc: relation predicates (kinship, spatial, semiotic, and other general relations) with generic positional role slots (lc.role.relation_arg1..N, N = max arity in this slice).'
+build:
+  compiler_version: linguistic-core-relations-slice-v1
+  built_at: '2026-09-03T00:00:00Z'
+  source_inputs:
+  - system: onto_canon_sumo_plus_relations
+    version: '2026-02-15'
+    path: data/sumo_plus.db
+    tables: relations, relation_constraints, type_ancestors, type_hierarchy
+  - system: plan0147_sumo_module_publication_v1
+    version: '1'
+    path: docs/runs/artifacts/plan0147_sumo_module_publication_v1.json
+extends:
+- id: linguistic_core
+  version: 0.3.0
+capabilities:
+  assertion_type: n-ary
+  type_system: sumo
+content:
+  entity_types: entity_types.jsonl
+  predicate_types: predicate_types.jsonl
+  role_types: role_types.jsonl
+  value_types: value_types.jsonl
+  hierarchy_edges: hierarchy_edges.jsonl
+  predicate_role_edges: predicate_role_edges.jsonl
+  source_mappings: source_mappings.jsonl
+  aliases: aliases.jsonl
+  constraints: constraints.jsonl
