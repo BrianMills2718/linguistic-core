@@ -18,7 +18,7 @@ from typing import cast, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_sources_v1 import (
     LicenseEvidenceV1,
     LinguisticSourceManifestV1,
     verify_linguistic_source_manifest_v1,

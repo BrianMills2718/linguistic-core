@@ -9,11 +9,11 @@ import sys
 _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT / "src"))
 
-from onto_canon6.packs.linguistic_sources_v1 import (  # noqa: E402
+from linguistic_core.linguistic_sources_v1 import (  # noqa: E402
     load_linguistic_source_manifest_v1,
 )
-from onto_canon6.packs.sumo_projection_v1 import compile_sumo_projection_v1  # noqa: E402
-from onto_canon6.packs.sumo_publication_v1 import (  # noqa: E402
+from linguistic_core.sumo_projection_v1 import compile_sumo_projection_v1  # noqa: E402
+from linguistic_core.sumo_publication_v1 import (  # noqa: E402
     compile_sumo_publication_v1,
     load_sumo_module_publication_config_v1,
 )

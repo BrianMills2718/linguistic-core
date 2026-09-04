@@ -10,12 +10,12 @@ from typing import cast
 import pytest
 from pydantic import ValidationError
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import (
+from linguistic_core.linguistic_crosswalk_v1 import (
     LinguisticCrosswalkV1,
     append_independent_reviewed_donor_records_v1,
 )
-from onto_canon6.packs.linguistic_runtime_view_v1 import build_linguistic_runtime_view_receipt_v1
-from onto_canon6.packs.semantic_provenance import SemanticMappingRecord
+from linguistic_core.linguistic_runtime_view_v1 import build_linguistic_runtime_view_receipt_v1
+from linguistic_core.semantic_provenance import SemanticMappingRecord
 
 
 def _payload() -> dict[str, object]:

@@ -9,9 +9,9 @@ import sys
 
 import pytest
 
-from onto_canon6.packs.linguistic_sources_v1 import load_linguistic_source_manifest_v1
-from onto_canon6.packs.sumo_projection_v1 import compile_sumo_projection_v1
-from onto_canon6.packs.sumo_publication_v1 import (
+from linguistic_core.linguistic_sources_v1 import load_linguistic_source_manifest_v1
+from linguistic_core.sumo_projection_v1 import compile_sumo_projection_v1
+from linguistic_core.sumo_publication_v1 import (
     PublishedSumoBoundedContextV1,
     SumoModulePublicationReviewV1,
     SumoPublicationError,

@@ -11,7 +11,7 @@ from typing import Literal, TypedDict
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.sumo_crosswalk_review_v1 import (
+from linguistic_core.sumo_crosswalk_review_v1 import (
     EvidenceField,
     SemanticDisposition,
     SumoCrosswalkSemanticReviewCaseV1,

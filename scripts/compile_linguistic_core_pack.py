@@ -57,11 +57,11 @@ import yaml
 _REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
-from onto_canon6.packs.role_slots_lookup import (  # noqa: E402
+from linguistic_core.role_slots_lookup import (  # noqa: E402
     RoleSlotsError,
     RoleSlotsLookup,
 )
-from onto_canon6.packs.semantic_provenance import (  # noqa: E402
+from linguistic_core.semantic_provenance import (  # noqa: E402
     SemanticMappingRecord,
     SemanticSourcesDocument,
     compile_predicate_provenance,

@@ -12,14 +12,14 @@ import sys
 import pytest
 from pydantic import ValidationError
 
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_sources_v1 import (
     GitSourceIdentityV1,
     LicenseEvidenceV1,
     LinguisticSourceManifestV1,
     LinguisticSourceSnapshotV1,
     compute_selected_payload_v1,
 )
-from onto_canon6.packs.sumo_crosswalk_audit_v1 import (
+from linguistic_core.sumo_crosswalk_audit_v1 import (
     SumoCrosswalkAuditError,
     SumoCrosswalkAuditV1,
     SumoPredicateCandidateV1,
@@ -27,7 +27,7 @@ from onto_canon6.packs.sumo_crosswalk_audit_v1 import (
     audit_sumo_crosswalk_v1,
     load_sumo_crosswalk_audit_v1,
 )
-from onto_canon6.packs.sumo_projection_v1 import (
+from linguistic_core.sumo_projection_v1 import (
     SumoProjectionV1,
     compile_sumo_projection_v1,
 )

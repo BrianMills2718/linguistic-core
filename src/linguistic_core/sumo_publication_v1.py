@@ -15,7 +15,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 import yaml
 
-from onto_canon6.packs.sumo_projection_v1 import (
+from linguistic_core.sumo_projection_v1 import (
     SumoArgumentConstraintV1,
     SumoBinaryAxiomV1,
     SumoFormulaRefV1,

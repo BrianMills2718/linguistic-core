@@ -1,0 +1,54 @@
+{
+  "schema_version": "linguistic-source-coverage-v1",
+  "verification": {
+    "schema_version": "linguistic-source-verification-v1",
+    "sources": [
+      {
+        "source_key": "propbank_frames_34",
+        "status": "verified",
+        "commit_sha": "c66e0ccf28b53f00051b187db83e937b5bee2e32",
+        "tree_sha": "d1e1ef0c13c5ec6e06096b1448cb5f65d4e1b8c7",
+        "selected_payload_sha256": "22606e705b97b8d9c90f673e6a7023e4852aef736b9d935e01fd31049b29fb04",
+        "archive_byte_count": null,
+        "archive_sha256": null
+      },
+      {
+        "source_key": "framenet_17",
+        "status": "verified",
+        "commit_sha": null,
+        "tree_sha": null,
+        "selected_payload_sha256": null,
+        "archive_byte_count": 99207152,
+        "archive_sha256": "22f6aad6fb799ba4dbed0440714e1118442ad7d7345351de37428581284f471c"
+      },
+      {
+        "source_key": "sumo_root_kif",
+        "status": "verified",
+        "commit_sha": "806b9cd57d1313309aad67dffa12871c06de0f26",
+        "tree_sha": "c662412aa248bac1d7bae459752760757dcbfbdb",
+        "selected_payload_sha256": "798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272",
+        "archive_byte_count": null,
+        "archive_sha256": null
+      }
+    ]
+  },
+  "propbank_projection_content_sha256": "f2aa8d2de7244f134d880f2c1b2db945a4ad8bee24753123f865997246d87dfd",
+  "propbank_selected_files": 7566,
+  "propbank_parsed_files": 7566,
+  "propbank_applied_repairs": 2,
+  "propbank_unrepaired_issues": 0,
+  "propbank_identity_conflicts": 1,
+  "framenet_projection_content_sha256": "529be72971c63795213bf1036c4e2ba1bc11882ca1d569a97d088d61af9cec4b",
+  "framenet_frames": 1221,
+  "framenet_frame_elements": 11428,
+  "framenet_lexical_unit_declarations": 13631,
+  "framenet_indexed_lexical_units": 13572,
+  "framenet_problem_omissions": 59,
+  "framenet_frame_relations": 2070,
+  "framenet_frame_element_relations": 12393,
+  "sumo_projection_content_sha256": "6983d539725fb05843da081b7aab8b3142c0706ff0dc78c05da90a6db69fcde9",
+  "sumo_selected_modules": 66,
+  "sumo_excluded_tree_paths": 786,
+  "sumo_publication_status": "blocked_mixed_license",
+  "coverage_content_sha256": "39ee4d84408f2ad4d45074bf0b0bb18fb95dfa66814762b77a7d744fefb2590b"
+}

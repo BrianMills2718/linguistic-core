@@ -10,9 +10,9 @@ from typing import Literal, cast
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1
-from onto_canon6.packs.semantic_provenance import SemanticMappingRecord
-from onto_canon6.packs.sumo_governed_crosswalk_v1 import GovernedSumoCrosswalkV1
+from linguistic_core.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1
+from linguistic_core.semantic_provenance import SemanticMappingRecord
+from linguistic_core.sumo_governed_crosswalk_v1 import GovernedSumoCrosswalkV1
 
 
 CrosswalkState = Literal["candidate", "rejected", "unresolved", "tentatively_verified", "verified"]

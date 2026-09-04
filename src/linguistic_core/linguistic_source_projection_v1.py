@@ -16,8 +16,8 @@ import xml.etree.ElementTree as ET
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 import yaml
 
-from onto_canon6.packs.linguistic_source_audit_v1 import SourceSyntaxIssueV1
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_source_audit_v1 import SourceSyntaxIssueV1
+from linguistic_core.linguistic_sources_v1 import (
     LinguisticSourceManifestV1,
     verify_linguistic_source_manifest_v1,
 )

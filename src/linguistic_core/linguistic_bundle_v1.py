@@ -18,18 +18,18 @@ from typing import get_args, get_origin, Literal, TypeVar, Union
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 import yaml
 
-from onto_canon6.ontology_runtime.contracts import PackRef
-from onto_canon6.packaged_assets import (
+from linguistic_core.contracts import PackRef
+from linguistic_core.packaged_assets import (
     installed_linguistic_trace_adjuncts_root,
     installed_ontology_packs_root,
 )
-from onto_canon6.packs.framenet_projection_v1 import (
+from linguistic_core.framenet_projection_v1 import (
     FrameNetFrameRecordV1,
     FrameNetProjectionV1,
 )
-from onto_canon6.packs.linguistic_sources_v1 import LinguisticSourceManifestV1
-from onto_canon6.packs.semantic_provenance import SemanticMappingRecord
-from onto_canon6.packs.sumo_publication_v1 import PublishedSumoBoundedContextV1
+from linguistic_core.linguistic_sources_v1 import LinguisticSourceManifestV1
+from linguistic_core.semantic_provenance import SemanticMappingRecord
+from linguistic_core.sumo_publication_v1 import PublishedSumoBoundedContextV1
 
 
 class LinguisticBundleError(RuntimeError):

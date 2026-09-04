@@ -18,7 +18,7 @@ from typing import Literal, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
-from onto_canon6.packs.sumo_projection_v1 import (
+from linguistic_core.sumo_projection_v1 import (
     SumoFormulaRefV1,
     SumoProjectionV1,
 )

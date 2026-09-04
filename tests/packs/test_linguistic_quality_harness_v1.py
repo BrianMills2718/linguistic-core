@@ -13,14 +13,14 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
-from onto_canon6.packs.linguistic_quality_harness_v1 import (
+from linguistic_core.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
+from linguistic_core.linguistic_quality_harness_v1 import (
     build_linguistic_quality_preregistration_v1,
     LinguisticQualityHarnessReceiptV1,
     LinguisticQualityPreregistrationV1,
     run_blocked_linguistic_quality_harness_v1,
 )
-from onto_canon6.packs.linguistic_runtime_view_v1 import LinguisticRuntimeViewReceiptV1
+from linguistic_core.linguistic_runtime_view_v1 import LinguisticRuntimeViewReceiptV1
 from scripts.run_linguistic_quality_harness import main as quality_main
 
 

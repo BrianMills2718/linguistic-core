@@ -9,7 +9,7 @@ from typing import cast
 import pytest
 from pydantic import ValidationError
 
-from onto_canon6.packs.linguistic_source_coverage_v1 import LinguisticSourceCoverageV1
+from linguistic_core.linguistic_source_coverage_v1 import LinguisticSourceCoverageV1
 
 
 def _payload() -> dict[str, object]:

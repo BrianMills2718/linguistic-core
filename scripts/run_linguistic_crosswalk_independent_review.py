@@ -21,11 +21,11 @@ from pathlib import Path
 _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT / "src"))
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import (
+from linguistic_core.linguistic_crosswalk_v1 import (
     LinguisticCrosswalkV1,
     append_independent_reviewed_donor_records_v1,
 )
-from onto_canon6.packs.linguistic_donor_review_v1 import (
+from linguistic_core.linguistic_donor_review_v1 import (
     append_checkpoint_row_v1,
     load_checkpointed_review_results_v1,
     reviewed_donor_mappings_from_checkpoints_v1,

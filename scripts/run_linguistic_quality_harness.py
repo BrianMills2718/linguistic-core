@@ -13,12 +13,12 @@ import yaml
 _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT / "src"))
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import LinguisticCrosswalkV1  # noqa: E402
-from onto_canon6.packs.linguistic_quality_harness_v1 import (  # noqa: E402
+from linguistic_core.linguistic_crosswalk_v1 import LinguisticCrosswalkV1  # noqa: E402
+from linguistic_core.linguistic_quality_harness_v1 import (  # noqa: E402
     build_linguistic_quality_preregistration_v1,
     run_blocked_linguistic_quality_harness_v1,
 )
-from onto_canon6.packs.linguistic_runtime_view_v1 import LinguisticRuntimeViewReceiptV1  # noqa: E402
+from linguistic_core.linguistic_runtime_view_v1 import LinguisticRuntimeViewReceiptV1  # noqa: E402
 
 
 def main() -> int:

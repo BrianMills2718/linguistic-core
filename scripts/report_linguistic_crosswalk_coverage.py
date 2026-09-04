@@ -10,14 +10,14 @@ import sys
 _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT / "src"))
 
-from onto_canon6.packs.framenet_projection_v1 import FrameNetProjectionV1  # noqa: E402
-from onto_canon6.packs.linguistic_crosswalk_coverage_v1 import (  # noqa: E402
+from linguistic_core.framenet_projection_v1 import FrameNetProjectionV1  # noqa: E402
+from linguistic_core.linguistic_crosswalk_coverage_v1 import (  # noqa: E402
     build_linguistic_crosswalk_coverage_v1,
 )
-from onto_canon6.packs.linguistic_crosswalk_v1 import LinguisticCrosswalkV1  # noqa: E402
-from onto_canon6.packs.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1  # noqa: E402
-from onto_canon6.packs.linguistic_source_projection_v1 import PropBankProjectionV1  # noqa: E402
-from onto_canon6.packs.sumo_projection_v1 import SumoProjectionV1  # noqa: E402
+from linguistic_core.linguistic_crosswalk_v1 import LinguisticCrosswalkV1  # noqa: E402
+from linguistic_core.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1  # noqa: E402
+from linguistic_core.linguistic_source_projection_v1 import PropBankProjectionV1  # noqa: E402
+from linguistic_core.sumo_projection_v1 import SumoProjectionV1  # noqa: E402
 
 
 def _read(path: Path) -> bytes:

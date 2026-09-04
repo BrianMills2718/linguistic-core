@@ -15,14 +15,14 @@ import yaml
 
 from scripts.compile_framenet_projection import main as compile_framenet_projection_main
 
-from onto_canon6.packs.framenet_projection_v1 import (
+from linguistic_core.framenet_projection_v1 import (
     FrameNetProjectionError,
     FrameNetProjectionV1,
     compile_framenet_projection_v1,
     load_framenet_projection_v1,
 )
-from onto_canon6.packs.linguistic_bundle_v1 import LinguisticBundleError
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_bundle_v1 import LinguisticBundleError
+from linguistic_core.linguistic_sources_v1 import (
     ArchiveSourceIdentityV1,
     DistributionMetadataEvidenceV1,
     LinguisticSourceManifestV1,

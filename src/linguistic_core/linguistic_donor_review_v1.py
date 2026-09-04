@@ -32,7 +32,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import (
+from linguistic_core.linguistic_crosswalk_v1 import (
     IndependentReviewOutcome,
     LinguisticCrosswalkV1,
 )

@@ -8,11 +8,11 @@ from pathlib import Path
 
 import pytest
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import (
+from linguistic_core.linguistic_crosswalk_v1 import (
     LinguisticCrosswalkV1,
     append_independent_reviewed_donor_records_v1,
 )
-from onto_canon6.packs.linguistic_donor_review_v1 import (
+from linguistic_core.linguistic_donor_review_v1 import (
     DonorMappingReviewCheckpointV1,
     DonorMappingReviewPassV1,
     LinguisticDonorReviewError,

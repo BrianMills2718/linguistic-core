@@ -12,8 +12,8 @@ import pytest
 from pydantic import ValidationError
 import yaml
 
-from onto_canon6.ontology_runtime.contracts import PackRef
-from onto_canon6.packs.linguistic_bundle_v1 import (
+from linguistic_core.contracts import PackRef
+from linguistic_core.linguistic_bundle_v1 import (
     build_linguistic_trace_manifest_v1,
     LinguisticAlignmentRefV1,
     LinguisticBundleV1,
@@ -21,7 +21,7 @@ from onto_canon6.packs.linguistic_bundle_v1 import (
     LinguisticBundleQueryV1,
     inspect_linguistic_bundle_at_roots,
 )
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_sources_v1 import (
     LinguisticSourceManifestV1,
     load_linguistic_source_manifest_v1,
 )

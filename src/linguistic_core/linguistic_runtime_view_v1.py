@@ -11,7 +11,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
+from linguistic_core.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
 
 
 RUNTIME_FILENAMES = (

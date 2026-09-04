@@ -17,8 +17,8 @@ import xml.etree.ElementTree as ET
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.framenet_projection_v1 import compile_framenet_projection_v1
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.framenet_projection_v1 import compile_framenet_projection_v1
+from linguistic_core.linguistic_sources_v1 import (
     LinguisticSourceManifestV1,
     LinguisticSourceVerificationReportV1,
     SourceFamily,

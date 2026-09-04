@@ -8,11 +8,11 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.framenet_projection_v1 import FrameNetProjectionV1
-from onto_canon6.packs.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
-from onto_canon6.packs.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1
-from onto_canon6.packs.linguistic_source_projection_v1 import PropBankProjectionV1
-from onto_canon6.packs.sumo_projection_v1 import SumoProjectionV1
+from linguistic_core.framenet_projection_v1 import FrameNetProjectionV1
+from linguistic_core.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
+from linguistic_core.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1
+from linguistic_core.linguistic_source_projection_v1 import PropBankProjectionV1
+from linguistic_core.sumo_projection_v1 import SumoProjectionV1
 
 
 SourceFamily = Literal["propbank", "framenet", "sumo"]

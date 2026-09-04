@@ -13,14 +13,14 @@ import yaml
 
 from scripts.compile_sumo_projection import main as compile_sumo_projection_main
 
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_sources_v1 import (
     GitSourceIdentityV1,
     LicenseEvidenceV1,
     LinguisticSourceManifestV1,
     LinguisticSourceSnapshotV1,
     compute_selected_payload_v1,
 )
-from onto_canon6.packs.sumo_projection_v1 import (
+from linguistic_core.sumo_projection_v1 import (
     SumoProjectionError,
     SumoProjectionV1,
     compile_sumo_projection_v1,

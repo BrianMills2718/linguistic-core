@@ -1,0 +1,1443 @@
+{
+  "schema_version": "sumo-crosswalk-semantic-review-queue-v1",
+  "crosswalk_report_content_sha256": "abecaef33ba91242c14980e439c619686e1fa3abeb964347df75f34b4b0a710f",
+  "donor_db_sha256": "9a6da4825eb9e4f4d81d1263e5c2ee6847bb85a1b899727e6be929658e1da0f6",
+  "propbank_commit_sha": "c66e0ccf28b53f00051b187db83e937b5bee2e32",
+  "propbank_tree_sha": "d1e1ef0c13c5ec6e06096b1448cb5f65d4e1b8c7",
+  "propbank_payload_sha256": "22606e705b97b8d9c90f673e6a7023e4852aef736b9d935e01fd31049b29fb04",
+  "population_status": "incompatible_donor_supertype",
+  "review_authority": "none_proposal_queue_only",
+  "source_tree_membership_authority": "caller_supplied_requires_independent_verification",
+  "cases": [
+    {
+      "case_id": "sumo-review:affect_have_effect:Cause",
+      "donor_predicate_id": "affect_have_effect",
+      "donor_predicate_description": "have an effect on",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "affect-01",
+        "normalized_source_id": "affect.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "have an effect on, have an effect on",
+        "argument_description": "thing affecting",
+        "source_relative_path": "frames/affect.xml",
+        "source_file_sha256": "2fcd2b631e7857c47894f4dcd800ad18e7c215abeb627296a708a63672131b2a",
+        "source_git_blob_sha": "34db75b9236fc344a3084ef6c402841beb89555c"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:catalyze_initiate_change:Cause",
+      "donor_predicate_id": "catalyze_initiate_change",
+      "donor_predicate_description": "to initiate change",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "catalyze-01",
+        "normalized_source_id": "catalyze.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to initiate change",
+        "argument_description": "agent",
+        "source_relative_path": "frames/catalyze.xml",
+        "source_file_sha256": "1bf1d256ce376fbda6b9ea96173201ce36952af2a59dfa9e16317cef2b38c34a",
+        "source_git_blob_sha": "2b57a29c16a2086d5d18c5b54843e09fdfd18a3b"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:concern_deal_with:Phenomenon",
+      "donor_predicate_id": "concern_deal_with",
+      "donor_predicate_description": "deal with, have to do with",
+      "named_label": "Phenomenon",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "concern-02",
+        "normalized_source_id": "concern.02",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "deal with, have to do with, involved, pertained to",
+        "argument_description": "entity dealing with something",
+        "source_relative_path": "frames/concern.xml",
+        "source_file_sha256": "6cb9d5528b6d657dfe3c57b7c5c7cbcfe256c7b67fd25e4a9cfc21af46c63cef",
+        "source_git_blob_sha": "a8730e2238072a91d0143cf26e4a2167435d01a7"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:damp_restrain_weaken:Hindrance",
+      "donor_predicate_id": "damp_restrain_weaken",
+      "donor_predicate_description": "to restrain or weaken",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "damp-01",
+        "normalized_source_id": "damp.01",
+        "argument_number": "0",
+        "resolution_status": "source_window_not_supplied",
+        "roleset_name": null,
+        "argument_description": null,
+        "source_relative_path": null,
+        "source_file_sha256": null,
+        "source_git_blob_sha": null
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:disenchant_lose_interest:Cause",
+      "donor_predicate_id": "disenchant_lose_interest",
+      "donor_predicate_description": "no longer interested in",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "disenchant-01",
+        "normalized_source_id": "disenchant.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "no longer interested in",
+        "argument_description": "causer of lack of interest, agent",
+        "source_relative_path": "frames/disenchant.xml",
+        "source_file_sha256": "19044788c9dcd7d22ac82a82619dd174650758e3c81107b5d3dc98b2d61bc733",
+        "source_git_blob_sha": "0389e5099adc67f3a53fa77b3360910f805f3c3b"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:disrupt_interrupt_disorder:Cause",
+      "donor_predicate_id": "disrupt_interrupt_disorder",
+      "donor_predicate_description": "to interrupt, throw into disorder",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "disrupt-01",
+        "normalized_source_id": "disrupt.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to interrupt, throw into disorder",
+        "argument_description": "disrupter, agent",
+        "source_relative_path": "frames/disrupt.xml",
+        "source_file_sha256": "9f2550a5d40e95df0b1bb3694eceaa47f03448b718f66545e70d7448a42d5571",
+        "source_git_blob_sha": "5f138d20f664f90466b64853e3ea916c3e45bcb9"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:effect_cause_effect:Cause",
+      "donor_predicate_id": "effect_cause_effect",
+      "donor_predicate_description": "cause an effect",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "effect-01",
+        "normalized_source_id": "effect.01",
+        "argument_number": "0",
+        "resolution_status": "source_window_not_supplied",
+        "roleset_name": null,
+        "argument_description": null,
+        "source_relative_path": null,
+        "source_file_sha256": null,
+        "source_git_blob_sha": null
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:evoke_summon_allusions:Stimulus",
+      "donor_predicate_id": "evoke_summon_allusions",
+      "donor_predicate_description": "summon, make allusions to",
+      "named_label": "Stimulus",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "evoke-01",
+        "normalized_source_id": "evoke.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "summon, make allusions to",
+        "argument_description": "evoker",
+        "source_relative_path": "frames/evoke.xml",
+        "source_file_sha256": "4cd57e44b15967d9b86f6293b2c4914765069446ef9d7963f38d12932287adc2",
+        "source_git_blob_sha": "fce49541d5d7a43b1847bc87ccafc02f6a8e366b"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:exacerbate_make_worse:Cause",
+      "donor_predicate_id": "exacerbate_make_worse",
+      "donor_predicate_description": "make worse",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "exacerbate-01",
+        "normalized_source_id": "exacerbate.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "make worse",
+        "argument_description": "causer",
+        "source_relative_path": "frames/exacerbate.xml",
+        "source_file_sha256": "4963aed2ccf1920e95b1caa2d8e87725756515eb8b64a4700fe9a7694865d075",
+        "source_git_blob_sha": "738df78a83ed4a34f7bbb119550a96987cb41086"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:galvanize_cause_response:Cause",
+      "donor_predicate_id": "galvanize_cause_response",
+      "donor_predicate_description": "cause a response",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "galvanize-02",
+        "normalized_source_id": "galvanize.02",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "cause a response",
+        "argument_description": "action",
+        "source_relative_path": "frames/galvanize.xml",
+        "source_file_sha256": "cc57dc54b6e35dbbc825c02e63ebe93793a81fc140ab2dd81549d754be4a2cac",
+        "source_git_blob_sha": "66f1fa87c2ace05a1436a8ac8361850732799f0e"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:hamper_obstruct_hinder:Hindrance",
+      "donor_predicate_id": "hamper_obstruct_hinder",
+      "donor_predicate_description": "obstruct, hinder",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "hamper-01",
+        "normalized_source_id": "hamper.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "obstruct, hinder",
+        "argument_description": "obstruction",
+        "source_relative_path": "frames/hamper.xml",
+        "source_file_sha256": "407c2b249da3a5f182867ade74931b9ae54b0d27f5ba544bf3b5857622b9b889",
+        "source_git_blob_sha": "ad2c3b2eee4b1a1c10cc3dba21c5a907f91f6918"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:handicap_make_difficult:Hindrance",
+      "donor_predicate_id": "handicap_make_difficult",
+      "donor_predicate_description": "to make difficult",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "handicap-01",
+        "normalized_source_id": "handicap.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to make difficult",
+        "argument_description": "causer of difficulty",
+        "source_relative_path": "frames/handicap.xml",
+        "source_file_sha256": "ae5e7d780162bc1029e273e3519a17d9a0c6949b32f1a26e35d2cffada29e449",
+        "source_git_blob_sha": "e9ab85bb8f1a46d65e1b4f64fc00b8e0f5f1edc4"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:hinder_stop_prevent:Hindrance",
+      "donor_predicate_id": "hinder_stop_prevent",
+      "donor_predicate_description": "(try to) stop, prevent",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "hinder-01",
+        "normalized_source_id": "hinder.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "(try to) stop, prevent",
+        "argument_description": "stopper, preventer",
+        "source_relative_path": "frames/hinder.xml",
+        "source_file_sha256": "dce8341b8c6f1e41700dff84f0444d5578f281b77da9bd2c9deccbdc51cf19d4",
+        "source_git_blob_sha": "2325e9865faa773e6bba08214cad95f57fe13b86"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:impede_hinder_stop:Hindrance",
+      "donor_predicate_id": "impede_hinder_stop",
+      "donor_predicate_description": "hinder, try to stop",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "impede-01",
+        "normalized_source_id": "impede.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "hinder, try to stop",
+        "argument_description": "entity attempting to stop something",
+        "source_relative_path": "frames/impede.xml",
+        "source_file_sha256": "5059c5cdf7e89faf4df724b9c21f6b00a3afa79841a6d3253f4463d1e65dd62c",
+        "source_git_blob_sha": "b2b561de1585923d40d11586ce6aee16cd218de6"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:incite_provoke:Cause",
+      "donor_predicate_id": "incite_provoke",
+      "donor_predicate_description": "to provoke",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "incite-01",
+        "normalized_source_id": "incite.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to provoke",
+        "argument_description": "causer of action, agent",
+        "source_relative_path": "frames/incite.xml",
+        "source_file_sha256": "e7ecc50739fa928aaa4502e222719cd360f7217202bb93382c0fe1ec8d1ff1da",
+        "source_git_blob_sha": "8b8ca9180796621f3e0f3551e8145221638ed03f"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:initiate_begin:Cause",
+      "donor_predicate_id": "initiate_begin",
+      "donor_predicate_description": "begin",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "initiate-01",
+        "normalized_source_id": "initiate.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "begin",
+        "argument_description": "causer",
+        "source_relative_path": "frames/initiate.xml",
+        "source_file_sha256": "1e8a64f158c2cb3a61680c2ffcda96ffad76e0335dc3a743b56c53a2362dac2a",
+        "source_git_blob_sha": "9a2ee1e33445a19e40d4c5405eea3f7ec201cd7a"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:instigate_cause_response:Cause",
+      "donor_predicate_id": "instigate_cause_response",
+      "donor_predicate_description": "cause a response",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "instigate-01",
+        "normalized_source_id": "instigate.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "cause a response",
+        "argument_description": "instigator",
+        "source_relative_path": "frames/instigate.xml",
+        "source_file_sha256": "05dccb193754655e77636fee68e4de9b6a5dc7222818ad9b1a03de4e1a427c8a",
+        "source_git_blob_sha": "6eb3c9fb769f4184e12efcc3bc290caab66b8601"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:introduce_implement_begin:Cause",
+      "donor_predicate_id": "introduce_implement_begin",
+      "donor_predicate_description": "implement, begin, bring up",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "introduce-02",
+        "normalized_source_id": "introduce.02",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "implement, begin, bring up",
+        "argument_description": "implementer, starter",
+        "source_relative_path": "frames/introduce.xml",
+        "source_file_sha256": "7451b58d161000d468e52137ab1e12dc8a503df781485c471a239f9615cd9f24",
+        "source_git_blob_sha": "bd329f3e37d66c42a8bab1b0c9dd7aa4eab02359"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:jolt_impelled_action:Cause",
+      "donor_predicate_id": "jolt_impelled_action",
+      "donor_predicate_description": "impelled action",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "jolt-02",
+        "normalized_source_id": "jolt.02",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "impelled action",
+        "argument_description": "jolter",
+        "source_relative_path": "frames/jolt.xml",
+        "source_file_sha256": "71181a30e1db63f500ce5287645ac3102cde8027dd13c3b8a99bd8dac0e201d8",
+        "source_git_blob_sha": "fd1e0c387f72eb03b0a2f7ece29f3fbfc79983a6"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:lead_result_outcome:Cause",
+      "donor_predicate_id": "lead_result_outcome",
+      "donor_predicate_description": "resulted",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "lead-03",
+        "normalized_source_id": "lead.03",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "cause a result",
+        "argument_description": "factors",
+        "source_relative_path": "frames/lead.xml",
+        "source_file_sha256": "acdf378d1b4f54afad9022590103d185fd4958a87231069d6ba16d531b3eaff8",
+        "source_git_blob_sha": "370a27a1da94d41d76c9029966452ed950b9049e"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:obstruct_to_block:Hindrance",
+      "donor_predicate_id": "obstruct_to_block",
+      "donor_predicate_description": "to block",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "obstruct-01",
+        "normalized_source_id": "obstruct.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to block",
+        "argument_description": "blocker, obstruction",
+        "source_relative_path": "frames/obstruct.xml",
+        "source_file_sha256": "4768ab1311091e370b615a8fc7be1f86d16c2a4645c3c05cc16c6aac5fd5e4a2",
+        "source_git_blob_sha": "a0c9820309dc3c4d5e9199f63d1a6922c05a8df9"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:occasion_bring_about_event:Cause",
+      "donor_predicate_id": "occasion_bring_about_event",
+      "donor_predicate_description": "bring about an event",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "occasion-01",
+        "normalized_source_id": "occasion.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "bring about an event",
+        "argument_description": "bringer about",
+        "source_relative_path": "frames/occasion.xml",
+        "source_file_sha256": "a435b591ab87ce3b2c85e78cb6fda0a2593d17cf7df73ce5cee13b67db8cdf9b",
+        "source_git_blob_sha": "66265bce8df7070808e17e8fe2135ef32786bb75"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:pertain_have_reference:Phenomenon",
+      "donor_predicate_id": "pertain_have_reference",
+      "donor_predicate_description": "to have reference, relate",
+      "named_label": "Phenomenon",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "pertain-01",
+        "normalized_source_id": "pertain.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to have reference, relate",
+        "argument_description": "entity pertaining",
+        "source_relative_path": "frames/pertain.xml",
+        "source_file_sha256": "a7fa027a38f98d707f15a554993436a83e5aa65e664017e52596c9e23e820838",
+        "source_git_blob_sha": "4c3234433a45567a9f57c9a42e7cd4a496659444"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:precipitate_cause_to_happen:Cause",
+      "donor_predicate_id": "precipitate_cause_to_happen",
+      "donor_predicate_description": "to cause to happen",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "precipitate-01",
+        "normalized_source_id": "precipitate.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to cause to happen",
+        "argument_description": "cause",
+        "source_relative_path": "frames/precipitate.xml",
+        "source_file_sha256": "d9f0bad282c048033c8c8776f64f844a95d6c0df6842ef86b2b54209aaf8fd6e",
+        "source_git_blob_sha": "6c400be5b7ee36e48ea3d52be84de5b51f0634db"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:prompt_bring_about:Cause",
+      "donor_predicate_id": "prompt_bring_about",
+      "donor_predicate_description": "bring about, cause",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "prompt-02",
+        "normalized_source_id": "prompt.02",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "bring about, cause",
+        "argument_description": "causer, prompter",
+        "source_relative_path": "frames/prompt.xml",
+        "source_file_sha256": "e48dddab508b472f115e3a21f73297c54336f89f57b8b2fb1184421d24bc0597",
+        "source_git_blob_sha": "db05fd43f9bd88a38b0bc0fd820332e7e80085aa"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:prompt_cause_event:Cause",
+      "donor_predicate_id": "prompt_cause_event",
+      "donor_predicate_description": "cause an event",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "prompt-01",
+        "normalized_source_id": "prompt.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "cause an event",
+        "argument_description": "causer, prompter",
+        "source_relative_path": "frames/prompt.xml",
+        "source_file_sha256": "e48dddab508b472f115e3a21f73297c54336f89f57b8b2fb1184421d24bc0597",
+        "source_git_blob_sha": "db05fd43f9bd88a38b0bc0fd820332e7e80085aa"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:redound_have_consequence:Cause",
+      "donor_predicate_id": "redound_have_consequence",
+      "donor_predicate_description": "have a consequence",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "redound-01",
+        "normalized_source_id": "redound.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "have a consequence",
+        "argument_description": "action with consequence",
+        "source_relative_path": "frames/redound.xml",
+        "source_file_sha256": "9605957defd88f9dc128b4722bf181acde68052b61a6c89d17244017ca19b65d",
+        "source_git_blob_sha": "e1c21acac804eaabd34de16c9cefbf453630bec6"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:reduce_make_less:Hindrance",
+      "donor_predicate_id": "reduce_make_less",
+      "donor_predicate_description": "make less",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "reduce-01",
+        "normalized_source_id": "reduce.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "make less, lessening",
+        "argument_description": "Agent",
+        "source_relative_path": "frames/reduce.xml",
+        "source_file_sha256": "062e8f47fa24a7dfdce96d6e817c280e4dff11c32c3533dfd2c29605af74a792",
+        "source_git_blob_sha": "370b14fa48c92d564a8db96766ad7f04915d113d"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:spark_begin_initiate:Cause",
+      "donor_predicate_id": "spark_begin_initiate",
+      "donor_predicate_description": "begin, start, initiate",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "spark-01",
+        "normalized_source_id": "spark.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "begin, start, initiate",
+        "argument_description": "cause of starting, agent",
+        "source_relative_path": "frames/spark.xml",
+        "source_file_sha256": "f39d0ca88b08551a6242cb4dc77394b49333eb76cfe1f85687f2e502f8f8b26b",
+        "source_git_blob_sha": "bb54f55d9dd77db56545da002fbbabbdb895ed7b"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:spawn_produce_give_rise:Cause",
+      "donor_predicate_id": "spawn_produce_give_rise",
+      "donor_predicate_description": "to produce in large numbers, to give rise to",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "spawn-01",
+        "normalized_source_id": "spawn.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to produce in large numbers, to give rise to",
+        "argument_description": "causer",
+        "source_relative_path": "frames/spawn.xml",
+        "source_file_sha256": "22aaf2d8482b4695198fa91534cc49091dd890fe277ac5d1dd1f162cc68ca210",
+        "source_git_blob_sha": "26a4288573662cd8a312105f10c6ec67ddf8616c"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:stunt_check_growth:Hindrance",
+      "donor_predicate_id": "stunt_check_growth",
+      "donor_predicate_description": "to check the growth or development of",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "stunt-01",
+        "normalized_source_id": "stunt.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "to check the growth or development of",
+        "argument_description": "preventer of growth, agent",
+        "source_relative_path": "frames/stunt.xml",
+        "source_file_sha256": "4afe73add359d2c995549d6a60ebbc1a8652ff3a3f1fd592af8fab7aa7a75aca",
+        "source_git_blob_sha": "e986d73fbfb424e901c63123807b1a9a0718b88c"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:stymie_block_actions:Hindrance",
+      "donor_predicate_id": "stymie_block_actions",
+      "donor_predicate_description": "block someone's actions",
+      "named_label": "Hindrance",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "stymie-01",
+        "normalized_source_id": "stymie.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "block someone's actions",
+        "argument_description": "blocker, agent",
+        "source_relative_path": "frames/stymie.xml",
+        "source_file_sha256": "9a20f6c93d3bc1c024c0c0256bac5ddf2f59f4bdc81b3b7edb06600e4b275a33",
+        "source_git_blob_sha": "2715a9e5c088f27846875a607c8a310ef100acd4"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:trigger_begin:Cause",
+      "donor_predicate_id": "trigger_begin",
+      "donor_predicate_description": "begin",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "trigger-01",
+        "normalized_source_id": "trigger.01",
+        "argument_number": "0",
+        "resolution_status": "exact_current_source",
+        "roleset_name": "begin, cause to begin",
+        "argument_description": "Agent",
+        "source_relative_path": "frames/trigger.xml",
+        "source_file_sha256": "c16c1cf5649f1965eeaa3eaf4a17f2cd3669736ddb596ce958d996177f73356e",
+        "source_git_blob_sha": "2dfe0a7e4c09b2fac1d65be1c708257bdb17b6dc"
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    },
+    {
+      "case_id": "sumo-review:usher_signal_start:Cause",
+      "donor_predicate_id": "usher_signal_start",
+      "donor_predicate_description": "signal the start of",
+      "named_label": "Cause",
+      "arg_position": "ARG0",
+      "abstract_role": "agent",
+      "donor_type_constraint": "Entity",
+      "source_constraint_types": [
+        "AutonomousAgent"
+      ],
+      "role_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 765,
+          "start_line": 2596,
+          "formula_sha256": "b42bc19453fda30ade3ae40290c93cd54deb68a021dc666acfe5ce3b34e89557"
+        }
+      ],
+      "constraint_source_refs": [
+        {
+          "module_path": "Merge.kif",
+          "module_sha256": "532d9b2c6f0ab2309c58c72ca9b137e896474a8637a711c5fda09f96a235c307",
+          "formula_index": 768,
+          "start_line": 2599,
+          "formula_sha256": "745244f14ca2896db5de3342db0fd2b6c3c6f9e50b11508622c0c345ad02a962"
+        }
+      ],
+      "propbank": {
+        "donor_sense_id": "usher-01",
+        "normalized_source_id": "usher.01",
+        "argument_number": "0",
+        "resolution_status": "source_window_not_supplied",
+        "roleset_name": null,
+        "argument_description": null,
+        "source_relative_path": null,
+        "source_file_sha256": null,
+        "source_git_blob_sha": null
+      },
+      "proposal_state": "awaiting_semantic_proposal"
+    }
+  ],
+  "queue_content_sha256": "d93895b6209e04068fad21161612a1984296683b0d928fdc92dee71e861771ef",
+  "queue_identity_sha256": "4673f2abd5211ef337631801f7425750dd87b5adf8389c36667780eee382b4e4"
+}

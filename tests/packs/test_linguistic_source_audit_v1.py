@@ -10,13 +10,13 @@ import subprocess
 import pytest
 from pydantic import ValidationError
 
-from onto_canon6.packs.linguistic_source_audit_v1 import (
+from linguistic_core.linguistic_source_audit_v1 import (
     LinguisticDonorLabelAuditV1,
     audit_linguistic_donor_labels_v1,
     normalize_propbank_donor_id_v1,
     normalize_sumo_donor_id_v1,
 )
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_sources_v1 import (
     GitSourceIdentityV1,
     LicenseEvidenceV1,
     LinguisticSourceManifestV1,

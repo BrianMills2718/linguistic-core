@@ -12,15 +12,15 @@ import sys
 _REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
-from onto_canon6.packs.sumo_crosswalk_audit_v1 import SumoCrosswalkAuditV1  # noqa: E402
-from onto_canon6.packs.sumo_crosswalk_review_v1 import (  # noqa: E402
+from linguistic_core.sumo_crosswalk_audit_v1 import SumoCrosswalkAuditV1  # noqa: E402
+from linguistic_core.sumo_crosswalk_review_v1 import (  # noqa: E402
     PropBankReviewSourceFileV1,
     PropBankReviewSourceV1,
     build_sumo_crosswalk_semantic_review_queue_v1,
 )
-from onto_canon6.packs.linguistic_sources_v1 import load_linguistic_source_manifest_v1  # noqa: E402
-from onto_canon6.packs.linguistic_source_audit_v1 import normalize_propbank_donor_id_v1  # noqa: E402
-from onto_canon6.packs.linguistic_source_projection_v1 import PropBankProjectionV1  # noqa: E402
+from linguistic_core.linguistic_sources_v1 import load_linguistic_source_manifest_v1  # noqa: E402
+from linguistic_core.linguistic_source_audit_v1 import normalize_propbank_donor_id_v1  # noqa: E402
+from linguistic_core.linguistic_source_projection_v1 import PropBankProjectionV1  # noqa: E402
 
 
 def _git(checkout: Path, *args: str) -> str:

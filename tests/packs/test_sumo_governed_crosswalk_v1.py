@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from onto_canon6.packs.sumo_crosswalk_review_v1 import (
+from linguistic_core.sumo_crosswalk_review_v1 import (
     CompiledSumoSemanticProposalV1,
     SumoCrosswalkSemanticReviewQueueV1,
     SumoSemanticControlResultV1,
@@ -19,7 +19,7 @@ from onto_canon6.packs.sumo_crosswalk_review_v1 import (
     build_sumo_crosswalk_semantic_review_queue_v1,
     verify_sumo_semantic_proposal_trace_v1,
 )
-from onto_canon6.packs.sumo_governed_crosswalk_v1 import (
+from linguistic_core.sumo_governed_crosswalk_v1 import (
     GovernedSumoCrosswalkV1,
     SumoCrosswalkReviewBatchV1,
     SumoCrosswalkReviewDecisionV1,

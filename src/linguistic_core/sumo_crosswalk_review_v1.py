@@ -15,14 +15,14 @@ import xml.etree.ElementTree as ET
 
 from pydantic import BaseModel, ConfigDict, Field, create_model, model_validator
 
-from onto_canon6.packs.linguistic_source_audit_v1 import (
+from linguistic_core.linguistic_source_audit_v1 import (
     normalize_propbank_donor_id_v1,
 )
-from onto_canon6.packs.sumo_crosswalk_audit_v1 import (
+from linguistic_core.sumo_crosswalk_audit_v1 import (
     SumoCrosswalkAuditV1,
     SumoRoleCandidateV1,
 )
-from onto_canon6.packs.sumo_projection_v1 import SumoFormulaRefV1
+from linguistic_core.sumo_projection_v1 import SumoFormulaRefV1
 
 
 ResolutionStatus = Literal[

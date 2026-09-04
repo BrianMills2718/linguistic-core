@@ -11,14 +11,14 @@ import sys
 _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT / "src"))
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import (  # noqa: E402
+from linguistic_core.linguistic_crosswalk_v1 import (  # noqa: E402
     append_reviewed_sumo_role_records_v1,
     bind_reviewed_sumo_roles_v1,
     compile_linguistic_crosswalk_v1,
 )
-from onto_canon6.packs.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1  # noqa: E402
-from onto_canon6.packs.semantic_provenance import SemanticMappingRecord  # noqa: E402
-from onto_canon6.packs.sumo_governed_crosswalk_v1 import GovernedSumoCrosswalkV1  # noqa: E402
+from linguistic_core.linguistic_source_audit_v1 import LinguisticDonorLabelAuditV1  # noqa: E402
+from linguistic_core.semantic_provenance import SemanticMappingRecord  # noqa: E402
+from linguistic_core.sumo_governed_crosswalk_v1 import GovernedSumoCrosswalkV1  # noqa: E402
 
 
 def _read(path: Path) -> bytes:

@@ -8,8 +8,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
-from onto_canon6.packs.linguistic_runtime_view_v1 import LinguisticRuntimeViewReceiptV1
+from linguistic_core.linguistic_crosswalk_v1 import LinguisticCrosswalkV1
+from linguistic_core.linguistic_runtime_view_v1 import LinguisticRuntimeViewReceiptV1
 
 
 def _sha256(value: object) -> str:

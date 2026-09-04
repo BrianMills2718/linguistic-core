@@ -11,14 +11,14 @@ import subprocess
 import pytest
 from pydantic import ValidationError
 
-from onto_canon6.packs.linguistic_source_projection_v1 import (
+from linguistic_core.linguistic_source_projection_v1 import (
     LinguisticSourceRepairManifestV1,
     SourceProjectionError,
     SourceSyntaxRepairV1,
     compile_propbank_projection_v1,
     load_propbank_projection_v1,
 )
-from onto_canon6.packs.linguistic_sources_v1 import (
+from linguistic_core.linguistic_sources_v1 import (
     GitSourceIdentityV1,
     LicenseEvidenceV1,
     LinguisticSourceManifestV1,

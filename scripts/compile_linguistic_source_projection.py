@@ -19,11 +19,11 @@ import tempfile
 _REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
-from onto_canon6.packs.linguistic_source_projection_v1 import (  # noqa: E402
+from linguistic_core.linguistic_source_projection_v1 import (  # noqa: E402
     compile_propbank_projection_v1,
     load_linguistic_source_repairs_v1,
 )
-from onto_canon6.packs.linguistic_sources_v1 import (  # noqa: E402
+from linguistic_core.linguistic_sources_v1 import (  # noqa: E402
     load_linguistic_source_manifest_v1,
 )
 

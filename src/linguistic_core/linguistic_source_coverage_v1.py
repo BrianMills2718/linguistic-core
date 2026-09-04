@@ -8,10 +8,10 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from onto_canon6.packs.framenet_projection_v1 import FrameNetProjectionV1
-from onto_canon6.packs.linguistic_source_projection_v1 import PropBankProjectionV1
-from onto_canon6.packs.linguistic_sources_v1 import LinguisticSourceVerificationReportV1
-from onto_canon6.packs.sumo_projection_v1 import SumoProjectionV1
+from linguistic_core.framenet_projection_v1 import FrameNetProjectionV1
+from linguistic_core.linguistic_source_projection_v1 import PropBankProjectionV1
+from linguistic_core.linguistic_sources_v1 import LinguisticSourceVerificationReportV1
+from linguistic_core.sumo_projection_v1 import SumoProjectionV1
 
 
 class LinguisticSourceCoverageV1(BaseModel):

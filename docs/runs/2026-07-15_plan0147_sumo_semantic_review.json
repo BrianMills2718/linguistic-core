@@ -1,0 +1,202 @@
+{
+  "schema_version": "sumo-crosswalk-review-batch-v1",
+  "queue_content_sha256": "d93895b6209e04068fad21161612a1984296683b0d928fdc92dee71e861771ef",
+  "queue_identity_sha256": "4673f2abd5211ef337631801f7425750dd87b5adf8389c36667780eee382b4e4",
+  "proposal_trace_id": "onto-canon6/plan0147/sumo-semantic-proposal/20260715-v3",
+  "proposal_trace_sha256": "db61a36fa7f26641092d22703f0c8d5425ac9f7351bf6be5dec16f115d6e02f5",
+  "proposal_raw_response_sha256": "43375bbbcf106278b1c2caac741ff4bc09930f63bf1faab7d31d917a0898917a",
+  "review_document_sha256": "4656ac73936443ad138ce02873efae2e25650bd4b61f1a3a687886d65f5f7654",
+  "proposer_model": "openrouter/minimax/minimax-m3",
+  "reviewer_ref": "agent:codex:019f5870-691a-7672-9806-95abaf6740ba",
+  "reviewer_identity_authority": "caller_attested",
+  "reviewer_separation": "different_model_from_proposer_same_operator_session",
+  "decisions": [
+    {
+      "case_id": "sumo-review:affect_have_effect:Cause",
+      "state": "rejected",
+      "evidence_quote": "thing affecting",
+      "rationale": "“thing” permits a non-autonomous cause."
+    },
+    {
+      "case_id": "sumo-review:catalyze_initiate_change:Cause",
+      "state": "unresolved",
+      "evidence_quote": "agent",
+      "rationale": "Bare “agent” does not establish autonomous intentional action."
+    },
+    {
+      "case_id": "sumo-review:concern_deal_with:Phenomenon",
+      "state": "rejected",
+      "evidence_quote": "entity dealing with something",
+      "rationale": "“entity” permits non-autonomous referents."
+    },
+    {
+      "case_id": "sumo-review:disenchant_lose_interest:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer of lack of interest, agent",
+      "rationale": "“causer” and “agent” do not resolve autonomy."
+    },
+    {
+      "case_id": "sumo-review:disrupt_interrupt_disorder:Cause",
+      "state": "unresolved",
+      "evidence_quote": "disrupter, agent",
+      "rationale": "Role labels alone do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:evoke_summon_allusions:Stimulus",
+      "state": "unresolved",
+      "evidence_quote": "evoker",
+      "rationale": "A stimulus label alone does not establish an autonomous actor."
+    },
+    {
+      "case_id": "sumo-review:exacerbate_make_worse:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer",
+      "rationale": "Bare causation does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:galvanize_cause_response:Cause",
+      "state": "rejected",
+      "evidence_quote": "action",
+      "rationale": "An action can be non-autonomous."
+    },
+    {
+      "case_id": "sumo-review:hamper_obstruct_hinder:Hindrance",
+      "state": "rejected",
+      "evidence_quote": "obstruction",
+      "rationale": "An obstruction can be non-autonomous."
+    },
+    {
+      "case_id": "sumo-review:handicap_make_difficult:Hindrance",
+      "state": "unresolved",
+      "evidence_quote": "causer of difficulty",
+      "rationale": "Causation alone does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:hinder_stop_prevent:Hindrance",
+      "state": "unresolved",
+      "evidence_quote": "stopper, preventer",
+      "rationale": "These labels do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:impede_hinder_stop:Hindrance",
+      "state": "unresolved",
+      "evidence_quote": "entity attempting to stop something",
+      "rationale": "“attempting” suggests intent, but “entity” does not establish autonomous-agent status."
+    },
+    {
+      "case_id": "sumo-review:incite_provoke:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer of action, agent",
+      "rationale": "The combined labels still do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:initiate_begin:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer",
+      "rationale": "Bare causation does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:instigate_cause_response:Cause",
+      "state": "unresolved",
+      "evidence_quote": "instigator",
+      "rationale": "The label does not itself establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:introduce_implement_begin:Cause",
+      "state": "unresolved",
+      "evidence_quote": "implementer, starter",
+      "rationale": "The supplied text does not establish autonomous-agent status."
+    },
+    {
+      "case_id": "sumo-review:jolt_impelled_action:Cause",
+      "state": "unresolved",
+      "evidence_quote": "jolter",
+      "rationale": "The label does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:lead_result_outcome:Cause",
+      "state": "rejected",
+      "evidence_quote": "factors",
+      "rationale": "Factors can be non-autonomous."
+    },
+    {
+      "case_id": "sumo-review:obstruct_to_block:Hindrance",
+      "state": "rejected",
+      "evidence_quote": "blocker, obstruction",
+      "rationale": "Obstruction permits a non-autonomous hindrance."
+    },
+    {
+      "case_id": "sumo-review:occasion_bring_about_event:Cause",
+      "state": "unresolved",
+      "evidence_quote": "bringer about",
+      "rationale": "The phrase does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:pertain_have_reference:Phenomenon",
+      "state": "rejected",
+      "evidence_quote": "entity pertaining",
+      "rationale": "An entity/phenomenon need not be autonomous."
+    },
+    {
+      "case_id": "sumo-review:precipitate_cause_to_happen:Cause",
+      "state": "unresolved",
+      "evidence_quote": "cause",
+      "rationale": "Bare causation does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:prompt_bring_about:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer, prompter",
+      "rationale": "The labels do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:prompt_cause_event:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer, prompter",
+      "rationale": "The labels do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:redound_have_consequence:Cause",
+      "state": "rejected",
+      "evidence_quote": "action with consequence",
+      "rationale": "An action can be non-autonomous."
+    },
+    {
+      "case_id": "sumo-review:reduce_make_less:Hindrance",
+      "state": "unresolved",
+      "evidence_quote": "Agent",
+      "rationale": "Bare “Agent” does not establish autonomous intentional action."
+    },
+    {
+      "case_id": "sumo-review:spark_begin_initiate:Cause",
+      "state": "unresolved",
+      "evidence_quote": "cause of starting, agent",
+      "rationale": "The labels do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:spawn_produce_give_rise:Cause",
+      "state": "unresolved",
+      "evidence_quote": "causer",
+      "rationale": "Bare causation does not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:stunt_check_growth:Hindrance",
+      "state": "unresolved",
+      "evidence_quote": "preventer of growth, agent",
+      "rationale": "The labels do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:stymie_block_actions:Hindrance",
+      "state": "unresolved",
+      "evidence_quote": "blocker, agent",
+      "rationale": "The labels do not establish autonomy."
+    },
+    {
+      "case_id": "sumo-review:trigger_begin:Cause",
+      "state": "unresolved",
+      "evidence_quote": "Agent",
+      "rationale": "Bare “Agent” does not establish autonomous intentional action."
+    }
+  ],
+  "review_content_sha256": "69e9bc95a0d24109ba7b0c878cb1f34c6b98a95ca94c1a59c9254be3340ac1b3"
+}
