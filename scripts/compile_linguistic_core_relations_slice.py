@@ -141,6 +141,51 @@ def _read_jsonl(path: Path) -> list[dict[str, object]]:
     return rows
 
 
+def _collect_ancestor_identities(
+    pack_dir: Path,
+) -> tuple[set[str], set[tuple[str, str, str]], set[str], set[str]]:
+    """Union entity, hierarchy-edge, predicate, and role identities across a pack's `extends` closure.
+
+    Reads `pack_dir`'s own local rows plus every pack it transitively extends
+    (each `extends` target resolved as a sibling version directory under the
+    same `ontology_packs/<id>/` root), matching the identity semantics the
+    ontology runtime loader (`src/onto_canon6/ontology_runtime/loaders.py`)
+    enforces: an identity owned by any ancestor in the closure cannot be
+    re-declared by a descendant. Predicate identities matter here specifically
+    because this compiler may be re-run against a widened module disposition
+    that re-derives relations an earlier, narrower run of the SAME compiler
+    already emitted into an ancestor version (e.g. 0.3.1's Merge.kif-sourced
+    relations reappearing in a 0.3.2 recompile against a wider disposition) --
+    those must be treated as already-owned, not re-declared.
+    """
+
+    entity_ids: set[str] = set()
+    hierarchy_identities: set[tuple[str, str, str]] = set()
+    predicate_ids: set[str] = set()
+    role_ids: set[str] = set()
+    seen_dirs: set[Path] = set()
+    stack = [pack_dir]
+    while stack:
+        current = stack.pop()
+        resolved = current.resolve()
+        if resolved in seen_dirs:
+            continue
+        seen_dirs.add(resolved)
+        entity_ids.update(str(r["type_id"]) for r in _read_jsonl(current / "entity_types.jsonl"))
+        hierarchy_identities.update(
+            (str(r["child_id"]), str(r["parent_id"]), str(r["edge_type"]))
+            for r in _read_jsonl(current / "hierarchy_edges.jsonl")
+        )
+        predicate_ids.update(
+            str(r["predicate_id"]) for r in _read_jsonl(current / "predicate_types.jsonl")
+        )
+        role_ids.update(str(r["role_id"]) for r in _read_jsonl(current / "role_types.jsonl"))
+        manifest = yaml.safe_load((current / "manifest.yaml").read_text(encoding="utf-8"))
+        for ancestor in manifest.get("extends") or []:
+            stack.append(current.parent.parent / str(ancestor["id"]) / str(ancestor["version"]))
+    return entity_ids, hierarchy_identities, predicate_ids, role_ids
+
+
 def _write_jsonl(path: Path, rows: list[dict[str, object]]) -> None:
     with open(path, "w", encoding="utf-8") as f:
         f.writelines(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
@@ -186,6 +231,13 @@ def compile_relations_slice(
     try:
         all_relations = list(conn.execute("SELECT * FROM relations ORDER BY id"))
         pred_names = {row["name"] for row in conn.execute("SELECT name FROM predicates")}
+        (
+            ancestor_entity_ids,
+            ancestor_hierarchy_identities,
+            ancestor_predicate_ids,
+            ancestor_role_ids,
+        ) = _collect_ancestor_identities(base_pack_dir)
+        pred_names = pred_names | {pid.removeprefix("lc:") for pid in ancestor_predicate_ids}
 
         # Per the plan doc: "filtered by joining relations.source ... against
         # module_dispositions, keeping only rows where publication_disposition
@@ -268,7 +320,7 @@ def compile_relations_slice(
             for row in final_relations
         ]
 
-        # --- role_types.jsonl (generic, shared, positional) ---
+        # --- role_types.jsonl (generic, shared, positional; only NEW role ids) ---
         role_rows: list[dict[str, object]] = [
             {
                 "role_id": _role_id(n),
@@ -277,6 +329,7 @@ def compile_relations_slice(
                 "status": "active",
             }
             for n in range(1, max_arity + 1)
+            if _role_id(n) not in ancestor_role_ids
         ]
 
         # --- predicate_role_edges.jsonl (one row per arg position, all required) ---
@@ -317,13 +370,14 @@ def compile_relations_slice(
         constraint_out_rows.sort(key=lambda r: (r["predicate_id"], r["role_id"], r["expected_type"]))
 
         # --- entity_types.jsonl + hierarchy_edges.jsonl: only NEW types/edges ---
-        base_entity_ids = {
-            str(r["type_id"]) for r in _read_jsonl(base_pack_dir / "entity_types.jsonl")
-        }
-        base_hierarchy_identities = {
-            (str(r["child_id"]), str(r["parent_id"]), str(r["edge_type"]))
-            for r in _read_jsonl(base_pack_dir / "hierarchy_edges.jsonl")
-        }
+        # Checked against the FULL ancestor closure (collected above, before the
+        # predicate-collision filter) rather than just base_pack_dir's own local
+        # rows -- an additive pack's local file only contains what IT added, so
+        # checking only the immediate base would miss identities an older
+        # ancestor (e.g. 0.3.0) already owns, causing a loader "extension
+        # identity conflict" the first time a wider slice reintroduces one.
+        base_entity_ids = ancestor_entity_ids
+        base_hierarchy_identities = ancestor_hierarchy_identities
 
         closure_names: set[str] = set(required_type_names)
         if required_type_names:
@@ -420,17 +474,27 @@ def compile_relations_slice(
         "constraints": constraint_out_rows,
     }
 
+    disposition_rel_path = disposition_path.resolve().relative_to(_REPO_ROOT).as_posix()
+    approved_module_count = sum(
+        1 for value in dispositions.values() if value == _APPROVED_DISPOSITION
+    )
+    total_module_count = len(dispositions)
     description = (
         f"Additive relations slice for linguistic_core, extending {base_version}. "
         "Compiles SUMO relations and their positional argument-type constraints "
         "from sumo_plus.db's relations/relation_constraints tables (unread by the "
-        "base compiler), filtered to SUMO modules already cleared for publication "
-        "per docs/runs/artifacts/plan0147_sumo_module_publication_v1.json (today: "
-        "Merge.kif only). Excludes SUO-KIF Functions (*Fn) and relation IDs that "
+        f"base compiler), filtered to SUMO modules cleared for publication per "
+        f"{disposition_rel_path} ({approved_module_count} of {total_module_count} "
+        "modules approved). Excludes SUO-KIF Functions (*Fn) and relation IDs that "
         "collide with an existing linguistic_core predicate name. Provides "
         f"{len(predicate_rows)} new lc: relation predicates (kinship, spatial, "
         "semiotic, and other general relations) with generic positional role "
-        "slots (lc.role.relation_arg1..N, N = max arity in this slice)."
+        "slots (lc.role.relation_arg1..N, N = max arity in this slice). "
+        "Attribution: derived from the SUMO (Suggested Upper Merged Ontology) "
+        "project by Adam Pease / Articulate Software and named module "
+        "contributors (github.com/ontologyportal/sumo); see ADR-0040 for the "
+        "per-module license basis and the GPL-compatible open-terms condition "
+        "this pack's own publication satisfies."
     )
 
     manifest: dict[str, object] = {
@@ -451,9 +515,9 @@ def compile_relations_slice(
                     "tables": "relations, relation_constraints, type_ancestors, type_hierarchy",
                 },
                 {
-                    "system": "plan0147_sumo_module_publication_v1",
-                    "version": "1",
-                    "path": "docs/runs/artifacts/plan0147_sumo_module_publication_v1.json",
+                    "system": "sumo_module_publication_disposition",
+                    "version": disposition_rel_path.rsplit("_v", 1)[-1].removesuffix(".json"),
+                    "path": disposition_rel_path,
                 },
             ],
         },
