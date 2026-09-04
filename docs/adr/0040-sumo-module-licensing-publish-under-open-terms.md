@@ -141,6 +141,20 @@ the whole slice or any other module's disposition.
 ## Revisit Triggers
 
 Revisit before the paid product depends on any SUMO-derived content directly
-— get real legal review at that point, not before. Revisit `FOAFmap.kif` once
-its full text (not just header) is read. Revisit the no-license bucket only
-if an explicit license is later published upstream for those files.
+— get real legal review at that point, not before. Revisit the no-license
+bucket only if an explicit license is later published upstream for those
+files.
+
+## Addendum (2026-09-04): `FOAFmap.kif` resolved
+
+Its full text was read. The `mixed_notice` classification was two genuine,
+compatible notices rather than a conflict: the file's own
+`synonymousExternalConcept` mapping content carries the same standard SUMO
+GPL notice as the other 41 modules; a separate note states the external FOAF
+vocabulary terms it references (not `linguistic_core` content) are CC-BY
+licensed. Both are compatible with this ADR's open-publication approach.
+Reclassified `approved_for_linguistic_bounded_context` in
+`plan0147_sumo_module_publication_v2.json`. Verified inert: `FOAFmap.kif`
+contributes zero rows to `sumo_plus.db`'s `relations`/`relation_constraints`
+tables, so `linguistic_core@0.3.2`'s compiled content is unaffected — this
+closes the record, not the vocabulary.

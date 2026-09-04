@@ -5,10 +5,10 @@
   "source_tree_sha": "c662412aa248bac1d7bae459752760757dcbfbdb",
   "selected_payload_sha256": "798e1ed62f43d6dac6864d2257b49e44cb3434a2f6ca67ad6929e57b582d5272",
   "selected_module_count": 66,
-  "approved_module_count": 45,
-  "excluded_module_count": 21,
+  "approved_module_count": 46,
+  "excluded_module_count": 20,
   "full_projection_publication_status": "blocked_mixed_license",
-  "revision_note": "v2: widens publication per ADR-0040 (docs/adr/0040-sumo-module-licensing-publish-under-open-terms.md) -- approves gpl_notice and lgpl_notice modules plus emotion.kif, conditioned on linguistic_core's own derived content being published under GPL-compatible open terms with attribution. v1 remains the unmodified historical record of what Plan 0147 actually reviewed at the time; this file does not replace it.",
+  "revision_note": "v2: widens publication per ADR-0040 (docs/adr/0040-sumo-module-licensing-publish-under-open-terms.md) -- approves gpl_notice and lgpl_notice modules plus emotion.kif, conditioned on linguistic_core's own derived content being published under GPL-compatible open terms with attribution. v1 remains the unmodified historical record of what Plan 0147 actually reviewed at the time; this file does not replace it. FOAFmap.kif reclassified approved 2026-09-04 after reading its full text: the file carries the standard SUMO GPL notice for its own synonymousExternalConcept mapping content, plus a note that the FOAF vocabulary terms it references are separately CC-BY licensed (foaf themselves, not linguistic_core content). Both are compatible with ADR-0040's open-publication approach. Verified inert: FOAFmap.kif contributes zero rows to sumo_plus.db relations/relation_constraints, so this changes approved_module_count only, not any compiled pack content.",
   "module_dispositions": [
     {
       "path": "Anatomy.kif",
@@ -92,7 +92,7 @@
       "path": "FOAFmap.kif",
       "sha256": "93f4029d1a561d8ee42f2a8da13209103a358bf0f5cc8791e3a49bd33afcc71f",
       "header_class": "mixed_notice",
-      "publication_disposition": "excluded_pending_module_specific_review"
+      "publication_disposition": "approved_for_linguistic_bounded_context"
     },
     {
       "path": "Facebook.kif",
