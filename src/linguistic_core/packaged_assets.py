@@ -1,30 +1,28 @@
-"""Locate wheel-installed, inspection-only ontology assets.
+"""Locate installed, inspection-only ontology assets bundled with this package.
 
-Adapted from onto-canon6's src/onto_canon6/packaged_assets.py: same shape,
-pointed at this package's own wheel data namespace ("linguistic-core") rather
-than onto-canon6's ("onto-canon6"), since this package now installs its own
-wheel independently.
+Adapted from onto-canon6's src/onto_canon6/packaged_assets.py: same purpose,
+but uses importlib.resources (package data via
+[tool.hatch.build.targets.wheel.force-include] in pyproject.toml) instead of
+onto-canon6's wheel shared-data mechanism, since shared-data does not
+reliably materialize under an editable install ("pip install -e ."), which is
+the common case for a dependency consumed from a development checkout.
 """
 
 from __future__ import annotations
 
+from importlib import resources
 from pathlib import Path
-import sysconfig
 
 
 def installed_ontology_packs_root() -> Path:
-    """Return the standard wheel data directory used by lineage inspection."""
+    """Return this package's own installed ontology_packs directory."""
 
-    data_root = sysconfig.get_path("data")
-    if not data_root:
-        raise RuntimeError("CANON_LINEAGE_INSTALL_DATA_ROOT_UNAVAILABLE")
-    return Path(data_root) / "share" / "linguistic-core" / "ontology_packs"
+    root = resources.files("linguistic_core") / "ontology_packs"
+    return Path(str(root))
 
 
 def installed_linguistic_trace_adjuncts_root() -> Path:
-    """Return the wheel data root for inspection-only linguistic trace adjuncts."""
+    """Return this package's own installed linguistic_trace_adjuncts directory."""
 
-    data_root = sysconfig.get_path("data")
-    if not data_root:
-        raise RuntimeError("LINGUISTIC_TRACE_INSTALL_DATA_ROOT_UNAVAILABLE")
-    return Path(data_root) / "share" / "linguistic-core" / "linguistic_trace_adjuncts"
+    root = resources.files("linguistic_core") / "linguistic_trace_adjuncts"
+    return Path(str(root))

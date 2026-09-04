@@ -29,9 +29,9 @@ allow-direct-references = true
 [tool.hatch.build.targets.wheel]
 packages = ["src/linguistic_core"]
 
-[tool.hatch.build.targets.wheel.shared-data]
-"ontology_packs/linguistic_core" = "share/linguistic-core/ontology_packs/linguistic_core"
-"linguistic_trace_adjuncts/linguistic_core" = "share/linguistic-core/linguistic_trace_adjuncts/linguistic_core"
+[tool.hatch.build.targets.wheel.force-include]
+"ontology_packs/linguistic_core" = "linguistic_core/ontology_packs/linguistic_core"
+"linguistic_trace_adjuncts/linguistic_core" = "linguistic_core/linguistic_trace_adjuncts/linguistic_core"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
