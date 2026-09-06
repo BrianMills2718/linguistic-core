@@ -1,7 +1,45 @@
-# Log
+# Design log
 
-History of updates to `PLAN.md`. `PLAN.md` itself never contains this log —
-see the living-document convention this repo follows.
+History of updates to `SEMANTIC_INTERLINGUA.md`, which never contains this log
+— see the living-document convention this repo follows. Entries before
+2026-09-06 were written when the design lived in
+`linguistic-vocabulary-research/PLAN.md`.
+
+## 2026-09-06 — The fact-oriented hypergraph brief, reconciled
+
+`FACT_ORIENTED_HYPERGRAPH_COMPILER_BRIEF.md` had been referenced but never read
+against the specification. Reading it settles one thing and adds four.
+
+**It corroborates the load-bearing commitment independently.** Its §8 asks "when
+do I treat a relationship instance as an object that may itself play roles" —
+objectification, which is "a proposition can fill a role" reached from a
+different direction, by someone designing a schema compiler rather than an
+extraction IR. It argues for it as an early feature, not a late one. Two
+independent derivations of the same commitment is the strongest evidence this
+design has for it.
+
+**Four things folded in rather than listed.** Facts are set-like by default
+(§5.3), so one role tuple is one fact unless an occurrence is given identity,
+and populations must never drift quietly from sets to bags — added to the
+primitives and, because it collides with extracted assertions being asserted
+repeatedly by different sources, as an open question in its own right.
+Identity is conceptual rather than incidental (§9): every element needs a stable
+internal identifier distinct from its display name, so a rename is not an
+identity change; this design had been conflating the two. Three different things
+get called a constraint (§11) — domain constraints, model-shape lint, and
+per-target enforcement status — and that third vocabulary is what the
+village-asserted-as-citizen case actually needed: the constraint was
+`REPRESENTED_NOT_ENFORCED`, which is a more useful thing to report than "type
+constraints work" or "type constraints don't." Folded into the symbolic-side
+section. Readings (§10), a human-readable template per predicate, added to the
+primitives as a review surface. Roles carry identity independent of ordinal and
+player type (§14), which is exactly where a naive hyperedge-of-vertex-types
+representation fails.
+
+**Scope difference recorded rather than glossed.** The brief designs a compiler
+whose populations are database rows; this is an IR for extracted meaning whose
+populations are assertions with provenance. §5's kernel transfers; §17–§25 on
+target mapping, round-tripping and the authoring DSL do not.
 
 ## 2026-09-05 — The July semantics ran once; the barrier is the promotion core
 
