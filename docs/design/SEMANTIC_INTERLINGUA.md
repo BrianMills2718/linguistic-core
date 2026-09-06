@@ -119,12 +119,13 @@ Statement and Reasoning) do the work.
 | **Entity** | Something with identity that persists across mentions |
 | **Proposition** | A statement that can be true or false, with its own identity, able to fill a role in another proposition |
 | **Event** | A proposition with participants and a time |
-| **Role** | A typed slot whose filler may be an entity, a value, *or* a proposition |
+| **Role** | A typed slot whose filler may be an entity, a value, *or* a proposition. Roles carry stable identity independent of position and player type: two roles sharing a type are not interchangeable |
 | **Stance** | Attitude predicates taking propositions: asserts, doubts, argues, concedes, attributes |
 | **Modality** | Hedging and likelihood on propositions, including calibrated terms where a community defines them |
 | **Value** | Including gradable terms that stay terms, and kind-level claims that stay kind-level |
 | **Time** | Source time and valid time kept separate (the four-clock model the Inside Success graph-maintenance methodology already specifies) |
 | **Provenance** | Source, exact span, extractor, and three separate uncertainty numbers |
+| **Reading** | A human-readable template for a predicate, e.g. `"{part} is in {bin} in {warehouse}"` — a review surface, a diagnostic, and the path to verbalization |
 | **Mapping** | How a canonical class attaches to a resource, under a relation vocabulary richer than "same as" |
 
 ### Three requirements that are easy to get wrong
@@ -444,6 +445,22 @@ to the top type — a narrower guess would hard-fail correct candidates. Tighter
 constraints catch more errors and reject more correct extractions. That
 tradeoff is real work and does not disappear with a better ontology.
 
+**Three different things get called "a constraint" and they should not share a
+namespace** (from the fact-oriented brief, §11):
+
+1. **Domain constraints** — statements about valid populations. Uniqueness,
+   mandatory participation, frequency, value ranges, subset and exclusion.
+2. **Model-shape rules** — properties of the schema itself. Every fact has
+   arity two, the graph is connected, no anonymous roles. These are lint.
+3. **Enforcement status** — a *result*, not a model truth value, reported per
+   constraint per target: `NATIVE_ENFORCED`, `EMULATED_ENFORCED`,
+   `REPRESENTED_NOT_ENFORCED`, `METADATA_ONLY`, `UNSUPPORTED`.
+
+The third is what the village case actually needed. That constraint was
+`REPRESENTED_NOT_ENFORCED`: present in the model, not enforced where it would
+have caught the error. Reporting that is more useful than either "constraints
+work" or "constraints don't".
+
 ## The neurosymbolic question
 
 The thesis is that the neural model interprets messy language and the symbolic
@@ -523,6 +540,13 @@ specifically the cheapest real answer is an email to the Colorado group.
 - **Proposition identity.** When are two differently worded propositions the
   same proposition? Load-bearing for the claim half, and open in the Inside
   Success methodology too.
+- **Set semantics versus occurrence identity.** A fact type is a *set* of
+  tuples, so one role tuple is one fact. But extracted assertions are asserted
+  repeatedly, by different sources, with different confidence. Either support
+  attaches to the fact (which onto-canon6 implements) or occurrences are
+  objectified (which the fact-oriented brief prefers). Choosing quietly, by
+  letting fact populations drift from sets to bags, is the failure mode that
+  brief explicitly warns against.
 - **How the judgment half of coherence gets closed.** Logical consistency is
   mechanically checkable by description-logic reasoners. Whether the classes
   carve the domain usefully, leave gaps, or quietly overlap is not. The
@@ -555,20 +579,99 @@ this repository. Every path was verified 2026-09-06.
 
 ## Prior design work on the same representation question
 
-**`~/code/FACT_ORIENTED_HYPERGRAPH_COMPILER_CONTEXT.md`** (1,988 lines) — a
+**`docs/design/FACT_ORIENTED_HYPERGRAPH_COMPILER_BRIEF.md`** (1,988 lines) — a
 design brief for a fact-based / Object-Role Modeling semantic compiler with a
-role-aware hypergraph intermediate representation. It argues that **roles are
-the crucial bridge**, reviews Morgante's Boston metamodel and n-ary/hypergraph
-work, and explicitly declines to make his strongest "Infinity Fountain" claims a
-first-version premise. It is the closest prior treatment of the representation
-question this document takes up, and it is currently loose in `~/code`, in no
-repository. **Not yet reconciled with the specification above.**
+role-aware hypergraph intermediate representation. Reconciled against this
+specification 2026-09-06; the result is below.
 
-**`onto-canon6` ORM relevance brief** — a targeted review of the same body of
-work, recorded in the vision wiki's `governed-knowledge-analysis` page. Its one
-load-bearing idea is **objectification**: treating a fact as something with its
-own identity that can participate in further facts. That is the same commitment
-this design records as "a proposition can fill a role", reached independently.
+### What it independently corroborates
+
+Its §8 asks the specification's load-bearing question in different words: *"When
+do I treat a relationship instance as an object that may itself play roles?"*
+That is objectification, and it is the same commitment recorded above as "a
+proposition can fill a role." The brief argues it should be an **early** feature,
+"more important than adding a fourth output target." Two independent derivations
+of the same decision.
+
+Its §5.2 models a fact type as `F(r1:T1, … rn:Tn)` interpreted as a set of
+tuples, with each role a typed argument position — the same n-ary shape this
+design uses.
+
+### Four things it has that this specification lacked
+
+**1. Facts are set-like by default (§5.3).** The same role tuple is *one* fact.
+A membership cannot occur eleven times as eleven facts unless the model
+introduces an identity-bearing occurrence. Its rule: *"Do not silently switch
+fact populations from sets to bags/multisets."*
+
+This bears directly on the open proposition-identity question. If the same claim
+asserted in two documents is one proposition, identity is set membership and
+provenance attaches to the assertion rather than the proposition. If it is two,
+something must carry occurrence identity. The brief's answer — model the
+occurrence explicitly rather than quietly changing the semantics — is a
+constraint this design should adopt whichever way identity resolves.
+
+**2. Identity is conceptual, not incidental (§9).** *"Entity identity should be
+conceptual, not merely whatever became a SQL primary key."* It wants
+identification schemes declared (`entity Person identifiedBy personId`),
+compound identification supported, and — separately — every model element to
+carry a stable internal identifier distinct from its display name, so a rename
+is not an identity change.
+
+That last distinction is missing here and matters: this design has repeatedly
+conflated what a thing is called with what it is.
+
+**3. Three kinds of constraint, kept apart (§11).** This is sharper than the
+"what the symbolic side can and cannot check" section above, and it dissolves a
+confusion this design has been carrying:
+
+- **Domain constraints** — statements about valid populations: uniqueness,
+  mandatory participation, frequency, value ranges, subset/exclusion.
+- **Model-shape rules** — properties of the schema itself: every fact has arity
+  two, the graph is connected, no anonymous roles, readings cover every role.
+  These are lint, not semantics, and should not share a namespace with "each
+  person has at most one birth date."
+- **Target enforcement status** — a *compiler result*, not a model truth value,
+  reported per constraint per target as `NATIVE_ENFORCED`,
+  `EMULATED_ENFORCED`, `REPRESENTED_NOT_ENFORCED`, `METADATA_ONLY` or
+  `UNSUPPORTED`.
+
+That third vocabulary is exactly what the village-asserted-as-a-citizen case
+needed. The type constraint existed and was `REPRESENTED_NOT_ENFORCED` — present
+in the model, not enforced at the point it would have caught the error. Saying
+so is more useful than either "constraints work" or "constraints do not work."
+
+**4. Readings (§10).** A fact type optionally carries a human-readable template:
+`reading "{part} is in {bin} in {warehouse}"`. It gives a human validation
+surface, better diagnostics, and a verbalization path. Nothing here has an
+equivalent, and for a vocabulary meant to be reviewed by people it is cheap and
+load-bearing.
+
+Also worth carrying: **roles need stable identity independent of position and
+type (§14)**. In `Transfer(sender: Account, receiver: Account, asset: Asset)`
+two roles share a player type and are not interchangeable. *"Do not infer
+identity solely from ordinal; do not infer role name solely from object type."*
+The brief notes this is precisely where a naive "hyperedge contains a set of
+vertex types" representation fails.
+
+### Where its scope differs, and what does not transfer
+
+The brief designs a **schema compiler**: a declared data model translated to
+PostgreSQL, MongoDB and GraphQL, with round-trip recovery and a capability
+report. Its populations are database rows. This design is an **intermediate
+representation for meaning extracted from text**, whose populations are
+assertions with provenance and uncertainty.
+
+So its §5 semantic kernel transfers — what a fact type *is* does not depend on
+where instances come from. Its target-mapping, round-trip and DSL sections
+(§17–§25) do not, and should not be read as recommendations here.
+
+One real tension to resolve rather than paper over: the brief's set semantics
+assumes a fact is asserted once. Extracted assertions are asserted repeatedly,
+by different sources, with different confidence. Reconciling those needs either
+support-level lifecycle attached to the fact (which `onto-canon6` already
+implements) or occurrence objectification (which the brief prefers). **Not
+resolved here.**
 
 ## The claim-shaped implementation that already exists
 
