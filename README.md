@@ -13,8 +13,19 @@ governed-assertion middleware and was split into its own repository (see
 and Plan #205 in onto-canon6) so it could be published, licensed, and
 released independently of that platform.
 
+## Start here
+
+**`docs/design/SEMANTIC_INTERLINGUA.md`** is the living design: what this
+vocabulary is, what it is becoming, what is settled, what is still open, and —
+in its closing compendium — where every piece of cited evidence lives, including
+the parts that live in other repositories. Read it before proposing any change
+to the pack's shape. `docs/design/DESIGN_LOG.md` records what changed in it and
+why.
+
 ## What's here
 
+- `docs/design/` — the living design, its log, and the fact-oriented
+  hypergraph brief it reconciles against.
 - `ontology_packs/linguistic_core/` — the versioned, compiled vocabulary
   pack (predicates, roles, entity types, hierarchy, constraints) as
   JSONL + a manifest per version.

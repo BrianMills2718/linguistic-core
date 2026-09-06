@@ -169,6 +169,9 @@ decide when two claims are the same in order to aggregate or contradict them.
 
 ### This was already decided, in July 2026
 
+Every path in this subsection is relative to the `onto-canon6` repository
+(`~/code/onto-canon6`), not to this one.
+
 `src/onto_canon6/document_map/operational_semantics_v1.py` defines a **semantic
 object** as `event | state | proposition`, and an argument target as
 `entity | semantic_object | literal`. So an argument can already point at a
@@ -217,10 +220,10 @@ produced 4 accepted assertions for under a cent.
 This part is corpus-independent and decides the effort question. Widening
 extraction is a day. The blockers are:
 
-- `core/graph_models.py` types the promoted filler kind as `entity | value`;
-- `core/graph_store.py` raises on any third value, and its SQLite column has no
+- `src/onto_canon6/core/graph_models.py` types the promoted filler kind as `entity | value`;
+- `src/onto_canon6/core/graph_store.py` raises on any third value, and its SQLite column has no
   third case;
-- `core/assertion_identity.py` computes identity from entity IDs plus a value
+- `src/onto_canon6/core/assertion_identity.py` computes identity from entity IDs plus a value
   digest, with no branch for a proposition-valued role;
 - there is **no adapter at all** from the semantic bundle into candidates or
   promotion. The lane terminates at a digest-bound bundle.
