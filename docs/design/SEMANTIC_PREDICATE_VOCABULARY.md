@@ -976,8 +976,9 @@ not in the plan that would measure this object's success.
 
 **State modelling primitives — specified in the source conversation and *already
 implemented* one directory over.** Checked 2026-09-07 against
-`~/code/requirement-to-runtime-semantic-compiler` (a local repository, absent
-from `PROJECT_GRAPH.json`, imported wholesale 2026-09-07 from a Windows
+`~/code/requirement-to-runtime-semantic-compiler` (a local repository —
+registered in `PROJECT_GRAPH.json` on 2026-09-07, *after* the consolidation that
+missed it — imported wholesale 2026-09-07 from a Windows
 checkpoint and drawing on the *same* 10,012-line source conversation). **Six of
 the seven below exist there as frozen schemas and SQL, not sketches** —
 `02_world_model/WORLD_STATE_SCHEMA.md` covers six in 39 lines, and
