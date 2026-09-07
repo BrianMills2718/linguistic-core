@@ -145,6 +145,12 @@ the ignored sense numbers explains both dominant error shapes. Whatever replaces
 it should emit a relation from the vocabulary above rather than a bare link and a
 float.
 
+**"Regenerate the frame layer" is not "rebuild the pack", and the difference is
+large.** See the provenance split under "Current state" below: a model touched
+3.7% of this object's mappings, and that 3.7% is exactly the part that measured
+badly. The predicates themselves, their role slots, and the SUMO type layer are
+mechanical derivations and are not implicated.
+
 *A note on the 98.1% figure.* Chasing the deleted artifact is not worth much.
 The two-point difference between it and the 96.07% regeneration is roughly ninety
 predicates and is reproducible by rerunning a script. In both versions the
@@ -670,6 +676,37 @@ applications sit downstream of that rather than beside it.
   today. What remains open is coverage breadth across the state family, not its
   absence — and the Wikidata section below should be read as extending a
   populated family rather than founding an empty one.
+
+### How each part of the pack was actually produced
+
+Counted across both mapping files at `0.3.0`, by derivation method rather than by
+description:
+
+| content | rows | how produced |
+|---|---|---|
+| PropBank role slots | 11,880 | `corpus_derived` — read from PropBank |
+| PropBank predicate derivations | 4,666 | `corpus_derived` |
+| SUMO role positions | 23,770 | `donor_asserted` — read from the donor database |
+| SUMO type constraints | 10,093 | `donor_asserted` |
+| SUMO derivations and subtypes | 10,024 | `donor_asserted` |
+| **FrameNet frame candidates** | **2,262** | **`llm:gemini/gemini-2.5-flash`** |
+| SemLink | 1 | crosswalk |
+
+**60,433 mappings; a model produced 2,262 of them — 3.7% — and that 3.7% is the
+layer measured at 55–61% incompatible.** Everything else is mechanical
+derivation from PropBank rolesets and SUMO modules, with no model judgement
+anywhere in it. The 4,669 predicates themselves (`abandon-01` →
+`lc:abandon_leave_behind`) are not in question; what broke is the layer asserting
+which FrameNet frame each one evokes.
+
+**A schema defect this exposed.** `source_verified: false` appears on the
+mechanical rows *and* on the model-generated ones. "Nobody re-checked what SUMO
+asserts" and "a model guessed and nobody checked" are very different claims, and
+this pack cannot distinguish them. That is why a layer that is 61% wrong sat
+indistinguishable from 58,000 sound rows for months. The fix is to surface *how*
+a row was derived at the same prominence as whether it was verified — the
+`derivation_method` values already exist in the data and are simply not used as a
+trust signal.
 
 ## Known gaps in the current integration
 
