@@ -1321,6 +1321,59 @@ that was wrong in this review was wrong for exactly this reason: NomBank's two
 behind a page whose linked license file covers VerbNet only. For SemLink
 specifically the cheapest real answer is an email to the Colorado group.
 
+## Failure modes, prevention, and recovery
+
+Modelled on the Inside Success graph-maintenance methodology's §22, which does
+this for a knowledge graph. This one is for **the vocabulary object itself**.
+
+**Status column is the point.** `MEASURED` means a number exists and is cited
+here; `OBSERVED` means it was seen at least once but not quantified;
+`ANTICIPATED` means it follows from the design and has not been looked for. A
+taxonomy that does not separate these becomes a worry list.
+
+### Content defects — the object says something wrong
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-01 | Frame mapping asserts an unrelated frame | **MEASURED** 55–61% `incompatibleWith`, 14% exact (n=100) | Anything reasoning over frames inherits a majority-wrong layer; coverage figures overstate usable coverage by more than half | Sample and judge against full FrameNet definitions, classified by relation not right/wrong; only `incompatibleWith` is unambiguous failure | Regenerate with definitions and sense numbers in prompt; do not verify — checking 2,263 rows that are ~58% wrong costs more than redoing them |
+| VF-02 | Two predicates share an identical description | **MEASURED** 332 groups over 907 predicates | A selector cannot tell `kill` from `murder` and will sometimes add an unlawfulness claim the text never made | Group by description; any group larger than one is a defect | Distinguish, never consolidate — all 332 groups map to *different* PropBank rolesets, so upstream already ruled them distinct |
+| VF-03 | Donor content silently dropped at import | **MEASURED** 0 `ARGM` rows; `value_types.jsonl` 0 bytes in all versions | No modality, negation or aspect: "did not acquire", "may acquire" and "acquired" produce identical structures | Diff the donor's field inventory against the pack's on every import | Recover `ARGM-MOD`/`ARGM-NEG` from PropBank; they were never unavailable |
+| VF-04 | A relation the theory needs is inexpressible in the format | **MEASURED** `hierarchy_edges` has one `edge_type` across 1,774 edges | Inverse pairs (buy/sell, lend/borrow) cannot be declared, so converse phrasings stay unrelated | Enumerate the relation kinds the design commits to, then grep the schema for each | Add the edge type; SUMO already supplies the concept as `lc:inverse` |
+| VF-05 | Nominalization has no predicate | **OBSERVED** "acquisition", "merger", "lawsuit" return zero | Noun-phrase references to events are unrepresentable where the noun *is* the reference | Probe the pack with nominal forms of its top predicates | Narrower than it looks — light-verb cases resolve to the verb sense; only whole-reference nominals bite. NomBank is unlicensed, so this needs another source |
+
+### Canonicalization defects — the object collapses wrongly
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-06 | **Over-collapse** — distinct meanings become one object | **ANTICIPATED**, and the highest-severity class | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | Labelled pairs asserting what must stay separate; over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
+| VF-07 | **Under-collapse** — one meaning becomes several objects | **ANTICIPATED** | Deduplication and contradiction detection both miss; the object fails its founding premise | Same labelled pairs, opposite direction | Declare the mapping relation between them rather than merging the predicates |
+| VF-08 | Breadth raises the collapse failure rate | **ANTICIPATED** | Every added sense distinction is another way two phrasings of one meaning diverge — richness and canonicality pull against each other | Run paraphrase invariance at more than one profile size | If narrow profiles invariance-test better, that is a fact about *use*, not evidence against the object |
+| VF-09 | Roles are frame-specific with no crosswalk | **MEASURED** only 6 of 11,890 role edges are `required` | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
+
+### Epistemic defects — the object misrepresents its own reliability
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-10 | A confidence score uncorrelated with precision | **MEASURED** Spearman ρ = +0.11; 55% incompatible at confidence 1.0; `exactMatch` rows average *lower* confidence than `incompatibleWith` | A consumer thresholds on it and the selection gets worse | Rank-correlate the score against a judged sample before shipping it | Drop the column — its presence implies a calibration nobody established |
+| VF-11 | One flag conflates unverified-donor with unverified-model | **MEASURED** `source_verified: false` on both mechanical and model-generated rows | A 61%-wrong layer sat indistinguishable from 58,000 sound rows for months | Surface `derivation_method` at the same prominence as verification status | The values already exist in the data; expose them as a trust signal |
+| VF-12 | A coverage figure read as a quality figure | **MEASURED** 98.11% coverage against 55–61% incompatible; two runs agree on 59.3% of shared assignments | Six months of planning built on a number that counted *resolvable* frame names, not correct ones | Never publish coverage without an accuracy figure beside it | State both, or state neither |
+| VF-13 | A measurement outlives its artifact as prose | **MEASURED** the 98.1% figure survived its deleted database by six months and propagated into three documents | Planning proceeds on a claim nobody can re-check | Do not gitignore a generated artifact unless its generator is deterministic, its model pinned, and its rebuild covers every phase | Recover or re-measure; never re-cite |
+
+### Pipeline defects — the object is fine, its use is not
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15 | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
+| VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
+| VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
+| VF-17 | Entity resolution diverges | **ANTICIPATED** | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
+
+**How to use this.** Two rules keep it from decaying into the prose-with-no-mechanism
+shape that §22 has: every new row arrives with a status and, if `MEASURED`, the
+command or artifact that produced the number; and a row moves from `ANTICIPATED`
+only when someone actually looks. Seventeen rows and thirteen measured is the
+state on 2026-09-07.
+
 ## Open questions
 - **One integrated artifact, or federated theories with mappings as claims?**
   This design assumes a single merged object. Semantic Foundry
