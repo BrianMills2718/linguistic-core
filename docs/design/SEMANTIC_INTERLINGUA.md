@@ -471,6 +471,58 @@ and "that decision asserts not-P" is that shape, and detecting the conflict
 requires proposition identity — the open question this design already calls
 central.
 
+### It was tested, 2026-09-07, and the corpus works
+
+One pass, no prompt tuning, **$0.14**. The retained July schema was called
+unmodified over four pre-correction revisions of these documents — 15 calls, 13
+usable. Numbers recomputed from the raw records rather than taken on report.
+
+| | July, Slack standups | 2026-09-07, design documents |
+|---|---|---|
+| semantic objects | 823 | 291 |
+| **proposition-typed** | **33 (4.0%)** | **176 (60.5%)** |
+| event-typed | 600 (72.9%) | 17 (5.8%) |
+| **arguments targeting another object** | **6 / 2,335 (0.26%)** | **12 / 929 (1.29%)** |
+| `contradicts` / `supersedes` fired | 0 / 0 | 2 / 3 |
+
+**The 6-in-2,335 result is dead as a negative.** It measured the corpus, not the
+capability, exactly as this document predicted: proposition share rises fifteen-
+fold on claim-shaped text. The type system carries real load — `proposition`,
+polarity and modality all did work.
+
+**The strong case came out well.** For the effects-versus-no-effects pair, both
+sides extracted as propositions with *opposing polarity* — affirmed against
+negated — and, more usefully, opposing modality: **possible** against
+**actual**. That distinction is precisely what makes "events *can* carry
+effects" and "a predicate *never* implies an effect" a genuine conflict rather
+than a difference of emphasis.
+
+**Three things block automatic detection, and only the third is fundamental.**
+
+1. *Argument role names are invented per call.* The same fact was labelled
+   `missing_predicate_count` in one call and `state_predicate_count` in another,
+   so no check can align them.
+2. *Subjects split between literal strings and entity references* for the same
+   referent, and counts stay unparsed prose.
+3. **`object_relations` are proposal-local, and both known contradictions span
+   two documents in two calls — so `contradicts` could not have fired on either,
+   by construction.** This IR has no representation for a relation between
+   claims in different documents. That is not a model failure or a tuning
+   problem; it is a gap in the specification, and it blocks contradiction
+   detection as a use case regardless of extraction quality.
+
+The weaker half of the result is that argument nesting rose only fivefold and
+stays at 1.29% — the model types objects as propositions readily but rarely
+points one argument at another. Whether that is a prompt property or a real
+limit is untested.
+
+Also measured: the empty-output problem does not appear as an empty return here,
+because the schema makes one unrepresentable. It surfaces instead as a
+**post-parse schema rejection** — 2 of 15, 13.3%, the same magnitude as the
+one-in-eight baseline. Provider-accepted JSON that the model then failed to
+validate. The absence named above still has no representable state; it has moved
+where it shows up.
+
 Two limits, recorded rather than glossed. Not every failure is a contradiction:
 the case where this design cited a superseded precision figure is a *supersession*
 problem, not a conflict, and catching it needs the `supersedes` relation the July
