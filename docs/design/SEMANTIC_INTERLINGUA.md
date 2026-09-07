@@ -109,16 +109,41 @@ verification.** 2,263 of 4,669 predicates carry a frame candidate — 48.47% —
 every one of them is `source_verified: false`, assigned by a model rather than by
 a crosswalk. That, not breadth, is the concrete gap.
 
-**1. Measure whether the frame layer is worth anything.** Step 0 made this the
-named gap, and it is now the cheapest decisive thing available. 2,263 of 4,669
-predicates carry a frame candidate; **every one is `source_verified: false` and
-all but one was assigned by a model.** Coverage is not interpretable until
-accuracy is. If those assignments are around 90% correct, the gap is coverage
-and the work is filling it. If they are around 60%, coverage is a meaningless
-number and verification is the whole job. Sample a hundred, stratify by the
-assigner's own confidence score — if accuracy is flat across confidence, the
-scores are noise and the set needs redoing; if it is calibrated, a threshold
-salvages the layer without redoing anything.
+**1. Answered, 2026-09-07 — the frame layer must be regenerated, not verified.**
+Measured on a seeded sample of 100 of the 2,263 frame candidates, judged against
+full FrameNet definitions (available for 100% of rows, so no weakening caveat
+applies), classified by the nine-relation vocabulary rather than right-and-wrong,
+and stress-tested with a second judge instructed to defend every failure.
+
+- **`exactMatch`: 14%.** Usable under any non-incompatible relation: **39–45%**.
+  **`incompatibleWith`: 55–61%.**
+- **The relation vocabulary does not rescue it.** An adversarial defence pass
+  over the 61 incompatible rows rescued 6. `pour-01`→`Mass_motion` is genuinely
+  `broaderThan`; `smolder-01`→`Giving_birth` is not any relation.
+- **The assigner's confidence is uncalibrated and faintly *anti*-correlated with
+  precision.** Spearman ρ = +0.11. At confidence **1.0, 55% are still
+  incompatible.** `exactMatch` rows average 0.736 confidence while
+  `incompatibleWith` averages 0.757 and `broaderThan` 0.870. No threshold
+  salvages the layer.
+- **The errors are not near misses.** Verified directly against `sumo_plus.db`:
+  `compute-01` "to calculate" → `Reshaping` at confidence 1.0; `bathe-01` "have a
+  bath" → `Filling` at 1.0; `smolder-01` → `Giving_birth`; `shave-01` "to cut" →
+  `Soaking`; `demolish-01` "destroy" → `Cause_emotion`. A distinct 10% are sense
+  collisions, where the frame fits a *different* sense of the same lemma —
+  `punch-01` "press a key" → `Damaging`. The assigner matched lemmas and ignored
+  sense numbers.
+- **Not a pipeline bug.** Checked: frame ids are self-consistent, neighbours are
+  independently mixed, and correlation between row order and correctness is
+  +0.012. This is model output.
+
+**So real usable coverage is ≈20% of predicates, not 48.47%, and exact coverage
+is ≈7%.** Verification is not the job either: checking 2,263 assignments that are
+~58% wrong costs more than redoing them. Regeneration is cheap — 100 alignments
+with definitions in-prompt cost $0.05, so all 2,263 is roughly **$1.20**. The
+original pass evidently ran without frame definitions in front of it, which with
+the ignored sense numbers explains both dominant error shapes. Whatever replaces
+it should emit a relation from the vocabulary above rather than a bare link and a
+float.
 
 *A note on the 98.1% figure.* Chasing the deleted artifact is not worth much.
 The two-point difference between it and the 96.07% regeneration is roughly ninety
@@ -419,11 +444,11 @@ resources":
 Each mapping carries this relation plus a **confidence** and a **provenance** —
 which resource, which version, assigned by whom or what.
 
-**The worked case is the one this pack actually ships.** PropBank `acquire.01`
-maps to FrameNet `Getting`. That is not `exactMatch`: WordNet's corresponding
-sense also covers "she acquired a reputation", which a corporate-acquisition
-schema should exclude. The honest relation is `closeMatch`, with the distinction
-recovered by hierarchy rather than by the mapping —
+**The worked case in the source** maps WordNet `acquire.v.01` to a domain class
+`AcquisitionEvent`. That is not `exactMatch`: the WordNet sense also covers "she
+acquired a reputation", which a corporate-acquisition schema should exclude. The
+honest relation is `closeMatch`, with the distinction recovered by hierarchy
+rather than by the mapping —
 
 ```
 WordNet acquire.v.01 --closeMatch--> AcquisitionEvent
@@ -431,15 +456,9 @@ WordNet acquire.v.01 --closeMatch--> AcquisitionEvent
                                                       └─subclass─> CorporateAcquisition
 ```
 
-**This is not decoration, and it changes how the existing layer should be
-read.** The pack currently stores each frame mapping as a bare
-predicate-to-frame link with a confidence float, which forces a binary
-correct-or-wrong reading. Under the real vocabulary, a mapping to a *broader*
-frame is correct but imprecise, not an error. Only `incompatibleWith` is an
-unambiguous failure. So the accuracy measurement in step 1 must classify by
-relation rather than by right and wrong, or it will report a failure rate that is
-mostly imprecision — and imprecision is fixable by adding a relation column,
-while incompatibility is not.
+**The current schema cannot express any of this**, storing each frame mapping as
+a bare predicate-to-frame link with a confidence float. That is a real defect —
+but, as measured below, it is not the defect causing the frame layer's problem.
 
 ## Use cases
 
