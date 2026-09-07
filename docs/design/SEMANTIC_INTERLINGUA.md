@@ -109,14 +109,32 @@ verification.** 2,263 of 4,669 predicates carry a frame candidate — 48.47% —
 every one of them is `source_verified: false`, assigned by a model rather than by
 a crosswalk. That, not breadth, is the concrete gap.
 
-**1. Test paraphrase invariance.** The core bet, and the cheapest decisive thing
+**1. Measure whether the frame layer is worth anything.** Step 0 made this the
+named gap, and it is now the cheapest decisive thing available. 2,263 of 4,669
+predicates carry a frame candidate; **every one is `source_verified: false` and
+all but one was assigned by a model.** Coverage is not interpretable until
+accuracy is. If those assignments are around 90% correct, the gap is coverage
+and the work is filling it. If they are around 60%, coverage is a meaningless
+number and verification is the whole job. Sample a hundred, stratify by the
+assigner's own confidence score — if accuracy is flat across confidence, the
+scores are noise and the set needs redoing; if it is calibrated, a threshold
+salvages the layer without redoing anything.
+
+*A note on the 98.1% figure.* Chasing the deleted artifact is not worth much.
+The two-point difference between it and the 96.07% regeneration is roughly ninety
+predicates and is reproducible by rerunning a script. In both versions the
+coverage is overwhelmingly unverified model assignment, so a higher percentage of
+unverified guesses is not obviously better than a lower one. Accuracy is the
+number that matters; coverage is the one that was recorded.
+
+**2. Test paraphrase invariance.** The core bet, and the cheapest decisive thing
 available: roughly fifty real events, each rendered four ways, extracted, and
 measured for how often all four produce an identical canonical object. A day and
 a few dollars. Report the empty rate alongside it, since a call that returns
 nothing is not agreement. A low number here stops the programme; a high one
 justifies everything else.
 
-**2. Run the coverage audit that has been specified and never executed.** The
+**3. Run the coverage audit that has been specified and never executed.** The
 eight categories in `world-substrate`'s binding contract, checked against this
 pack and its donors. This converts "the broadest, richest object" from an
 aspiration with no stopping condition into a finite list of what is missing —
@@ -124,14 +142,14 @@ which is the only thing that makes "richest" a plannable goal rather than an
 open-ended one. Its measured findings already include three concrete absences:
 reversative senses, rights, and any way to express *unowned*.
 
-**3. Close the representation gaps that block every use case equally.** Entity
+**4. Close the representation gaps that block every use case equally.** Entity
 resolution, which is absent and is most of the real engineering cost; a
 representable state for an extractor that returned nothing, against a measured
 one-in-eight rate; and coverage as an evaluation metric, since it is missing
 from the inherited seven and is the number that ended the previous attempt at
 47%.
 
-**4. Then commit to one use case.** This ecosystem's own documentation is the
+**5. Then commit to one use case.** This ecosystem's own documentation is the
 leading candidate and is under test — it is simultaneously a use case, the
 claim-shaped evaluation corpus that has never existed, and a direct exercise of
 proposition identity.
