@@ -151,12 +151,13 @@ large.** See the provenance split under "Current state" below: a model touched
 badly. The predicates themselves, their role slots, and the SUMO type layer are
 mechanical derivations and are not implicated.
 
-*A note on the 98.1% figure.* Chasing the deleted artifact is not worth much.
-The two-point difference between it and the 96.07% regeneration is roughly ninety
-predicates and is reproducible by rerunning a script. In both versions the
-coverage is overwhelmingly unverified model assignment, so a higher percentage of
-unverified guesses is not obviously better than a lower one. Accuracy is the
-number that matters; coverage is the one that was recorded.
+*A note on the 98.1% figure.* The original artifact was **found** on 2026-09-07,
+at two independent locations with matching checksums, and verified at 4,575/4,663
+= 98.11%. It is still not worth building on, for a better reason than
+unavailability: **coverage is not a quality measure.** The two runs agree on only
+59.3% of the frames they both assigned, which converges from a different
+instrument on the 55–61% incompatible rate measured above. Coverage counts
+whether a model emitted a resolvable frame name, not whether it was right.
 
 **2. Test paraphrase invariance.** The core bet, and the cheapest decisive thing
 available: roughly fifty real events, each rendered four ways, extracted, and
@@ -981,17 +982,34 @@ in the donor repository `onto-canon`, and that the real gap is an unbuilt
 `backbone → pack` compiler. Every load-bearing part of that is false, and the
 finding underneath it is more useful.
 
-- **The 98.1% artifact does not exist.** `onto-canon` gitignores `data/` and all
-  `*.db` files; across 140 commits four data files were ever tracked and none is
-  a database. The figure is prose in a README recording a 2026-02-16 measurement
-  over a database since deleted as "regeneratable". It cannot be reproduced.
-- **The reproducible numbers are lower and differently composed.** The surviving
-  donor artifact, `sumo_plus.db`, gives **48.47%** frame coverage (2,263 of
-  4,669) — of which 2,262 rows are `llm:gemini/gemini-2.5-flash` and exactly one
-  is SemLink. A 2026-09-04 regeneration reaches 96.07%, of which SemLink supplies
-  542 of 4,472 covered predicates. In every measurable version the crosswalk is
-  overwhelmingly a model's frame assignment, not the SemLink bridge the claim
-  names.
+- **The 98.1% artifact is not in the repository, but it does exist.** An earlier
+  revision of this section said it had been deleted and could not be reproduced.
+  That was wrong and is corrected here rather than removed. `onto-canon`
+  gitignores `data/` and every `*.db`, so it is in no commit and on no GitHub ref
+  — but two copies with matching checksums were recovered on 2026-09-07, one on
+  the desktop machine and one inside a OneDrive-backed archive tarball, verified
+  at 4,575/4,663 = **98.11%**.
+- **The 2026-09-04 regeneration is a *partial* rebuild, not a slightly worse
+  copy.** Its script has four phases — PropBank, FrameNet, SemLink, LLM gap-fill
+  — and **no SUMO phase**. Verified by direct query: `sumo_types` 0 against the
+  original's 725, `sumo_hierarchy` 0 against 857, `domain_range_constraints` 0
+  against 11,126. The whole type layer is absent, so the two artifacts were never
+  comparable and the "two-point difference" everyone was discussing was measuring
+  a partial rebuild against a complete one. The original also carries 70 `manual`
+  and 10 `llm_legacy` rows — hand-curated work no re-run recreates.
+- **Coverage was never the quality claim, in any version.** The surviving donor
+  artifact `sumo_plus.db` gives **48.47%** (2,263 of 4,669), of which 2,262 rows
+  are `llm:gemini/gemini-2.5-flash` and exactly one is SemLink. The regeneration
+  reaches 96.07% with SemLink supplying 542 of 4,472. The two runs agree on only
+  **59.3%** of the frames they both assigned. In every measurable version the
+  crosswalk is overwhelmingly a model's assignment rather than the SemLink bridge
+  the claim names, and a higher percentage of unverified assignments is not a
+  better artifact.
+- **"Regeneratable" was false in three separate ways**, which is the transferable
+  lesson: the generator is nondeterministic, its original model was later
+  de-allowlisted, and its script covers only some of the phases that built the
+  artifact. None of those is visible from the gitignore line that called it
+  regeneratable.
 - **The compiler is not unimplemented.** It exists in `onto-canon6`'s working
   tree as a 491-line module with tests and a regeneration script, uncommitted,
   producing a spike pack of **four** predicates.
