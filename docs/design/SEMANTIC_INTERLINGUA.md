@@ -99,21 +99,19 @@ below: that section says what feeds the object, this says what the object *is*.
 
 Two design commitments are settled and the rest follow from them.
 
-> **Unresolved, and this document currently says both things.** The commitment
-> immediately below states the object is *not* a merge and that semantic-foundry
-> holds the same position. The first open question near the end of this document
-> states that this design *assumes a single merged object* and that
-> semantic-foundry holds the *opposite* principle. Both cannot be true. This is
-> flagged rather than silently resolved because which way it goes is a design
-> decision, not a correction — and it propagates: the licensing conclusion is
-> stated about "a merged artifact", and a canonical layer carrying no verbatim
-> source text may not inherit ShareAlike at all.
-
 **Settled: the object is a canonical layer, not a merge.** Canonical classes are
 authored independently and each source resource attaches by a versioned mapping
 object. Nothing collapses WordNet, PropBank and FrameNet into one table. This
 preserves the distinctions the resources exist to make, and it is the same
-position [[semantic-foundry]] holds, reached independently.
+position `~/code/semantic-foundry` holds, reached independently.
+
+*The representation and the distribution are different levels, and conflating
+them produced an apparent contradiction in an earlier revision of this document.*
+The IR is a canonical layer by construction — its predicates carry `lc:`
+identifiers and independently authored labels. Whether a **shipped pack** also
+embeds source text is a packaging decision, and licensing attaches to what is
+distributed, not to what the representation permits. See "Licensing" for where
+the current pack actually stands.
 
 **Settled: a proposition can fill a role.** This is what makes one mechanism
 serve both event-shaped and claim-shaped text. An event is a proposition with
@@ -542,8 +540,24 @@ compatibility is not established** — the FSF list covers CC BY 4.0 and has no
 entry for 3.0 — which matters if the merged artifact is GPLv3. And **whether
 ShareAlike reaches derived mappings that contain no verbatim text** is genuinely
 unsettled; ADR-0040 hit the identical question for SUMO and deliberately
-declined to answer it. For the current artifact the question is moot, because it
-contains verbatim PropBank description text.
+declined to answer it.
+
+**But that question is smaller than it looks, and it is one column wide.** The
+shipped pack has five fields per predicate — `predicate_id`, `preferred_label`,
+`family`, `status`, `description` — and the first four are independently
+authored. Source text is confined to `description`, which averages 18.3
+characters across the 4,669 rows in `0.3.0`: glosses like `"exchange"` and
+`"leave behind"`. So the artifact is already a canonical layer structurally, and
+carries source content only in one short, regenerable column.
+
+That makes the unsettled ShareAlike question avoidable rather than answerable:
+regenerating those descriptions in independent wording removes the only verbatim
+content, at which point nothing of PropBank's is redistributed and the question
+does not have to be resolved at all. That is a bounded task — 4,669 short glosses,
+a model job with human spot-checks — not an architectural change. **It should be
+done before any commercial layer depends on this reading**, since ADR-0040
+decision 8 is explicit that this is a non-lawyer reading of license text and
+recommends actual counsel before shipping anything commercial that relies on it.
 
 Two unchecked corners, named rather than closed, because the one absence claim
 that was wrong in this review was wrong for exactly this reason: NomBank's two
