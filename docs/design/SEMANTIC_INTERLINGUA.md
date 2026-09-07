@@ -78,10 +78,19 @@ most work — not by what is most interesting.
    ontology. **Current evidence is against it**: the one neurosymbolic operator
    that demonstrably worked used *zero* Linguistic Core predicates and was plain
    Python and Pydantic.
-3. **The symbolic layer catches what neural alone misses.** Partially answered
-   and the answer is conditional: yes for evidence grounding, no for
-   recommendation binding. The useful form of this question is now *which
-   failure modes*, not *whether*.
+3. **The symbolic layer makes operations possible that a neural pass cannot do
+   at all.** Catching errors is the narrowest of four, and framing it that way
+   undersells it. The vision document's own formulation is that prior reviewed
+   structure should *support an operation, expose a violation, constrain a state
+   transition, or produce evidence that improves the next proposal.* Only the
+   second is error-catching. The others are a feature set rather than a check:
+   querying a claim graph, propagating a retraction so dependent conclusions
+   fall with it, constraining what transitions are legal, planning over typed
+   state, running counterfactuals on a branched scenario. None of those is
+   something a neural pass does poorly — they are things it does not do.
+   Error-catching is partially answered and conditional (yes for evidence
+   grounding, no for recommendation binding); the operations half is untested
+   because nothing here has ever held enough reviewed structure to operate on.
 
 ### The order
 
@@ -603,6 +612,43 @@ more than thirty cases.
 The selection problem itself is tractable with more compute and latency —
 cascade the retrieval, embed definitions rather than labels, let a slower model
 arbitrate. The vocabulary-fit problem is not solved that way.
+
+### How canonicalization fails, concretely
+
+That evidence is about mapping *between resources*. A different and more basic
+failure is two phrasings of one event not landing on the same object, which is
+the premise the whole design rests on. It can break in five ways, none exotic:
+
+- **Different predicates, both defensible.** "Acme acquired Beta" selects
+  `lc:acquire_get`; "Acme bought Beta" selects a purchase sense. Same event, two
+  canonical objects, and neither choice is wrong.
+- **Roles invert under the passive.** "Beta was acquired by Acme" puts Beta in
+  the agent slot, producing a relation that reads backwards.
+- **Granularity differs.** "Acme acquired Beta" versus "Acme completed its
+  acquisition of Beta" — one event, or an event plus a completion state?
+- **Entity resolution diverges.** "Acme", "Acme Corp" and "Acme Corporation"
+  become three entities, so even identical predicates yield different objects.
+- **Nominalizations are unsourced.** "Beta's acquisition by Acme" is a noun
+  phrase; NomBank was the resource for those and it is dropped on licensing, so
+  nothing covers this case.
+
+### Breadth works against canonicalization, and this is a real tension
+
+The two goals in this document's own title — the *broadest, richest* object, and
+a *canonical* one — pull against each other. Every additional sense distinction
+is one more way two phrasings of the same meaning can diverge. With 4,669
+predicates carrying many near-synonyms, breadth is not neutral with respect to
+the core bet; it actively raises the failure rate of the thing the object exists
+to do.
+
+This sharpens what a profile is for. Restricting a pack to the predicates a task
+needs is not only a cost saving on prompt size and authoring — **it is a quality
+mechanism**, because a smaller vocabulary has fewer ways to disagree with itself.
+That reframes "the IR permits, the profile restricts" from a concession into a
+design feature, and it means the paraphrase-invariance test above should be run
+at more than one profile size. If invariance is materially better on a narrow
+profile, that is an argument about how this object should be *used*, not
+evidence against it.
 
 ## Wikidata belongs in the design, scoped to states
 
