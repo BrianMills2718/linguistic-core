@@ -101,7 +101,17 @@ most work — not by what is most interesting.
    something a neural pass does poorly — they are things it does not do.
    Error-catching is partially answered and conditional (yes for evidence
    grounding, no for recommendation binding); the operations half is untested
-   because nothing here has ever held enough reviewed structure to operate on.
+   *here* — but **executable implementations of all four exist** in
+   `~/code/requirement-to-runtime-semantic-compiler`: truth maintenance with
+   retraction propagation, four WTL planners, causal intervention engines and
+   scenario branching, with real scaling measurements (retraction under 1 ms and
+   `stale_inferred_assertions_after_retraction: 0` from 100 to 50,000
+   assertions). **Caveat that changes how to cite it:** that repo's *headline
+   benchmark* numbers are not model inference. Verified by opening
+   `09_evaluation/run_v0_3_same_session_materialization.py` — every "model
+   output" comes from a hardcoded case-index table (`n=int(cid[-2:])`) and the
+   file contains no network call or client import. Its deterministic substrate
+   measurements are real; its accuracy claims are not yet evidence.
 
 ### The order
 
@@ -448,6 +458,16 @@ n-ary assertion-and-role operator. Open in the Inside Success graph-maintenance
 methodology too (§24.12), and the exact seam this representation sits on.
 
 ### The mapping relation vocabulary
+
+> **This was derived here on 2026-09-07 and already existed.**
+> `requirement-to-runtime-semantic-compiler/15_lexical_grounding/GROUNDING_SCHEMA_V1_0.json:69-82`
+> is a frozen JSON Schema whose relation enum carries eight of the nine below
+> plus `eventSemanticsContributes`, `nominalizes` and `crosswalkEvidence`; only
+> `incompatibleWith` is missing. Its `LEXICAL_GROUNDING_SPEC_V1_0.md:34` carries
+> the same `acquire` worked example, and `ACQUISITION_CROSSWALK_V1_0.yaml` is a
+> 432-line implementation of it. Both derivations come from the same source
+> conversation — one source harvested twice, not independent corroboration.
+
 
 A mapping is not an equality. The source design specifies nine relations, for
 the stated reason that anything less "destroys distinctions in the source
@@ -954,8 +974,21 @@ corpus perfectly outscores one covering four fifths well. Coverage is precisely
 the number that ended the Wikidata attempt at 47%, recorded above — and it is
 not in the plan that would measure this object's success.
 
-**State modelling primitives the source conversation specifies and this design
-does not carry.** From `~/code/requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`, roughly lines
+**State modelling primitives — specified in the source conversation and *already
+implemented* one directory over.** Checked 2026-09-07 against
+`~/code/requirement-to-runtime-semantic-compiler` (a local repository, absent
+from `PROJECT_GRAPH.json`, imported wholesale 2026-09-07 from a Windows
+checkpoint and drawing on the *same* 10,012-line source conversation). **Six of
+the seven below exist there as frozen schemas and SQL, not sketches** —
+`02_world_model/WORLD_STATE_SCHEMA.md` covers six in 39 lines, and
+`16_temporal_world_model/TEMPORAL_SQL_SCHEMA_V1_0.sql:56` is a real
+`CREATE TABLE quantity_assertions`. Inertia is the sharpest case: that repo's
+`03_wtl/WTL_SPEC.md:23-25` states the persistence rule *and* the derived-facts
+exemption this document names as unaddressed. Only the causal-link vocabulary
+and QUDT are genuinely absent on both sides.
+
+Listed here as requirements rather than deleted, because this vocabulary must
+still be able to express them — but **do not re-derive them a third time.** From `~/code/requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`, roughly lines
 3400–8400, of which this document harvested almost nothing:
 
 - The unit of state is an **assertion, not a triple**, carrying scenario, valid
@@ -1268,6 +1301,26 @@ specifically the cheapest real answer is an email to the Colorado group.
   commit with a real notice. Neither is large; both are outstanding.
 
 ---
+
+## The sibling project, and why it is not a competitor
+
+`~/code/requirement-to-runtime-semantic-compiler` (GitHub `brianmills-spec`) is
+**complementary, and each project names the other's product as its own gap.**
+
+It has the world model, runtime and transition language this document lacks —
+15,702 lines of Python, a temporal store, truth maintenance, planners. Its
+canonical vocabulary is **75 hand-authored business terms** and it ships no bulk
+lexical data; this object is 4,669 predicates with no world model. Its own review
+asks whether canonical semantics can stay grounded in expert-built
+WordNet/PropBank/FrameNet resources and answers "current evidence is one rigorous
+AcquisitionEvent exemplar, not broad coverage" — which is this object's product.
+It also explicitly declines to build one: *"Do not attempt a full WordNet +
+FrameNet + PropBank + VerbNet + SUMO/DOLCE/BFO merge."*
+
+Neither supersedes the other. What is **not** written down anywhere is whether it
+should consume this pack or stay self-contained — no dependency is declared in
+either direction, and the only place the connection exists is a derived vision
+wiki page.
 
 # Related work, and where the evidence lives
 
