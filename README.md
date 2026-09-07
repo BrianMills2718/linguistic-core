@@ -15,7 +15,7 @@ released independently of that platform.
 
 ## Start here
 
-**`docs/design/SEMANTIC_INTERLINGUA.md`** is the living design: what this
+**`docs/design/SEMANTIC_PREDICATE_VOCABULARY.md`** is the living design: what this
 vocabulary is, what it is becoming, what is settled, what is still open, and —
 in its closing compendium — where every piece of cited evidence lives, including
 the parts that live in other repositories. Read it before proposing any change

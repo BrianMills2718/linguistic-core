@@ -1,6 +1,6 @@
 # Design log
 
-History of updates to `SEMANTIC_INTERLINGUA.md`, which never contains this log
+History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains this log
 — see the living-document convention this repo follows. Entries before
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
@@ -285,6 +285,20 @@ unresolved, and names the feedback loop as the design never built.
 Semantic Foundry's independent existence, with the reading that Brian's own
 vision documents may already resolve it by layer; and "which use case first."
 Retained the licensing and implementation-location questions unchanged.
+
+## 2026-09-07 — Renamed to resolve a naming collision
+
+`SEMANTIC_INTERLINGUA.md` renamed to `SEMANTIC_PREDICATE_VOCABULARY.md` (H1
+retitled to match). An unrelated GitHub repository,
+`brianmills-spec/semantic-interlingua`, a neurosymbolic world-model /
+semantic-compiler project, was using the same name; it was renamed the same
+day to `requirement-to-runtime-semantic-compiler`. This document was never
+that project — it is the SUMO/PropBank/FrameNet predicate and relation
+vocabulary described throughout this log — but the shared name made the two
+easy to conflate, including in `~/code/vision/wiki` pages that cite this
+document. No content changed beyond the title and a disambiguation note at
+the top; `CLAUDE.md`, `README.md`, and this log's own self-reference were
+updated to the new filename.
 
 ## 2026-09-04 — Initial synthesis
 

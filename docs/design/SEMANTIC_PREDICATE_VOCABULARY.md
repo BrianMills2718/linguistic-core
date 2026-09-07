@@ -1,4 +1,12 @@
-# The Semantic Interlingua — design
+# The Semantic Predicate Vocabulary — design
+
+*(Renamed from "The Semantic Interlingua" 2026-09-07 to resolve a naming
+collision with the unrelated `brianmills-spec/requirement-to-runtime-semantic-compiler`
+repository — a neurosymbolic world-model / semantic-compiler project that also
+used "semantic interlingua" as a name. This document is the SUMO/PropBank/
+FrameNet-derived predicate and relation vocabulary; the two projects are
+otherwise unrelated, though both draw on the same 2026-09-05 ChatGPT
+conversation as source material — see the "Related work" section below.)*
 
 **Status: living document.** Re-derived on each update rather than appended, so
 it reads as current state rather than history. `docs/design/DESIGN_LOG.md`

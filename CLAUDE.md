@@ -7,7 +7,7 @@ independently of any platform that consumes it.
 
 ## Project-information entrypoint
 
-**`docs/design/SEMANTIC_INTERLINGUA.md` is this repository's declared wiki
+**`docs/design/SEMANTIC_PREDICATE_VOCABULARY.md` is this repository's declared wiki
 equivalent** under the ecosystem documentation policy
 (`project-meta/docs/ops/WIKI_AND_DOCS_POLICY.md`), in place of a `wiki/index.md`.
 Goals, concepts, architecture, decisions, limitations and open questions are
@@ -19,7 +19,7 @@ linked from the design rather than copied into it.
 ## Read first
 
 - `README.md` — what is here and how to build it.
-- **`docs/design/SEMANTIC_INTERLINGUA.md`** — the living design. What this
+- **`docs/design/SEMANTIC_PREDICATE_VOCABULARY.md`** — the living design. What this
   vocabulary is becoming, what is settled, what is open, and where every piece
   of cited evidence lives. Read this before proposing any change to the pack's
   shape.
