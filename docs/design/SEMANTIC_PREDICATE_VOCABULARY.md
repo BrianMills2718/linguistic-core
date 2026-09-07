@@ -955,7 +955,7 @@ the number that ended the Wikidata attempt at 47%, recorded above — and it is
 not in the plan that would measure this object's success.
 
 **State modelling primitives the source conversation specifies and this design
-does not carry.** From `~/code/semantic_interlingua_part1.md`, roughly lines
+does not carry.** From `~/code/requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`, roughly lines
 3400–8400, of which this document harvested almost nothing:
 
 - The unit of state is an **assertion, not a triple**, carrying scenario, valid
@@ -1494,7 +1494,7 @@ early — its first end-to-end trace has not run.
 
 ## The source design conversation
 
-**`~/code/semantic_interlingua_part1.md`** — 10,012 lines, a 38-minute session
+**`~/code/requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`** — 10,012 lines, a 38-minute session
 of 2026-09-05 that produced the interlingua framing. Captured immutably in the
 vision wiki as `src-chatgpt-session-927f8f0394b8`. Assessment of it, including
 what it assumes away, is at
