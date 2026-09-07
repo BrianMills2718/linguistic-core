@@ -48,6 +48,14 @@ asserting two incompatible things about whether the object is a merge — writte
 here, unnoticed through several revisions. Before editing a goal statement,
 re-read the others.
 
+**Cite the primary source, not the map.** The vision wiki's pages are derived
+summaries that point at primary authorities. Reading a wiki page's one-line index
+gloss and treating it as the content is how this design came to say a
+neurosymbolic test found nothing when the record held a controlled positive, and
+to assert that events carry effects when its only world-model consumer has an
+accepted decision forbidding exactly that. Both times the primary was one hop
+away. Follow the hop.
+
 **Verify before recording.** Numbers should be checked against the thing they
 describe, not relayed. Absence claims — "X does not exist", "nothing reads Y" —
 are the class that has failed most often here; check them directly.

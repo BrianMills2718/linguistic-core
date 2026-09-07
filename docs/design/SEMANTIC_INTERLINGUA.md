@@ -356,9 +356,30 @@ third's `change_of_control` are known to correspond and their arguments map.
 The semantic control plane for a composable software library, where capabilities
 declare what they provide and consume in shared terms so they compose safely.
 
-**Reasoning and state.** World modeling, where canonical events carry
-preconditions and effects and become state-transition operators. Planning, which
-is the same transition model read in the other direction. Counterfactual and
+**Reasoning and state.** World modeling — but **not** by making canonical events
+carry effects. An earlier revision of this document said exactly that, and it is
+contradicted by the only real world-model consumer. `world-substrate`'s accepted
+decision 003 (2026-09-02) is explicit: *"A Linguistic Core predicate never
+implies an implemented effect."* The vocabulary identifies predicate senses,
+participant roles and semantic relationships; **installed mechanics** supply
+persistence, applicability, authority, quantities, effects, scheduling,
+invariants and commit behaviour. Treat that as a settled constraint on this
+object, not an open question.
+
+What that consumer asks of the vocabulary instead is a **binding
+classification** — for each occurrence, which of seven mechanical roles it plays:
+primitive intentional action; autonomous or environmental process; state
+relation; composite event; analytic or emergent pattern; plan, intention or
+declaration; or institutionally enforced transition. Nothing in the primitives
+table above can express that distinction today, and it is the concrete
+world-modeling requirement.
+
+It also supplies the test for deciding: *if lower-level events were held fixed
+and the named phenomenon were removed, would future state transitions or
+affordances change?* If not, the phenomenon is a derived description and must not
+duplicate the effects of what it summarizes.
+
+Planning, which is the same transition model read in the other direction. Counterfactual and
 scenario simulation over typed state. Digital twins of an organization, where
 suppliers, contracts and obligations are live state rather than documents.
 
@@ -682,6 +703,30 @@ specifically the cheapest real answer is an email to the Colorado group.
   Engine is built around exactly this residual-measurement loop.
 - **Where implementation lands** is still undecided: inside `linguistic-core`,
   inside Semantic Foundry, or elsewhere.
+- **The eight-category coverage audit is specified and has never been run.**
+  `world-substrate`'s binding contract lists what to inspect this vocabulary and
+  its donors for before adding any overlay term: persistent state relations;
+  identity and lifecycle; location, topology, containment and routing;
+  possession, custody, access, control, title, beneficiary and transfer
+  authority; material qualities, damage and capabilities; quantities, dimensions
+  and units; temporal validity and process roles; and institutional roles and
+  enforceable relations. It names **QUDT** as a candidate donor alongside SUMO,
+  FrameNet, PropBank and Wikidata — QUDT appears nowhere else in this design.
+  Every statement of this audit is in obligation tense; it is a hypothesised gap
+  surface, not measured findings.
+
+- **Three gaps in this vocabulary that *were* measured, by that consumer.**
+  Reversative senses have no representation — `unheat` is absent, and the
+  nearest predicate is the *application* of heat, whose reversal is not a sense
+  it carries; that consumer files this as an open item *owned by the upstream
+  ontology*, which makes it an outstanding requirement against this repository.
+  There is no rights system, so acquisition is a change of ownership reference
+  rather than a claim about rights. And there is no vocabulary for *unowned* —
+  an authored mechanic had no way to say "no owner" except by emptying a
+  reference. The summary diagnosis is that this object is much stronger in event
+  vocabulary than in persistent state relations and quantitative value modelling,
+  which the 4,658-event to 1,061-relation ratio corroborates.
+
 - **What else genuinely belongs.** WordNet and VerbNet are in. SemLink and
   NomBank are out on licensing, so the nominal-predicate gap needs either a
   grant from NYU or a different source, and that is now an open sourcing
