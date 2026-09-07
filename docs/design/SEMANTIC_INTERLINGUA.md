@@ -18,6 +18,7 @@ design; this design does not describe its runtime.
 ## Contents
 
 - [Goal](#goal) — what the object is and why licensing constrains the product
+- [What to do, in order](#what-to-do-in-order) — the three bets, ranked by what wastes the most work if false
 - [What richness actually buys](#what-richness-actually-buys) — *fixed* and *rich* are different properties
 - [What the representation contains](#what-the-representation-contains--first-draft) — the specification draft, its settled commitments, and the July 2026 implementation that already exists
 - [Use cases](#use-cases) — which need breadth, which do not, and the consolidated list
@@ -61,6 +62,78 @@ So the paid product must be a separate layer that does not redistribute the
 licensed content — which is what `linguistic-core` ADR-0040 decision 7 already
 concluded for SUMO. The vocabulary is an open artifact; the product sits above
 it.
+
+## What to do, in order
+
+This document had described the object thoroughly and never said what to do
+about it. The ordering below is by **blast radius** — what, if false, wastes the
+most work — not by what is most interesting.
+
+### Three bets, and only one is load-bearing for the rest
+
+1. **Canonicalization works.** Different phrasings of one meaning collapse to one
+   object. This is the object's entire premise and **it has never been directly
+   tested here.** If it fails, nothing downstream matters.
+2. **Breadth earns its place.** 4,669 predicates beat a small task-specific
+   ontology. **Current evidence is against it**: the one neurosymbolic operator
+   that demonstrably worked used *zero* Linguistic Core predicates and was plain
+   Python and Pydantic.
+3. **The symbolic layer catches what neural alone misses.** Partially answered
+   and the answer is conditional: yes for evidence grounding, no for
+   recommendation binding. The useful form of this question is now *which
+   failure modes*, not *whether*.
+
+### The order
+
+**0. Settle whether the backbone already exists — before any vocabulary work.**
+The ontology platform's own status documents claim the PropBank + FrameNet +
+SemLink backbone proposed in "Proposed architecture" already exists at 98.1%
+predicate-to-frame coverage in the donor repository `onto-canon`, and that the
+missing piece is a `backbone → pack` compiler with a written and unimplemented
+spec. If that holds, the vocabulary work is *compiler* work, and building the
+backbone again is this ecosystem's recorded and expensive failure mode. One
+agent, one day, and it reorders everything below it.
+
+**1. Test paraphrase invariance.** The core bet, and the cheapest decisive thing
+available: roughly fifty real events, each rendered four ways, extracted, and
+measured for how often all four produce an identical canonical object. A day and
+a few dollars. Report the empty rate alongside it, since a call that returns
+nothing is not agreement. A low number here stops the programme; a high one
+justifies everything else.
+
+**2. Run the coverage audit that has been specified and never executed.** The
+eight categories in `world-substrate`'s binding contract, checked against this
+pack and its donors. This converts "the broadest, richest object" from an
+aspiration with no stopping condition into a finite list of what is missing —
+which is the only thing that makes "richest" a plannable goal rather than an
+open-ended one. Its measured findings already include three concrete absences:
+reversative senses, rights, and any way to express *unowned*.
+
+**3. Close the representation gaps that block every use case equally.** Entity
+resolution, which is absent and is most of the real engineering cost; a
+representable state for an extractor that returned nothing, against a measured
+one-in-eight rate; and coverage as an evaluation metric, since it is missing
+from the inherited seven and is the number that ended the previous attempt at
+47%.
+
+**4. Then commit to one use case.** This ecosystem's own documentation is the
+leading candidate and is under test — it is simultaneously a use case, the
+claim-shaped evaluation corpus that has never existed, and a direct exercise of
+proposition identity.
+
+### What not to do yet, and why
+
+- **Do not add source vocabularies** until 0 and 2 are answered. Adding sources
+  before knowing whether the backbone exists, or what is actually missing, is
+  motion without a target.
+- **Do not regenerate the PropBank glosses.** That work was scoped to make the
+  object non-ShareAlike, and ShareAlike does not obstruct the actual goal — using
+  this object inside a commercial product is unaffected. It would also be larger
+  than it looked, since the predicate identifiers embed the same sense
+  distinctions as the descriptions.
+- **Do not adopt the July propositional implementation** until the reification
+  question is decided, because that decision changes its cost from a
+  promotion-path rewrite to a convention.
 
 ## What richness actually buys
 
