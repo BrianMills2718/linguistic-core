@@ -243,6 +243,45 @@ extraction is a day. The blockers are:
 - there is **no adapter at all** from the semantic bundle into candidates or
   promotion. The lane terminates at a digest-bound bundle.
 
+### But that cost is for one implementation, not for the commitment
+
+The estimate above prices *widening the filler kind*. A 2026-09-06 review
+pointed out that propositions-as-role-fillers may not require that at all, and
+inspecting the store confirms it. **Reification is available today, with no core
+change:**
+
+- `promoted_graph_entities` is `(entity_id, entity_type, first_candidate_id,
+  created_at)`, and `entity_type` is unconstrained free text — so an entity typed
+  `Proposition` is already legal.
+- A role filler with `filler_kind="entity"` satisfies its foreign key as long as
+  a real entity row exists. Nothing inspects what the entity denotes.
+- `assertion_identity.py` hashes `(role_name, entity_id)` for entity fillers and
+  looks no further. Two roles pointing at the same proposition therefore get the
+  same digest, which is the behaviour wanted.
+
+So a proposition can fill a role today by minting a proxy entity that stands for
+an assertion. No new filler kind, no schema migration, no rewrite of the
+promotion path.
+
+**What it costs instead**, because it is a convention rather than a type:
+
+- A rule for deriving the proxy's `entity_id` from the assertion it reifies.
+- `first_candidate_id` is `NOT NULL`, so every proxy entity must name a
+  candidate it was born from. For a proposition that reifies an existing
+  assertion, which candidate that is needs deciding.
+- **Proposition identity is relocated, not solved.** It becomes the question of
+  when two proxy entities denote the same proposition — the same open problem,
+  now inside the entity resolver.
+- Traversal gains a hop, and any consumer that does not know the convention sees
+  a bare entity with no attributes rather than a claim.
+- Nothing enforces that a `Proposition`-typed entity has an assertion behind it.
+  The type system stops helping exactly where it was helping before.
+
+**This is the fork that actually matters for the disposition question**, and it
+is not adopt-versus-reimplement. It is: pay once in the core for a checked third
+filler kind, or pay continuously in conventions and a resolver for reification.
+The July implementation assumed the first. Nothing has yet tested the second.
+
 Plus the n-ary model would have to state what a role edge pointing at an
 assertion rather than an entity *means*, and every export would have to carry it.
 
