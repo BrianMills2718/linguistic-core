@@ -240,7 +240,7 @@ Statement and Reasoning) do the work.
 | **Time** | Source time and valid time kept separate (the four-clock model the Inside Success graph-maintenance methodology already specifies) |
 | **Provenance** | Source, exact span, extractor, and three separate uncertainty numbers |
 | **Reading** | A human-readable template for a predicate, e.g. `"{part} is in {bin} in {warehouse}"` — a review surface, a diagnostic, and the path to verbalization |
-| **Mapping** | How a canonical class attaches to a resource, under a relation vocabulary richer than "same as" |
+| **Mapping** | How a canonical class attaches to a resource, under the typed relation vocabulary below — never a bare "same as" |
 
 ### Three requirements that are easy to get wrong
 
@@ -406,6 +406,40 @@ that it worked is worth more than a fresh experiment.
 Composition: how a binary entity-edge operator composes losslessly with an
 n-ary assertion-and-role operator. Open in the Inside Success graph-maintenance
 methodology too (§24.12), and the exact seam this representation sits on.
+
+### The mapping relation vocabulary
+
+A mapping is not an equality. The source design specifies nine relations, for
+the stated reason that anything less "destroys distinctions in the source
+resources":
+
+`exactMatch` · `closeMatch` · `broaderThan` · `narrowerThan` · `lexicalizes` ·
+`evokes` · `roleEquivalentInContext` · `roleSpecializes` · `incompatibleWith`
+
+Each mapping carries this relation plus a **confidence** and a **provenance** —
+which resource, which version, assigned by whom or what.
+
+**The worked case is the one this pack actually ships.** PropBank `acquire.01`
+maps to FrameNet `Getting`. That is not `exactMatch`: WordNet's corresponding
+sense also covers "she acquired a reputation", which a corporate-acquisition
+schema should exclude. The honest relation is `closeMatch`, with the distinction
+recovered by hierarchy rather than by the mapping —
+
+```
+WordNet acquire.v.01 --closeMatch--> AcquisitionEvent
+                                       └─subclass─> CommercialAcquisition
+                                                      └─subclass─> CorporateAcquisition
+```
+
+**This is not decoration, and it changes how the existing layer should be
+read.** The pack currently stores each frame mapping as a bare
+predicate-to-frame link with a confidence float, which forces a binary
+correct-or-wrong reading. Under the real vocabulary, a mapping to a *broader*
+frame is correct but imprecise, not an error. Only `incompatibleWith` is an
+unambiguous failure. So the accuracy measurement in step 1 must classify by
+relation rather than by right and wrong, or it will report a failure rate that is
+mostly imprecision — and imprecision is fixable by adding a relation column,
+while incompatibility is not.
 
 ## Use cases
 
