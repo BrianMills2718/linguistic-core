@@ -13,6 +13,16 @@ governed-assertion middleware and was split into its own repository (see
 and Plan #205 in onto-canon6) so it could be published, licensed, and
 released independently of that platform.
 
+**Part of a wider research cluster.** This repo is the vocabulary itself in a
+broader cluster of repos exploring canonical semantic representation and
+capability reuse for AI-generated software (`world-substrate`, `factgraph`,
+`hypergraph-schema-ir`, `semantic-foundry`,
+`requirement-to-runtime-semantic-compiler`, the capability-architecture repos,
+and others). For current state, open cross-repo decisions, and how these
+repos relate, see the baseline synthesis page in
+[`BrianMills2718/vision`](https://github.com/BrianMills2718/vision):
+[`wiki/synthesis/ontology-semantic-cluster-baseline-2026-09-07.md`](https://github.com/BrianMills2718/vision/blob/main/wiki/synthesis/ontology-semantic-cluster-baseline-2026-09-07.md).
+
 ## Start here
 
 **`docs/design/SEMANTIC_PREDICATE_VOCABULARY.md`** is the living design: what this
