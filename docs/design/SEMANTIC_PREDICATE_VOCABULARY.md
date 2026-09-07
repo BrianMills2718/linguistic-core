@@ -844,11 +844,19 @@ objects with an association between them, not one collapsed object. And
 **"agreed to acquire" must never collapse into "acquired"** — that is the
 pending-deal error this document already names as the flagship case.
 
-*This is not new territory.* Modality and discourse status are specified in the
-Inside Success graph-maintenance methodology (`§516`, `§527`, `§2120`). Note what
-it also records at `§663`: **"no common first-class modality field is visible in
-the baseline export."** So the requirement is written down and unbuilt — reuse
-that specification rather than authoring a third one.
+*This is off-the-shelf, and it was already in the donor.* **PropBank annotates
+modality and negation natively** as the modifier roles `ARGM-MOD` and `ARGM-NEG`.
+They are not in this pack because the import dropped them: the donor database's
+`role_slots` carries `ARG0` through `ARG5` and **zero `ARGM` rows**, and none of
+the pack's 908 role IDs is modal or negational. This is a recovery, not a build.
+
+Other established options rather than authoring one: **FactBank** (event
+factuality), **ISO-TimeML** (an ISO standard covering event modality),
+**UMR/AMR** (modal strength and polarity), Searle's speech-act taxonomy, and
+FrameNet's own Statement and Reasoning frames — already a donor here. The Inside
+Success graph-maintenance methodology specifies modality at `§516`/`§527`/`§2120`
+but records at `§663` that no first-class modality field exists in its baseline
+either, so it is a second statement of the requirement rather than a source.
 
 **3. Converse predicates are one relation, handled by inference, not by
 collapsing.** `owl:inverseOf` is the standard mechanism and SUMO already carries
@@ -879,10 +887,37 @@ forcing a new predicate. This keeps the canonical object stable while preserving
 what the paraphrase added, and it degrades gracefully: an annotation nobody reads
 costs nothing, whereas a discarded distinction cannot be recovered.
 
-**A pack defect this exposes.** `lc:kill_cause_to_die` and
-`lc:murder_cause_to_die` carry the **identical** gloss "cause to die". Any
-selector reading descriptions alone already treats them as one predicate, so the
-distinction rule above cannot be applied until the glosses distinguish them.
+**A pack defect this exposes, and its answer is not a judgement call.**
+`lc:kill_cause_to_die` and `lc:murder_cause_to_die` carry the **identical** gloss
+"cause to die", so a selector reading descriptions cannot tell which is nearer
+and will sometimes put `murder` on a plain "killed" — adding an
+unlawfulness-and-intent claim the text never made, which is the fabrication
+direction.
+
+Either consolidate such pairs or distinguish them, and **the data decides**:
+across all **332** duplicate-description groups, covering 907 predicates, every
+single one maps to *different* PropBank rolesets. Zero share one. `kill-01` and
+`murder-01` are separate rolesets, so PropBank's annotators already ruled these
+distinct senses. **The answer is uniformly "distinguish"; there is no
+consolidation case in the pack.** The predicate identifiers already carry the
+distinction — only the human-readable field collapsed.
+
+### Three defects, one cause: the import kept less than the source had
+
+These were found separately and share a mechanism, so they should be fixed in one
+pass rather than three.
+
+| what is wrong | what the source has | consequence |
+|---|---|---|
+| Descriptions average 18 characters and 332 groups are duplicated across 907 predicates | PropBank roleset data far richer than the short gloss | a selector cannot distinguish `kill` from `murder`; almost certainly the cause of the frame failure below |
+| No modality or negation anywhere — 908 role IDs, none modal | PropBank's `ARGM-MOD` and `ARGM-NEG` | "did not acquire", "may acquire" and "acquired" produce identical structures |
+| Frame mappings 55–61% `incompatibleWith` | FrameNet definitions, and PropBank sense numbers | a model asked to frame `lc:donate_give` from the gloss "give" has nothing to work with |
+
+**None of these is a modelling problem and none needs a better model.** All three
+are the same act — reading the donor shallowly — and all three are repaired by
+reading it properly. That also makes the third cheaper than it looked: fix the
+descriptions first and the frame regeneration gets an adequate input for the
+first time.
 
 ### Canonicalization is a choice, not a property
 
