@@ -71,9 +71,12 @@ most work — not by what is most interesting.
 
 ### Three bets, and only one is load-bearing for the rest
 
-1. **Canonicalization works.** Different phrasings of one meaning collapse to one
-   object. This is the object's entire premise and **it has never been directly
-   tested here.** If it fails, nothing downstream matters.
+1. **Canonicalization is set correctly.** Not "works" — that framing is wrong and
+   is corrected in the section below. Canonicalization is a *choice about which
+   distinctions to discard*, so there is no standard against which collapsing is
+   right or wrong until that choice is made. **The choice has never been made
+   here**, which means the experiment cannot yet be specified, let alone run.
+   Everything downstream depends on it.
 2. **Breadth earns its place.** 4,669 predicates beat a small task-specific
    ontology. **Current evidence is against it**: the one neurosymbolic operator
    that demonstrably worked used *zero* Linguistic Core predicates and was plain
@@ -683,6 +686,50 @@ the premise the whole design rests on. It can break in five ways, none exotic:
 - **Nominalizations are unsourced.** "Beta's acquisition by Acme" is a noun
   phrase; NomBank was the resource for those and it is dropped on licensing, so
   nothing covers this case.
+
+### Canonicalization is a choice, not a property
+
+"Different phrasings of one meaning get one representation" is not well formed as
+stated, and treating it as a property the object either has or lacks has been
+holding this design back.
+
+Take the pair it always uses. "Acme acquired Beta" and "Acme bought Beta" are not
+synonymous: buying entails consideration changing hands, acquiring does not. They
+are *compatible*, and nearly every pair worth collapsing is like this. So one
+representation cannot mean identical meaning. It means identical **after
+discarding chosen differences**.
+
+That makes canonicalization deliberate information loss, and therefore a
+judgement rather than a fact about language. Nothing makes `acquire` more basic
+than `buy`. **And the judgements are inherited.** PropBank's roleset boundaries
+were drawn to make treebank annotation tractable; adopting the vocabulary adopts
+those boundaries wholesale, for a purpose they were not drawn for. That is a
+real and unexamined dependency, not a detail.
+
+**The two failure directions are not symmetric.**
+
+- **Under-collapse.** "Acquired" and "bought" land on different predicates,
+  downstream sees two events where there is one, and deduplication and
+  contradiction detection both miss.
+- **Over-collapse.** "Agreed to acquire" and "acquired" both land on `acquire`,
+  and a pending deal now reads as a completed one. This is the exact error class
+  cited elsewhere in this document as the symbolic layer's flagship catch — here
+  produced *by* the canonicalization.
+
+Under-collapse loses information; over-collapse **fabricates** it. They are not
+equally bad and should never be traded off as if they were.
+
+**So the measurable object is a curve, not a rate**, and where to sit on it is
+task-dependent. Deduplication across sources wants aggressive collapse.
+Contradiction detection wants cautious collapse, since over-collapse manufactures
+false conflicts. Simulation must never collapse agreement into completion.
+
+Which reaches the same place as the breadth argument below, from the other
+direction: canonicalization is **a knob set per profile**, not a property of the
+object. The IR should preserve every distinction it can; a profile chooses which
+to discard for its task. Step 1 of the plan above is therefore misstated as
+"measure the collapse rate" — it must first decide what *should* collapse for a
+named task, then measure both error directions against that.
 
 ### Breadth works against canonicalization, and this is a real tension
 
