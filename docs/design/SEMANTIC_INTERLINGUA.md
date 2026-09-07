@@ -97,14 +97,17 @@ most work — not by what is most interesting.
 
 ### The order
 
-**0. Settle whether the backbone already exists — before any vocabulary work.**
-The ontology platform's own status documents claim the PropBank + FrameNet +
-SemLink backbone proposed in "Proposed architecture" already exists at 98.1%
-predicate-to-frame coverage in the donor repository `onto-canon`, and that the
-missing piece is a `backbone → pack` compiler with a written and unimplemented
-spec. If that holds, the vocabulary work is *compiler* work, and building the
-backbone again is this ecosystem's recorded and expensive failure mode. One
-agent, one day, and it reorders everything below it.
+**0. Settled, 2026-09-07 — and it removes vocabulary breadth from the plan.**
+This step used to read "find out whether the backbone already exists at 98.1% in
+the donor repo." It was checked against the data. **The pack already ships every
+predicate the donor backbone has** — an exact identifier intersection of
+4,655 of 4,655, with eleven extra. There is nothing to import and no backbone to
+build. Details and the corrected numbers are under "The backbone claim" below.
+
+What that leaves is a different and smaller target: **frame coverage and its
+verification.** 2,263 of 4,669 predicates carry a frame candidate — 48.47% — and
+every one of them is `source_verified: false`, assigned by a model rather than by
+a crosswalk. That, not breadth, is the concrete gap.
 
 **1. Test paraphrase invariance.** The core bet, and the cheapest decisive thing
 available: roughly fifty real events, each rendered four ways, extracted, and
@@ -861,15 +864,55 @@ does not carry.** From `~/code/semantic_interlingua_part1.md`, roughly lines
   what agents believe, what documents said. `Stance` and `Modality` cover the
   third and part of the second; the first is absent.
 
-**The prioritization argument against building this at all.** The ontology
-platform's own status documents argue the PropBank + FrameNet + SemLink backbone
-proposed in "Proposed architecture" above **already exists at 98.1%
-predicate-to-frame coverage** in the donor repository `onto-canon`, and that the
-gap is not vocabulary breadth but a missing `backbone → pack` compiler, called
-there "the highest-value missing build", with a normative spec already written
-and never implemented. That argument bears directly on this document's
-architecture section and on its "which use case first" question, and this
-document should carry it rather than cite the pull request in passing.
+### The backbone claim, checked against the data and false
+
+An earlier revision of this document carried a prioritization argument from the
+ontology platform's status documents: that the PropBank + FrameNet + SemLink
+backbone proposed above **already exists at 98.1% predicate-to-frame coverage**
+in the donor repository `onto-canon`, and that the real gap is an unbuilt
+`backbone → pack` compiler. Every load-bearing part of that is false, and the
+finding underneath it is more useful.
+
+- **The 98.1% artifact does not exist.** `onto-canon` gitignores `data/` and all
+  `*.db` files; across 140 commits four data files were ever tracked and none is
+  a database. The figure is prose in a README recording a 2026-02-16 measurement
+  over a database since deleted as "regeneratable". It cannot be reproduced.
+- **The reproducible numbers are lower and differently composed.** The surviving
+  donor artifact, `sumo_plus.db`, gives **48.47%** frame coverage (2,263 of
+  4,669) — of which 2,262 rows are `llm:gemini/gemini-2.5-flash` and exactly one
+  is SemLink. A 2026-09-04 regeneration reaches 96.07%, of which SemLink supplies
+  542 of 4,472 covered predicates. In every measurable version the crosswalk is
+  overwhelmingly a model's frame assignment, not the SemLink bridge the claim
+  names.
+- **The compiler is not unimplemented.** It exists in `onto-canon6`'s working
+  tree as a 491-line module with tests and a regeneration script, uncommitted,
+  producing a spike pack of **four** predicates.
+- **And it is not the thing this document proposes anyway.** The architecture
+  above specifies WordNet synsets as the identity layer, VerbNet as the
+  thematic-role backbone, and a *licensed* crosswalk from PropBank's own
+  `rolelink` elements and VerbNet 3.4's mappings, chosen precisely because
+  SemLink is unusable. Neither surviving database has a WordNet layer or a
+  VerbNet role inventory. The donor backbone is the thing this design rejected.
+
+**What is actually true, and it still rewrites the architecture section.** This
+pack is a strict superset of the donor backbone: 4,655 of 4,655 identifiers
+intersect exactly, with eleven extra, and 0.3.1 and 0.3.2 are further ingestion
+from the same donor rather than new vocabulary. **Proposing to construct a
+PropBank + FrameNet backbone is aimed at a layer this repository already has.**
+The missing thing is frame coverage and verification — 48.47% covered, every row
+unverified, every row but one model-assigned. The 47% Wikidata ceiling recorded
+above is the direct precedent for why unverified model alignment at scale is the
+risk to design against.
+
+**One licensing consequence.** Adopting the regenerated backbone would import a
+15,441-row `semlink_mappings` table plus verbatim PropBank and FrameNet
+definition text. This pack's current SemLink exposure is one row. That is a real
+reason not to take the regeneration wholesale.
+
+**And the failure mode is the one this document keeps hitting.** A number was
+measured, its artifact was deleted as regeneratable, the prose survived, and it
+was cited as a live fact for six months — into this design, in a revision
+written the day before it was checked.
 
 ## The neurosymbolic question
 
