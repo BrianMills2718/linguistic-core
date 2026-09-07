@@ -5,6 +5,65 @@ History of updates to `SEMANTIC_INTERLINGUA.md`, which never contains this log
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-06 — A cold review; nine claims corrected, one contradiction flagged
+
+A reviewer with no context read the design and traced its load-bearing numbers
+and absence claims to their sources. Nine were wrong. Each was re-verified
+directly before being corrected here, rather than accepted on the reviewer's
+word.
+
+**The extraction-quality number was wrong in the flattering direction, twice.**
+The design cited mean precision 0.42 as the figure every use case inherits, and
+said it passed because the floors were low. The source marks 0.42 superseded,
+reports 0.349, and records that the gate *tripped* by 0.001 and the floor was
+then moved from 0.35 to 0.30 by the same agent whose change tripped it — a
+self-recalibration that source flags for review. The run was rescored from FAIL
+to PASS under the new floor. Corrected to 0.349 against a moved floor.
+
+**The pack is no longer event-only.** The 4,658-event/11-state split described
+`0.3.0`. Since then `0.3.1` added 265 predicates and `0.3.2` added 1,061;
+`lc:citizen`, `lc:birthplace` and `lc:birthdate` all ship. Three of the four
+examples given as returning zero hits are present. The Wikidata section extends
+a populated family rather than founding an empty one, which weakens nothing in
+that argument but changes what it is arguing for.
+
+**The mapping-confidence band was a summary, not a measurement.** Stated as 0.7
+to 0.95; measured over the 2,262 rows it is 0.1 to 1.0, with 311 below the
+stated floor. The quoted field names were the upstream SQLite columns, not the
+pack's.
+
+**Two absence claims failed, the class this repository's own rules name as most
+failure-prone.** "Not referenced by any product entrypoint" dropped a qualifier
+that onto-canon6 carries deliberately and that its own subtree records having
+been wrong about before; `__init__.py` re-exports 30 of those modules. "Its
+SQLite column has no third case" implied a schema constraint that does not
+exist — there is no `CHECK` on `filler_kind` at all. The second correction
+strengthens the conclusion it was supporting: a guarantee living only in
+application code is harder to widen than one constraint, not easier.
+
+Also corrected: PropBank counts to 4,666 and 11,880; the SemLink exclusion,
+which one shipped row contradicts; and the compendium's "every path was
+verified", which invited reading it as every number verified.
+
+**Flagged rather than resolved:** the document states the object is a canonical
+layer and not a merge, and that semantic-foundry holds the same position — then
+states in its open questions that it assumes a single merged object and that
+semantic-foundry holds the opposite. Both cannot be true. Which way it resolves
+is a design decision, and it propagates: the licensing conclusion is stated
+about "a merged artifact", and a canonical layer carrying no verbatim source
+text may not inherit ShareAlike at all.
+
+**Left for the next revision**, named here so they are not lost: the port
+surface is given as "8 modules and ~7,080 lines" without enumerating the eight;
+the design's preferred next step (an evaluation that produces a number) is
+already built in this repo as a preregistration whose harness reports
+`blocked_missing_activation_inputs` against an empty `0.4.0-rc1` candidate, and
+the design does not mention it; and the reviewer's strongest objection is that
+propositions-as-role-fillers may not require widening the filler kind at all,
+since onto-canon6 already treats assertions as first-class and a stance edge
+onto an assertion node would need no new kind. That objection, if right,
+invalidates the effort estimate the disposition question rests on.
+
 ## 2026-09-06 — The fact-oriented hypergraph brief, reconciled
 
 `FACT_ORIENTED_HYPERGRAPH_COMPILER_BRIEF.md` had been referenced but never read
