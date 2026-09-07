@@ -5,6 +5,17 @@ PropBank and FrameNet, with a governed pipeline for compiling, verifying and
 extending it. Split out of `onto-canon6` so it can be published and licensed
 independently of any platform that consumes it.
 
+## Project-information entrypoint
+
+**`docs/design/SEMANTIC_INTERLINGUA.md` is this repository's declared wiki
+equivalent** under the ecosystem documentation policy
+(`project-meta/docs/ops/WIKI_AND_DOCS_POLICY.md`), in place of a `wiki/index.md`.
+Goals, concepts, architecture, decisions, limitations and open questions are
+reachable through it; `docs/design/DESIGN_LOG.md` carries the history and
+`docs/adr/` the accepted decisions. Cross-project context — how this object
+relates to the rest of the ecosystem — lives in `~/code/vision/wiki/` and is
+linked from the design rather than copied into it.
+
 ## Read first
 
 - `README.md` — what is here and how to build it.
@@ -26,6 +37,16 @@ replacement. History goes in the design log, never in the design.
 **Attribute precisely.** Keep "this source states", "this was measured", "this
 is inference" and "this is contested" visibly distinct. Several positions in the
 design were corrected after being stated confidently.
+
+**Goal and intent statements get stricter handling than anything else here.**
+They are the one thing that cannot be recovered from the current state of the
+code, because the current state is what you would check them against. Any
+inconsistency, ambiguity or open question touching what this object *is for*
+must be recorded and surfaced immediately, never silently resolved and never
+left to be caught on a later pass. A 2026-09-06 cold review found this document
+asserting two incompatible things about whether the object is a merge — written
+here, unnoticed through several revisions. Before editing a goal statement,
+re-read the others.
 
 **Verify before recording.** Numbers should be checked against the thing they
 describe, not relayed. Absence claims — "X does not exist", "nothing reads Y" —
