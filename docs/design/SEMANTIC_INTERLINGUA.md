@@ -99,6 +99,16 @@ below: that section says what feeds the object, this says what the object *is*.
 
 Two design commitments are settled and the rest follow from them.
 
+> **Unresolved, and this document currently says both things.** The commitment
+> immediately below states the object is *not* a merge and that semantic-foundry
+> holds the same position. The first open question near the end of this document
+> states that this design *assumes a single merged object* and that
+> semantic-foundry holds the *opposite* principle. Both cannot be true. This is
+> flagged rather than silently resolved because which way it goes is a design
+> decision, not a correction — and it propagates: the licensing conclusion is
+> stated about "a merged artifact", and a canonical layer carrying no verbatim
+> source text may not inherit ShareAlike at all.
+
 **Settled: the object is a canonical layer, not a merge.** Canonical classes are
 authored independently and each source resource attaches by a versioned mapping
 object. Nothing collapses WordNet, PropBank and FrameNet into one table. This
@@ -185,7 +195,10 @@ July and never carried to the production path. The live extraction path still
 allows only `entity | value | unknown` as filler kinds.
 
 The subtree it lives in is marked retained research: 90 modules, ~61k lines,
-frozen since August, not referenced by any product entrypoint, with its own
+frozen since July 2026, referenced by no product entrypoint *directly* — the
+qualifier matters, since `src/onto_canon6/__init__.py` re-exports 30 of its
+modules and the workbench reaches one through `workbench/governed_model.py` —
+with its own
 instruction to preserve rather than extend it and not to wire it into a product
 path without a plan that says so.
 
@@ -221,8 +234,12 @@ This part is corpus-independent and decides the effort question. Widening
 extraction is a day. The blockers are:
 
 - `src/onto_canon6/core/graph_models.py` types the promoted filler kind as `entity | value`;
-- `src/onto_canon6/core/graph_store.py` raises on any third value, and its SQLite column has no
-  third case;
+- `src/onto_canon6/core/graph_store.py` raises on any third value — in Python
+  only. The SQLite column is a bare `filler_kind TEXT NOT NULL` with no `CHECK`
+  (`graph_store.py:693`; the file's only two `CHECK` constraints, at :705 and
+  :715, are on other columns). That is worse than a narrow schema, not better:
+  the store's guarantee lives entirely in application code, so widening it means
+  auditing every write path rather than altering one constraint;
 - `src/onto_canon6/core/assertion_identity.py` computes identity from entity IDs plus a value
   digest, with no branch for a proposition-valued role;
 - there is **no adapter at all** from the semantic bundle into candidates or
@@ -326,15 +343,24 @@ applications sit downstream of that rather than beside it.
   1,061 relation predicates and 268 entity types from the cleared set.
 - PropBank and FrameNet integrated only as a lexical/ID-level correspondence.
   Inspecting the data shows it is weaker than "unverified": each row carries
-  `mapping_source: llm:gemini/gemini-2.5-flash` and a `mapping_confidence`
-  between 0.7 and 0.95. The correspondence is a model's guess with a score
-  attached, not an expert crosswalk.
-- The PropBank content is tagged `source: propbank:nltk` — 4,655 predicates and
-  11,858 role slots — and includes verbatim PropBank description text. See the
+  `row_mapping_method_ref: llm:gemini/gemini-2.5-flash` and a
+  `row_mapping_confidence` — measured over the 2,262 such rows in `0.3.0`, the
+  range is 0.1 to 1.0, with 311 rows below 0.7 and 290 at 1.0. (The upstream
+  SQLite columns are named `mapping_source`/`mapping_confidence`; the pack's
+  field names differ, so grep for the `row_`-prefixed ones.) The correspondence
+  is a model's guess with a score attached, not an expert crosswalk, and the
+  scores run lower than a summary band suggests.
+- The PropBank content is tagged `source: propbank:nltk` — 4,666 predicates and
+  11,880 role slots — and includes verbatim PropBank description text. See the
   licensing section: NLTK's package is "distributed with permission" to NLTK,
   which is not a redistribution grant flowing downstream.
-- The shipped pack is **event-only**: predicate families are 4,658 event and 11
-  state, so born-in, died-in and citizen-of return zero hits.
+- **The event-only description is out of date and applied only to `0.3.0`**,
+  where the split was 4,658 event and 11 state predicates. The state gap was
+  closed in the two versions since: `0.3.1` adds 265 predicates and `0.3.2`
+  adds 1,061, and `lc:citizen`, `lc:birthplace` and `lc:birthdate` all ship
+  today. What remains open is coverage breadth across the state family, not its
+  absence — and the Wikidata section below should be read as extending a
+  populated family rather than founding an empty one.
 
 ## Known gaps in the current integration
 
@@ -577,8 +603,15 @@ specifically the cheapest real answer is an email to the Colorado group.
 
 # Related work, and where the evidence lives
 
-This design cites evidence produced elsewhere. Nothing below was measured by
-this repository. Every path was verified 2026-09-06.
+This design cites evidence produced elsewhere, though not exclusively — this
+repository's own `docs/runs/artifacts/` holds measured coverage and quality
+records, including the crosswalk artifact reporting `verified_count: 0` against
+`crosswalk_record_count: 46184`.
+
+**Every path below was verified to resolve on 2026-09-06. That is not the same
+as verifying what each one says**, and a 2026-09-06 review found several cited
+numbers had drifted from their sources. Re-read the source before re-citing a
+figure from here.
 
 ## Prior design work on the same representation question
 
@@ -726,9 +759,17 @@ requests landed 2026-09-05.
 
 **The extraction quality this vocabulary currently serves:**
 `onto-canon6/docs/runs/2026-07-07_golden_fidelity_baseline.md` records mean
-precision 0.42 and recall 0.32, in its own words "roughly a third of what a
-faithful reading extracts", passing because the floors are set at 0.35 and 0.25.
-Every use case in this document inherits that number.
+mean precision **0.349** and recall 0.321, in its own words "roughly a third of
+what a faithful reading extracts". The widely-quoted 0.42/0.32 is the original
+single-run baseline and that source marks it **superseded**.
+
+The honest version is worse than a passing grade: at the then-current floor of
+0.35 **the gate tripped**, missing by 0.001, and the floor was recalibrated to
+0.30 — a change the source itself flags as "made by the same agent whose change
+tripped the gate", raised for Brian's review. The run was rescored from FAIL to
+PASS under the new floor. Every use case in this document inherits this number,
+so it should be quoted as 0.349 against a moved floor, not as 0.42 against a
+met one.
 
 ## The parallel implementation
 
@@ -813,4 +854,12 @@ duplicate it. Most relevant pages:
 | [FrameNet 1.5–1.7](https://framenet.icsi.berkeley.edu/) | frames and frame elements | CC BY 3.0, grant irrevocable |
 | [SUMO](https://www.ontologyportal.org/) | upper-ontology grounding | IEEE permissive core; **GPL** extension modules |
 | SemLink | *excluded* — no license in its repository | — |
+
+**One caveat on that exclusion.** The shipped `0.3.0` pack still contains a
+single row whose mapping method is `semlink` (`lc:disseminate_scatter_widely` →
+FrameNet `Dispersal`). One row in forty-six thousand is very unlikely to matter,
+but the design asserts a clean exclusion and the artifact is not yet clean;
+removing it costs nothing and makes the claim true. Note also that
+`semantic-foundry`, cited approvingly below, uses SemLink cross-checks — so
+"excluded" is this object's position, not the ecosystem's.
 | NomBank | *excluded* — no license; data is LDC Treebank offsets | — |
