@@ -533,11 +533,52 @@ The thesis is that the neural model interprets messy language and the symbolic
 layer represents, constrains and reasons over the interpretation, with the
 vocabulary sitting at that boundary.
 
-Tested twice here with split results. A synthetic test found symbolic checking
-beating a neural-only pass, but only once the corpus passed roughly 300 items;
-below that both were perfect. A real-document test at two documents found no
-gap to catch. The honest state is **scale-dependent and unresolved**, which is
-a stronger position than either proven or failed.
+**The record is better than "unresolved", and an earlier revision of this
+document reported it wrongly.** There was not one real-document test. Three
+independent experiments collided in a single shared worktree, all originally
+filed as plan 0206: one on recommendation-*number* binding, one on
+recommendation-*ordinal* binding, and one on **evidence-span grounding**. The
+first two found no gap. The third found one, and the symbolic condition closed
+it where neural-only did not.
+
+On real traced calls against `gpt-5.6-luna`, both conditions starting from an
+identical shared pass-1 output, the transfer document went 1 violation → **0**
+under the symbolic condition and 1 → **1 unchanged** under neural-only, whose
+self-review re-emitted the same ungrounded evidence span verbatim. The negative
+control fired correctly and specifically: an induced role inversion was rejected
+by exactly `RULE_ACTOR_CONTENT_COLLAPSE` and a dangling reference by exactly
+`RULE_DANGLING_RECOMMENDATION_REF`, both provider-free.
+
+**It survived its own audit.** That readout self-audits and retracts the
+*primary* document's result as a preprocessing artifact of a flat newline join —
+but explicitly exempts the transfer document, whose fixture had a real paragraph
+break the bug never touched, and where the model spliced sentence 1 to sentence
+3 while skipping the middle sentence entirely. A genuine non-contiguous quote,
+not a formatting artifact.
+
+**The useful finding is that the loop's value is not uniform across failure
+modes.** That model self-corrects recommendation-number binding without symbolic
+help, and does *not* self-correct a paraphrased or spliced evidence quote
+without it. That is sharper and more actionable than "unresolved", and it says
+where a symbolic layer earns its cost: grounding, not binding.
+
+Two caveats kept rather than smoothed. The null half cannot yet distinguish "the
+loop is unnecessary" from "this model was strong enough here" — its own readout
+says so and names running the same operator against a weaker model as the next
+step. And that operator **used zero Linguistic Core predicates**; it is plain
+Python and Pydantic, which is evidence against the donor crosswalk being
+load-bearing for this task class and should be weighed rather than buried.
+
+The synthetic result is also softer than stated: it ran twice and the runs
+disagreed about where recall broke — 0.625 at N=1000, 0.875 at N=300 — so
+"roughly 300 items" is the optimistic end of a two-point spread, not a measured
+threshold.
+
+**Where this evidence lives is itself a finding.** It is not on `onto-canon6`
+main. It sits on an unmerged branch that had no upstream until 2026-09-05, and
+fourteen of its files were recovered from an untracked directory inside another
+repository's stray agent worktree, reachable on one machine and in no version
+control anywhere. Which readout supersedes which is still unestablished.
 
 The design that has never been built is the **loop**: neural proposes uncertain
 hypotheses, symbolic constraints revise them, beliefs update. Current systems
