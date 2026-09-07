@@ -356,6 +356,46 @@ third's `change_of_control` are known to correspond and their arguments map.
 The semantic control plane for a composable software library, where capabilities
 declare what they provide and consume in shared terms so they compose safely.
 
+**The first corpus should be this ecosystem's own documentation.** Brian's
+observation, 2026-09-07, and it is three things at once rather than a use case
+with a cute framing.
+
+*As a use case*, it is contradiction detection over a claim graph — the reasoning
+application already listed below, run on documents rather than on external
+prose. Two real instances from 2026-09-06: one wiki page asserted a predicate
+family had zero members while its sibling recorded eleven from the pack's own
+metadata; and this design asserted that events carry effects while
+`world-substrate`'s accepted decision states a predicate never implies an
+implemented effect. Both are pairs of propositions that cannot both be true, and
+both survived every structural gate in the ecosystem because those gates check
+whether a document was edited recently or in step with code, never whether it is
+consistent with another document.
+
+*As an evaluation corpus*, it supplies what the claim-shaped half of this
+specification has never had. The single run of the propositional schema used
+Slack standup messages, which are event-shaped — nobody writes "Smith argues
+that X" in a work update — so propositions-as-arguments fired 6 times in 2,335
+arguments and the result was recorded as weak evidence rather than a negative.
+**Design documents are claim-shaped text.** They are the corpus that experiment
+was missing, they are already written, and four labelled positives exist from
+2026-09-06 alone. Ground truth is judgeable by the person who owns the
+documents, which removes the annotated-corpus cost that normally gates this kind
+of evaluation.
+
+*As a test of the load-bearing commitment*, it exercises exactly the mechanism
+this design says makes one representation serve both halves: a claim is a
+proposition with another proposition as a participant. "This document asserts P"
+and "that decision asserts not-P" is that shape, and detecting the conflict
+requires proposition identity — the open question this design already calls
+central.
+
+Two limits, recorded rather than glossed. Not every failure is a contradiction:
+the case where this design cited a superseded precision figure is a *supersession*
+problem, not a conflict, and catching it needs the `supersedes` relation the July
+schema types and nothing currently uses. And extraction returns nothing on
+roughly one call in eight, so claims would be missed silently — which is the
+absence this document names above as having no representable state.
+
 **Reasoning and state.** World modeling — but **not** by making canonical events
 carry effects. An earlier revision of this document said exactly that, and it is
 contradicted by the only real world-model consumer. `world-substrate`'s accepted
