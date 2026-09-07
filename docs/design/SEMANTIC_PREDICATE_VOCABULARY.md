@@ -827,6 +827,63 @@ the premise the whole design rests on. It can break in five ways, none exotic:
   phrase; NomBank was the resource for those and it is dropped on licensing, so
   nothing covers this case.
 
+### Settled 2026-09-07: what this object discards, and what it does not
+
+Brian's answers to the five axes the answer key surfaced. These convert the
+thirteen contested pairs and are decisions, not proposals.
+
+**1. Coreference is not this object's job, and the question was badly posed.**
+Work divides into pre-processing, processing and post-processing. Coreference is
+a *stage*, not a property of a representation — asking whether "the object does
+coreferencing" is a category error. The IR consumes resolved mentions. This axis
+is closed and should not have been opened.
+
+**2. An event and its resulting state are not the same object — but should be
+linked.** "Completed its acquisition of Beta" and "acquired Beta" are distinct
+objects with an association between them, not one collapsed object. And
+**"agreed to acquire" must never collapse into "acquired"** — that is the
+pending-deal error this document already names as the flagship case.
+
+*This is not new territory.* Modality and discourse status are specified in the
+Inside Success graph-maintenance methodology (`§516`, `§527`, `§2120`). Note what
+it also records at `§663`: **"no common first-class modality field is visible in
+the baseline export."** So the requirement is written down and unbuilt — reuse
+that specification rather than authoring a third one.
+
+**3. Converse predicates are one relation, handled by inference, not by
+collapsing.** `owl:inverseOf` is the standard mechanism and SUMO already carries
+the concept — `lc:inverse` is in the pack, with SUMO's own definition ("one
+BinaryRelation is the inverse of another if they are equivalent when their
+arguments are swapped"). Buy/sell and lend/borrow stay distinct predicates with a
+declared inverse relation between them.
+
+**The gap is in the pack format, not the theory.** `hierarchy_edges.jsonl`
+carries exactly one `edge_type` across all 1,774 edges: `subtype_of`. There is no
+way to state that two predicates are inverses. That is a concrete, bounded
+schema addition.
+
+**4. "Acme sued Beta" and "Acme filed a lawsuit against Beta" are the same
+object, and the predicate is `sue`.** An earlier revision of this document called
+this "currently impossible" because the pack has no nominal predicates. **That
+was wrong.** `lc:sue_call_to_court` exists. In a light-verb construction the noun
+is the *argument*, not the predicate — "filed a lawsuit" resolves to the verb
+sense, so the missing-nominals gap does not bite here. It still bites where a
+nominalization is the whole reference ("the acquisition closed Tuesday"), which
+is a narrower problem than previously recorded.
+
+**5. Take the nearest predicate; record the difference as prose annotation.**
+For the six entailment pairs — acquired/bought, killed/murdered, said/claimed,
+said/announced, gave/donated, left/resigned — select the closest available
+predicate and carry the residue as an annotation rather than discarding it or
+forcing a new predicate. This keeps the canonical object stable while preserving
+what the paraphrase added, and it degrades gracefully: an annotation nobody reads
+costs nothing, whereas a discarded distinction cannot be recovered.
+
+**A pack defect this exposes.** `lc:kill_cause_to_die` and
+`lc:murder_cause_to_die` carry the **identical** gloss "cause to die". Any
+selector reading descriptions alone already treats them as one predicate, so the
+distinction rule above cannot be applied until the glosses distinguish them.
+
 ### Canonicalization is a choice, not a property
 
 "Different phrasings of one meaning get one representation" is not well formed as
