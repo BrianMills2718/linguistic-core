@@ -548,6 +548,71 @@ The third is what the village case actually needed. That constraint was
 have caught the error. Reporting that is more useful than either "constraints
 work" or "constraints don't".
 
+## Gaps this design does not currently address
+
+Named because each is load-bearing and absent, not because they are wishes.
+
+**Entity resolution is missing entirely, and it is most of the engineering
+cost.** Every worked example in the source material steps from the string
+"Orion" to the identifier `entity:Orion` without comment. That step decides
+whether a graph merges or fragments, and no ontology fixes it. A canonical
+representation whose whole value is that different phrasings collapse to one
+object cannot leave the question of when two mentions are the same entity
+outside its scope — it is the same question as proposition identity, which this
+document does treat as central.
+
+**There is no representable state for the extractor returning nothing.**
+Confidence, epistemic status and hypothesis sets all presuppose at least one
+hypothesis. Against a measured rate of roughly one call in eight returning zero
+candidates, a sentence that produced nothing is indistinguishable from a
+sentence that changed nothing. That is a hole in the representation, not a
+quality problem.
+
+**Coverage is absent from the evaluation metrics this design inherited.**
+Temporal consistency, multi-hop reasoning, paraphrase invariance, contradiction
+detection, event extraction, planning correctness and hallucination rate are all
+conditional on something having been extracted. A system covering a fifth of a
+corpus perfectly outscores one covering four fifths well. Coverage is precisely
+the number that ended the Wikidata attempt at 47%, recorded above — and it is
+not in the plan that would measure this object's success.
+
+**State modelling primitives the source conversation specifies and this design
+does not carry.** From `~/code/semantic_interlingua_part1.md`, roughly lines
+3400–8400, of which this document harvested almost nothing:
+
+- The unit of state is an **assertion, not a triple**, carrying scenario, valid
+  time, epistemic status, provenance, `derived_from` and `supersedes`. Its
+  epistemic status enum is `observed | asserted | inferred | predicted |
+  hypothetical | assumed | disputed`; the `Provenance` primitive above has none
+  of this.
+- **Quantity is its own primitive**, not an ordinary relation — separating
+  quantity, dimension, unit, measurement and uncertainty, and naming QUDT for
+  units. The pack already ships SUMO's unit *type hierarchy*, so what is missing
+  is a representation for a magnitude with a unit and a dimension.
+- **Process is distinct from event** — things unfolding through time, with a
+  lifecycle state and internal transitions. Employment, negotiation, pregnancy.
+- **Scenario is first-class**, so counterfactuals branch without duplicating the
+  graph.
+- **Inertia is an explicit frame assumption**: state assertions persist until an
+  effect ends or supersedes them, with derived facts exempt. This is the frame
+  problem, and nothing here addresses it.
+- A **causal-link vocabulary** distinguishing `causes` from `enables`,
+  `prevents`, `requires` and `inhibits` — a regulatory approval *enables* a deal
+  closing rather than causing it.
+- **Ontic, epistemic and linguistic as three separate layers** — what exists,
+  what agents believe, what documents said. `Stance` and `Modality` cover the
+  third and part of the second; the first is absent.
+
+**The prioritization argument against building this at all.** The ontology
+platform's own status documents argue the PropBank + FrameNet + SemLink backbone
+proposed in "Proposed architecture" above **already exists at 98.1%
+predicate-to-frame coverage** in the donor repository `onto-canon`, and that the
+gap is not vocabulary breadth but a missing `backbone → pack` compiler, called
+there "the highest-value missing build", with a normative spec already written
+and never implemented. That argument bears directly on this document's
+architecture section and on its "which use case first" question, and this
+document should carry it rather than cite the pull request in passing.
+
 ## The neurosymbolic question
 
 The thesis is that the neural model interprets messy language and the symbolic
@@ -601,9 +666,38 @@ fourteen of its files were recovered from an untracked directory inside another
 repository's stray agent worktree, reachable on one machine and in no version
 control anywhere. Which readout supersedes which is still unestablished.
 
-The design that has never been built is the **loop**: neural proposes uncertain
-hypotheses, symbolic constraints revise them, beliefs update. Current systems
-here are one-directional — extract, validate, drop.
+**The loop is specified, not merely wished for.** `project-meta/vision/analyses/
+NEUROSYMBOLIC_AI_VISION.md` gives six stages, not three: neural interpretation →
+source-grounded proposal → symbolic validation or contradiction → **precise
+diagnostic** → neural repair → **reviewed state transition** → changed context
+for the next cycle. Its governing constraint is that the goal is not a large
+graph but useful prior structure: it should support an operation, expose a
+violation, constrain a transition, or produce evidence that improves the next
+proposal.
+
+That document also carries the evaluation design this section previously said
+was missing — a seven-gate roadmap whose Gate 6 requires an unseen, differently
+worded task, the same model producing the same initial proposal, ordinary
+reconsideration compared against a precise symbolic diagnostic, **a
+corrupted-rule or role-swap negative control**, retained before/after artefacts,
+and a test that the operator transfers without document-specific branches. It
+states a **disproof condition**: if stable symbolic structure does not enable
+transferable operations, diagnostics or revision beyond a well-prompted neural
+baseline, then this vocabulary is reduced to optional normalization metadata
+rather than a mandatory reasoning substrate.
+
+**And it splits the question usefully.** Does the mechanism work correctly —
+does contradiction detection fire on a real contradiction, does retraction
+propagate, does an operator return the right set — is cheap, mechanical and
+answerable now without a corpus. Does it beat neural-only *at the scale where it
+should matter* genuinely requires scale and should be deferred. This document had
+been treating those as one question.
+
+**A working instance already exists in this ecosystem.** `agent_ontology` runs
+this loop over agent specifications rather than documents: an LLM proposes a
+mutation, 23 structural rules validate it, the validator catches that the model
+dropped a required section, and the invalid mutation is rejected. Different
+domain, same mechanism, already running.
 
 ## Licensing
 
