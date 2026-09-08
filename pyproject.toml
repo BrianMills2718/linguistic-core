@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "linguistic-core"
-version = "0.3.2"
+version = "0.3.3"
 description = "SUMO/PropBank/FrameNet-derived predicate vocabulary pack, compiler, and donor-mapping verification tooling"
 readme = "README.md"
 license = "GPL-3.0-or-later"
