@@ -1345,8 +1345,8 @@ taxonomy that does not separate these becomes a worry list.
 
 | ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
 |---|---|---|---|---|---|
-| VF-06 | **Over-collapse** — distinct meanings become one object | **ANTICIPATED**, and the highest-severity class | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | Labelled pairs asserting what must stay separate; over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
-| VF-07 | **Under-collapse** — one meaning becomes several objects | **ANTICIPATED** | Deduplication and contradiction detection both miss; the object fails its founding premise | Same labelled pairs, opposite direction | Declare the mapping relation between them rather than merging the predicates |
+| VF-06 | **Over-collapse** — distinct meanings become one object | **ANTICIPATED**, and the highest-severity class | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | `evaluation/canonicalization/canonicalization_key.jsonl` — 66 pairs, 37 `different-object`, all adjudicated 2026-09-07. Over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
+| VF-07 | **Under-collapse** — one meaning becomes several objects | **ANTICIPATED** | Deduplication and contradiction detection both miss; the object fails its founding premise | Same key, the 29 `same-object` pairs | Declare the mapping relation between them rather than merging the predicates |
 | VF-08 | Breadth raises the collapse failure rate | **ANTICIPATED** | Every added sense distinction is another way two phrasings of one meaning diverge — richness and canonicality pull against each other | Run paraphrase invariance at more than one profile size | If narrow profiles invariance-test better, that is a fact about *use*, not evidence against the object |
 | VF-09 | Roles are frame-specific with no crosswalk | **MEASURED** only 6 of 11,890 role edges are `required` | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
 
@@ -1367,6 +1367,13 @@ taxonomy that does not separate these becomes a worry list.
 | VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
 | VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
 | VF-17 | Entity resolution diverges | **ANTICIPATED** | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
+
+**The instrument for VF-06 and VF-07 now exists.** The answer key was merged on
+2026-09-07 with all thirteen contested pairs adjudicated against the five
+canonicalization rulings above — 66 pairs, 29 `same-object`, 37
+`different-object`, none unresolved. Those two rows stay `ANTICIPATED` because
+nothing has been run against it yet; they move to `MEASURED` on the first scored
+pass, and there is no scorer yet, only the key.
 
 **How to use this.** Two rules keep it from decaying into the prose-with-no-mechanism
 shape that §22 has: every new row arrives with a status and, if `MEASURED`, the
