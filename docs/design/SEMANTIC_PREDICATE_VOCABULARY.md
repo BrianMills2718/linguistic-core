@@ -177,12 +177,33 @@ unavailability: **coverage is not a quality measure.** The two runs agree on onl
 instrument on the 55–61% incompatible rate measured above. Coverage counts
 whether a model emitted a resolvable frame name, not whether it was right.
 
-**2. Test paraphrase invariance.** The core bet, and the cheapest decisive thing
-available: roughly fifty real events, each rendered four ways, extracted, and
-measured for how often all four produce an identical canonical object. A day and
-a few dollars. Report the empty rate alongside it, since a call that returns
-nothing is not agreement. A low number here stops the programme; a high one
-justifies everything else.
+**2. Answered 2026-09-08 — and the answer is two numbers, not one.** 57 of the
+key's 66 pairs scored (`evaluation/canonicalization/`).
+
+**Over-collapse: 1 of 35, 3%.** This is the number that matters, because
+over-collapse *fabricates* — reading "failed to acquire" as "acquired" invents a
+completed deal. Capturing polarity and modality alongside the predicate is what
+holds it down; a version of the scorer that asked only for a predicate measured
+**69%**.
+
+**Under-collapse: 17 of 22 — and it decomposes.** Roughly four are entity-name
+variants, which are outside this object's boundary by the coreference ruling and
+should be scope-excluded rather than scored. Roughly five are identical filler
+values under different role ids. Roughly four are the harness failing to hold its
+own role constraint. **Roughly four are the real finding: the pack's own role
+vocabularies diverge between predicates it declares related.**
+
+**Role alignment is the missing piece, not predicate alignment.** `kill` declares
+killer/victim; `murder` declares cause/instrument/victim. `rise` declares
+theme/distance; `increase` declares item/extent. Declaring that two predicates
+correspond does nothing if nothing says which of their *roles* correspond, and a
+perfect extractor cannot collapse them. This is VF-09 with a consequence
+attached.
+
+*Three iterations of that scorer each found the measurement at fault rather than
+the object — 69% over-collapse, then 82% under-collapse, then 77%. All three are
+recorded in `evaluation/canonicalization/PARAPHRASE_RESULT.md`; citing one
+without the others is citing a harness artifact.*
 
 **3. Run the coverage audit that has been specified and never executed.** The
 eight categories in `world-substrate`'s binding contract, checked against this
@@ -1354,10 +1375,10 @@ taxonomy that does not separate these becomes a worry list.
 
 | ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
 |---|---|---|---|---|---|
-| VF-06 | **Over-collapse** — distinct meanings become one object | **ANTICIPATED**, and the highest-severity class | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | `evaluation/canonicalization/canonicalization_key.jsonl` — 66 pairs, 37 `different-object`, all adjudicated 2026-09-07. Over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
-| VF-07 | **Under-collapse** — one meaning becomes several objects | **ANTICIPATED** | Deduplication and contradiction detection both miss; the object fails its founding premise | Same key, the 29 `same-object` pairs | Declare the mapping relation between them rather than merging the predicates |
+| VF-06 | **Over-collapse** — distinct meanings become one object | **MEASURED** 1/35 = 3% (2026-09-08); 69% when the scorer captured only a predicate, so the control is polarity+modality capture | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | `evaluation/canonicalization/canonicalization_key.jsonl` — 66 pairs, 37 `different-object`, all adjudicated 2026-09-07. Over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
+| VF-07 | **Under-collapse** — one meaning becomes several objects | **MEASURED** 17/22, but ~4 are scope-excluded entity variants, ~5 role-id naming, ~4 harness, ~4 genuine role divergence | Deduplication and contradiction detection both miss; the object fails its founding premise | Same key, the 29 `same-object` pairs | Declare the mapping relation between them rather than merging the predicates |
 | VF-08 | Breadth raises the collapse failure rate | **ANTICIPATED** | Every added sense distinction is another way two phrasings of one meaning diverge — richness and canonicality pull against each other | Run paraphrase invariance at more than one profile size | If narrow profiles invariance-test better, that is a fact about *use*, not evidence against the object |
-| VF-09 | Roles are frame-specific with no crosswalk | **MEASURED** the pack has 38,650 role edges, 2,998 (7.8%) `required` — an earlier revision said "6 of 11,890", which is the *donor* `role_slots` table, not the pack | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
+| VF-09 | Roles are frame-specific with no crosswalk | **MEASURED, and now the leading cause of under-collapse.** `kill` declares killer/victim while `murder` declares cause/instrument/victim; `rise` declares theme/distance while `increase` declares item/extent. Predicate relations are declared, role correspondences are not. (Pack has 38,650 role edges, 2,998 `required`; an earlier revision said "6 of 11,890", which is the *donor* table.) | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
 
 ### Epistemic defects — the object misrepresents its own reliability
 
@@ -1375,7 +1396,7 @@ taxonomy that does not separate these becomes a worry list.
 | VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15 | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
 | VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
 | VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
-| VF-17 | Entity resolution diverges | **ANTICIPATED** | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
+| VF-17 | Entity resolution diverges | **MEASURED** ~4 of 17 under-collapse cases (2026-09-08), exactly as the ruling predicts | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
 
 **The collapse ceiling is bounded by the pack, not the extractor — computed
 2026-09-08 from the key alone, no model calls.** Comparing each pair's expected
@@ -1404,12 +1425,13 @@ file rather than extending `hierarchy_edges.jsonl` because consumers read that
 expecting `subtype_of`, and adding other edge types would silently change what an
 existing file means to an existing reader.
 
-**Both gaps are now closed. `SCHEMA-BLOCKED TOTAL: 0`, down from 18.** The
-remaining three pairs — C08, C09, C12 — are reachable through the modifier roles
-and inflection type in the same candidates directory.
+**Both gaps are now closed. `SCHEMA-BLOCKED TOTAL: 2`, down from 18** — A08 and
+A12, each left honestly unreachable after an audit found the relations bridging
+them were false. C08, C09 and C12 are reachable through the modifier roles and
+inflection type in the same candidates directory.
 
-**A scorer would now measure the extractor rather than the schema**, which was
-the point of doing this first.
+**A scorer now measures the extractor rather than the schema**, which was the
+point of doing this first; step 2 above reports what it found.
 Under-collapse would read as roughly 60% failure on the same-object half when the
 representation simply cannot express the collapse, and three over-collapse cases
 are unwinnable for the same reason. The scorer is still worth building — most of
@@ -1417,12 +1439,9 @@ the key is scoreable — but it must report those 18 pairs as *schema-blocked*
 rather than folding them into an accuracy figure. This is the measurement
 equivalent of the coverage-versus-quality error recorded above.
 
-**The instrument for VF-06 and VF-07 now exists.** The answer key was merged on
-2026-09-07 with all thirteen contested pairs adjudicated against the five
-canonicalization rulings above — 66 pairs, 29 `same-object`, 37
-`different-object`, none unresolved. Those two rows stay `ANTICIPATED` because
-nothing has been run against it yet; they move to `MEASURED` on the first scored
-pass, and there is no scorer yet, only the key.
+**VF-06 and VF-07 moved from `ANTICIPATED` to `MEASURED` on 2026-09-08**, on the
+first scored pass over the merged answer key — 66 pairs, all thirteen contested
+ones adjudicated against the five canonicalization rulings above.
 
 **VF-10 and VF-01 now have durable evidence.** `evaluation/frame_layer/` holds
 the script, the seeded sample, the judged output and the analysis; the

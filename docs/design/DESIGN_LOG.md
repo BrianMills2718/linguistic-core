@@ -64,6 +64,47 @@ since onto-canon6 already treats assertions as first-class and a stance edge
 onto an assertion node would need no new kind. That objection, if right,
 invalidates the effort estimate the disposition question rests on.
 
+## 2026-09-08 — The founding premise is measured; role alignment is the gap
+
+Paraphrase invariance had never been scored. It can be now, and the answer is two
+numbers that must not be averaged.
+
+**Over-collapse 1 of 35, 3%** — the direction that fabricates, and the one worth
+keeping. Capturing polarity and modality alongside the predicate is what controls
+it; a scorer asking only for a predicate measured 69%.
+
+**Under-collapse 17 of 22, and it decomposes.** ~4 entity-name variants, outside
+the object's boundary by the coreference ruling. ~5 identical fillers under
+different role ids. ~4 harness failing its own role constraint. **~4 the real
+finding: the pack's role vocabularies diverge between predicates it declares
+related** — `kill` has killer/victim, `murder` has cause/instrument/victim.
+Declaring that two predicates correspond does nothing if nothing says which of
+their roles do. That is VF-09 with a consequence, and it is the next thing to
+build.
+
+Getting there required closing two schema gaps first, because a scorer run before
+them would have attributed the representation's limits to the extractor.
+Fifteen predicate relations closed the under-collapse gap; eleven modifier roles
+and a verb-inflection value type closed the over-collapse gap. Both are
+candidates, not pack versions — consumers pin versions and neither has earned a
+release.
+
+**Three audits ran against this work and each found something the previous had
+missed.** Two of fifteen authored relations were disqualifying: one related
+resignation to physical motion, the other put a lawsuit in the defendant's slot.
+Three of thirteen `MEASURED` taxonomy rows were wrong, all from relaying
+subagent numbers without re-deriving them. Two of my own checks disagreed and
+exposed a bug in both — each took an arbitrary first element from a multi-valued
+field. A provenance rule now says a row is `MEASURED` only when whoever wrote it
+derived the number from a durable artifact.
+
+Also corrected: PropBank's `ARGM` tags are not in its frame files at all — zero
+occurrences across 3,323 — and live in the annotated corpus as offsets into the
+LDC treebank. The inventory is universal and documented, so declaring it needs no
+instance data; an earlier revision called this a recovery of dropped donor data,
+which it is not. Aspect is not an `ARGM` tag but a field in PropBank's
+five-character inflection encoding.
+
 ## 2026-09-06 — The fact-oriented hypergraph brief, reconciled
 
 `FACT_ORIENTED_HYPERGRAPH_COMPILER_BRIEF.md` had been referenced but never read
