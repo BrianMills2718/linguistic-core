@@ -32,9 +32,14 @@ candidates README now says so. And onto-canon6's `max_predicates_in_prompt`
 narrows the prompt but not the response schema, so the default
 `predicate_variants` mode cannot run against a 5,995-predicate pack at all.
 
-Also recorded: declaring a role without a value type buys representability, not
-a canonical form — the two successful runs disagreed on the negation filler's
-shape (`value_kind="negation"` vs `"boolean"`).
+Also recorded: declaring a role buys representability, not a canonical form.
+The pack has a `role_expected_value_kind` constraint type and **no published
+version uses it even once**. Declaring one for `negation` collapses
+`value_kind` to `boolean` in 3 of 3 successful runs, but `normalized` still
+alternates between JSON `true` and the string `"true"`, so the two extractions
+still differ. The constraint reaches the tag, not the value. The same runs
+returned value fillers carrying a meaningless `entity_type`
+(`lc:sumo_type.BeliefGroup`) that nothing rejected.
 
 Artifacts: `evaluation/consumer_wiring/` — probe, results, full run log, the
 throwaway pack, and the config overlay needed to reproduce.

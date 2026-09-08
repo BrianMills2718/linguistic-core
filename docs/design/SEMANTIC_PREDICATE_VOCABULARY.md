@@ -1799,9 +1799,19 @@ is the first identified cause of it.
 supports nothing finer. Predicate selection is not stable across runs
 (`lc:accrete_accumulate_gain` twice, `lc:acquire_get_obtain` once, for the same
 affirmative sentence) and this probe does not control for it. And declaring the
-role without a value type for it buys representability but not a canonical
-form — one run emitted `value_kind="negation" normalized="not"`, another
-`value_kind="boolean" normalized="true"`.
+role buys representability, not a canonical form.
+
+**Declaring the value kind fixes half of that third point.** The pack has a
+mechanism — a `constraints.jsonl` row of type `role_expected_value_kind` — and
+**no such row exists in any published version**. Adding one (`negation` ->
+`boolean`) and re-running five times collapses `value_kind` to `boolean` in all
+three successful runs. But `normalized` still arrives as a JSON `true` in some
+runs and the string `"true"` in others, so two extractions of the same negated
+sentence remain non-identical. Canonicalizing a polarity value needs a
+normalization rule *downstream* of the value kind, and the pack has no slot for
+one. The same runs also returned value fillers carrying an `entity_type`
+(`lc:sumo_type.BeliefGroup`, `lc:sumo_type.BinaryRelation`) on a filler whose
+`kind` is `value` — a meaningless field nothing rejected.
 
 **Two consumer-side facts it surfaced.** onto-canon6's
 `max_predicates_in_prompt` narrows the prompt but not the response schema, so

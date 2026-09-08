@@ -77,6 +77,37 @@ spuriously.
   type for it buys representability, not a canonical form. Closing that needs a
   `value_types` row and a `role_value_kinds` binding.
 
+## Follow-up: declaring the value kind fixes half of it
+
+The first probe found the negation filler's shape unconstrained — one run
+emitted `value_kind="negation" normalized="not"`, another
+`value_kind="boolean" normalized="true"`. The pack has a mechanism for this:
+a `constraints.jsonl` row of `constraint_type: "role_expected_value_kind"`.
+**No such row exists anywhere in the published pack**, in any version. One was
+added to the throwaway (`negation` -> `boolean`) and the negated sentence run
+five more times (`probe_negation_value_kind.py`).
+
+| | before | after |
+| --- | --- | --- |
+| distinct `value_kind` emitted | `negation`, `boolean` | `boolean` only, 3 of 3 successful runs |
+| distinct `normalized` emitted | `"not"`, `"true"` | `True` (bool) and `"true"` (str) — still two |
+| hard failures | 1 of 3 | 2 of 5 |
+
+**The constraint reaches the tag, not the value.** `value_kind` is now
+canonical; `normalized` still arrives as a JSON boolean in some runs and the
+string `"true"` in others, so two extractions of the same negated sentence
+still produce non-identical objects. Canonicalizing polarity needs a
+normalization rule downstream of the value kind, which the pack has no slot
+for.
+
+**A defect this surfaced.** Value fillers came back carrying an `entity_type`
+— `lc:sumo_type.BeliefGroup` on one run, `lc:sumo_type.BinaryRelation` on
+another — on a filler whose `kind` is `value`, not `entity`. The field is
+meaningless there and nothing rejected it.
+
+The failure-rate difference (1/3 vs 2/5) is one event at these sample sizes and
+should not be read as the constraint making extraction less reliable.
+
 ## Two seam facts this surfaced in onto-canon6
 
 1. **`max_predicates_in_prompt` narrows the prompt but not the response

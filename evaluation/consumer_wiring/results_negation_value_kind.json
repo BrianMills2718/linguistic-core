@@ -1,0 +1,63 @@
+[
+  {
+    "run": 0,
+    "negation_fillers": [
+      [
+        {
+          "kind": "value",
+          "entity_type": "lc:sumo_type.BeliefGroup",
+          "name": "",
+          "entity_id": "",
+          "alias_ids": [],
+          "value_kind": "boolean",
+          "normalized": "true",
+          "raw": "true"
+        }
+      ]
+    ],
+    "error": null
+  },
+  {
+    "run": 1,
+    "negation_fillers": [
+      [
+        {
+          "kind": "value",
+          "alias_ids": [],
+          "value_kind": "boolean",
+          "normalized": true,
+          "raw": "not"
+        }
+      ]
+    ],
+    "error": null
+  },
+  {
+    "run": 2,
+    "negation_fillers": null,
+    "error": "ExtractionError: llm_client text extraction failed: Pydantic validation failed on provider-accepted response: 1 error(s). First: Value error, candidate[0] failed extraction validation: source_meaning_"
+  },
+  {
+    "run": 3,
+    "negation_fillers": [
+      [
+        {
+          "kind": "value",
+          "entity_type": "lc:sumo_type.BinaryRelation",
+          "name": "",
+          "entity_id": "",
+          "alias_ids": [],
+          "value_kind": "boolean",
+          "normalized": true,
+          "raw": "true"
+        }
+      ]
+    ],
+    "error": null
+  },
+  {
+    "run": 4,
+    "negation_fillers": null,
+    "error": "ExtractionError: llm_client text extraction failed: Pydantic validation failed on provider-accepted response: 1 error(s). First: Value error, candidate[0] failed extraction validation: source_meaning_"
+  }
+]
