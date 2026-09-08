@@ -87,5 +87,37 @@ for "Jane left Acme", so with the false edge removed that pair reads
 key's expected predicate for that sentence is the wrong sense, or the two
 predicates genuinely cannot be related — and a false edge should not hide which.
 
-The general limit: fifteen hand-authored judgements, validated for presence and
-never for correctness. One in fifteen was wrong. Treat the others accordingly.
+So the class was swept rather than the instance. `check_relation_role_alignment.py`
+compares the PropBank argument descriptions behind every collapsing relation and
+asks whether the shared arguments denote the same participants — because a
+collapse is only coherent if they do.
+
+**Two of fifteen were disqualifying, not one:**
+
+- `lc:resign_quit_employment` targeted the physical-motion sense of "leave".
+  Retargeted to `lc:quit_leave_job`.
+- `lc:file_seek_claim closeMatch lc:sue_call_to_court` — `file-02` ARG1 is the
+  *claim*, `sue-01` ARG1 is the *defendant*. Collapsing them puts the lawsuit in
+  the defendant's slot. Demoted to `evokes`, which does not license collapse.
+
+Three more carry a recorded ARG2 divergence and stay: `claim`/`say` (party
+claimed for versus hearer), `help`/`aid` (PropBank labels these `benefactive`
+and `benefactor` — recipient versus provider), `sign`/`undertake` (co-signer
+versus any participant). Their ARG0 and ARG1 align, which is what the answer key
+exercises, but **a collapse must not carry ARG2 across**.
+
+**`SCHEMA-BLOCKED TOTAL` is 2** — A08 and A12, both now honestly unreachable
+rather than bridged by a relation that misplaces an argument.
+
+The general limit stands: hand-authored judgements. Two in fifteen were wrong on
+inspection, and the alignment check is a heuristic that flags for review rather
+than a proof.
+
+### A note on how that check is implemented
+
+The first version compared argument descriptions by word overlap and flagged 11
+of 15, almost all falsely — "thing bought" against "thing acquired" is one
+participant, and no amount of stopword tuning fixes that reliably. Deciding
+whether two prose descriptions denote the same role is a question about meaning,
+and this workspace forbids inferring meaning from prose by pattern. The check now
+asks a light model and flags 5, of which 2 were real.
