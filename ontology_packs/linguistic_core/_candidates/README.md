@@ -68,3 +68,24 @@ down from 18 before either candidate slice.
 **Provenance:** `derivation_method: donor_asserted`, `source_verified: false` —
 taken from PropBank's documented annotation scheme, not from its instance data,
 and not independently validated against usage.
+
+## What this check cannot catch
+
+`check_collapse_reachability.py` asks whether *a* collapsing relation exists
+between two predicates. It does not ask whether that relation is **true**.
+
+An audit on 2026-09-08 found one of the fifteen was not:
+`lc:resign_quit_employment narrowerThan lc:leave_move_away` asserted that
+resigning is a narrower kind of *physically moving away* — `leave_move_away` is
+glossed "move away from", and `lc:quit_leave_job` ("leave your job") existed all
+along. The check passed on it, because a relation was present.
+
+Corrected to target `lc:quit_leave_job`, which is true. The consequence is
+honest rather than convenient: answer-key pair A08 names `lc:leave_move_away`
+for "Jane left Acme", so with the false edge removed that pair reads
+`same_UNREACHABLE` again. **`SCHEMA-BLOCKED TOTAL` is 1, not 0.** Either the
+key's expected predicate for that sentence is the wrong sense, or the two
+predicates genuinely cannot be related — and a false edge should not hide which.
+
+The general limit: fifteen hand-authored judgements, validated for presence and
+never for correctness. One in fifteen was wrong. Treat the others accordingly.

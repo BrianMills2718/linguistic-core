@@ -99,6 +99,10 @@ def main() -> None:
     print(f"\nSCHEMA-BLOCKED TOTAL: {blocked}  "
           f"(under {len(buckets['same_UNREACHABLE'])}, over {len(buckets['diff_UNREACHABLE'])})")
     print("These must be reported separately from any extractor accuracy figure.")
+    print("\nRead the buckets as REACHABLE, not as CORRECT. This checks that the pack")
+    print("declares structure a correct extractor could use; nothing here has extracted")
+    print("anything, and it does not validate that a declared relation is TRUE -- one")
+    print("authored relation was found false on 2026-09-08 while passing this check.")
 
 
 if __name__ == "__main__":
