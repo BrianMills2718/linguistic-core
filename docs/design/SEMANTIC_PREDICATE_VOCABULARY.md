@@ -101,7 +101,17 @@ most work — not by what is most interesting.
    something a neural pass does poorly — they are things it does not do.
    Error-catching is partially answered and conditional (yes for evidence
    grounding, no for recommendation binding); the operations half is untested
-   because nothing here has ever held enough reviewed structure to operate on.
+   *here* — but **executable implementations of all four exist** in
+   `~/code/requirement-to-runtime-semantic-compiler`: truth maintenance with
+   retraction propagation, four WTL planners, causal intervention engines and
+   scenario branching, with real scaling measurements (retraction under 1 ms and
+   `stale_inferred_assertions_after_retraction: 0` from 100 to 50,000
+   assertions). **Caveat that changes how to cite it:** that repo's *headline
+   benchmark* numbers are not model inference. Verified by opening
+   `09_evaluation/run_v0_3_same_session_materialization.py` — every "model
+   output" comes from a hardcoded case-index table (`n=int(cid[-2:])`) and the
+   file contains no network call or client import. Its deterministic substrate
+   measurements are real; its accuracy claims are not yet evidence.
 
 ### The order
 
@@ -448,6 +458,16 @@ n-ary assertion-and-role operator. Open in the Inside Success graph-maintenance
 methodology too (§24.12), and the exact seam this representation sits on.
 
 ### The mapping relation vocabulary
+
+> **This was derived here on 2026-09-07 and already existed.**
+> `requirement-to-runtime-semantic-compiler/15_lexical_grounding/GROUNDING_SCHEMA_V1_0.json:69-82`
+> is a frozen JSON Schema whose relation enum carries eight of the nine below
+> plus `eventSemanticsContributes`, `nominalizes` and `crosswalkEvidence`; only
+> `incompatibleWith` is missing. Its `LEXICAL_GROUNDING_SPEC_V1_0.md:34` carries
+> the same `acquire` worked example, and `ACQUISITION_CROSSWALK_V1_0.yaml` is a
+> 432-line implementation of it. Both derivations come from the same source
+> conversation — one source harvested twice, not independent corroboration.
+
 
 A mapping is not an equality. The source design specifies nine relations, for
 the stated reason that anything less "destroys distinctions in the source
@@ -807,6 +827,98 @@ the premise the whole design rests on. It can break in five ways, none exotic:
   phrase; NomBank was the resource for those and it is dropped on licensing, so
   nothing covers this case.
 
+### Settled 2026-09-07: what this object discards, and what it does not
+
+Brian's answers to the five axes the answer key surfaced. These convert the
+thirteen contested pairs and are decisions, not proposals.
+
+**1. Coreference is not this object's job, and the question was badly posed.**
+Work divides into pre-processing, processing and post-processing. Coreference is
+a *stage*, not a property of a representation — asking whether "the object does
+coreferencing" is a category error. The IR consumes resolved mentions. This axis
+is closed and should not have been opened.
+
+**2. An event and its resulting state are not the same object — but should be
+linked.** "Completed its acquisition of Beta" and "acquired Beta" are distinct
+objects with an association between them, not one collapsed object. And
+**"agreed to acquire" must never collapse into "acquired"** — that is the
+pending-deal error this document already names as the flagship case.
+
+*This is off-the-shelf, and it was already in the donor.* **PropBank annotates
+modality and negation natively** as the modifier roles `ARGM-MOD` and `ARGM-NEG`.
+They are not in this pack because the import dropped them: the donor database's
+`role_slots` carries `ARG0` through `ARG5` and **zero `ARGM` rows**, and none of
+the pack's 908 role IDs is modal or negational. This is a recovery, not a build.
+
+Other established options rather than authoring one: **FactBank** (event
+factuality), **ISO-TimeML** (an ISO standard covering event modality),
+**UMR/AMR** (modal strength and polarity), Searle's speech-act taxonomy, and
+FrameNet's own Statement and Reasoning frames — already a donor here. The Inside
+Success graph-maintenance methodology specifies modality at `§516`/`§527`/`§2120`
+but records at `§663` that no first-class modality field exists in its baseline
+either, so it is a second statement of the requirement rather than a source.
+
+**3. Converse predicates are one relation, handled by inference, not by
+collapsing.** `owl:inverseOf` is the standard mechanism and SUMO already carries
+the concept — `lc:inverse` is in the pack, with SUMO's own definition ("one
+BinaryRelation is the inverse of another if they are equivalent when their
+arguments are swapped"). Buy/sell and lend/borrow stay distinct predicates with a
+declared inverse relation between them.
+
+**The gap is in the pack format, not the theory.** `hierarchy_edges.jsonl`
+carries exactly one `edge_type` across all 1,774 edges: `subtype_of`. There is no
+way to state that two predicates are inverses. That is a concrete, bounded
+schema addition.
+
+**4. "Acme sued Beta" and "Acme filed a lawsuit against Beta" are the same
+object, and the predicate is `sue`.** An earlier revision of this document called
+this "currently impossible" because the pack has no nominal predicates. **That
+was wrong.** `lc:sue_call_to_court` exists. In a light-verb construction the noun
+is the *argument*, not the predicate — "filed a lawsuit" resolves to the verb
+sense, so the missing-nominals gap does not bite here. It still bites where a
+nominalization is the whole reference ("the acquisition closed Tuesday"), which
+is a narrower problem than previously recorded.
+
+**5. Take the nearest predicate; record the difference as prose annotation.**
+For the six entailment pairs — acquired/bought, killed/murdered, said/claimed,
+said/announced, gave/donated, left/resigned — select the closest available
+predicate and carry the residue as an annotation rather than discarding it or
+forcing a new predicate. This keeps the canonical object stable while preserving
+what the paraphrase added, and it degrades gracefully: an annotation nobody reads
+costs nothing, whereas a discarded distinction cannot be recovered.
+
+**A pack defect this exposes, and its answer is not a judgement call.**
+`lc:kill_cause_to_die` and `lc:murder_cause_to_die` carry the **identical** gloss
+"cause to die", so a selector reading descriptions cannot tell which is nearer
+and will sometimes put `murder` on a plain "killed" — adding an
+unlawfulness-and-intent claim the text never made, which is the fabrication
+direction.
+
+Either consolidate such pairs or distinguish them, and **the data decides**:
+across all **332** duplicate-description groups, covering 907 predicates, every
+single one maps to *different* PropBank rolesets. Zero share one. `kill-01` and
+`murder-01` are separate rolesets, so PropBank's annotators already ruled these
+distinct senses. **The answer is uniformly "distinguish"; there is no
+consolidation case in the pack.** The predicate identifiers already carry the
+distinction — only the human-readable field collapsed.
+
+### Three defects, one cause: the import kept less than the source had
+
+These were found separately and share a mechanism, so they should be fixed in one
+pass rather than three.
+
+| what is wrong | what the source has | consequence |
+|---|---|---|
+| Descriptions average 18 characters and 332 groups are duplicated across 907 predicates | PropBank roleset data far richer than the short gloss | a selector cannot distinguish `kill` from `murder`; almost certainly the cause of the frame failure below |
+| No modality or negation anywhere — 908 role IDs, none modal | PropBank's `ARGM-MOD` and `ARGM-NEG` | "did not acquire", "may acquire" and "acquired" produce identical structures |
+| Frame mappings 55–61% `incompatibleWith` | FrameNet definitions, and PropBank sense numbers | a model asked to frame `lc:donate_give` from the gloss "give" has nothing to work with |
+
+**None of these is a modelling problem and none needs a better model.** All three
+are the same act — reading the donor shallowly — and all three are repaired by
+reading it properly. That also makes the third cheaper than it looked: fix the
+descriptions first and the frame regeneration gets an adequate input for the
+first time.
+
 ### Canonicalization is a choice, not a property
 
 "Different phrasings of one meaning get one representation" is not well formed as
@@ -954,8 +1066,22 @@ corpus perfectly outscores one covering four fifths well. Coverage is precisely
 the number that ended the Wikidata attempt at 47%, recorded above — and it is
 not in the plan that would measure this object's success.
 
-**State modelling primitives the source conversation specifies and this design
-does not carry.** From `~/code/requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`, roughly lines
+**State modelling primitives — specified in the source conversation and *already
+implemented* one directory over.** Checked 2026-09-07 against
+`~/code/requirement-to-runtime-semantic-compiler` (a local repository —
+registered in `PROJECT_GRAPH.json` on 2026-09-07, *after* the consolidation that
+missed it — imported wholesale 2026-09-07 from a Windows
+checkpoint and drawing on the *same* 10,012-line source conversation). **Six of
+the seven below exist there as frozen schemas and SQL, not sketches** —
+`02_world_model/WORLD_STATE_SCHEMA.md` covers six in 39 lines, and
+`16_temporal_world_model/TEMPORAL_SQL_SCHEMA_V1_0.sql:56` is a real
+`CREATE TABLE quantity_assertions`. Inertia is the sharpest case: that repo's
+`03_wtl/WTL_SPEC.md:23-25` states the persistence rule *and* the derived-facts
+exemption this document names as unaddressed. Only the causal-link vocabulary
+and QUDT are genuinely absent on both sides.
+
+Listed here as requirements rather than deleted, because this vocabulary must
+still be able to express them — but **do not re-derive them a third time.** From `~/code/requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`, roughly lines
 3400–8400, of which this document harvested almost nothing:
 
 - The unit of state is an **assertion, not a triple**, carrying scenario, valid
@@ -1195,6 +1321,59 @@ that was wrong in this review was wrong for exactly this reason: NomBank's two
 behind a page whose linked license file covers VerbNet only. For SemLink
 specifically the cheapest real answer is an email to the Colorado group.
 
+## Failure modes, prevention, and recovery
+
+Modelled on the Inside Success graph-maintenance methodology's §22, which does
+this for a knowledge graph. This one is for **the vocabulary object itself**.
+
+**Status column is the point.** `MEASURED` means a number exists and is cited
+here; `OBSERVED` means it was seen at least once but not quantified;
+`ANTICIPATED` means it follows from the design and has not been looked for. A
+taxonomy that does not separate these becomes a worry list.
+
+### Content defects — the object says something wrong
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-01 | Frame mapping asserts an unrelated frame | **MEASURED** 55–61% `incompatibleWith`, 14% exact (n=100) | Anything reasoning over frames inherits a majority-wrong layer; coverage figures overstate usable coverage by more than half | Sample and judge against full FrameNet definitions, classified by relation not right/wrong; only `incompatibleWith` is unambiguous failure | Regenerate with definitions and sense numbers in prompt; do not verify — checking 2,263 rows that are ~58% wrong costs more than redoing them |
+| VF-02 | Two predicates share an identical description | **MEASURED** 332 groups over 907 predicates | A selector cannot tell `kill` from `murder` and will sometimes add an unlawfulness claim the text never made | Group by description; any group larger than one is a defect | Distinguish, never consolidate — all 332 groups map to *different* PropBank rolesets, so upstream already ruled them distinct |
+| VF-03 | Donor content silently dropped at import | **MEASURED** 0 `ARGM` rows; `value_types.jsonl` 0 bytes in all versions | No modality, negation or aspect: "did not acquire", "may acquire" and "acquired" produce identical structures | Diff the donor's field inventory against the pack's on every import | Recover `ARGM-MOD`/`ARGM-NEG` from PropBank; they were never unavailable |
+| VF-04 | A relation the theory needs is inexpressible in the format | **MEASURED** `hierarchy_edges` has one `edge_type` across 1,774 edges | Inverse pairs (buy/sell, lend/borrow) cannot be declared, so converse phrasings stay unrelated | Enumerate the relation kinds the design commits to, then grep the schema for each | Add the edge type; SUMO already supplies the concept as `lc:inverse` |
+| VF-05 | Nominalization has no predicate | **OBSERVED** "acquisition", "merger", "lawsuit" return zero | Noun-phrase references to events are unrepresentable where the noun *is* the reference | Probe the pack with nominal forms of its top predicates | Narrower than it looks — light-verb cases resolve to the verb sense; only whole-reference nominals bite. NomBank is unlicensed, so this needs another source |
+
+### Canonicalization defects — the object collapses wrongly
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-06 | **Over-collapse** — distinct meanings become one object | **ANTICIPATED**, and the highest-severity class | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | Labelled pairs asserting what must stay separate; over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
+| VF-07 | **Under-collapse** — one meaning becomes several objects | **ANTICIPATED** | Deduplication and contradiction detection both miss; the object fails its founding premise | Same labelled pairs, opposite direction | Declare the mapping relation between them rather than merging the predicates |
+| VF-08 | Breadth raises the collapse failure rate | **ANTICIPATED** | Every added sense distinction is another way two phrasings of one meaning diverge — richness and canonicality pull against each other | Run paraphrase invariance at more than one profile size | If narrow profiles invariance-test better, that is a fact about *use*, not evidence against the object |
+| VF-09 | Roles are frame-specific with no crosswalk | **MEASURED** only 6 of 11,890 role edges are `required` | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
+
+### Epistemic defects — the object misrepresents its own reliability
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-10 | A confidence score uncorrelated with precision | **MEASURED** Spearman ρ = +0.11; 55% incompatible at confidence 1.0; `exactMatch` rows average *lower* confidence than `incompatibleWith` | A consumer thresholds on it and the selection gets worse | Rank-correlate the score against a judged sample before shipping it | Drop the column — its presence implies a calibration nobody established |
+| VF-11 | One flag conflates unverified-donor with unverified-model | **MEASURED** `source_verified: false` on both mechanical and model-generated rows | A 61%-wrong layer sat indistinguishable from 58,000 sound rows for months | Surface `derivation_method` at the same prominence as verification status | The values already exist in the data; expose them as a trust signal |
+| VF-12 | A coverage figure read as a quality figure | **MEASURED** 98.11% coverage against 55–61% incompatible; two runs agree on 59.3% of shared assignments | Six months of planning built on a number that counted *resolvable* frame names, not correct ones | Never publish coverage without an accuracy figure beside it | State both, or state neither |
+| VF-13 | A measurement outlives its artifact as prose | **MEASURED** the 98.1% figure survived its deleted database by six months and propagated into three documents | Planning proceeds on a claim nobody can re-check | Do not gitignore a generated artifact unless its generator is deterministic, its model pinned, and its rebuild covers every phase | Recover or re-measure; never re-cite |
+
+### Pipeline defects — the object is fine, its use is not
+
+| ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
+|---|---|---|---|---|---|
+| VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15 | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
+| VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
+| VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
+| VF-17 | Entity resolution diverges | **ANTICIPATED** | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
+
+**How to use this.** Two rules keep it from decaying into the prose-with-no-mechanism
+shape that §22 has: every new row arrives with a status and, if `MEASURED`, the
+command or artifact that produced the number; and a row moves from `ANTICIPATED`
+only when someone actually looks. Seventeen rows and thirteen measured is the
+state on 2026-09-07.
+
 ## Open questions
 - **One integrated artifact, or federated theories with mappings as claims?**
   This design assumes a single merged object. Semantic Foundry
@@ -1268,6 +1447,26 @@ specifically the cheapest real answer is an email to the Colorado group.
   commit with a real notice. Neither is large; both are outstanding.
 
 ---
+
+## The sibling project, and why it is not a competitor
+
+`~/code/requirement-to-runtime-semantic-compiler` (GitHub `brianmills-spec`) is
+**complementary, and each project names the other's product as its own gap.**
+
+It has the world model, runtime and transition language this document lacks —
+15,702 lines of Python, a temporal store, truth maintenance, planners. Its
+canonical vocabulary is **75 hand-authored business terms** and it ships no bulk
+lexical data; this object is 4,669 predicates with no world model. Its own review
+asks whether canonical semantics can stay grounded in expert-built
+WordNet/PropBank/FrameNet resources and answers "current evidence is one rigorous
+AcquisitionEvent exemplar, not broad coverage" — which is this object's product.
+It also explicitly declines to build one: *"Do not attempt a full WordNet +
+FrameNet + PropBank + VerbNet + SUMO/DOLCE/BFO merge."*
+
+Neither supersedes the other. What is **not** written down anywhere is whether it
+should consume this pack or stay self-contained — no dependency is declared in
+either direction, and the only place the connection exists is a derived vision
+wiki page.
 
 # Related work, and where the evidence lives
 
