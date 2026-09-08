@@ -32,6 +32,23 @@ def load_relations() -> dict[frozenset[str], str]:
     return rels
 
 
+def _modifier_roles_declared() -> bool:
+    """True when the pack declares the modifier roles and inflection type that
+    negation, modality and aspect require. Absence is reported, never silently
+    treated as a pass."""
+    mods = glob.glob(str(ROOT / "ontology_packs/linguistic_core/*/modifier_role_types.jsonl"))
+    vals = glob.glob(str(ROOT / "ontology_packs/linguistic_core/*/value_types.jsonl"))
+    labels = set()
+    for f in mods:
+        for line in open(f, encoding="utf-8"):
+            labels.add(json.loads(line).get("propbank_label"))
+    has_infl = any(
+        json.loads(line).get("value_type_id") == "lc.value.verb_inflection"
+        for f in vals for line in open(f, encoding="utf-8") if line.strip()
+    )
+    return {"ARGM-MOD", "ARGM-NEG"} <= labels and has_infl
+
+
 def preds(row: dict, side: str) -> tuple[str, ...]:
     v = (row.get("expected_predicates") or {}).get(side)
     return tuple(sorted(v)) if isinstance(v, list) else ()
@@ -43,7 +60,9 @@ def main() -> None:
     buckets: dict[str, list[str]] = {k: [] for k in
         ("same_via_identical_predicate", "same_via_declared_relation",
          "same_UNREACHABLE", "diff_via_distinct_predicate",
-         "diff_needs_roles", "diff_UNREACHABLE", "no_expected_predicates")}
+         "diff_needs_roles", "diff_via_modifier", "diff_UNREACHABLE",
+         "no_expected_predicates")}
+    has_modifiers = _modifier_roles_declared()
 
     for r in rows:
         a, b = preds(r, "a"), preds(r, "b")
@@ -61,7 +80,9 @@ def main() -> None:
             if a != b:
                 buckets["diff_via_distinct_predicate"].append(pid)
             elif r["failure_mode"] == "granularity":
-                buckets["diff_UNREACHABLE"].append(pid)   # needs modality/negation/aspect
+                # negation/modality/aspect: reachable once the pack declares
+                # modifier roles and a verb-inflection value type
+                (buckets["diff_via_modifier"] if has_modifiers else buckets["diff_UNREACHABLE"]).append(pid)
             else:
                 buckets["diff_needs_roles"].append(pid)
 
@@ -70,7 +91,7 @@ def main() -> None:
     for k in ("same_via_identical_predicate", "same_via_declared_relation", "same_UNREACHABLE"):
         print(f"  {k:<32} {len(buckets[k]):3d}  {' '.join(buckets[k])}")
     print("\nOVER-COLLAPSE side (key says different-object):")
-    for k in ("diff_via_distinct_predicate", "diff_needs_roles", "diff_UNREACHABLE"):
+    for k in ("diff_via_distinct_predicate", "diff_needs_roles", "diff_via_modifier", "diff_UNREACHABLE"):
         print(f"  {k:<32} {len(buckets[k]):3d}  {' '.join(buckets[k])}")
     if buckets["no_expected_predicates"]:
         print(f"\n  no expected predicates recorded: {len(buckets['no_expected_predicates'])}")

@@ -844,11 +844,20 @@ objects with an association between them, not one collapsed object. And
 **"agreed to acquire" must never collapse into "acquired"** — that is the
 pending-deal error this document already names as the flagship case.
 
-*This is off-the-shelf, and it was already in the donor.* **PropBank annotates
-modality and negation natively** as the modifier roles `ARGM-MOD` and `ARGM-NEG`.
-They are not in this pack because the import dropped them: the donor database's
-`role_slots` carries `ARG0` through `ARG5` and **zero `ARGM` rows**, and none of
-the pack's 908 role IDs is modal or negational. This is a recovery, not a build.
+*This is off-the-shelf, but not where an earlier revision of this document said.*
+It claimed PropBank's `ARGM-MOD`/`ARGM-NEG` were donor data the import dropped.
+**`ARGM` appears zero times across PropBank's 3,323 frame files** — there was
+nothing there to drop. The annotations live in `prop.txt` (112,917 propositions,
+`ARGM-MOD` 11,318 times, `ARGM-NEG` 3,995) as **token offsets into the
+LDC-licensed WSJ treebank** — the same structure that removed NomBank, so the
+instances are unusable here.
+
+What *is* usable is the **tag inventory**, which is universal and documented in
+PropBank's README: these modifiers apply to any predicate, so declaring them
+needs no instance data and no licence. And **aspect is not an `ARGM` tag** — it
+sits in a five-character inflection field (form, tense, aspect, voice, person),
+so "was acquiring" is `aspect=o`, not a modifier role. Both are declared in
+`ontology_packs/linguistic_core/_candidates/`.
 
 Other established options rather than authoring one: **FactBank** (event
 factuality), **ISO-TimeML** (an ISO standard covering event modality),
@@ -1395,12 +1404,12 @@ file rather than extending `hierarchy_edges.jsonl` because consumers read that
 expecting `subtype_of`, and adding other edge types would silently change what an
 existing file means to an existing reader.
 
-**Three pairs remain schema-blocked, all on the over-collapse side** — C08, C09
-and C12, "did not acquire", "may acquire" and "was acquiring" against
-"acquired". Those need the negation and modality that the import dropped
-(VF-03), and no relation vocabulary can substitute.
+**Both gaps are now closed. `SCHEMA-BLOCKED TOTAL: 0`, down from 18.** The
+remaining three pairs — C08, C09, C12 — are reachable through the modifier roles
+and inflection type in the same candidates directory.
 
-**So a scorer run today would still attribute one schema gap to the extractor.**
+**A scorer would now measure the extractor rather than the schema**, which was
+the point of doing this first.
 Under-collapse would read as roughly 60% failure on the same-object half when the
 representation simply cannot express the collapse, and three over-collapse cases
 are unwinnable for the same reason. The scorer is still worth building — most of
