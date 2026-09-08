@@ -13,15 +13,16 @@ governed-assertion middleware and was split into its own repository (see
 and Plan #205 in onto-canon6) so it could be published, licensed, and
 released independently of that platform.
 
-**Part of a wider research cluster.** This repo is the vocabulary itself in a
-broader cluster of repos exploring canonical semantic representation and
-capability reuse for AI-generated software (`world-substrate`, `factgraph`,
-`hypergraph-schema-ir`, `semantic-foundry`,
-`requirement-to-runtime-semantic-compiler`, the capability-architecture repos,
-and others). For current state, open cross-repo decisions, and how these
-repos relate, see the baseline synthesis page in
-[`BrianMills2718/vision`](https://github.com/BrianMills2718/vision):
-[`wiki/synthesis/ontology-semantic-cluster-baseline-2026-09-07.md`](https://github.com/BrianMills2718/vision/blob/main/wiki/synthesis/ontology-semantic-cluster-baseline-2026-09-07.md).
+**Cross-repo role.** This repository owns the stable, publishable predicate/relation
+vocabulary and its governed source mappings. It does **not** own application
+workflow semantics, runtime effects, provider discovery, or live world-state
+truth. Linguistic Core and Semantic Foundry now share the same core preservation
+principle — a canonical layer with versioned source mappings, not one giant
+collapsed source ontology — while retaining different responsibilities.
+
+For the current authority matrix, lineage dispositions, empirical gates, and
+cleanup policy, see the [current ontology/semantic cluster architecture](https://github.com/BrianMills2718/vision/blob/main/wiki/synthesis/ontology-semantic-cluster-current-architecture-2026-09-07.md).
+The earlier dated baseline is historical.
 
 ## Start here
 
