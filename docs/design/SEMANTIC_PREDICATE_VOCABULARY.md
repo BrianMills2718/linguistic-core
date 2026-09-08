@@ -211,6 +211,21 @@ something:**
   agreement to acquire" fill genuinely disjoint frames (`speaker`/`undertaking`
   against `signatory`/`agreement`), and "an agreement" is not "acquire Beta".
 
+**A key review on 2026-09-08 found the key itself is a suspect, and it is.** Of
+the five stable failures, **two are probably mislabelled**: "cut 400 jobs" and
+"reduced headcount by 400" do not share fillers (*jobs* is not *headcount*), and
+"agreed to acquire" and "signed an agreement to acquire" fill disjoint frames. A
+third, the acquired/bought archetype, is a contested judgement rather than a
+fact. All three are now marked `key_review: contested` in the key so they cannot
+be read as ground truth. **The object's genuine stable failure count is closer to
+two than five.**
+
+**And 7 of the 66 pairs test something the object provably cannot do.** The whole
+nominalization series — "Beta's acquisition by Acme", "The merger of Acme and
+Beta" — is silently unscored because the pack has no nominal predicates at all.
+That is the NomBank gap, and it should be reported as a known-unrepresentable
+class rather than dropped from the denominator.
+
 **So the vocabulary work holds.** Predicate relations, derived role
 correspondences, symmetric role pairs and modifier roles are each doing their
 job; what remains is extractor slot-discipline and two arguable labels. **The
