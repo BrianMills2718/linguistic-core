@@ -4,6 +4,21 @@ Content proposed for the pack and **not yet released**. A directory here is
 deliberately not a version number: `onto-canon6` and other consumers pin pack
 versions, and publishing `0.4.0` would assert a release this has not earned.
 
+## Three of these shipped on 2026-09-08 as `0.3.3`
+
+`predicate_relations.jsonl`, `role_correspondences.jsonl` and
+`symmetric_role_pairs.jsonl` are **released** in
+`../0.3.3/`, unchanged. They stayed here as long as they did for a
+concrete reason: onto-canon6's pack `content` block was a closed nine-key list
+and silently ignored any other key, so a released pack carrying them would have
+been a release nothing could read. That contract now has three optional
+sections (onto-canon6 PR #375, `docs/plans/0214_optional_pack_relation_sections.md`),
+and all 84 rows load and validate against the full 5,995-predicate closure.
+
+The two files still staged here are `modifier_role_types.jsonl` and
+`value_types.jsonl`, whose disposition is described below and is not yet
+settled.
+
 ## `predicate_relations.jsonl`
 
 Fifteen hand-authored predicate-to-predicate relations, drawn from the nine-term

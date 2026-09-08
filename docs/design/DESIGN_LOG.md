@@ -5,6 +5,39 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-08 — The relation layer ships as 0.3.3; the consumer contract was the blocker
+
+The 16 predicate relations, 51 role correspondences and 17 symmetric role pairs
+sat in `_candidates/` because publishing them would have been a release nothing
+could read: onto-canon6's pack `content` block was a **closed nine-key list**
+whose resolver iterated only those keys, so any other key a manifest declared
+was silently ignored — file never opened, nothing raised.
+
+That contract now carries three optional sections (onto-canon6 PR #375, plan
+0214). Optional, not required, so every already-published pack loads unchanged;
+declared-but-missing is an error, so the silent-ignore failure cannot recur.
+Three authoring rules run over the composed closure at load: the relation must
+be one of the nine known names, nothing may relate to itself, and every
+predicate and role id must exist in the effective vocabulary.
+
+Rejected: reusing `hierarchy_edges` with new `edge_type` values, which needed
+no code change at all — `_load_type_parents` filters on `subtype_of`, so other
+edge types are ignored by type inference. Rejected because that section's
+validation *also* only inspects `subtype_of` rows, so relations placed there
+would have been referentially unchecked, and correspondences and symmetry do
+not fit a `(child, parent, type)` triple. Explicit sections fail visibly.
+
+`0.3.3` is released. All 84 rows load and validate against the full
+5,995-predicate / 908-role closure from the pack's real published location.
+The validation is not vacuous: repointing one relation at an undefined
+predicate fails the same load.
+
+This closes VF-04 and supersedes the design's claim that "there are no
+predicate-to-predicate relation edges at all". Reachability is not correctness
+— two of the sixteen relations were false and were corrected before release,
+and whether the 51 correspondences reduce under-collapse is still unmeasured.
+Nothing yet *reasons* over these rows; they load, validate and compose.
+
 ## 2026-09-08 — The vocabulary wired to a consumer; a stated consequence disproven
 
 First measurement of whether changing the pack changes what a running system
