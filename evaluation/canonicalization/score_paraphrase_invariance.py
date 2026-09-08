@@ -107,11 +107,21 @@ def load_role_correspondences() -> dict[tuple[str, str], dict[str, str]]:
     return out
 
 
+def _drop_empty(d: dict) -> dict:
+    """A declared-but-unfilled optional role is absence, not a difference.
+
+    One side emitting {'lc.role.price': ''} where the other omits it is a
+    completeness difference; scoring it as disagreement conflated roughly four
+    harness artifacts with real extraction errors on 2026-09-08."""
+    return {k: v for k, v in d.items() if str(v).strip() not in ("", "unknown", "none", "n/a")}
+
+
 def _participants_match(pa: dict, pb: dict, a_pred: str, b_pred: str,
                         corr: dict[tuple[str, str], dict[str, str]]) -> bool:
     """Same participants, allowing declared role correspondences to bridge
     differently-named roles. Compares filler values, since a correspondence is
     about which slot means what, not what it is called."""
+    pa, pb = _drop_empty(pa), _drop_empty(pb)
     if pa == pb:
         return True
     m = corr.get((a_pred, b_pred)) or {v: k for k, v in (corr.get((b_pred, a_pred)) or {}).items()}
@@ -188,7 +198,8 @@ def main() -> None:
     rng = random.Random(SEED)
     pool = sorted(pred)
 
-    scoreable, excluded = [], {"no_expected_predicates": [], "schema_blocked": []}
+    scoreable, excluded = [], {"no_expected_predicates": [], "schema_blocked": [],
+                               "out_of_scope_coreference": []}
     for r in rows:
         ep = r.get("expected_predicates") or {}
         a, b = ep.get("a"), ep.get("b")
@@ -197,12 +208,18 @@ def main() -> None:
         if r["label"] == "same-object" and sorted(a) != sorted(b) \
            and not any(rels.get(frozenset(p)) in COLLAPSING for p in _pairings(a, b)):
             excluded["schema_blocked"].append(r["id"]); continue
+        if r["failure_mode"] == "entity_resolution":
+            # Brian's 2026-09-07 ruling puts coreference outside this object's
+            # boundary: the IR consumes resolved mentions. Scoring these would
+            # measure the resolver, so they are excluded and reported, not hidden.
+            excluded["out_of_scope_coreference"].append(r["id"]); continue
         scoreable.append(r)
 
     print(f"key {len(rows)} pairs | scoreable {len(scoreable)} | "
           f"excluded {sum(len(v) for v in excluded.values())} "
           f"(no expected predicates {len(excluded['no_expected_predicates'])}, "
-          f"schema-blocked {len(excluded['schema_blocked'])})")
+          f"schema-blocked {len(excluded['schema_blocked'])}, "
+          f"out-of-scope coreference {len(excluded['out_of_scope_coreference'])})")
     if args.dry_run:
         print("dry run: no calls made")
         return

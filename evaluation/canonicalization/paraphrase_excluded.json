@@ -11,5 +11,17 @@
  "schema_blocked": [
   "A08",
   "A12"
+ ],
+ "out_of_scope_coreference": [
+  "D01",
+  "D02",
+  "D03",
+  "D04",
+  "D05",
+  "D06",
+  "D07",
+  "D08",
+  "D09",
+  "D10"
  ]
 }

@@ -177,42 +177,48 @@ unavailability: **coverage is not a quality measure.** The two runs agree on onl
 instrument on the 55–61% incompatible rate measured above. Coverage counts
 whether a model emitted a resolvable frame name, not whether it was right.
 
-**2. Answered 2026-09-08. Over-collapse is eliminated; under-collapse is mostly
-measurement, not the object.** 54 of the key's 66 pairs scored
-(`evaluation/canonicalization/`).
+**2. Answered 2026-09-08. Over-collapse is eliminated; under-collapse is 7 cases
+and every one is identified.** 47 of 66 pairs scored, after excluding 7 with no
+expected predicates, 2 schema-blocked, and 10 entity-name variants that the
+coreference ruling puts outside this object's boundary.
 
-**Over-collapse: 0 of 32.** The direction that *fabricates* — reading "failed to
-acquire" as "acquired" — does not occur once the canonical object carries
-polarity and modality alongside the predicate. A version of the scorer that
-asked only for a predicate measured **69%**. That is the reusable finding: the
-control on fabrication is stance capture, not a better model.
+**Over-collapse: 0 of 28.** The direction that *fabricates* does not occur once
+the canonical object carries polarity and modality alongside the predicate. A
+version of the scorer asking only for a predicate measured **69%**. The control
+on fabrication is stance capture, not a better model — that is the reusable
+finding, and it is the one the design most needed.
 
-**Under-collapse: 15 of 22, and it decomposes.** Six are entity-name variants,
-which the coreference ruling puts outside this object's boundary and which should
-be scope-excluded rather than scored. Roughly four are a comparison artifact —
-one side emits a declared-but-empty optional role (`'lc.role.price': ''`) and the
-other omits it, which is a completeness difference, not a disagreement. The
-genuine extraction errors are few and specific: `acquire`'s agent placed in
-`beneficiary` when the pack declares `recipient`, and a passive ("Beta was
-acquired by Acme") assigned inverted. **The object's premise is not failing at
-68%; the harness is.**
+**Under-collapse: 7 of 16, read individually rather than as a rate:**
 
-**What the object still lacks, and it is now derived rather than argued.**
-Declaring that `buy` and `acquire` correspond did nothing until something
-declared that `buy`'s buyer *is* `acquire`'s recipient.
-`scripts/derive_role_correspondences.py` emits 51 such correspondences from the
-pack's own `positional_role` mappings — **derived from PropBank argument
-positions, not hand-authored**, which matters because two of fifteen hand-authored
-predicate relations turned out wrong on inspection. Three argument positions are
-excluded by name with their reason, the sharpest being `help`/`aid`, where
-PropBank itself labels ARG2 `benefactive` on one and `benefactor` on the other —
-recipient against provider.
+- **3 are over-filling.** For "Acme acquired Beta" the extractor filled five
+  roles (`beneficiary`, `recipient`, `source`, `source_2`, `theme`) where the
+  paraphrase filled two. Same participants, different completeness. A harness
+  property, not a disagreement.
+- **1 is a genuine extraction error, and the test caught it.** "Beta was acquired
+  by Acme" assigned Beta to `recipient` and Acme to `source` — the passive
+  inverted. This is exactly what the measurement exists to find.
+- **1 is a real gap in the object: symmetry.** "Acme merged with Beta" and "Beta
+  merged with Acme" produce different objects because the pack has no way to
+  declare `merge` symmetric, so `part_1` and `part_2` swap and nothing says that
+  does not matter. See VF-18 below. The fact-oriented brief raises this in its
+  §12 — *"'symmetric' currently means two different things"* — and that section
+  was explicitly among the ones this design did not absorb.
+- **2 are genuine content differences** the key may have labelled too
+  generously: "agreed to acquire" against "signed an agreement to acquire" fill
+  different frames, and "cut 400 jobs" against "reduced headcount by 400" differ
+  in what the text actually says.
 
-*Five iterations of that scorer each found the measurement at fault rather than
-the object: 69% over-collapse when it asked only for a predicate, 82%
-under-collapse when role names were free, 77% when constrained, 73% with
-correspondences, 68% once role ids were validated against the pack. The run
-record carries all five; citing one without the others is citing a harness
+**Role correspondences are derived, not authored.**
+`scripts/derive_role_correspondences.py` emits 51 from the pack's own
+`positional_role` mappings — from PropBank argument positions, which matters
+because two of fifteen *hand-authored* predicate relations turned out wrong on
+inspection. Three positions are excluded with their reason, the sharpest being
+`help`/`aid`, where PropBank itself labels ARG2 `benefactive` on one and
+`benefactor` on the other.
+
+*Six iterations, each finding the measurement at fault rather than the object:
+69% over-collapse, then 82% under-collapse, 77%, 73%, 68%, and 44%. The run
+record carries all six; citing one without the others is citing a harness
 artifact.*
 
 **3. Run the coverage audit that has been specified and never executed.** The
@@ -1406,6 +1412,7 @@ taxonomy that does not separate these becomes a worry list.
 | VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15 | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
 | VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
 | VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
+| VF-18 | Symmetric predicates are not declared symmetric | **MEASURED** 1 of 7 residual under-collapse cases (2026-09-08) | "Acme merged with Beta" and "Beta merged with Acme" are different objects because `part_1`/`part_2` swap and nothing says the order is immaterial | Score a symmetric-predicate pair in both argument orders | Declare symmetry per predicate. The fact-oriented brief's §12 warns that "symmetric" currently means two different things, and that section was among those this design did not absorb |
 | VF-17 | Entity resolution diverges | **MEASURED** ~4 of 17 under-collapse cases (2026-09-08), exactly as the ruling predicts | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
 
 **The collapse ceiling is bounded by the pack, not the extractor — computed

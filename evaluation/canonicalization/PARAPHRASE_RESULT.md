@@ -26,18 +26,18 @@ into an accuracy figure.
 | 3 | same, role ids constrained to the pack's vocabulary | over-collapse **3%**, under-collapse **77%** |
 | 4 | + role correspondences derived from PropBank argument positions | under-collapse **73%** |
 | 5 | + role ids validated against the pack, retry then exclude | over-collapse **0%**, under-collapse **68%**, 3 excluded |
+| 6 | + coreference pairs scope-excluded, empty optional roles treated as absent | over-collapse **0%**, under-collapse **44%** (7 of 16) |
 
 Each iteration found the measurement at fault rather than the object. Citing any
 one of these numbers without the others is citing a harness artifact.
 
-**A sixth pass should** scope-exclude the six entity-resolution pairs per the
-coreference ruling, and treat a declared-but-empty optional role as absent rather
-than as a difference — one side emitting `'lc.role.price': ''` where the other
-omits it is a completeness difference, not a disagreement. Together those account
-for roughly ten of the fifteen remaining failures. Neither is tuning toward a
-better number; both remove a confound that is already understood.
+**Stopped at six, and this time because the residual is legible rather than
+large.** Seven failures remain and each is identified individually in the design:
+three are the extractor over-filling optional roles, one is a real passive
+inversion the test was built to catch, one is a genuine gap in the object
+(symmetric predicates are not declarable, now VF-18), and two are content
+differences the key may have labelled too generously.
 
-**Stopped at five deliberately.** Each pass so far found the measurement at fault
-rather than the object, and the object-level findings stopped changing after the
-fourth. Continuing would be optimising a harness, not learning about the
-vocabulary.
+A seventh pass would be tuning. The object-level findings stopped changing after
+the fourth iteration, and what remains is either a known harness property, a true
+positive, or a design gap already recorded.
