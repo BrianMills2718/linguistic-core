@@ -1378,7 +1378,29 @@ predicates:
 | `different-object` sharing a predicate, separable only by negation/modality/aspect | **3 of 35** | Cannot be separated. "Acme did not acquire Beta", "may acquire", and "was acquiring" are structurally identical to "acquired" (VF-03). |
 | `different-object` sharing a predicate, separable by role fillers or entities | 14 | Scoreable — these do test the extractor. |
 
-**So a scorer run today would attribute two schema gaps to the extractor.**
+**One of the two gaps is now closed, 2026-09-08.**
+`ontology_packs/linguistic_core/_candidates/predicate_relations.jsonl` declares
+15 predicate-to-predicate relations from the nine-term mapping vocabulary —
+`lc:buy_purchase narrowerThan lc:acquire_get_obtain`,
+`lc:murder_cause_to_die narrowerThan lc:kill_cause_to_die`, and so on.
+`evaluation/canonicalization/check_collapse_reachability.py` reports
+**`same_UNREACHABLE` at 0, down from 15**. The under-collapse half of the key is
+now scoreable.
+
+It is a **candidate, not a pack version**, and deliberately not numbered:
+consumers pin versions, and publishing `0.4.0` would assert a release this has
+not earned. Every row is `derivation_method: authored`, `source_verified: false`
+— judgements made against the key, not derived from a donor. It went in a new
+file rather than extending `hierarchy_edges.jsonl` because consumers read that
+expecting `subtype_of`, and adding other edge types would silently change what an
+existing file means to an existing reader.
+
+**Three pairs remain schema-blocked, all on the over-collapse side** — C08, C09
+and C12, "did not acquire", "may acquire" and "was acquiring" against
+"acquired". Those need the negation and modality that the import dropped
+(VF-03), and no relation vocabulary can substitute.
+
+**So a scorer run today would still attribute one schema gap to the extractor.**
 Under-collapse would read as roughly 60% failure on the same-object half when the
 representation simply cannot express the collapse, and three over-collapse cases
 are unwinnable for the same reason. The scorer is still worth building — most of
