@@ -971,7 +971,7 @@ pass rather than three.
 | what is wrong | what the source has | consequence |
 |---|---|---|
 | Descriptions average 18 characters and 332 groups are duplicated across 907 predicates | PropBank roleset data far richer than the short gloss | a selector cannot distinguish `kill` from `murder`; almost certainly the cause of the frame failure below |
-| No modality or negation anywhere — 908 role IDs, none modal | PropBank's `ARGM-MOD` and `ARGM-NEG` | "did not acquire", "may acquire" and "acquired" produce identical structures |
+| No modality or negation anywhere — 908 role IDs, none modal | PropBank's `ARGM-MOD` and `ARGM-NEG` | measured 2026-09-08: the negated sentence produces **no assertion at all**, 3 runs of 3, not an identical one (`evaluation/consumer_wiring/`) |
 | Frame mappings 55–61% `incompatibleWith` | FrameNet definitions, and PropBank sense numbers | a model asked to frame `lc:donate_give` from the gloss "give" has nothing to work with |
 
 **None of these is a modelling problem and none needs a better model.** All three
@@ -1398,7 +1398,7 @@ taxonomy that does not separate these becomes a worry list.
 |---|---|---|---|---|---|
 | VF-01 | Frame mapping asserts an unrelated frame | **MEASURED, REPRODUCED** 52% `incompatibleWith` (n=100, `evaluation/frame_layer/`); an earlier lost run gave 55–61%. `exactMatch` does *not* reproduce — 5% here against 14% — so treat the incompatible rate as reliable and exact-match as judge-dependent | Anything reasoning over frames inherits a majority-wrong layer; coverage figures overstate usable coverage by more than half | Sample and judge against full FrameNet definitions, classified by relation not right/wrong; only `incompatibleWith` is unambiguous failure | Regenerate with definitions and sense numbers in prompt; do not verify — checking 2,263 rows that are ~58% wrong costs more than redoing them |
 | VF-02 | Two predicates share an identical description | **MEASURED** 332 groups over 907 predicates | A selector cannot tell `kill` from `murder` and will sometimes add an unlawfulness claim the text never made | Group by description; any group larger than one is a defect | Distinguish, never consolidate — all 332 groups map to *different* PropBank rolesets, so upstream already ruled them distinct |
-| VF-03 | Donor content silently dropped at import | **MEASURED** 0 `ARGM` rows; `value_types.jsonl` 0 bytes in all versions | No modality, negation or aspect: "did not acquire", "may acquire" and "acquired" produce identical structures | Diff the donor's field inventory against the pack's on every import | Recover `ARGM-MOD`/`ARGM-NEG` from PropBank; they were never unavailable |
+| VF-03 | Donor content silently dropped at import | **MEASURED, AND ITS CONSEQUENCE CORRECTED** 0 `ARGM` rows; `value_types.jsonl` 0 bytes in all versions. A live consumer run on 2026-09-08 (`evaluation/consumer_wiring/`) shows the effect is **not** collapse into the affirmative: onto-canon6 emits *zero assertions* for "Acme will not acquire Beta", 3 runs of 3, with no error and no partial object, while the affirmative extracts cleanly. Adding a `negation` role makes the two differ (2 of 3 runs). | Total unsignalled information loss on every negated statement — this is VF-14 (empty extraction) with a known cause, not a separate failure | Diff the donor's field inventory against the pack's on every import; then run the minimal pair through a real consumer, because the schema gap and its behavioural signature are different facts | Recover `ARGM-MOD`/`ARGM-NEG` from PropBank; they were never unavailable. Four roles, not eleven — seven already ship |
 | VF-04 | A relation the theory needs is inexpressible in the format | **MEASURED** `hierarchy_edges` has one `edge_type` across 1,774 edges | Inverse pairs (buy/sell, lend/borrow) cannot be declared, so converse phrasings stay unrelated | Enumerate the relation kinds the design commits to, then grep the schema for each | Add the edge type; SUMO already supplies the concept as `lc:inverse` |
 | VF-05 | Nominalization has no predicate | **OBSERVED** "acquisition", "merger", "investment" return zero; "lawsuit" does *not* — `lc:try_lawsuit` and `lc:retry_lawsuit` exist | Noun-phrase references to events are unrepresentable where the noun *is* the reference | Probe the pack with nominal forms of its top predicates | Narrower than it looks — light-verb cases resolve to the verb sense; only whole-reference nominals bite. NomBank is unlicensed, so this needs another source |
 
@@ -1424,7 +1424,7 @@ taxonomy that does not separate these becomes a worry list.
 
 | ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
 |---|---|---|---|---|---|
-| VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15 | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
+| VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15. At least one driver is now identified: an unrepresentable modifier produces this exact signature deterministically (VF-03) | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
 | VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
 | VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
 | VF-18 | Symmetric predicates are not declared symmetric | **OBSERVED** in 1 residual case; 17 symmetric role pairs now declared, but the effect is below this key's noise floor | "Acme merged with Beta" and "Beta merged with Acme" are different objects because `part_1`/`part_2` swap and nothing says the order is immaterial | Score a symmetric-predicate pair in both argument orders | Declare symmetry per predicate. The fact-oriented brief's §12 warns that "symmetric" currently means two different things, and that section was among those this design did not absorb |
@@ -1437,7 +1437,7 @@ predicates:
 | | pairs | consequence |
 |---|---|---|
 | `same-object` whose two sides expect **different** predicates | **15 of 24** | Cannot collapse. Nothing in the pack relates `lc:acquire_get_obtain` to `lc:buy_purchase`, or `lc:kill_cause_to_die` to `lc:murder_cause_to_die` — there are no predicate-to-predicate relation edges at all (VF-04). |
-| `different-object` sharing a predicate, separable only by negation/modality/aspect | **3 of 35** | Cannot be separated. "Acme did not acquire Beta", "may acquire", and "was acquiring" are structurally identical to "acquired" (VF-03). |
+| `different-object` sharing a predicate, separable only by negation/modality/aspect | **3 of 35** | Cannot be separated — but not by collapsing into "acquired". Measured 2026-09-08, the negated side yields zero assertions rather than the affirmative structure (VF-03). |
 | `different-object` sharing a predicate, separable by role fillers or entities | 14 | Scoreable — these do test the extractor. |
 
 **One of the two gaps is now closed, 2026-09-08.**
@@ -1761,6 +1761,57 @@ tripped the gate", raised for Brian's review. The run was rescored from FAIL to
 PASS under the new floor. Every use case in this document inherits this number,
 so it should be quoted as 0.349 against a moved floor, not as 0.42 against a
 met one.
+
+### The vocabulary is now wired to that consumer, and it changes its behaviour
+
+Every other measurement in this repository scores the vocabulary against itself
+— a key, a reachability check, a paraphrase scorer. The first measurement of
+whether changing the pack changes what a running system *does* was taken on
+2026-09-08 and lives at `evaluation/consumer_wiring/`.
+
+**Method.** A minimal pair — "Acme will acquire Beta." / "Acme will not acquire
+Beta." — three runs each, through `TextExtractionService.extract_candidate_run`
+against real OpenRouter, on two profiles: the published `0.3.2`, and a
+throwaway `0.3.3-neg` adding four roles (`modal`, `negation`, `adverbial`,
+`discourse`) plus the verb-inflection value type. The throwaway is composed
+from a scratch packs root via `compose_profile(packs_root=...)`; nothing was
+published to `ontology_packs/`.
+
+**Result.** On the published pack the negated sentence produces **zero
+assertions**, three runs of three, with no error raised and no partial object.
+The extractor's own semantic inventory records that there was a meaning and
+then emits nothing bound to it. With the `negation` role available, two of
+three runs emit it and the two sentences produce different objects; the third
+failed outright on an unrelated entity-type constraint rather than losing the
+negation. The affirmative sentence never produced a negation role on either
+profile, six runs of six.
+
+**Why this matters more than the gap it closes.** The design had asserted that
+the missing modifier roles make "did not acquire" and "acquired" produce
+*identical* structures. That was wrong, and wrong in the safer direction than
+reality: the system does not fabricate an affirmative claim, it discards the
+sentence. Which means the schema gap does not show up as a wrong object a
+reviewer could catch — it shows up as silence, indistinguishable from a
+sentence that had nothing to say. That is VF-14 in the failure table, and this
+is the first identified cause of it.
+
+**Three things the run does not establish.** n=3 separates 0/3 from 2/3 and
+supports nothing finer. Predicate selection is not stable across runs
+(`lc:accrete_accumulate_gain` twice, `lc:acquire_get_obtain` once, for the same
+affirmative sentence) and this probe does not control for it. And declaring the
+role without a value type for it buys representability but not a canonical
+form — one run emitted `value_kind="negation" normalized="not"`, another
+`value_kind="boolean" normalized="true"`.
+
+**Two consumer-side facts it surfaced.** onto-canon6's
+`max_predicates_in_prompt` narrows the prompt but not the response schema, so
+the default `predicate_variants` mode cannot run against a 5,995-predicate pack
+at all — the request exceeds a 1,048,576-token input limit before any model
+sees it, and only `response_schema_mode="compact_roles"` works at this scale.
+And seven of the eleven proposed modifier roles already ship: five under
+identical ids, and `ARGM-TMP`/`ARGM-LOC` under the FrameNet-style names
+`lc.role.time` and `lc.role.location`. Loading all eleven fails composition
+outright. The real gap is four roles.
 
 ## The parallel implementation
 

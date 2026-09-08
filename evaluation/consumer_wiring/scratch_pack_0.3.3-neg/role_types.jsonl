@@ -1,0 +1,4 @@
+{"role_id": "lc.role.modal", "runtime_name": "modal", "preferred_label": "Modal", "status": "active", "propbank_label": "ARGM-MOD", "description": "modal auxiliary scoping the predication (may, must, should, will)"}
+{"role_id": "lc.role.negation", "runtime_name": "negation", "preferred_label": "Negation", "status": "active", "propbank_label": "ARGM-NEG", "description": "negation of the predication"}
+{"role_id": "lc.role.adverbial", "runtime_name": "adverbial", "preferred_label": "Adverbial", "status": "active", "propbank_label": "ARGM-ADV", "description": "adverbial modification not covered above"}
+{"role_id": "lc.role.discourse", "runtime_name": "discourse", "preferred_label": "Discourse", "status": "active", "propbank_label": "ARGM-DIS", "description": "discourse connective"}

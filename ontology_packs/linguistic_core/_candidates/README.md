@@ -69,6 +69,22 @@ down from 18 before either candidate slice.
 taken from PropBank's documented annotation scheme, not from its instance data,
 and not independently validated against usage.
 
+**Seven of the eleven were not missing.** A composition check on 2026-09-08
+against the real pack lineage (0.3.0 -> 0.3.1 -> 0.3.2) found that
+`lc.role.manner`, `lc.role.cause`, `lc.role.purpose`, `lc.role.direction` and
+`lc.role.extent` already ship under exactly those ids, and that `ARGM-TMP` and
+`ARGM-LOC` already ship under FrameNet-style names — `lc.role.time` and
+`lc.role.location`. Loading all eleven fails composition outright:
+`extension identity conflict: section=role_types identity=('lc.role.manner',)
+owners=linguistic_core@0.3.0, linguistic_core@0.3.3-neg`.
+
+The genuine gap is **four roles**: `modal` (`ARGM-MOD`), `negation`
+(`ARGM-NEG`), `adverbial` (`ARGM-ADV`) and `discourse` (`ARGM-DIS`). This file
+still lists eleven rows because the two name-variant cases need a
+`role_correspondences`-style decision rather than a silent deletion — but any
+consumer must filter to the four before composing, and the row count above is
+not a count of new capability.
+
 ## What this check cannot catch
 
 `check_collapse_reachability.py` asks whether *a* collapsing relation exists

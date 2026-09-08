@@ -1,0 +1,272 @@
+project:
+  name: onto-canon6
+  package_name: onto_canon6
+  version: 0.1.0
+paths:
+  adr_root: docs/adr
+  notebooks_root: notebooks
+  notebook_registry_path: notebooks/notebook_registry.yaml
+  local_profiles_root: profiles
+  usecases_root: usecases
+  local_ontology_packs_root: ontology_packs
+  review_db_path: var/review_state.sqlite3
+  overlay_root: var/ontology_overlays
+pipeline:
+  default_acceptance_policy: record_only
+  permissive_review: false
+  review_mode: llm
+  # Entity names treated as generic/anaphoric mentions (case/whitespace
+  # normalized). Candidates carrying one as an entity participant get the
+  # generic_entity_name warning flag and are held out of batch acceptance
+  # (Plan 0128 Phase 0); single-candidate review can still accept deliberately.
+  generic_entity_names:
+    - we
+    - us
+    - our team
+    - the team
+    - team
+    - the group
+    - i
+    - you
+    - he
+    - she
+    - it
+    - they
+    - them
+    - this
+    - that
+    - these
+    - those
+    - everyone
+    - everybody
+    - someone
+    - somebody
+    - anyone
+    - anybody
+    - people
+  # Bare pronouns are unresolved anaphora, never canonical entities. New
+  # candidates carrying one are blocked at publish; historical promoted rows
+  # remain untouched for consumer-SHA stability.
+  anaphoric_entity_names:
+    - i
+    - you
+    - he
+    - she
+    - it
+    - we
+    - us
+    - they
+    - them
+    - this
+    - that
+    - these
+    - those
+  # A leading demonstrative plus noun phrase is unresolved contextual language
+  # even when it is not one of the bare pronouns above.
+  contextual_reference_determiners:
+    - this
+    - that
+    - these
+    - those
+  # Entity names longer than this (or containing a newline) are degenerate —
+  # sentences/quotes/documents extracted as a NAME (2026-07-11 audit: 155 of
+  # 6,706 promoted drive-docs entities exceeded 120 chars, worst 4,084). Flag:
+  # degenerate_entity_name; held from batch acceptance like generic names.
+  max_entity_name_chars: 120
+ontology_runtime:
+  overlay_pack_suffix: __overlay
+assertion_identity:
+  # Value-role runtime names EXCLUDED from the stable-assertion-id (gassert2_)
+  # anchor (Plan 0119 / ADR-0030). These are annotation/metadata roles — every
+  # OTHER value role is structural/identifying and participates in the id, so
+  # value-variants (date=Jan vs date=Feb) get distinct ids while annotation-only
+  # v2.1 re-extraction preserves the id. Denylist by design (see config.py).
+  annotation_value_roles:
+    - polarity
+    - confidence
+    - stance_act
+    - context_register
+    - defeasibility
+    - warrant_type
+    - tier
+    - stability
+    - source_tier
+    - verified
+    - reasoning
+extraction:
+  max_predicates_in_prompt: 120
+  # Production cap on candidates per extraction call (Plan 0120: was silently
+  # inheriting the eval-experiment's max_candidates_per_case=2).
+  default_max_candidates_per_call: 24
+  selection_task: budget_extraction
+  selection_use_performance: false
+  model_override: openrouter/deepseek/deepseek-v4-flash
+  default_extraction_goal: Extract all factual assertions directly supported by the
+    source text.
+  prompt_template: prompts/extraction/text_to_candidate_assertions_compact_v5.yaml
+  prompt_ref: onto_canon6.extraction.text_to_candidate_assertions_compact_v5@11
+  timeout_seconds: 60
+  num_retries: 2
+  max_budget_usd: 0.25
+  # Repair explicit bare-pronoun entity fillers before candidate import. The
+  # LLM can select only a concrete entity already extracted from this source;
+  # invalid or ambiguous judgments withhold the complete affected candidate.
+  enable_anaphor_resolution: true
+  anaphor_resolution_prompt_template: prompts/coreference/anaphor_resolution.yaml
+  anaphor_resolution_prompt_ref: onto_canon6.coreference.anaphor_resolution@1
+  anaphor_resolution_task: anaphor_resolution
+  anaphor_resolution_model_override: null
+  anaphor_resolution_min_confidence: 0.85
+  anaphor_resolution_max_budget_usd: 0.10
+  anaphor_resolution_max_evidence_chars: 400
+  enable_judge_filter: true
+  judge_filter_min_label: partially_supported
+  # enforcement: predicate IDs for domain-specific guards (defaults shown).
+  # Override when extracting against a non-oc: vocabulary (e.g., code_core).
+  # enforcement:
+  #   limit_capability_predicate: "oc:limit_capability"
+  #   membership_predicate: "oc:belongs_to_organization"
+chunking:
+  target_max_chars: 4000
+  min_chunk_chars: 1200
+  max_chunk_chars: 5000
+evaluation:
+  sumo_db_path: data/sumo_plus.db
+  benchmark_fixture: tests/fixtures/psyop_eval_slice.json
+  fidelity_entity_fixture: tests/fixtures/fidelity_entities.jsonl
+  # Plan 0107 Slice B: chunk-002 positive-control baseline from
+  # docs/runs/transfer/2026-04-01_chunk002_semantic_transfer_diff.json.
+  # The first threshold is the observed two-sided body-level transfer rate: 7/10.
+  transfer_baseline_run_id: "111362e2bec4"
+  transfer_min_body_match_rate: 0.70
+  observability_dataset: onto_canon6_live_extraction_benchmark
+  observability_phase: evaluation
+  judge_selection_task: judging
+  judge_prompt_template: prompts/evaluation/judge_candidate_reasonableness.yaml
+  judge_prompt_ref: onto_canon6.evaluation.judge_candidate_reasonableness@3
+  judge_timeout_seconds: 60
+  judge_num_retries: 2
+  judge_max_budget_usd: 0.25
+  judge_max_output_tokens: 1500
+  # Must be >= chunking.max_chunk_chars (validated at load); truncation logs loudly.
+  judge_source_text_max_chars: 12000
+  # Plan 0116 Slice E: fidelity floors vs the linguistic_core golden set.
+  # These are REGRESSION FLOORS calibrated to the measured 2026-07-07
+  # three-chunk distribution (see docs/runs/fidelity/), not aspirations —
+  # raise them as Slice-F prompt work improves recall.
+  golden_fidelity:
+    # Recalibrated 2026-07-07 with TWO observed runs (pre/post prompt
+    # de-domaining): mean precision 0.42 then 0.349, mean recall 0.32 both
+    # times. The first floor (0.35, single-run calibration) sat inside
+    # ordinary run variance and tripped on a yield INCREASE (more Canon-
+    # mapped candidates, same matches, recall unchanged) — see
+    # docs/runs/2026-07-07_golden_fidelity_baseline.md refresh note. Floors
+    # now sit below both observed means; raise as prompt work improves
+    # match quality, never above measured capability.
+    min_precision: 0.30
+    min_recall: 0.25
+  chunk_transfer:
+    positive_min_acceptance_rate: 0.8
+    negative_max_acceptance_rate: 0.0
+    require_review_complete: true
+  prompt_experiment:
+    experiment_name: onto_canon6_extraction_prompt_eval
+    observability_dataset: onto_canon6_extraction_prompt_eval
+    observability_phase: evaluation
+    selection_task: fast_extraction
+    selection_use_performance: false
+    # Was gemini/gemini-2.5-flash until 2026-08-26. Removed on an explicit
+    # directive that Gemini is not to be used anywhere. The Gemini pin also
+    # made this gate unrunnable in practice: it called Google directly on a
+    # free-tier key capped at 20 generate requests per day per model, and this
+    # lane's default sweep is 4 cases x 5 variants = exactly 20, so one green
+    # run consumed the whole day and a before/after comparison was impossible.
+    # Verified 2026-08-26: this route runs the full sweep 20/20 across all five
+    # variants with zero errors, ~167k tokens at roughly $0.0005 per trial.
+    # openrouter/minimax/minimax-m3 was tried first and returned empty content
+    # under native JSON schema on the `baseline` and `single_response_hardened`
+    # variants (3/5 only), so it is not a drop-in here.
+    model_override: openrouter/openai/gpt-5.6-luna
+    # Required by llm_client's fail-closed model execution policy: any allowed
+    # non-default route must carry a caller-recorded reason. Without it every
+    # prompt_eval trial fails with zero cost and zero tokens, which reads like
+    # a clean run instead of a total failure.
+    model_justification: Prompt-variant comparison needs one pinned,
+      schema-reliable subject model held constant across variants, on a route
+      without a per-day request ceiling so a baseline and an after-run can be
+      measured on the same day.
+    # llm_client forbids provider reasoning defaults on configurable models.
+    # `none` keeps prompt-variant differences attributable to the prompt rather
+    # than to variable thinking budget, and keeps the sweep cheap.
+    reasoning_effort: "none"
+    n_runs: 2
+    temperature: 0.0
+    timeout_seconds: 60
+    num_retries: 2
+    max_budget_usd: 0.25
+    baseline_variant_name: baseline
+    comparison_method: welch
+    comparison_confidence: 0.95
+    max_candidates_per_case: 2
+    max_evidence_spans_per_candidate: 1
+    include_case_id_in_input: false
+    variants:
+    - name: baseline
+      prompt_template: prompts/extraction/prompt_eval_text_to_candidate_assertions_baseline.yaml
+      prompt_ref: onto_canon6.extraction.prompt_eval_text_to_candidate_assertions_baseline@1
+    - name: hardened
+      prompt_template: prompts/extraction/prompt_eval_text_to_candidate_assertions_hardened.yaml
+      prompt_ref: onto_canon6.extraction.prompt_eval_text_to_candidate_assertions_hardened@1
+    - name: compact
+      prompt_template: prompts/extraction/prompt_eval_text_to_candidate_assertions_compact.yaml
+      prompt_ref: onto_canon6.extraction.prompt_eval_text_to_candidate_assertions_compact@3
+      max_candidates_per_case: 1
+      max_evidence_spans_per_candidate: 1
+    - name: compact_operational_parity
+      prompt_template: prompts/extraction/prompt_eval_text_to_candidate_assertions_compact_operational_parity_v3.yaml
+      prompt_ref: onto_canon6.extraction.prompt_eval_text_to_candidate_assertions_compact_operational_parity@3
+      max_candidates_per_case: 10
+      max_evidence_spans_per_candidate: 1
+    - name: single_response_hardened
+      prompt_template: prompts/extraction/prompt_eval_text_to_candidate_assertions_single_response_hardened.yaml
+      prompt_ref: onto_canon6.extraction.prompt_eval_text_to_candidate_assertions_single_response_hardened@1
+      max_candidates_per_case: 2
+      max_evidence_spans_per_candidate: 1
+resolution:
+  # exact is the proven safe floor (1.00 precision). LLM reached 1.00 precision
+  # but failed the recall gate (0.308 vs required threshold). Reactivate llm
+  # when Plan 0025 Phase 5 promotion gate is satisfied.
+  default_strategy: exact
+  # Was gemini/gemini-2.5-flash; removed 2026-08-26 with the eval pin above.
+  # This path is dormant (default_strategy: exact), but leaving the pin here
+  # would silently reintroduce Gemini whenever the llm strategy is reactivated.
+  model_override: openrouter/minimax/minimax-m3
+  max_budget_usd: 0.50
+  prompt_template: prompts/resolution/cluster_entities.yaml
+  fuzzy_pre_filter_threshold: 80
+  batch_token_limit: 50000
+  min_entities_for_llm: 2
+cli:
+  default_output_format: json
+  file_source_kind: text_file
+mcp:
+  transport: stdio
+workbench:
+  # Domain-free workbench defaults (Plan 0105 D3). Requests may override all
+  # of these per call; the defaults must never name a use-case profile.
+  default_db_path: var/review_state.sqlite3
+  default_export_dir: var/workbench/exports
+  default_profile_id: general_purpose_open
+  default_profile_version: "0.1.0"
+  default_review_confidence_threshold: 0.85
+adapters:
+  # Use-case adapter settings live with their use case (Plan 0105):
+  # tyler -> usecases/tyler/config.yaml; whygame + research_agent ->
+  # usecases/whygame/config.yaml.
+  progressive:
+    # Plan 0116 Slice D: the governed linguistic_core profile is the default;
+    # progressive_permissive is DEBUG-ONLY and must be named explicitly.
+    default_profile_id: progressive_governed
+    default_profile_version: 0.1.0
+    source_kind: progressive_extraction
+    submitted_by: progressive_extractor

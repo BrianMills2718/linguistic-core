@@ -1,0 +1,24 @@
+pack:
+  id: linguistic_core
+  version: 0.3.3-neg
+  name: linguistic_core
+  description: 'Throwaway scratch slice. Adds the 11 PropBank ARGM modifier roles and the verb-inflection value type, bound to lc:acquire_get_obtain, to test whether negation becomes representable in onto-canon6 extraction. Not published.'
+build:
+  compiler_version: scratch-slice-1
+  built_at: '2026-09-08T00:00:00Z'
+extends:
+- id: linguistic_core
+  version: 0.3.2
+capabilities:
+  assertion_type: n-ary
+  type_system: sumo
+content:
+  entity_types: entity_types.jsonl
+  predicate_types: predicate_types.jsonl
+  role_types: role_types.jsonl
+  value_types: value_types.jsonl
+  hierarchy_edges: hierarchy_edges.jsonl
+  predicate_role_edges: predicate_role_edges.jsonl
+  source_mappings: source_mappings.jsonl
+  aliases: aliases.jsonl
+  constraints: constraints.jsonl

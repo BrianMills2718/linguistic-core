@@ -1,0 +1,196 @@
+[
+  {
+    "version": "0.3.3-neg",
+    "text": "Acme will acquire Beta.",
+    "run": 0,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:accrete_accumulate_gain",
+        "roles": [
+          "mass_theme",
+          "recipient"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.3-neg",
+    "text": "Acme will acquire Beta.",
+    "run": 1,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:accrete_accumulate_gain",
+        "roles": [
+          "mass_theme",
+          "recipient"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.3-neg",
+    "text": "Acme will acquire Beta.",
+    "run": 2,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:acquire_get_obtain",
+        "roles": [
+          "recipient",
+          "theme"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.3-neg",
+    "text": "Acme will not acquire Beta.",
+    "run": 0,
+    "n_candidates": null,
+    "error": "ExtractionError: llm_client text extraction failed: Pydantic validation failed on provider-accepted response: 1 error(s). First: Value error, candidate[0] failed extraction validation: source_meaning_id: string_pattern_mismatch; : value_error: Value error, role 'recipient' requires an entity of type"
+  },
+  {
+    "version": "0.3.3-neg",
+    "text": "Acme will not acquire Beta.",
+    "run": 1,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:acquire_get_obtain",
+        "roles": [
+          "modal",
+          "negation",
+          "recipient",
+          "theme"
+        ],
+        "negation": [
+          {
+            "kind": "value",
+            "alias_ids": [],
+            "value_kind": "negation",
+            "normalized": "not",
+            "raw": "not"
+          }
+        ]
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.3-neg",
+    "text": "Acme will not acquire Beta.",
+    "run": 2,
+    "n_candidates": 2,
+    "candidates": [
+      {
+        "predicate": "lc:acquire_get_obtain",
+        "roles": [
+          "negation",
+          "recipient",
+          "theme"
+        ],
+        "negation": [
+          {
+            "kind": "value",
+            "alias_ids": [],
+            "value_kind": "boolean",
+            "raw": "true",
+            "normalized": "true"
+          }
+        ]
+      },
+      {
+        "predicate": "lc:fail_not_succeed",
+        "roles": [
+          "agent",
+          "goal"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.2",
+    "text": "Acme will acquire Beta.",
+    "run": 0,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:acquire_get_obtain",
+        "roles": [
+          "recipient",
+          "theme"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.2",
+    "text": "Acme will acquire Beta.",
+    "run": 1,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:acquire_get_obtain",
+        "roles": [
+          "recipient",
+          "theme"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.2",
+    "text": "Acme will acquire Beta.",
+    "run": 2,
+    "n_candidates": 1,
+    "candidates": [
+      {
+        "predicate": "lc:acquire_get_obtain",
+        "roles": [
+          "recipient",
+          "theme"
+        ],
+        "negation": null
+      }
+    ],
+    "error": null
+  },
+  {
+    "version": "0.3.2",
+    "text": "Acme will not acquire Beta.",
+    "run": 0,
+    "n_candidates": 0,
+    "candidates": [],
+    "error": null
+  },
+  {
+    "version": "0.3.2",
+    "text": "Acme will not acquire Beta.",
+    "run": 1,
+    "n_candidates": 0,
+    "candidates": [],
+    "error": null
+  },
+  {
+    "version": "0.3.2",
+    "text": "Acme will not acquire Beta.",
+    "run": 2,
+    "n_candidates": 0,
+    "candidates": [],
+    "error": null
+  }
+]

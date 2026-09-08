@@ -5,6 +5,40 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-08 — The vocabulary wired to a consumer; a stated consequence disproven
+
+First measurement of whether changing the pack changes what a running system
+does, rather than how the pack scores against its own key. onto-canon6's
+extractor, real OpenRouter, minimal pair, three runs per condition, on a
+throwaway pack version composed from a scratch root — nothing published.
+
+The design had said the missing `ARGM-NEG` role makes "did not acquire" and
+"acquired" produce identical structures. It does not. On the published pack the
+negated sentence produces **zero assertions**, 3 of 3, no error, no partial
+object — the extractor records that a meaning existed and emits nothing bound to
+it. The failure is silence, not a wrong object, which makes it invisible to
+exactly the review a wrong object would survive. Adding the role makes the two
+sentences differ in 2 of 3 runs. The affirmative never spuriously gained a
+negation role, 6 of 6.
+
+Corrected in three places in the design plus VF-03, and VF-03 linked to VF-14
+(empty extraction) as cause to symptom — VF-14's first identified driver.
+
+Two things found on the way that were not the point. **Seven of the eleven
+proposed modifier roles already ship** — five under identical ids, and
+`ARGM-TMP`/`ARGM-LOC` as `lc.role.time`/`lc.role.location`; loading all eleven
+fails composition with an identity conflict. The real gap is four roles, and the
+candidates README now says so. And onto-canon6's `max_predicates_in_prompt`
+narrows the prompt but not the response schema, so the default
+`predicate_variants` mode cannot run against a 5,995-predicate pack at all.
+
+Also recorded: declaring a role without a value type buys representability, not
+a canonical form — the two successful runs disagreed on the negation filler's
+shape (`value_kind="negation"` vs `"boolean"`).
+
+Artifacts: `evaluation/consumer_wiring/` — probe, results, full run log, the
+throwaway pack, and the config overlay needed to reproduce.
+
 ## 2026-09-06 — A cold review; nine claims corrected, one contradiction flagged
 
 A reviewer with no context read the design and traced its load-bearing numbers

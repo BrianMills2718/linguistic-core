@@ -1,0 +1,4 @@
+{"predicate_id": "lc:acquire_get_obtain", "role_id": "lc.role.modal", "required": false, "min_count": 0, "max_count": 1}
+{"predicate_id": "lc:acquire_get_obtain", "role_id": "lc.role.negation", "required": false, "min_count": 0, "max_count": 1}
+{"predicate_id": "lc:acquire_get_obtain", "role_id": "lc.role.adverbial", "required": false, "min_count": 0, "max_count": 1}
+{"predicate_id": "lc:acquire_get_obtain", "role_id": "lc.role.discourse", "required": false, "min_count": 0, "max_count": 1}
