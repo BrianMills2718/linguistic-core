@@ -1335,7 +1335,7 @@ taxonomy that does not separate these becomes a worry list.
 
 | ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
 |---|---|---|---|---|---|
-| VF-01 | Frame mapping asserts an unrelated frame | **MEASURED** 55–61% `incompatibleWith`, 14% exact (n=100) | Anything reasoning over frames inherits a majority-wrong layer; coverage figures overstate usable coverage by more than half | Sample and judge against full FrameNet definitions, classified by relation not right/wrong; only `incompatibleWith` is unambiguous failure | Regenerate with definitions and sense numbers in prompt; do not verify — checking 2,263 rows that are ~58% wrong costs more than redoing them |
+| VF-01 | Frame mapping asserts an unrelated frame | **MEASURED, REPRODUCED** 52% `incompatibleWith` (n=100, `evaluation/frame_layer/`); an earlier lost run gave 55–61%. `exactMatch` does *not* reproduce — 5% here against 14% — so treat the incompatible rate as reliable and exact-match as judge-dependent | Anything reasoning over frames inherits a majority-wrong layer; coverage figures overstate usable coverage by more than half | Sample and judge against full FrameNet definitions, classified by relation not right/wrong; only `incompatibleWith` is unambiguous failure | Regenerate with definitions and sense numbers in prompt; do not verify — checking 2,263 rows that are ~58% wrong costs more than redoing them |
 | VF-02 | Two predicates share an identical description | **MEASURED** 332 groups over 907 predicates | A selector cannot tell `kill` from `murder` and will sometimes add an unlawfulness claim the text never made | Group by description; any group larger than one is a defect | Distinguish, never consolidate — all 332 groups map to *different* PropBank rolesets, so upstream already ruled them distinct |
 | VF-03 | Donor content silently dropped at import | **MEASURED** 0 `ARGM` rows; `value_types.jsonl` 0 bytes in all versions | No modality, negation or aspect: "did not acquire", "may acquire" and "acquired" produce identical structures | Diff the donor's field inventory against the pack's on every import | Recover `ARGM-MOD`/`ARGM-NEG` from PropBank; they were never unavailable |
 | VF-04 | A relation the theory needs is inexpressible in the format | **MEASURED** `hierarchy_edges` has one `edge_type` across 1,774 edges | Inverse pairs (buy/sell, lend/borrow) cannot be declared, so converse phrasings stay unrelated | Enumerate the relation kinds the design commits to, then grep the schema for each | Add the edge type; SUMO already supplies the concept as `lc:inverse` |
@@ -1354,7 +1354,7 @@ taxonomy that does not separate these becomes a worry list.
 
 | ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
 |---|---|---|---|---|---|
-| VF-10 | A confidence score uncorrelated with precision | **MEASURED, EVIDENCE LOST** — the judged sample lived only in a session scratch directory and is gone, so these figures can no longer be re-derived: Spearman ρ = +0.11; 55% incompatible at confidence 1.0; `exactMatch` rows average *lower* confidence than `incompatibleWith` | A consumer thresholds on it and the selection gets worse | Rank-correlate the score against a judged sample before shipping it | Drop the column — its presence implies a calibration nobody established |
+| VF-10 | A confidence score uncorrelated with precision | **MEASURED, RE-DERIVED** 2026-09-07 with artifacts in `evaluation/frame_layer/` — Spearman ρ = **+0.017**; incompatible rate by confidence band runs 58/65/38/53/53% from lowest to 1.00, flat rather than weak; 55% incompatible at confidence 1.0; `exactMatch` rows average *lower* confidence than `incompatibleWith` | A consumer thresholds on it and the selection gets worse | Rank-correlate the score against a judged sample before shipping it | Drop the column — its presence implies a calibration nobody established |
 | VF-11 | One flag conflates unverified-donor with unverified-model | **MEASURED** `source_verified: false` on both mechanical and model-generated rows | A 61%-wrong layer sat indistinguishable from 58,000 sound rows for months | Surface `derivation_method` at the same prominence as verification status | The values already exist in the data; expose them as a trust signal |
 | VF-12 | A coverage figure read as a quality figure | **MEASURED** 98.11% coverage against 55–61% incompatible; the two runs agree on **17.6%** of the 2,205 predicates both assigned (recomputed 2026-09-07; an earlier revision said 59.3%, which does not reproduce) | Six months of planning built on a number that counted *resolvable* frame names, not correct ones | Never publish coverage without an accuracy figure beside it | State both, or state neither |
 | VF-13 | A measurement outlives its artifact as prose | **MEASURED** the 98.1% figure survived its deleted database by six months and propagated into three documents | Planning proceeds on a claim nobody can re-check | Do not gitignore a generated artifact unless its generator is deterministic, its model pinned, and its rebuild covers every phase | Recover or re-measure; never re-cite |
@@ -1374,6 +1374,13 @@ canonicalization rulings above — 66 pairs, 29 `same-object`, 37
 `different-object`, none unresolved. Those two rows stay `ANTICIPATED` because
 nothing has been run against it yet; they move to `MEASURED` on the first scored
 pass, and there is no scorer yet, only the key.
+
+**VF-10 and VF-01 now have durable evidence.** `evaluation/frame_layer/` holds
+the script, the seeded sample, the judged output and the analysis; the
+measurement reruns for about 1.5 cents. It reproduced the two claims the design
+depends on — roughly half the layer incompatible, and confidence uncorrelated
+with correctness — and failed to reproduce `exactMatch`, which is recorded rather
+than smoothed.
 
 **Provenance discipline, added 2026-09-07 after an audit found three bad rows.**
 `MEASURED` was applied to numbers relayed from subagents without independent
