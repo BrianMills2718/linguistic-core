@@ -1368,6 +1368,24 @@ taxonomy that does not separate these becomes a worry list.
 | VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
 | VF-17 | Entity resolution diverges | **ANTICIPATED** | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
 
+**The collapse ceiling is bounded by the pack, not the extractor — computed
+2026-09-08 from the key alone, no model calls.** Comparing each pair's expected
+predicates:
+
+| | pairs | consequence |
+|---|---|---|
+| `same-object` whose two sides expect **different** predicates | **15 of 24** | Cannot collapse. Nothing in the pack relates `lc:acquire_get_obtain` to `lc:buy_purchase`, or `lc:kill_cause_to_die` to `lc:murder_cause_to_die` — there are no predicate-to-predicate relation edges at all (VF-04). |
+| `different-object` sharing a predicate, separable only by negation/modality/aspect | **3 of 35** | Cannot be separated. "Acme did not acquire Beta", "may acquire", and "was acquiring" are structurally identical to "acquired" (VF-03). |
+| `different-object` sharing a predicate, separable by role fillers or entities | 14 | Scoreable — these do test the extractor. |
+
+**So a scorer run today would attribute two schema gaps to the extractor.**
+Under-collapse would read as roughly 60% failure on the same-object half when the
+representation simply cannot express the collapse, and three over-collapse cases
+are unwinnable for the same reason. The scorer is still worth building — most of
+the key is scoreable — but it must report those 18 pairs as *schema-blocked*
+rather than folding them into an accuracy figure. This is the measurement
+equivalent of the coverage-versus-quality error recorded above.
+
 **The instrument for VF-06 and VF-07 now exists.** The answer key was merged on
 2026-09-07 with all thirteen contested pairs adjudicated against the five
 canonicalization rulings above — 66 pairs, 29 `same-object`, 37
