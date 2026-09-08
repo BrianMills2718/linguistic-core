@@ -1,0 +1,15 @@
+{
+ "no_expected_predicates": [
+  "E01",
+  "E02",
+  "E03",
+  "E05",
+  "E06",
+  "E07",
+  "E08"
+ ],
+ "schema_blocked": [
+  "A08",
+  "A12"
+ ]
+}

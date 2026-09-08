@@ -49,6 +49,13 @@ def _modifier_roles_declared() -> bool:
     return {"ARGM-MOD", "ARGM-NEG"} <= labels and has_infl
 
 
+def _pairings(a, b):
+    """Every (a, b) predicate combination. A side may list several acceptable
+    predicates; taking a[0] silently picks one, and two checks built that way
+    disagreed on 2026-09-08 because sorting differed between them."""
+    return [(x, y) for x in a for y in b if x != y]
+
+
 def preds(row: dict, side: str) -> tuple[str, ...]:
     v = (row.get("expected_predicates") or {}).get(side)
     return tuple(sorted(v)) if isinstance(v, list) else ()
@@ -72,7 +79,7 @@ def main() -> None:
         if label == "same-object":
             if a == b:
                 buckets["same_via_identical_predicate"].append(pid)
-            elif rels.get(frozenset((a[0], b[0]))) in COLLAPSING:
+            elif any(rels.get(frozenset(p)) in COLLAPSING for p in _pairings(a, b)):
                 buckets["same_via_declared_relation"].append(pid)
             else:
                 buckets["same_UNREACHABLE"].append(pid)
