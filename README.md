@@ -1,5 +1,7 @@
 # linguistic-core
 
+> **Global navigation:** use the [Vision knowledge index](https://github.com/BrianMills2718/vision/blob/main/wiki/index.md) as the canonical cross-repo entry point. This README remains the local entry point for this repository’s implementation, design, and evidence.
+
 A broad, honestly-sourced predicate/relation vocabulary derived from
 [SUMO](https://www.ontologyportal.org/) (the Suggested Upper Merged
 Ontology), [PropBank](https://propbank.github.io/), and
