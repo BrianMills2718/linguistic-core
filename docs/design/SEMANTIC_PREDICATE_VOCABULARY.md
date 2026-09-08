@@ -1339,7 +1339,7 @@ taxonomy that does not separate these becomes a worry list.
 | VF-02 | Two predicates share an identical description | **MEASURED** 332 groups over 907 predicates | A selector cannot tell `kill` from `murder` and will sometimes add an unlawfulness claim the text never made | Group by description; any group larger than one is a defect | Distinguish, never consolidate — all 332 groups map to *different* PropBank rolesets, so upstream already ruled them distinct |
 | VF-03 | Donor content silently dropped at import | **MEASURED** 0 `ARGM` rows; `value_types.jsonl` 0 bytes in all versions | No modality, negation or aspect: "did not acquire", "may acquire" and "acquired" produce identical structures | Diff the donor's field inventory against the pack's on every import | Recover `ARGM-MOD`/`ARGM-NEG` from PropBank; they were never unavailable |
 | VF-04 | A relation the theory needs is inexpressible in the format | **MEASURED** `hierarchy_edges` has one `edge_type` across 1,774 edges | Inverse pairs (buy/sell, lend/borrow) cannot be declared, so converse phrasings stay unrelated | Enumerate the relation kinds the design commits to, then grep the schema for each | Add the edge type; SUMO already supplies the concept as `lc:inverse` |
-| VF-05 | Nominalization has no predicate | **OBSERVED** "acquisition", "merger", "lawsuit" return zero | Noun-phrase references to events are unrepresentable where the noun *is* the reference | Probe the pack with nominal forms of its top predicates | Narrower than it looks — light-verb cases resolve to the verb sense; only whole-reference nominals bite. NomBank is unlicensed, so this needs another source |
+| VF-05 | Nominalization has no predicate | **OBSERVED** "acquisition", "merger", "investment" return zero; "lawsuit" does *not* — `lc:try_lawsuit` and `lc:retry_lawsuit` exist | Noun-phrase references to events are unrepresentable where the noun *is* the reference | Probe the pack with nominal forms of its top predicates | Narrower than it looks — light-verb cases resolve to the verb sense; only whole-reference nominals bite. NomBank is unlicensed, so this needs another source |
 
 ### Canonicalization defects — the object collapses wrongly
 
@@ -1348,15 +1348,15 @@ taxonomy that does not separate these becomes a worry list.
 | VF-06 | **Over-collapse** — distinct meanings become one object | **ANTICIPATED**, and the highest-severity class | "Agreed to acquire" reading as "acquired" *fabricates* a completed deal; unlike under-collapse this cannot be recovered downstream | `evaluation/canonicalization/canonicalization_key.jsonl` — 66 pairs, 37 `different-object`, all adjudicated 2026-09-07. Over-collapse and under-collapse must be reported separately, never as one accuracy number | Split the predicate; add the labelled pair as a regression case |
 | VF-07 | **Under-collapse** — one meaning becomes several objects | **ANTICIPATED** | Deduplication and contradiction detection both miss; the object fails its founding premise | Same key, the 29 `same-object` pairs | Declare the mapping relation between them rather than merging the predicates |
 | VF-08 | Breadth raises the collapse failure rate | **ANTICIPATED** | Every added sense distinction is another way two phrasings of one meaning diverge — richness and canonicality pull against each other | Run paraphrase invariance at more than one profile size | If narrow profiles invariance-test better, that is a fact about *use*, not evidence against the object |
-| VF-09 | Roles are frame-specific with no crosswalk | **MEASURED** only 6 of 11,890 role edges are `required` | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
+| VF-09 | Roles are frame-specific with no crosswalk | **MEASURED** the pack has 38,650 role edges, 2,998 (7.8%) `required` — an earlier revision said "6 of 11,890", which is the *donor* `role_slots` table, not the pack | Deciding two predicates correspond does not say which roles align; role inversion cannot be caught structurally | Check whether converse predicate pairs declare aligned roles | Author role alignments alongside any inverse declaration |
 
 ### Epistemic defects — the object misrepresents its own reliability
 
 | ID | Failure mode | Status | Consequence | Prevention / detection | Recovery |
 |---|---|---|---|---|---|
-| VF-10 | A confidence score uncorrelated with precision | **MEASURED** Spearman ρ = +0.11; 55% incompatible at confidence 1.0; `exactMatch` rows average *lower* confidence than `incompatibleWith` | A consumer thresholds on it and the selection gets worse | Rank-correlate the score against a judged sample before shipping it | Drop the column — its presence implies a calibration nobody established |
+| VF-10 | A confidence score uncorrelated with precision | **MEASURED, EVIDENCE LOST** — the judged sample lived only in a session scratch directory and is gone, so these figures can no longer be re-derived: Spearman ρ = +0.11; 55% incompatible at confidence 1.0; `exactMatch` rows average *lower* confidence than `incompatibleWith` | A consumer thresholds on it and the selection gets worse | Rank-correlate the score against a judged sample before shipping it | Drop the column — its presence implies a calibration nobody established |
 | VF-11 | One flag conflates unverified-donor with unverified-model | **MEASURED** `source_verified: false` on both mechanical and model-generated rows | A 61%-wrong layer sat indistinguishable from 58,000 sound rows for months | Surface `derivation_method` at the same prominence as verification status | The values already exist in the data; expose them as a trust signal |
-| VF-12 | A coverage figure read as a quality figure | **MEASURED** 98.11% coverage against 55–61% incompatible; two runs agree on 59.3% of shared assignments | Six months of planning built on a number that counted *resolvable* frame names, not correct ones | Never publish coverage without an accuracy figure beside it | State both, or state neither |
+| VF-12 | A coverage figure read as a quality figure | **MEASURED** 98.11% coverage against 55–61% incompatible; the two runs agree on **17.6%** of the 2,205 predicates both assigned (recomputed 2026-09-07; an earlier revision said 59.3%, which does not reproduce) | Six months of planning built on a number that counted *resolvable* frame names, not correct ones | Never publish coverage without an accuracy figure beside it | State both, or state neither |
 | VF-13 | A measurement outlives its artifact as prose | **MEASURED** the 98.1% figure survived its deleted database by six months and propagated into three documents | Planning proceeds on a claim nobody can re-check | Do not gitignore a generated artifact unless its generator is deterministic, its model pinned, and its rebuild covers every phase | Recover or re-measure; never re-cite |
 
 ### Pipeline defects — the object is fine, its use is not
@@ -1374,6 +1374,16 @@ canonicalization rulings above — 66 pairs, 29 `same-object`, 37
 `different-object`, none unresolved. Those two rows stay `ANTICIPATED` because
 nothing has been run against it yet; they move to `MEASURED` on the first scored
 pass, and there is no scorer yet, only the key.
+
+**Provenance discipline, added 2026-09-07 after an audit found three bad rows.**
+`MEASURED` was applied to numbers relayed from subagents without independent
+re-derivation, and three of thirteen were wrong: VF-09 cited a donor table as if
+it were the pack, VF-12 reported 59.3% cross-run agreement where recomputation
+gives 17.6%, and VF-05 named a nominalization that does exist. VF-10's evidence
+no longer exists at all — which is the failure VF-13 in this same table describes.
+So: **a row is `MEASURED` only when the number was derived from a durable
+artifact by whoever wrote the row**, and the artifact must outlive the session.
+A relayed number is `OBSERVED` until re-derived.
 
 **How to use this.** Two rules keep it from decaying into the prose-with-no-mechanism
 shape that §22 has: every new row arrives with a status and, if `MEASURED`, the
