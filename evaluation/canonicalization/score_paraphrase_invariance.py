@@ -94,6 +94,33 @@ def load_roles() -> tuple[dict[str, list[str]], dict[str, str]]:
     return edges, labels
 
 
+def load_role_correspondences() -> dict[tuple[str, str], dict[str, str]]:
+    """(from_pred, to_pred) -> {from_role: to_role}, derived from PropBank
+    argument positions. Without these, two predicates the pack declares related
+    still produce different objects because their role vocabularies diverge --
+    measured on 2026-09-08 as the leading genuine cause of under-collapse."""
+    out: dict[tuple[str, str], dict[str, str]] = {}
+    for f in glob.glob(str(ROOT / "ontology_packs/linguistic_core/*/role_correspondences.jsonl")):
+        for line in open(f, encoding="utf-8"):
+            d = json.loads(line)
+            out.setdefault((d["from_predicate_id"], d["to_predicate_id"]), {})[d["from_role_id"]] = d["to_role_id"]
+    return out
+
+
+def _participants_match(pa: dict, pb: dict, a_pred: str, b_pred: str,
+                        corr: dict[tuple[str, str], dict[str, str]]) -> bool:
+    """Same participants, allowing declared role correspondences to bridge
+    differently-named roles. Compares filler values, since a correspondence is
+    about which slot means what, not what it is called."""
+    if pa == pb:
+        return True
+    m = corr.get((a_pred, b_pred)) or {v: k for k, v in (corr.get((b_pred, a_pred)) or {}).items()}
+    if not m:
+        return False
+    translated = {m.get(k, k): v for k, v in pa.items()}
+    return translated == pb
+
+
 def load_relations() -> dict[frozenset[str], str]:
     rels: dict[frozenset[str], str] = {}
     for f in glob.glob(str(ROOT / "ontology_packs/linguistic_core/*/predicate_relations.jsonl")):
@@ -111,7 +138,13 @@ def _pairings(a, b):
 
 
 def select(sentence: str, candidates: list[tuple[str, str]], roles: dict[str, list[str]],
-           labels: dict[str, str]):
+           labels: dict[str, str], attempts: int = 2):
+    """Select a canonical object, rejecting role ids the pack does not declare.
+
+    Without this, 11 of 16 under-collapse failures on 2026-09-08 were the model
+    emitting bare 'Speaker' where the pack declares 'lc.role.speaker' -- a harness
+    artifact indistinguishable from a real disagreement. Fail loud and retry
+    rather than compare strings the vocabulary never sanctioned."""
     from llm_client import call_llm_structured
     parts = []
     for pid, desc in candidates:
@@ -119,10 +152,14 @@ def select(sentence: str, candidates: list[tuple[str, str]], roles: dict[str, li
         shown = ", ".join(f"{r} ({labels.get(r, r)})" for r in sorted(set(rs))[:8]) or "(no declared roles)"
         parts.append(f"  {pid} = {desc}\n      roles: {shown}")
     listing = "\n".join(parts)
-    parsed, _ = call_llm_structured(
+    last_bad: set[str] = set()
+    for attempt in range(attempts):
+      extra = ("\n\nYour previous answer used role ids this pack does not declare: "
+               f"{sorted(last_bad)}. Use only the ids listed above." if last_bad else "")
+      parsed, _ = call_llm_structured(
         model=MODEL,
         messages=[{"role": "user", "content":
-            f"Sentence: {sentence}\n\nCandidate predicates:\n{listing}\n\n"
+            f"Sentence: {sentence}\n\nCandidate predicates:\n{listing}{extra}\n\n"
             "Represent this sentence as a canonical object: select the one predicate "
             "that best fits, list its participants with the filler text verbatim "
             "(including any amount, date or price the sentence states), and give its "
@@ -130,8 +167,12 @@ def select(sentence: str, candidates: list[tuple[str, str]], roles: dict[str, li
         response_model=Selection,
         reasoning_effort="low",
         num_retries=1,
-    )
-    return parsed
+      )
+      declared = set(roles.get(parsed.predicate_id, []))
+      last_bad = {k for k in parsed.participants if k not in declared}
+      if not last_bad:
+          return parsed, True
+    return parsed, False
 
 
 def main() -> None:
@@ -141,6 +182,7 @@ def main() -> None:
 
     pred = load_pack()
     roles, labels = load_roles()
+    corr = load_role_correspondences()
     rels = load_relations()
     rows = [json.loads(l) for l in KEY.read_text(encoding="utf-8").splitlines() if l.strip()]
     rng = random.Random(SEED)
@@ -165,7 +207,7 @@ def main() -> None:
         print("dry run: no calls made")
         return
 
-    results = []
+    results, invalid = [], []
     for i, r in enumerate(scoreable, 1):
         ep = r["expected_predicates"]
         cands = set(ep["a"]) | set(ep["b"])
@@ -173,12 +215,16 @@ def main() -> None:
             cands.add(rng.choice(pool))
         listing = [(p, pred[p]) for p in sorted(cands)]
         rng.shuffle(listing)
-        sa, sb = select(r["a"], listing, roles, labels), select(r["b"], listing, roles, labels)
+        sa, ok_a = select(r["a"], listing, roles, labels)
+        sb, ok_b = select(r["b"], listing, roles, labels)
+        if not (ok_a and ok_b):
+            invalid.append(r["id"]); continue
         same_pred = sa.predicate_id == sb.predicate_id
         linked = rels.get(frozenset((sa.predicate_id, sb.predicate_id))) in COLLAPSING
         # a canonical object is predicate + participants + polarity + modality;
         # two sentences collapse only if all four agree
-        same_parts = sa.participants == sb.participants
+        same_parts = _participants_match(sa.participants, sb.participants,
+                                         sa.predicate_id, sb.predicate_id, corr)
         same_stance = (sa.polarity, sa.modality) == (sb.polarity, sb.modality)
         collapsed = (same_pred or linked) and same_parts and same_stance
         expected = (r["label"] == "same-object")
@@ -196,6 +242,11 @@ def main() -> None:
         "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in results), encoding="utf-8")
     (OUT / "paraphrase_excluded.json").write_text(json.dumps(excluded, indent=1), encoding="utf-8")
 
+    if invalid:
+        print(f"\nEXCLUDED {len(invalid)}: model would not confine itself to the pack's declared "
+              f"role ids after retry -- {' '.join(invalid)}")
+        print("Reported rather than compared: an unsanctioned role id is a harness failure,")
+        print("not a disagreement between two phrasings.")
     same = [x for x in results if x["label"] == "same-object"]
     diff = [x for x in results if x["label"] != "same-object"]
     under = [x for x in same if not x["collapsed"]]

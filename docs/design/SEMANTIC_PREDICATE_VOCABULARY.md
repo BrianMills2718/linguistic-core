@@ -177,33 +177,43 @@ unavailability: **coverage is not a quality measure.** The two runs agree on onl
 instrument on the 55–61% incompatible rate measured above. Coverage counts
 whether a model emitted a resolvable frame name, not whether it was right.
 
-**2. Answered 2026-09-08 — and the answer is two numbers, not one.** 57 of the
-key's 66 pairs scored (`evaluation/canonicalization/`).
+**2. Answered 2026-09-08. Over-collapse is eliminated; under-collapse is mostly
+measurement, not the object.** 54 of the key's 66 pairs scored
+(`evaluation/canonicalization/`).
 
-**Over-collapse: 1 of 35, 3%.** This is the number that matters, because
-over-collapse *fabricates* — reading "failed to acquire" as "acquired" invents a
-completed deal. Capturing polarity and modality alongside the predicate is what
-holds it down; a version of the scorer that asked only for a predicate measured
-**69%**.
+**Over-collapse: 0 of 32.** The direction that *fabricates* — reading "failed to
+acquire" as "acquired" — does not occur once the canonical object carries
+polarity and modality alongside the predicate. A version of the scorer that
+asked only for a predicate measured **69%**. That is the reusable finding: the
+control on fabrication is stance capture, not a better model.
 
-**Under-collapse: 17 of 22 — and it decomposes.** Roughly four are entity-name
-variants, which are outside this object's boundary by the coreference ruling and
-should be scope-excluded rather than scored. Roughly five are identical filler
-values under different role ids. Roughly four are the harness failing to hold its
-own role constraint. **Roughly four are the real finding: the pack's own role
-vocabularies diverge between predicates it declares related.**
+**Under-collapse: 15 of 22, and it decomposes.** Six are entity-name variants,
+which the coreference ruling puts outside this object's boundary and which should
+be scope-excluded rather than scored. Roughly four are a comparison artifact —
+one side emits a declared-but-empty optional role (`'lc.role.price': ''`) and the
+other omits it, which is a completeness difference, not a disagreement. The
+genuine extraction errors are few and specific: `acquire`'s agent placed in
+`beneficiary` when the pack declares `recipient`, and a passive ("Beta was
+acquired by Acme") assigned inverted. **The object's premise is not failing at
+68%; the harness is.**
 
-**Role alignment is the missing piece, not predicate alignment.** `kill` declares
-killer/victim; `murder` declares cause/instrument/victim. `rise` declares
-theme/distance; `increase` declares item/extent. Declaring that two predicates
-correspond does nothing if nothing says which of their *roles* correspond, and a
-perfect extractor cannot collapse them. This is VF-09 with a consequence
-attached.
+**What the object still lacks, and it is now derived rather than argued.**
+Declaring that `buy` and `acquire` correspond did nothing until something
+declared that `buy`'s buyer *is* `acquire`'s recipient.
+`scripts/derive_role_correspondences.py` emits 51 such correspondences from the
+pack's own `positional_role` mappings — **derived from PropBank argument
+positions, not hand-authored**, which matters because two of fifteen hand-authored
+predicate relations turned out wrong on inspection. Three argument positions are
+excluded by name with their reason, the sharpest being `help`/`aid`, where
+PropBank itself labels ARG2 `benefactive` on one and `benefactor` on the other —
+recipient against provider.
 
-*Three iterations of that scorer each found the measurement at fault rather than
-the object — 69% over-collapse, then 82% under-collapse, then 77%. All three are
-recorded in `evaluation/canonicalization/PARAPHRASE_RESULT.md`; citing one
-without the others is citing a harness artifact.*
+*Five iterations of that scorer each found the measurement at fault rather than
+the object: 69% over-collapse when it asked only for a predicate, 82%
+under-collapse when role names were free, 77% when constrained, 73% with
+correspondences, 68% once role ids were validated against the pack. The run
+record carries all five; citing one without the others is citing a harness
+artifact.*
 
 **3. Run the coverage audit that has been specified and never executed.** The
 eight categories in `world-substrate`'s binding contract, checked against this
