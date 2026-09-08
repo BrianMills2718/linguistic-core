@@ -1818,6 +1818,11 @@ one. The same runs also returned value fillers carrying an `entity_type`
 the default `predicate_variants` mode cannot run against a 5,995-predicate pack
 at all — the request exceeds a 1,048,576-token input limit before any model
 sees it, and only `response_schema_mode="compact_roles"` works at this scale.
+The fix for that already exists and is unused: `select_schema_packet` in
+`ontology_runtime/schema_selection.py` builds a dependency-closed schema packet
+over a bounded predicate set, is exported and tested, and has **no production
+caller on `main`** — its only consumer sits in a 40-day-old branch that no
+longer merges.
 And seven of the eleven proposed modifier roles already ship: five under
 identical ids, and `ARGM-TMP`/`ARGM-LOC` under the FrameNet-style names
 `lc.role.time` and `lc.role.location`. Loading all eleven fails composition

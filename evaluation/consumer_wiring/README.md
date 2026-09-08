@@ -117,6 +117,21 @@ should not be read as the constraint making extraction less reliable.
    `predicate_variants`, still builds a per-predicate Pydantic variant over the
    whole pack and the request fails on a 1,048,576-token input limit. Only
    `response_schema_mode="compact_roles"` runs against a pack this size.
+
+   **Correction, same day:** the first version of this note said the mechanism
+   to narrow the schema did not exist. It does.
+   `ontology_runtime/schema_selection.py` provides
+   `select_schema_packet(profile, source_text=..., max_predicates=16)`, which
+   builds a dependency-closed schema packet over selected predicates — exactly
+   the missing piece. It is exported from `ontology_runtime/__init__.py` and
+   covered by `tests/ontology/test_schema_selection.py`, and **nothing in the
+   extraction path calls it**: on `main` its only callers are its own test and
+   the package's `__all__`. The one production consumer lives in
+   `plan0180-pack-neutral-relation-recovery`, an unmerged 40-day-old branch
+   that no longer merges cleanly. So the accurate statement is not "no
+   mechanism exists" but "the mechanism exists, is tested, and is unadopted" —
+   implementation without adoption, which is a different problem with a much
+   cheaper fix.
 2. **Seven of eleven proposed modifier roles already ship.** Loading all eleven
    fails composition: `extension identity conflict: section=role_types
    identity=('lc.role.manner',)`. Detail in
