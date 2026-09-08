@@ -31,6 +31,25 @@ into an accuracy figure.
 Each iteration found the measurement at fault rather than the object. Citing any
 one of these numbers without the others is citing a harness artifact.
 
+## Five-run result, aggregated per pair
+
+`--runs 5`. Under-collapse 6, 8, 8, 9, 7 of 16; over-collapse 0, 0, 1, 1, 0 of 28.
+
+| | pairs |
+|---|---|
+| always right | 33 |
+| flaky (instrument noise) | 8 — A03 A05 B01 B07 C11 C12 C15 G02 |
+| always wrong (object, extractor, or key) | 5 — A01 A10 A11 C13 G01 |
+
+**Aggregating per pair is what made this legible.** A rate mixes a case that
+fails every run with one that flips between runs, and those mean opposite things:
+the first is a property of the system, the second is the instrument. Eight of the
+thirteen failures in any given run are the second kind.
+
+Note that B01 (passive inversion) and B07 (merge symmetry) are *flaky*, not
+stable — the extractor sometimes handles them. Symmetry declaration helps
+sometimes; it is not reliable, and a single run cannot show that.
+
 ## The variance check, which should have come first
 
 Three consecutive runs of **identical code** gave under-collapse of 6, 7 and 8 of

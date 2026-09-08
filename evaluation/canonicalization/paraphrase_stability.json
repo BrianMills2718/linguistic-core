@@ -1,0 +1,319 @@
+{
+ "runs": 5,
+ "per_pair": {
+  "A01": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "A02": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "A03": [
+   true,
+   true,
+   true,
+   false,
+   true
+  ],
+  "A04": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "A05": [
+   true,
+   false,
+   false,
+   false,
+   true
+  ],
+  "A06": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "A07": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "A09": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "A10": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "A11": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "B01": [
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "B02": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "B03": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "B04": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "B05": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "B06": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "B07": [
+   true,
+   false,
+   false,
+   false,
+   false
+  ],
+  "B08": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C01": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C02": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C03": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "C04": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C05": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C07": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C08": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C09": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C10": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C11": [
+   true,
+   true,
+   true,
+   true,
+   false
+  ],
+  "C12": [
+   true,
+   true,
+   true,
+   false,
+   true
+  ],
+  "C13": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "C14": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C15": [
+   true,
+   false,
+   true,
+   true
+  ],
+  "E04": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F01": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F02": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F04": [
+   true,
+   true,
+   true
+  ],
+  "F05": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F06": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F07": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F08": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "F09": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "F10": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "G01": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "G02": [
+   true,
+   false,
+   true,
+   true,
+   true
+  ],
+  "G03": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "C06": [
+   true,
+   true,
+   true,
+   true
+  ]
+ }
+}

@@ -26,7 +26,7 @@ answered here.
 - Schema-blocked and no-expected-predicate pairs are excluded and reported
   separately, so a representation gap is never scored as an extraction failure.
 
-Usage:  python evaluation/canonicalization/score_paraphrase_invariance.py [--dry-run]
+Usage:  python evaluation/canonicalization/score_paraphrase_invariance.py [--dry-run] [--runs N]
         (needs `pip install -e ".[review]"` for llm_client)
 """
 from __future__ import annotations
@@ -208,6 +208,10 @@ def select(sentence: str, candidates: list[tuple[str, str]], roles: dict[str, li
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--runs", type=int, default=1,
+                    help="Repeat the whole scoring pass N times. At n=16 scoreable "
+                         "same-object pairs a one-pair swing is 6 points, so a single "
+                         "run cannot resolve differences anyone would act on.")
     args = ap.parse_args()
 
     pred = load_pack()
@@ -245,40 +249,61 @@ def main() -> None:
         print("dry run: no calls made")
         return
 
+    per_pair: dict[str, list[bool]] = {}
     results, invalid = [], []
-    for i, r in enumerate(scoreable, 1):
-        ep = r["expected_predicates"]
-        cands = set(ep["a"]) | set(ep["b"])
-        while len(cands) < len(set(ep["a"]) | set(ep["b"])) + DISTRACTORS:
-            cands.add(rng.choice(pool))
-        listing = [(p, pred[p]) for p in sorted(cands)]
-        rng.shuffle(listing)
-        sa, ok_a = select(r["a"], listing, roles, labels)
-        sb, ok_b = select(r["b"], listing, roles, labels)
-        if not (ok_a and ok_b):
-            invalid.append(r["id"]); continue
-        same_pred = sa.predicate_id == sb.predicate_id
-        linked = rels.get(frozenset((sa.predicate_id, sb.predicate_id))) in COLLAPSING
-        # a canonical object is predicate + participants + polarity + modality;
-        # two sentences collapse only if all four agree
-        pa = _canonicalise_symmetric(sa.participants, sa.predicate_id, sym)
-        pb = _canonicalise_symmetric(sb.participants, sb.predicate_id, sym)
-        same_parts = _participants_match(pa, pb, sa.predicate_id, sb.predicate_id, corr)
-        same_stance = (sa.polarity, sa.modality) == (sb.polarity, sb.modality)
-        collapsed = (same_pred or linked) and same_parts and same_stance
-        expected = (r["label"] == "same-object")
-        results.append({**{k: r[k] for k in ("id", "label", "failure_mode", "a", "b")},
-                        "picked_a": sa.predicate_id, "picked_b": sb.predicate_id,
-                        "same_predicate": same_pred, "linked_by_relation": linked,
-                        "same_participants": same_parts, "same_stance": same_stance,
-                        "participants_a": sa.participants, "participants_b": sb.participants,
-                        "stance_a": [sa.polarity, sa.modality], "stance_b": [sb.polarity, sb.modality],
-                        "collapsed": collapsed, "correct": collapsed == expected})
-        if i % 15 == 0:
-            print(f"  scored {i}/{len(scoreable)}")
+    for run in range(args.runs):
+      if args.runs > 1:
+          print(f"\n--- run {run+1}/{args.runs} ---")
+      results, invalid = [], []
+      for i, r in enumerate(scoreable, 1):
+            ep = r["expected_predicates"]
+            cands = set(ep["a"]) | set(ep["b"])
+            while len(cands) < len(set(ep["a"]) | set(ep["b"])) + DISTRACTORS:
+                cands.add(rng.choice(pool))
+            listing = [(p, pred[p]) for p in sorted(cands)]
+            rng.shuffle(listing)
+            sa, ok_a = select(r["a"], listing, roles, labels)
+            sb, ok_b = select(r["b"], listing, roles, labels)
+            if not (ok_a and ok_b):
+                invalid.append(r["id"]); continue
+            same_pred = sa.predicate_id == sb.predicate_id
+            linked = rels.get(frozenset((sa.predicate_id, sb.predicate_id))) in COLLAPSING
+            # a canonical object is predicate + participants + polarity + modality;
+            # two sentences collapse only if all four agree
+            pa = _canonicalise_symmetric(sa.participants, sa.predicate_id, sym)
+            pb = _canonicalise_symmetric(sb.participants, sb.predicate_id, sym)
+            same_parts = _participants_match(pa, pb, sa.predicate_id, sb.predicate_id, corr)
+            same_stance = (sa.polarity, sa.modality) == (sb.polarity, sb.modality)
+            collapsed = (same_pred or linked) and same_parts and same_stance
+            expected = (r["label"] == "same-object")
+            per_pair.setdefault(r["id"], []).append(collapsed == (r["label"] == "same-object"))
+            results.append({**{k: r[k] for k in ("id", "label", "failure_mode", "a", "b")},
+                            "picked_a": sa.predicate_id, "picked_b": sb.predicate_id,
+                            "same_predicate": same_pred, "linked_by_relation": linked,
+                            "same_participants": same_parts, "same_stance": same_stance,
+                            "participants_a": sa.participants, "participants_b": sb.participants,
+                            "stance_a": [sa.polarity, sa.modality], "stance_b": [sb.polarity, sb.modality],
+                            "collapsed": collapsed, "correct": collapsed == expected})
+            if i % 15 == 0:
+                print(f"  scored {i}/{len(scoreable)}")
+
+      if args.runs > 1:
+          u = sum(1 for x in results if x["label"] == "same-object" and not x["collapsed"])
+          o = sum(1 for x in results if x["label"] != "same-object" and x["collapsed"])
+          print(f"  run {run+1}: under-collapse {u}, over-collapse {o}")
 
     (OUT / "paraphrase_results.jsonl").write_text(
         "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in results), encoding="utf-8")
+    if args.runs > 1:
+        stable_fail = sorted(k for k, v in per_pair.items() if not any(v))
+        flaky = sorted(k for k, v in per_pair.items() if any(v) and not all(v))
+        (OUT / "paraphrase_stability.json").write_text(json.dumps(
+            {"runs": args.runs, "per_pair_correct": per_pair,
+             "always_wrong": stable_fail, "flaky": flaky}, indent=1), encoding="utf-8")
+        print(f"\nacross {args.runs} runs: {len(stable_fail)} pairs ALWAYS wrong, "
+              f"{len(flaky)} FLAKY, {len(per_pair)-len(stable_fail)-len(flaky)} always right")
+        print("  always wrong (the object or a real extraction limit): " + " ".join(stable_fail))
+        print("  flaky (extractor inconsistency, not a stable property): " + " ".join(flaky))
     (OUT / "paraphrase_excluded.json").write_text(json.dumps(excluded, indent=1), encoding="utf-8")
 
     if invalid:
@@ -286,6 +311,19 @@ def main() -> None:
               f"role ids after retry -- {' '.join(invalid)}")
         print("Reported rather than compared: an unsanctioned role id is a harness failure,")
         print("not a disagreement between two phrasings.")
+    if args.runs > 1:
+        stable_fail = [k for k, v in per_pair.items() if not any(v)]
+        stable_pass = [k for k, v in per_pair.items() if all(v)]
+        flaky = [k for k, v in per_pair.items() if any(v) and not all(v)]
+        print(f"\n=== across {args.runs} runs, per pair ===")
+        print(f"  always correct : {len(stable_pass)}")
+        print(f"  always wrong   : {len(stable_fail)}  {' '.join(sorted(stable_fail))}")
+        print(f"  FLAKY          : {len(flaky)}  {' '.join(sorted(flaky))}")
+        print("  A pair that is always wrong is the object or the key. A flaky pair is the")
+        print("  extractor being inconsistent, and no single run can tell them apart.")
+        (OUT / "paraphrase_stability.json").write_text(
+            json.dumps({"runs": args.runs, "per_pair": per_pair}, indent=1), encoding="utf-8")
+
     same = [x for x in results if x["label"] == "same-object"]
     diff = [x for x in results if x["label"] != "same-object"]
     under = [x for x in same if not x["collapsed"]]

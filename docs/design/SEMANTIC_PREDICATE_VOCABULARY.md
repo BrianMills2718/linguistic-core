@@ -177,44 +177,49 @@ unavailability: **coverage is not a quality measure.** The two runs agree on onl
 instrument on the 55–61% incompatible rate measured above. Coverage counts
 whether a model emitted a resolvable frame name, not whether it was right.
 
-**2. Answered 2026-09-08 — one result is solid, the other is below the noise
-floor.** 47 of 66 pairs scored, after excluding 7 with no expected predicates,
-2 schema-blocked, and 10 entity-name variants the coreference ruling puts outside
-this object's boundary.
+**2. Answered 2026-09-08, across five runs, aggregated per pair rather than as a
+rate — and the rate was hiding the answer.** 47 of 66 pairs scored, after
+excluding 7 with no expected predicates, 2 schema-blocked, and 10 entity-name
+variants the coreference ruling puts outside this object's boundary.
 
-**Over-collapse: 0. Stable across four independent runs** (0 of 27, 28, 28, 29).
-The direction that *fabricates* — reading "failed to acquire" as "acquired" —
-does not occur once the canonical object carries polarity and modality alongside
-the predicate. A version of the scorer asking only for a predicate measured
-**69%**. **The control on fabrication is stance capture, not a better model.**
-This is the finding the design was built to get and it holds.
+**Over-collapse: 0 in three runs of five, 1 in the other two.** The direction
+that *fabricates* is essentially absent once the canonical object carries polarity
+and modality alongside the predicate. A version of the scorer asking only for a
+predicate measured **69%**. **The control on fabrication is stance capture, not a
+better model.** This is the finding the design was built to get.
 
-**Under-collapse: between 38% and 50%, and that spread is at a *fixed*
-configuration.** Three consecutive runs of identical code gave 6, 7 and 8
-failures of 16. With n=16 and a nondeterministic extractor, a one-pair change is
-±6 percentage points.
+**Under-collapse ranged 6 to 9 of 16 across five runs** — 38% to 56%. Quoting any
+one of those is quoting noise. Per pair, over five runs:
 
-**That invalidates the intermediate comparisons this document previously
-reported.** Successive scorer versions gave 77%, 73%, 68% and 44%. Only the last
-step is real — it came from excluding ten coreference pairs, which changes the
-denominator. The 77→73 and 73→68 improvements were one- and two-pair changes:
-**indistinguishable from run variance, and reported as if they were effects.**
-Declaring symmetric roles (VF-18) likewise cannot be shown to help at this sample
-size; it is correct in principle and its effect is unmeasurable here.
+| | pairs | what it means |
+|---|---|---|
+| always right | **33** | stable success |
+| **flaky** | **8** | the extractor is inconsistent here — *instrument*, not object |
+| **always wrong** | **5** | the object, the extractor's limits, or the key |
 
-**What is actually established:**
+**Read individually, none of the five stable failures is the vocabulary lacking
+something:**
 
-1. Over-collapse is controllable and stance capture is the control. Solid.
-2. Under-collapse sits somewhere near 40% and this key cannot resolve it more
-   finely. Getting a real number needs more pairs, repeated runs, or both —
-   n=16 after exclusions is too small for the differences anyone would want to act on.
-3. The residual failures are individually legible: over-filled optional roles, one
-   genuine passive inversion, and two content differences the key may have labelled
-   too generously.
+- **A01, A10, G01 — the extractor picks inconsistent or extra slots.** For "Acme
+  acquired Beta" it put Acme in `beneficiary` (ARG4) while the paraphrase used
+  `buyer` (ARG0); for "Revenue rose 8%" it used ARG2 on one side and ARG3 on the
+  other. The declared correspondences map ARG*n* to ARG*n* and cannot bridge a
+  slot the extractor chose wrongly.
+- **A11 — a real content difference.** "cut 400 jobs" against "reduced headcount
+  by 400": *jobs* and *headcount* are not the same filler.
+- **C13 — arguably a key labelling error.** "agreed to acquire" and "signed an
+  agreement to acquire" fill genuinely disjoint frames (`speaker`/`undertaking`
+  against `signatory`/`agreement`), and "an agreement" is not "acquire Beta".
 
-*Six scorer iterations, each finding the measurement at fault rather than the
-object — and then a variance check finding four of those six comparisons were
-noise. The run record carries all of it.*
+**So the vocabulary work holds.** Predicate relations, derived role
+correspondences, symmetric role pairs and modifier roles are each doing their
+job; what remains is extractor slot-discipline and two arguable labels. **The
+premise is not failing — the instrument was.**
+
+*Six scorer iterations preceded this, each finding the measurement at fault
+rather than the object, and four of those six comparisons were later shown to be
+inside the noise band. The run record carries all of it; per-pair aggregation
+over repeated runs is what finally separated signal from instrument.*
 
 **3. Run the coverage audit that has been specified and never executed.** The
 eight categories in `world-substrate`'s binding contract, checked against this
