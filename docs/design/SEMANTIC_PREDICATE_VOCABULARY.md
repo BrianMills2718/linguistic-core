@@ -177,49 +177,44 @@ unavailability: **coverage is not a quality measure.** The two runs agree on onl
 instrument on the 55–61% incompatible rate measured above. Coverage counts
 whether a model emitted a resolvable frame name, not whether it was right.
 
-**2. Answered 2026-09-08. Over-collapse is eliminated; under-collapse is 7 cases
-and every one is identified.** 47 of 66 pairs scored, after excluding 7 with no
-expected predicates, 2 schema-blocked, and 10 entity-name variants that the
-coreference ruling puts outside this object's boundary.
+**2. Answered 2026-09-08 — one result is solid, the other is below the noise
+floor.** 47 of 66 pairs scored, after excluding 7 with no expected predicates,
+2 schema-blocked, and 10 entity-name variants the coreference ruling puts outside
+this object's boundary.
 
-**Over-collapse: 0 of 28.** The direction that *fabricates* does not occur once
-the canonical object carries polarity and modality alongside the predicate. A
-version of the scorer asking only for a predicate measured **69%**. The control
-on fabrication is stance capture, not a better model — that is the reusable
-finding, and it is the one the design most needed.
+**Over-collapse: 0. Stable across four independent runs** (0 of 27, 28, 28, 29).
+The direction that *fabricates* — reading "failed to acquire" as "acquired" —
+does not occur once the canonical object carries polarity and modality alongside
+the predicate. A version of the scorer asking only for a predicate measured
+**69%**. **The control on fabrication is stance capture, not a better model.**
+This is the finding the design was built to get and it holds.
 
-**Under-collapse: 7 of 16, read individually rather than as a rate:**
+**Under-collapse: between 38% and 50%, and that spread is at a *fixed*
+configuration.** Three consecutive runs of identical code gave 6, 7 and 8
+failures of 16. With n=16 and a nondeterministic extractor, a one-pair change is
+±6 percentage points.
 
-- **3 are over-filling.** For "Acme acquired Beta" the extractor filled five
-  roles (`beneficiary`, `recipient`, `source`, `source_2`, `theme`) where the
-  paraphrase filled two. Same participants, different completeness. A harness
-  property, not a disagreement.
-- **1 is a genuine extraction error, and the test caught it.** "Beta was acquired
-  by Acme" assigned Beta to `recipient` and Acme to `source` — the passive
-  inverted. This is exactly what the measurement exists to find.
-- **1 is a real gap in the object: symmetry.** "Acme merged with Beta" and "Beta
-  merged with Acme" produce different objects because the pack has no way to
-  declare `merge` symmetric, so `part_1` and `part_2` swap and nothing says that
-  does not matter. See VF-18 below. The fact-oriented brief raises this in its
-  §12 — *"'symmetric' currently means two different things"* — and that section
-  was explicitly among the ones this design did not absorb.
-- **2 are genuine content differences** the key may have labelled too
-  generously: "agreed to acquire" against "signed an agreement to acquire" fill
-  different frames, and "cut 400 jobs" against "reduced headcount by 400" differ
-  in what the text actually says.
+**That invalidates the intermediate comparisons this document previously
+reported.** Successive scorer versions gave 77%, 73%, 68% and 44%. Only the last
+step is real — it came from excluding ten coreference pairs, which changes the
+denominator. The 77→73 and 73→68 improvements were one- and two-pair changes:
+**indistinguishable from run variance, and reported as if they were effects.**
+Declaring symmetric roles (VF-18) likewise cannot be shown to help at this sample
+size; it is correct in principle and its effect is unmeasurable here.
 
-**Role correspondences are derived, not authored.**
-`scripts/derive_role_correspondences.py` emits 51 from the pack's own
-`positional_role` mappings — from PropBank argument positions, which matters
-because two of fifteen *hand-authored* predicate relations turned out wrong on
-inspection. Three positions are excluded with their reason, the sharpest being
-`help`/`aid`, where PropBank itself labels ARG2 `benefactive` on one and
-`benefactor` on the other.
+**What is actually established:**
 
-*Six iterations, each finding the measurement at fault rather than the object:
-69% over-collapse, then 82% under-collapse, 77%, 73%, 68%, and 44%. The run
-record carries all six; citing one without the others is citing a harness
-artifact.*
+1. Over-collapse is controllable and stance capture is the control. Solid.
+2. Under-collapse sits somewhere near 40% and this key cannot resolve it more
+   finely. Getting a real number needs more pairs, repeated runs, or both —
+   n=16 after exclusions is too small for the differences anyone would want to act on.
+3. The residual failures are individually legible: over-filled optional roles, one
+   genuine passive inversion, and two content differences the key may have labelled
+   too generously.
+
+*Six scorer iterations, each finding the measurement at fault rather than the
+object — and then a variance check finding four of those six comparisons were
+noise. The run record carries all of it.*
 
 **3. Run the coverage audit that has been specified and never executed.** The
 eight categories in `world-substrate`'s binding contract, checked against this
@@ -1412,7 +1407,7 @@ taxonomy that does not separate these becomes a worry list.
 | VF-14 | Extraction returns nothing, indistinguishable from nothing-to-say | **MEASURED** ~1 call in 8; in the propositional schema it relocates to post-parse rejection at 2/15 | A sentence that produced nothing looks like a sentence that changed nothing | Count and report the empty rate beside every extraction metric | Give the representation an explicit "nothing extracted" state — it currently has none |
 | VF-15 | No relation can be expressed between claims in different documents | **MEASURED** `object_relations` are proposal-local; both known contradictions spanned two calls, so `contradicts` could not fire | Contradiction detection is impossible regardless of extraction quality | Test with a known cross-document contradiction | Specification gap — needs a cross-proposal relation, not better extraction |
 | VF-16 | Argument role names invented per call | **MEASURED** the same fact labelled `missing_predicate_count` and `state_predicate_count` in two calls | Nothing downstream can align two extractions of the same fact | Extract one fact twice and diff the role names | Constrain role names to the pack's vocabulary rather than free text |
-| VF-18 | Symmetric predicates are not declared symmetric | **MEASURED** 1 of 7 residual under-collapse cases (2026-09-08) | "Acme merged with Beta" and "Beta merged with Acme" are different objects because `part_1`/`part_2` swap and nothing says the order is immaterial | Score a symmetric-predicate pair in both argument orders | Declare symmetry per predicate. The fact-oriented brief's §12 warns that "symmetric" currently means two different things, and that section was among those this design did not absorb |
+| VF-18 | Symmetric predicates are not declared symmetric | **OBSERVED** in 1 residual case; 17 symmetric role pairs now declared, but the effect is below this key's noise floor | "Acme merged with Beta" and "Beta merged with Acme" are different objects because `part_1`/`part_2` swap and nothing says the order is immaterial | Score a symmetric-predicate pair in both argument orders | Declare symmetry per predicate. The fact-oriented brief's §12 warns that "symmetric" currently means two different things, and that section was among those this design did not absorb |
 | VF-17 | Entity resolution diverges | **MEASURED** ~4 of 17 under-collapse cases (2026-09-08), exactly as the ruling predicts | "Acme", "Acme Corp" and "Acme Corporation" become three entities, so identical predicates still yield different objects | Out of scope for this object by decision — belongs to pre-processing | Not this object's recovery; but its evaluations must control for it or they measure the resolver |
 
 **The collapse ceiling is bounded by the pack, not the extractor — computed

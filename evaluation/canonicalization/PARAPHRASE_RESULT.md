@@ -31,6 +31,20 @@ into an accuracy figure.
 Each iteration found the measurement at fault rather than the object. Citing any
 one of these numbers without the others is citing a harness artifact.
 
+## The variance check, which should have come first
+
+Three consecutive runs of **identical code** gave under-collapse of 6, 7 and 8 of
+16 — **38%, 44%, 50%**. Over-collapse was 0 in all of them, and in a fourth.
+
+So the iteration table above is partly a record of noise. Only version 6's drop is
+real, and it comes from excluding ten coreference pairs rather than from any
+improvement. The 77→73 and 73→68 steps were one- and two-pair changes at n=16.
+
+**A harness comparison at this sample size cannot resolve a single-pair
+difference, and every intermediate claim that one version improved on the last
+should be read with that in mind.** The check costs three re-runs and about six
+cents; it belonged before the fourth iteration, not after the sixth.
+
 **Stopped at six, and this time because the residual is legible rather than
 large.** Seven failures remain and each is identified individually in the design:
 three are the extractor over-filling optional roles, one is a real passive

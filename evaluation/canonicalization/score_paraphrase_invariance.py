@@ -131,6 +131,26 @@ def _participants_match(pa: dict, pb: dict, a_pred: str, b_pred: str,
     return translated == pb
 
 
+def load_symmetric() -> dict[str, list[tuple[str, str]]]:
+    """predicate_id -> interchangeable role pairs. Without this, "Acme merged with
+    Beta" and "Beta merged with Acme" are different objects (VF-18)."""
+    out: dict[str, list[tuple[str, str]]] = {}
+    for f in glob.glob(str(ROOT / "ontology_packs/linguistic_core/*/symmetric_role_pairs.jsonl")):
+        for line in open(f, encoding="utf-8"):
+            d = json.loads(line)
+            out.setdefault(d["predicate_id"], []).append((d["role_a"], d["role_b"]))
+    return out
+
+
+def _canonicalise_symmetric(parts: dict, pred: str, sym: dict[str, list[tuple[str, str]]]) -> dict:
+    """Order-normalise interchangeable roles so a swap is not a difference."""
+    out = dict(parts)
+    for ra, rb in sym.get(pred, []):
+        if ra in out and rb in out and str(out[ra]) > str(out[rb]):
+            out[ra], out[rb] = out[rb], out[ra]
+    return out
+
+
 def load_relations() -> dict[frozenset[str], str]:
     rels: dict[frozenset[str], str] = {}
     for f in glob.glob(str(ROOT / "ontology_packs/linguistic_core/*/predicate_relations.jsonl")):
@@ -193,6 +213,7 @@ def main() -> None:
     pred = load_pack()
     roles, labels = load_roles()
     corr = load_role_correspondences()
+    sym = load_symmetric()
     rels = load_relations()
     rows = [json.loads(l) for l in KEY.read_text(encoding="utf-8").splitlines() if l.strip()]
     rng = random.Random(SEED)
@@ -240,8 +261,9 @@ def main() -> None:
         linked = rels.get(frozenset((sa.predicate_id, sb.predicate_id))) in COLLAPSING
         # a canonical object is predicate + participants + polarity + modality;
         # two sentences collapse only if all four agree
-        same_parts = _participants_match(sa.participants, sb.participants,
-                                         sa.predicate_id, sb.predicate_id, corr)
+        pa = _canonicalise_symmetric(sa.participants, sa.predicate_id, sym)
+        pb = _canonicalise_symmetric(sb.participants, sb.predicate_id, sym)
+        same_parts = _participants_match(pa, pb, sa.predicate_id, sb.predicate_id, corr)
         same_stance = (sa.polarity, sa.modality) == (sb.polarity, sb.modality)
         collapsed = (same_pred or linked) and same_parts and same_stance
         expected = (r["label"] == "same-object")
