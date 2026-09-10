@@ -5,6 +5,53 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-09 — Construction-first roadmap and meaning-preserving integration
+
+Brian requested an update after reviewing the plan. The goal remains a broad,
+rich, application-independent semantic foundation, valuable as an object in its
+own right. Rejected: requiring a downstream application benchmark win before
+building that prerequisite. Construction assertions remain necessary to show
+that the artifact implements its declared semantics; application comparisons
+remain downstream feedback, not admission gates.
+
+The living design is reconciled around five stages: semantic contract, finite
+source/coverage boundary, source-preserving import, explicit integration, and
+exact-version compilation with construction evidence. The immediate next slice
+is the mapping/scope contract and repair of its existing validation route, not
+broad ingestion or a consumer rewrite. Exact donor pins remain an explicit stage
+2 deliverable, not invented selections. Coverage now includes both linguistic
+constructions and conceptual domains.
+
+Rejected: treating closeMatch and broader/narrower relations as undirected
+equality. Existing reachability and paraphrase scripts use that interpretation
+and glob across versions/candidates. Their historical results are retained but
+cannot certify the revised semantics. Role-position agreement generates a
+mapping candidate, not semantic equivalence. Proposition content, assertion
+support, and event occurrence identity are separated; residual prose remains
+allowed under Brian's earlier ruling without being promoted to formal meaning.
+
+The canonical-layer/source-preservation decision is no longer reopened as a
+merge-versus-preserve question. Coreference stays upstream. The vocabulary does
+not install a world model, effect execution, or application reasoning.
+
+Brian explicitly permitted internal NomBank use without deciding to adopt it.
+The plan therefore records an eligible internal candidate, not mandatory
+ingestion or permission to redistribute. Existing public-artifact terms remain
+unchanged; rewriting descriptions is not assumed to remove donor obligations.
+
+The older full design, including its detailed cross-project source inventory,
+is preserved at [the pre-reconciliation revision](https://github.com/BrianMills2718/linguistic-core/blob/f99d97a42b48a0ed58283b8673dd6698e751a067/docs/design/SEMANTIC_PREDICATE_VOCABULARY.md).
+Its superseded roadmap and unqualified measurements are historical, not current
+authority. Stable failure-mode IDs, user rulings, source links, unresolved work,
+and raw run records are retained. The old quality preregistration is explicitly
+historical rather than silently rewritten. README now points directly to the
+construction roadmap and identifies the existing 0.3.3 pack.
+
+This update changes documentation only. It does not implement the semantic
+contract, repair scoring, ingest donors, run model evaluations, alter released
+pack data, or claim downstream capability. Recovery uses the linked Git revision;
+no source/run artifacts were deleted.
+
 ## 2026-09-08 — The relation layer ships as 0.3.3; the consumer contract was the blocker
 
 The 16 predicate relations, 51 role correspondences and 17 symmetric role pairs

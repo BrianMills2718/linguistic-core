@@ -22,8 +22,8 @@ truth. Linguistic Core and Semantic Foundry now share the same core preservation
 principle — a canonical layer with versioned source mappings, not one giant
 collapsed source ontology — while retaining different responsibilities.
 
-For the current authority matrix, lineage dispositions, empirical gates, and
-cleanup policy, see the [current ontology/semantic cluster architecture](https://github.com/BrianMills2718/vision/blob/main/wiki/synthesis/ontology-semantic-cluster-current-architecture-2026-09-07.md).
+For the cross-project authority matrix and lineage dispositions, see the
+[ontology/semantic cluster architecture](https://github.com/BrianMills2718/vision/blob/main/wiki/synthesis/ontology-semantic-cluster-current-architecture-2026-09-07.md).
 The earlier dated baseline is historical.
 
 ## Start here
@@ -34,6 +34,12 @@ in its closing compendium — where every piece of cited evidence lives, includi
 the parts that live in other repositories. Read it before proposing any change
 to the pack's shape. `docs/design/DESIGN_LOG.md` records what changed in it and
 why.
+
+The [construction roadmap](docs/design/SEMANTIC_PREDICATE_VOCABULARY.md#what-to-do-in-order)
+builds the semantic contract, bounds source coverage, preserves donor meaning,
+integrates explicit mappings, and compiles a coherent release. Its next slice
+is precise mapping/scope semantics and exact-version construction checks.
+Downstream benchmark wins are not a prerequisite for building the foundation.
 
 ## What's here
 
@@ -69,8 +75,10 @@ This work derives from and is grateful to:
 
 ## Status
 
-`linguistic_core@0.3.2` is the current version: 1,326 relation predicates
-from the widened SUMO module set, plus the original FrameNet/PropBank-derived
-event vocabulary carried forward from earlier versions. See the pack's own
+`linguistic_core@0.3.3` is the current version: a relation-layer extension of
+`0.3.2`, adding predicate relations, role correspondences, and symmetric role
+pairs while inheriting its predicates, roles, and types. These declarations do
+not yet implement the full semantic contract in the construction roadmap.
+See the pack's own
 `ontology_packs/linguistic_core/<version>/manifest.yaml` for exact provenance
 per version.
