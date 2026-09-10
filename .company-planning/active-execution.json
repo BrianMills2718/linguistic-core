@@ -1,0 +1,50 @@
+{
+  "active_slice": {
+    "description": "Pin the first-release donor/component/field/rights inventory and complete the linguistic-construction by conceptual-domain matrix",
+    "next_action": "Implement the strict inventory contract, exact source bindings, finite dispositions, complete matrix, validator, and retained human report.",
+    "requires_external_action": false,
+    "requires_spend": false,
+    "slice_id": "m2-finite-first-release-inventory",
+    "status": "executing",
+    "target_revision": "linguistic-core-m2-v1"
+  },
+  "authority": {
+    "external_action_authorized": false,
+    "human_decision": null,
+    "human_decision_required": false,
+    "implementation_authorized": true,
+    "spend_cap_usd": 0,
+    "spend_used_usd": 0
+  },
+  "circuit_breakers": {
+    "context_integrity_valid": true,
+    "max_same_boundary_failures": 3,
+    "runtime_integrity_valid": true
+  },
+  "completion": {
+    "evidence_revision": null,
+    "receipt_ref": null,
+    "remaining_ready_work": 1,
+    "requested": false,
+    "verifier_outcome": null
+  },
+  "cursor_id": "linguistic-core-m2-first-release-inventory-v1",
+  "cursor_revision": 1,
+  "failure_state": {
+    "boundary": null,
+    "last_failure_ref": null,
+    "same_boundary_failures": 0
+  },
+  "goal_ref": "goal:linguistic-core-roadmap-4-m2",
+  "lifecycle_state": "active",
+  "observations": [],
+  "plan_revision": "linguistic-core-roadmap@4",
+  "ready_alternatives": [],
+  "record_type": "plan_execution_cursor",
+  "schema_version": "1.0",
+  "target": {
+    "branch": "m2/finite-first-release-inventory-20260909",
+    "repository": "BrianMills2718/linguistic-core",
+    "worktree": "/home/brian/code/linguistic-core/worktrees/m2/finite-first-release-inventory-20260909"
+  }
+}
