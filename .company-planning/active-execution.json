@@ -1,11 +1,11 @@
 {
   "active_slice": {
     "description": "Pin the first-release donor/component/field/rights inventory and complete the linguistic-construction by conceptual-domain matrix",
-    "next_action": "Implement the strict inventory contract, exact source bindings, finite dispositions, complete matrix, validator, and retained human report.",
+    "next_action": null,
     "requires_external_action": false,
     "requires_spend": false,
     "slice_id": "m2-finite-first-release-inventory",
-    "status": "executing",
+    "status": "accepted",
     "target_revision": "linguistic-core-m2-v1"
   },
   "authority": {
@@ -22,14 +22,14 @@
     "runtime_integrity_valid": true
   },
   "completion": {
-    "evidence_revision": null,
-    "receipt_ref": null,
-    "remaining_ready_work": 1,
-    "requested": false,
-    "verifier_outcome": null
+    "evidence_revision": "c91f10dbccdff848e755cb5a5a5582e3d52225f3",
+    "receipt_ref": "git:c91f10dbccdff848e755cb5a5a5582e3d52225f3:evaluation/first_release_inventory/first_release_inventory_report_v1.json#sha256=c1a4bfc4aa7724ef578f7efd60af89a9ad71a873afd2d8b691f05996704054c2",
+    "remaining_ready_work": 0,
+    "requested": true,
+    "verifier_outcome": "pass"
   },
   "cursor_id": "linguistic-core-m2-first-release-inventory-v1",
-  "cursor_revision": 1,
+  "cursor_revision": 2,
   "failure_state": {
     "boundary": null,
     "last_failure_ref": null,
@@ -37,7 +37,15 @@
   },
   "goal_ref": "goal:linguistic-core-roadmap-4-m2",
   "lifecycle_state": "active",
-  "observations": [],
+  "observations": [
+    {
+      "boundary": "finite-first-release-inventory",
+      "evidence_ref": "git:c91f10dbccdff848e755cb5a5a5582e3d52225f3:evaluation/first_release_inventory/first_release_inventory_report_v1.json#sha256=c1a4bfc4aa7724ef578f7efd60af89a9ad71a873afd2d8b691f05996704054c2",
+      "kind": "authentic_result",
+      "observation_id": "obs-m2-first-release-inventory",
+      "outcome": "pass"
+    }
+  ],
   "plan_revision": "linguistic-core-roadmap@4",
   "ready_alternatives": [],
   "record_type": "plan_execution_cursor",
