@@ -1,0 +1,50 @@
+{
+  "active_slice": {
+    "description": "Build and exercise the acquisition-family semantic construction contract against exact linguistic_core@0.3.3 closure",
+    "next_action": "Implement the strict contract, exact closure loader, acquisition assertions, visible failures, and retained reports.",
+    "requires_external_action": false,
+    "requires_spend": false,
+    "slice_id": "m1-executable-semantic-contract",
+    "status": "executing",
+    "target_revision": "linguistic-core-m1-v1"
+  },
+  "authority": {
+    "external_action_authorized": false,
+    "human_decision": null,
+    "human_decision_required": false,
+    "implementation_authorized": true,
+    "spend_cap_usd": 0,
+    "spend_used_usd": 0
+  },
+  "circuit_breakers": {
+    "context_integrity_valid": true,
+    "max_same_boundary_failures": 3,
+    "runtime_integrity_valid": true
+  },
+  "completion": {
+    "evidence_revision": null,
+    "receipt_ref": null,
+    "remaining_ready_work": 1,
+    "requested": false,
+    "verifier_outcome": null
+  },
+  "cursor_id": "linguistic-core-m1-semantic-contract-v1",
+  "cursor_revision": 1,
+  "failure_state": {
+    "boundary": null,
+    "last_failure_ref": null,
+    "same_boundary_failures": 0
+  },
+  "goal_ref": "roadmap:linguistic-core-roadmap@3#M1",
+  "lifecycle_state": "active",
+  "observations": [],
+  "plan_revision": "linguistic-core-roadmap@3",
+  "ready_alternatives": [],
+  "record_type": "plan_execution_cursor",
+  "schema_version": "1.0",
+  "target": {
+    "branch": "m1/executable-semantic-contract-20260909",
+    "repository": "BrianMills2718/linguistic-core",
+    "worktree": "/home/brian/code/linguistic-core/worktrees/m1/executable-semantic-contract-20260909"
+  }
+}
