@@ -1,0 +1,681 @@
+{
+  "schema_version": "linguistic-two-axis-coverage-matrix-v1",
+  "inventory_id": "linguistic-core-first-release",
+  "inventory_revision": "linguistic-core-first-release-inventory@1",
+  "cells": [
+    {
+      "construction": "verbal_predicates",
+      "domain": "physical_spatial",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "time_change",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "agents_organizations",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "possession_transfer",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "social_legal",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "information_communication",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "cognition_argument",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "verbal_predicates",
+      "domain": "measurement",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "All three selected inventories can contribute, but M3 must disposition records per domain."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "physical_spatial",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "time_change",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "agents_organizations",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "possession_transfer",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "social_legal",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "information_communication",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "cognition_argument",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "nominal_references",
+      "domain": "measurement",
+      "status": "explicit_gap",
+      "source_keys": [],
+      "note": "No nominal donor component is selected; NomBank remains internal-only and unselected."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "physical_spatial",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "time_change",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "agents_organizations",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "possession_transfer",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "social_legal",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "information_communication",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "cognition_argument",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "adjectival_state_predication",
+      "domain": "measurement",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17",
+        "sumo_root_kif"
+      ],
+      "note": "Frame and ontology fields are selected; record-level domain coverage is unmeasured."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "physical_spatial",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "time_change",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "agents_organizations",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "possession_transfer",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "social_legal",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "information_communication",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "cognition_argument",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "light_verb_constructions",
+      "domain": "measurement",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "propbank_frames_34",
+        "framenet_17"
+      ],
+      "note": "Rolesets and frames are selected; construction-level coverage remains an M3 disposition."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "physical_spatial",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "time_change",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "agents_organizations",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "possession_transfer",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "social_legal",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "information_communication",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "cognition_argument",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "alternations_converses",
+      "domain": "measurement",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "framenet_17"
+      ],
+      "note": "Directional frame and frame-element relations are selected; mappings remain unreviewed."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "physical_spatial",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "time_change",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "agents_organizations",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "possession_transfer",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "social_legal",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "information_communication",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "cognition_argument",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "negation_modality_aspect",
+      "domain": "measurement",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "physical_spatial",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "time_change",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "agents_organizations",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "possession_transfer",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "social_legal",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "information_communication",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "cognition_argument",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents quantification, but the selected donors have no audited construction inventory."
+    },
+    {
+      "construction": "quantities_comparisons",
+      "domain": "measurement",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO relation and constraint fields are selected for measurement coverage disposition in M3."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "physical_spatial",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "time_change",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "agents_organizations",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "possession_transfer",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "social_legal",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "information_communication",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "cognition_argument",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "temporal_scope",
+      "domain": "measurement",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "physical_spatial",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "time_change",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "agents_organizations",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "possession_transfer",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "social_legal",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "information_communication",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "cognition_argument",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "generic_kind_claims",
+      "domain": "measurement",
+      "status": "selected_unmeasured",
+      "source_keys": [
+        "sumo_root_kif"
+      ],
+      "note": "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "physical_spatial",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "time_change",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "agents_organizations",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "possession_transfer",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "social_legal",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "information_communication",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "cognition_argument",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    },
+    {
+      "construction": "nested_attributed_claims",
+      "domain": "measurement",
+      "status": "contract_only",
+      "source_keys": [],
+      "note": "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."
+    }
+  ]
+}
