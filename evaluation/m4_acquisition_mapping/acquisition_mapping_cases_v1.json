@@ -1,0 +1,9 @@
+{
+  "schema_version": "m4-acquisition-mapping-case-selection.v1",
+  "source_cases": "../semantic_construction/acquisition_cases_v1.json",
+  "case_ids": [
+    "purchase_to_acquisition_allowed",
+    "acquisition_to_purchase_rejected",
+    "buyer_seller_swap_rejected"
+  ]
+}
