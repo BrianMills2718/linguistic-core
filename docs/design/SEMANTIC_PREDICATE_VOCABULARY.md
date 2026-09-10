@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@4
+revision: linguistic-core-roadmap@5
 status: active
 owner: Brian Mills
 dependencies: []
@@ -32,10 +32,10 @@ or publication.
 **Artifact consumer / decision value:** the next authorized implementation
 session uses this document to select the dependency-ready construction slice
 without reopening the product thesis or inventing later-stage detail.
-**Last outcome-bearing update:** `linguistic-core-roadmap@4`, 2026-09-09;
-M1 accepted with an executable semantic contract and 11 passing acquisition
-construction assertions over the exact declared `linguistic_core@0.3.3`
-closure. No published pack or consumer changed.
+**Last outcome-bearing update:** `linguistic-core-roadmap@5`, 2026-09-09;
+M2 accepted with an executable finite inventory of three pinned donors, three
+selected components, 37 included fields, five deferred candidates, and all 80
+construction-by-domain cells. No published pack or consumer changed.
 
 ## Contents
 
@@ -151,17 +151,21 @@ internal-only source.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
-- M1's retained JSON and Markdown report is reviewable at
-  `evaluation/semantic_construction/`; broader inventory, donor preservation,
-  integration, and release work remain unstarted or partial.
+- M2 fixes the first-release denominator at the exact pinned PropBank 3.4,
+  FrameNet 1.7, and approved SUMO v2 components. Every component and field has
+  an inclusion, implementation, and rights disposition; PropBank examples are
+  the sole selected field not yet retained.
+- M1 and M2 reports are reviewable at `evaluation/semantic_construction/` and
+  `evaluation/first_release_inventory/`. Donor preservation, integration, and
+  release work remain unstarted or partial.
 
 Progress is intentionally separated:
 
 | Progress class | Current state |
 |---|---|
-| Outcome | M1 observed: the exact current closure produces the acquisition construction report; the finite integrated release outcome remains future work |
-| Enabling | Implemented through M1: versioned packs, exact closure loader, executable semantic contract, explicit failures, tests, and a live package consumer seam exist |
-| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M2 is the next unstarted milestone |
+| Outcome | M1 and M2 observed: the exact closure produces the acquisition report and the first-release inventory has a finite, rights-dispositioned denominator; the integrated release remains future work |
+| Enabling | Implemented through M2: exact closure loading, executable semantic contract, pinned source identities, component/field dispositions, structured evidence bindings, and a complete two-axis matrix |
+| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M3 is the next dependency-ready milestone |
 
 ## Backward Path and Dependencies
 
@@ -176,15 +180,15 @@ inspectable integrated semantic report
 | Capability | Canonical owner / seam | Dependency | Current evidence | State |
 |---|---|---|---|---|
 | Semantic contract | Linguistic Core schemas, compiler contracts, and construction assertions | hard | 11/11 acquisition assertions pass against exact 0.3.3 closure with retained report | accepted for M1 |
-| Finite source inventory | Linguistic Core source configuration and retained inputs | hard | historical source manifests and coverage reports exist; first-release denominator is not fixed | conditional on contract fields |
+| Finite source inventory | Linguistic Core source configuration and retained M2 inventory/report | hard | exact donor identities, component counts, fields, rights, exclusions, and 80 matrix cells validate against pinned evidence | accepted for M2 |
 | Source-preserving compilation | Linguistic Core compiler and versioned pack manifests | hard | current packs compile, but selected donor meaning is incompletely retained | partial |
 | Mapping adjudication | Linguistic Core mapping/provenance records | hard | explicit relation sections ship; semantics and role alignments are not certified | partial |
 | Reference package load | `linguistic_core` package seam consumed by `onto-canon6` | evidence | pinned external consumer exists | reuse; no consumer rewrite |
 | Internal nominal donor option | private NomBank source boundary | optional | Brian authorized internal use; incremental construction value and retained components are undecided | exploration required after inventory contract |
 
-The executable semantic contract is no longer the first missing boundary. The
-next boundary is M2's finite source inventory and field/rights disposition;
-bulk ingestion remains premature until that denominator exists.
+The finite first-release denominator is no longer missing. The next boundary is
+M3's source-preserving donor work against that inventory; broad or unselected
+ingestion remains outside the boundary.
 
 ## Critical Path
 
@@ -211,25 +215,27 @@ five stages while later donors remain explicitly unintegrated.
 | Milestone | Planning state | Inspectable output / stable boundary | Required capability and evidence | Promotion or replan trigger |
 |---|---|---|---|---|
 | M1. Executable semantic contract | `accepted` | Retained JSON and Markdown acquisition construction reports against exact 0.3.3 closure, including reversed-role failure | 11/11 focused assertions pass; unsupported direction, mapping, role, scope, occurrence, and support operations fail visibly | Reopen only if a later construction exposes a contract distinction M1 cannot express |
-| M2. Finite first-release inventory | `fully_specifiable_now` | Pinned donor/component/field/rights manifest plus two-axis coverage matrix | M1 identifies the fields and unsupported states the inventory must carry | Promote after every selected component and field has a rights and inclusion disposition; replan if a selected donor cannot legally or technically supply a required field |
-| M3. Source-preserving donor slices | `conditional` | Reproducible donor records retaining definitions, roles, restrictions, examples where permitted, and native links | M2 denominator and field dispositions; reconciliation against exact retained inputs | Promote donor-by-donor when selected records are accounted for; do not wait for every later donor to exercise compilation |
+| M2. Finite first-release inventory | `accepted` | Pinned donor/component/field/rights manifest plus complete 10-by-8 coverage matrix | Three donor identities and component counts validate against exact evidence; 37 included fields and five deferred candidates have explicit dispositions | Reopen if source identity, rights evidence, component counts, or the target closure changes |
+| M3. Source-preserving donor slices | `fully_specifiable_now` | Reproducible donor records retaining definitions, roles, restrictions, examples where permitted, and native links | M2 denominator and field dispositions; reconciliation against exact retained inputs | Promote donor-by-donor when selected records are accounted for; do not wait for every later donor to exercise compilation |
 | M4. Deliberate integration | `conditional` | Reviewed directional mappings with role transforms, conditions, provenance, and explicit unresolved cases | M1 operations plus M3 preserved records; donor-native links reused before generated proposals | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
 | M5. Coherent integrated release candidate | `conditional` | Exact closure builds, loads, and emits the canonical report across the selected matrix | M1-M4 accepted for the finite release boundary | Human gate before public release; reset the candidate if reproducibility or source-rights lineage fails |
 | M6. Consumer-specific profiles and feedback | `deliberately_deferred` | Smaller loss-declaring projections and downstream observations | One coherent integrated release candidate and a named consumer need | Resume only after M5; application results may shape profiles, not retroactively gate construction of the foundation |
 
-**Execution frontier:** M1 is accepted. M2 is the next dependency-ready
-outcome-bearing milestone, but has not started in this M1-only lane.
+**Execution frontier:** M1 and M2 are accepted. M3 is the next dependency-ready
+outcome-bearing milestone; begin with the one selected field explicitly marked
+`not_yet_retained`, PropBank examples, against the existing pinned projection.
 
-**Design frontier:** M2's inventory fields and rights/disposition contract are
-now ready to shape. Detailed donor
-ingestion, mapping campaigns, release mechanics, and consumer profiles remain
+**Design frontier:** M3 may now be designed donor-by-donor against the fixed M2
+denominator. Mapping campaigns, release mechanics, and consumer profiles remain
 conditional; specifying them now would encode guesses as commitments.
 
 ## Active Slice
 
-M1 is complete. Its accepted implementation specifies the mapping and scope
-contract using the acquisition examples below and exercises it against **one
-explicitly selected pack version and its declared ancestors**.
+M2 is complete. Its accepted inventory binds `linguistic_core@0.3.3` to exact
+PropBank, FrameNet, and approved SUMO source identities; gives each selected
+component and field a rights and inclusion disposition; explicitly defers
+NomBank, WordNet, VerbNet, Wikidata, and SemLink; and expands all ten
+construction axes across all eight domain axes.
 
 Before M1, the reachability/scoring scripts used a `COLLAPSING` set containing
 `exactMatch`, `closeMatch`, `broaderThan`, and `narrowerThan`, and use
@@ -239,39 +245,39 @@ and removed specialization from the equality set. “Reachable” still does not
 validate that a declared relationship is true, so it remains separate from the
 executable construction assertions.
 
-This slice does not authorize broad donor ingestion, a consumer-runtime rewrite,
-a new database backend, or application benchmark runs.
+This slice did not ingest donor bytes, alter a published pack, select a
+restricted source, authorize release, rewrite a consumer runtime, or run an
+application benchmark.
 
-**Focused check:** the acquisition examples below must distinguish identity,
-direction, roles, and scope against one named pack closure. Unsupported mapping
-operations fail visibly. Existing published packs remain unchanged during this
-slice.
+**Focused check:** exact source identities, rights dispositions, component
+counts, evidence hashes, target pack identity, selected-source references, and
+all 80 matrix cells must reconcile or fail visibly.
 
-**Visible result:** a human-readable retained construction report for the
-acquisition example family, backed by machine assertions, rather than a score or
-predicate count.
+**Visible result:** a retained human-readable inventory report plus JSON report
+and two-axis coverage matrix, backed by machine assertions rather than an
+unbounded donor wish list.
 
-**Input / output and affected boundaries:** input is one named 0.3.3 closure and
-the acquisition cases; output is the report plus validated contract records.
-Only Linguistic Core's contract, exact-version loader/validator, and focused
-tests change. The `onto-canon6` runtime and published pack contents do not.
+**Input / output and affected boundaries:** inputs are the exact 0.3.3 manifest,
+the pinned source manifest, the SUMO module disposition, and retained source and
+crosswalk counts. Outputs are the inventory contract and reports. Only
+Linguistic Core planning, configuration, validation, and evaluation surfaces
+change. The `onto-canon6` runtime and published pack contents do not.
 
-**Implementation constraints:** preserve existing IDs and released artifacts;
-do not reinterpret `closeMatch`, `broaderThan`, or `narrowerThan` as equality;
-keep occurrence, proposition, and assertion identity distinct; retain mapping
-direction, conditions, role transforms, provenance, and declared loss.
+**Implementation constraints:** preserve exact donor and pack identities, bind
+counts and rights to structured retained evidence, treat excluded candidates as
+unselected, and keep publication explicitly unauthorized.
 
-**Failure, containment, and rollback:** unsupported operations fail with an
-inspectable reason. If 0.3.3 cannot carry the contract without changing its
-published meaning, add a new candidate contract/version rather than rewriting
-0.3.3. The branch and generated candidate artifacts remain recoverable Git
-state; no consumer migration occurs in this slice.
+**Failure, containment, and rollback:** evidence, identity, rights, count, or
+matrix drift fails with inspectable error codes. The branch and generated
+artifacts remain recoverable Git state; no donor cache, consumer, publication,
+or release is mutated.
 
 ### A finite first-release boundary
 
 The aspiration is broad; the first release must have a finite denominator.
-Stage 2 produces the actual pinned inventory, not an arbitrary “6,000 is done”
-target. The selected source versions and fields are still open decisions.
+Stage 2 produced the actual pinned inventory, not an arbitrary “6,000 is done”
+target. The selected source versions, components, fields, and exclusions are now
+fixed by `config/first_release_inventory_v1.yaml`.
 
 Track coverage on two axes:
 
@@ -627,8 +633,6 @@ the old artifacts unchanged and attach new results to their own contract/version
 
 These are construction decisions, not reopened questions about the goal:
 
-- What exact donor versions, components, and fields constitute the first
-  integrated release, and what does its two-axis matrix exclude?
 - Does NomBank add enough distinct nominal structure to select it for the
   internal profile, and which components would that profile retain?
 - What serialized identity/reference mechanism distinguishes proposition
@@ -652,7 +656,7 @@ settled; they are not open gates.
 | Preserve donor meanings behind a canonical layer rather than flattening all sources | `human_set` | accepted design and current architecture | representation and integration |
 | Run M1 before further bulk ingestion | `agent_decided_reversible` | the executable semantic contract is the first missing boundary and prevents new ambiguous rows | execution frontier |
 | Reuse the current package/consumer seam without changing `onto-canon6` | `agent_decided_reversible` | a live pinned dependency already exists; this slice can prove the object through its own load boundary | reference observation |
-| Treat exact donor versions and fields as M2 output | `agent_decided_reversible` | selecting them before M1 would assume contract fields not yet fixed | release boundary |
+| Select exact PropBank 3.4, FrameNet 1.7, and approved SUMO v2 components for the first release | `agent_decided_reversible` | they are already pinned, rights-dispositioned, and backed by retained structured evidence; unpinned candidates remain explicit exclusions | first-release inventory |
 | NomBank may be evaluated only in a private internal profile | `human_set` | Brian authorized internal use but explicitly did not select it | source and publication boundary |
 | The current pack can support M1 through additive candidate contracts | `assumption` | existing versioning and contract machinery suggest this; if false, M1 replans a new candidate pack shape without rewriting releases | active slice |
 | Publication of NomBank-derived or other internal-only outputs | `human_required` | internal-use permission is not redistribution authority | release gate only |
@@ -689,13 +693,14 @@ The construction-first outcome and five-stage sequence are accepted. No human
 decision is required for the active slice. NomBank adoption and any publication
 of internally sourced material remain later human-owned decisions.
 
-**Human decisions:** none for M1. The next human gate is only encountered if a
+**Human decisions:** none for M2. The next human gate is only encountered if a
 later milestone proposes selecting restricted NomBank components or publishing
 an integrated release.
 
-**Exact next action:** open a new M2 lane to define the finite first-release
-inventory schema and two-axis coverage matrix, then disposition candidate
-donor components and fields—including rights—without ingesting them.
+**Exact next action:** open a new M3 lane for PropBank examples, the inventory's
+sole selected `not_yet_retained` field, and reconcile the resulting
+source-preserving records against the exact pinned PropBank component without
+changing published packs.
 
 ## The sibling project, and why it is not a competitor
 

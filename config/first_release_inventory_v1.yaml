@@ -1,0 +1,199 @@
+schema_version: linguistic-first-release-inventory-v1
+inventory_id: linguistic-core-first-release
+revision: linguistic-core-first-release-inventory@1
+target_pack:
+  pack_id: linguistic_core
+  pack_version: 0.3.3
+publication_status: not_authorized
+source_manifest:
+  path: config/linguistic_sources_v1.yaml
+  sha256: f6fb22c1563440e2e6d02d89df530798213a3ca16cff0684a5063ef1cdb383ac
+target_pack_manifest:
+  path: ontology_packs/linguistic_core/0.3.3/manifest.yaml
+  sha256: bffd40273ec81400ea52949e330497d8173eb83205f70da80b004e2598e60fa6
+supporting_evidence:
+  - path: docs/adr/0040-sumo-module-licensing-publish-under-open-terms.md
+    sha256: 87e8d904b21ca16a6311398f9e2ec2bc4abd7fa63164d42b3b2496c96d180468
+  - path: docs/runs/artifacts/plan0147_sumo_module_publication_v2.json
+    sha256: d775b8742ba7caf204bdd8397db6e8531b2c878e8b61ebd8f052618e64ad348d
+  - path: docs/runs/artifacts/plan0147_source_coverage_v1.json
+    sha256: 7bdbb10512f94d10cdeae7334a830d0ccb84e3b921d45b71da99aa395bab7f92
+  - path: docs/runs/artifacts/plan0147_linguistic_crosswalk_coverage_v1.json
+    sha256: d6bda5f96e7dfd5a3e4862a4e7d3f0974302de24076be823eac9dae6d643177e
+selected_donors:
+  - source_key: propbank_frames_34
+    family: propbank
+    release_label: 3.4 repository state at pinned commit
+    identity: git:commit=c66e0ccf28b53f00051b187db83e937b5bee2e32;tree=d1e1ef0c13c5ec6e06096b1448cb5f65d4e1b8c7
+    rights:
+      license_disposition: verified_redistributable
+      license_ids: [CC-BY-SA-4.0]
+      redistribution_allowed: true
+      release_condition: Retain attribution and ShareAlike terms in any distributed donor-derived layer; M2 itself does not authorize release.
+      evidence:
+        - path: config/linguistic_sources_v1.yaml
+          sha256: f6fb22c1563440e2e6d02d89df530798213a3ca16cff0684a5063ef1cdb383ac
+    components:
+      - component_id: frames_xml
+        selector: frames/*.xml
+        disposition: include
+        rights_scope: PropBank repository LICENSE at the pinned commit
+        count:
+          unit: selected_files
+          selected: 7566
+          available: 7566
+          selected_field: propbank_selected_files
+          available_field: propbank_selected_files
+          evidence:
+            path: docs/runs/artifacts/plan0147_source_coverage_v1.json
+            sha256: 7bdbb10512f94d10cdeae7334a830d0ccb84e3b921d45b71da99aa395bab7f92
+        fields:
+          - {field: roleset.id, disposition: include, implementation_state: retained, reason: Stable source identity already preserved by the source-native projection.}
+          - {field: predicate.lemma, disposition: include, implementation_state: retained, reason: Required lexical anchor.}
+          - {field: roleset.name, disposition: include, implementation_state: retained, reason: Source sense label is retained without treating it as a full definition.}
+          - {field: aliases.text, disposition: include, implementation_state: retained, reason: Source-declared lexical variants.}
+          - {field: aliases.part_of_speech, disposition: include, implementation_state: retained, reason: Prevents lexical variants from losing syntactic category.}
+          - {field: arguments.number, disposition: include, implementation_state: retained, reason: Source-native argument identity.}
+          - {field: arguments.function_tag, disposition: include, implementation_state: retained, reason: Retains source function typing when present.}
+          - {field: arguments.description, disposition: include, implementation_state: retained, reason: Retains role meaning instead of ARG-number-only alignment.}
+          - {field: arguments.role_links, disposition: include, implementation_state: retained, reason: Preserves donor-native role crosswalks before generated proposals.}
+          - {field: roleset.lexical_links, disposition: include, implementation_state: retained, reason: Preserves donor-native sense links.}
+          - {field: examples, disposition: include, implementation_state: not_yet_retained, reason: Selected for M3 because examples disambiguate rolesets; current projection omits them.}
+          - {field: source.xml_bytes, disposition: exclude, implementation_state: not_applicable, reason: Raw donor files remain in the external cache rather than the release artifact.}
+  - source_key: framenet_17
+    family: framenet
+    release_label: "1.7"
+    identity: archive:sha256=22f6aad6fb799ba4dbed0440714e1118442ad7d7345351de37428581284f471c;bytes=99207152;filename=framenet_v17.zip
+    rights:
+      license_disposition: verified_redistributable
+      license_ids: [CC-BY-3.0]
+      redistribution_allowed: true
+      release_condition: Preserve supplied FrameNet title, author, URI, and attribution; M2 itself does not authorize release.
+      evidence:
+        - path: config/linguistic_sources_v1.yaml
+          sha256: f6fb22c1563440e2e6d02d89df530798213a3ca16cff0684a5063ef1cdb383ac
+    components:
+      - component_id: semantic_frame_inventory
+        selector: frame/*.xml + frameIndex.xml + luIndex.xml + frRelation.xml
+        disposition: include
+        rights_scope: FrameNet 1.7 CC-BY-3.0 metadata at the pinned NLTK distribution revision
+        count:
+          unit: frames
+          selected: 1221
+          available: 1221
+          selected_field: framenet_frames
+          available_field: framenet_frames
+          evidence:
+            path: docs/runs/artifacts/plan0147_source_coverage_v1.json
+            sha256: 7bdbb10512f94d10cdeae7334a830d0ccb84e3b921d45b71da99aa395bab7f92
+        fields:
+          - {field: frame.id, disposition: include, implementation_state: retained, reason: Stable source frame identity.}
+          - {field: frame.name, disposition: include, implementation_state: retained, reason: Source frame label.}
+          - {field: frame.definition, disposition: include, implementation_state: retained, reason: Core source meaning.}
+          - {field: frame.semantic_types, disposition: exclude, implementation_state: not_applicable, reason: The current pinned projection retains semantic types only on frame elements; no frame-level field is claimed.}
+          - {field: frame_elements.id, disposition: include, implementation_state: retained, reason: Stable source role identity.}
+          - {field: frame_elements.name, disposition: include, implementation_state: retained, reason: Source role label.}
+          - {field: frame_elements.abbreviation, disposition: include, implementation_state: retained, reason: Source abbreviation used by FrameNet records.}
+          - {field: frame_elements.core_type, disposition: include, implementation_state: retained, reason: Distinguishes core and peripheral participation.}
+          - {field: frame_elements.definition, disposition: include, implementation_state: retained, reason: Retains role meaning.}
+          - {field: frame_elements.semantic_types, disposition: include, implementation_state: retained, reason: Retains source role restrictions.}
+          - {field: lexical_units.id, disposition: include, implementation_state: retained, reason: Stable source lexical-unit identity.}
+          - {field: lexical_units.name, disposition: include, implementation_state: retained, reason: Source lexical form.}
+          - {field: lexical_units.part_of_speech, disposition: include, implementation_state: retained, reason: Syntactic category.}
+          - {field: lexical_units.status, disposition: include, implementation_state: retained, reason: Source curation status.}
+          - {field: lexical_units.definition, disposition: include, implementation_state: retained, reason: Lexical-unit sense evidence.}
+          - {field: frame_relations.direction, disposition: include, implementation_state: retained, reason: Prevents source relation direction from being flattened.}
+          - {field: frame_relations.endpoints, disposition: include, implementation_state: retained, reason: Related frame identities and roles.}
+          - {field: frame_element_relations.endpoints, disposition: include, implementation_state: retained, reason: Donor-native role correspondences.}
+          - {field: source.member_refs, disposition: include, implementation_state: retained, reason: Byte-bound provenance to archive members.}
+          - {field: annotation_sets.sentences, disposition: exclude, implementation_state: not_applicable, reason: Full annotated corpus is outside the finite semantic-inventory release.}
+          - {field: source.archive_bytes, disposition: exclude, implementation_state: not_applicable, reason: Raw donor archive remains in the external cache.}
+  - source_key: sumo_root_kif
+    family: sumo
+    release_label: root KIF modules at pinned commit
+    identity: git:commit=806b9cd57d1313309aad67dffa12871c06de0f26;tree=c662412aa248bac1d7bae459752760757dcbfbdb
+    rights:
+      license_disposition: mixed_review_required
+      license_ids: [IEEE-SUMO-notice, GPL, LGPL]
+      redistribution_allowed: false
+      release_condition: Include only modules approved by ADR-0040 disposition v2 and publish derived content under GPL-compatible open terms with attribution; public release remains a separate gate.
+      evidence:
+        - path: docs/adr/0040-sumo-module-licensing-publish-under-open-terms.md
+          sha256: 87e8d904b21ca16a6311398f9e2ec2bc4abd7fa63164d42b3b2496c96d180468
+        - path: docs/runs/artifacts/plan0147_sumo_module_publication_v2.json
+          sha256: d775b8742ba7caf204bdd8397db6e8531b2c878e8b61ebd8f052618e64ad348d
+    components:
+      - component_id: approved_modules_v2
+        selector: module_dispositions[publication_disposition=approved_for_linguistic_bounded_context] (46 of 66 pinned modules)
+        disposition: include
+        rights_scope: ADR-0040 and plan0147 SUMO module publication disposition v2
+        count:
+          unit: modules
+          selected: 46
+          available: 66
+          selected_field: approved_module_count
+          available_field: selected_module_count
+          evidence:
+            path: docs/runs/artifacts/plan0147_sumo_module_publication_v2.json
+            sha256: d775b8742ba7caf204bdd8397db6e8531b2c878e8b61ebd8f052618e64ad348d
+        fields:
+          - {field: terms.type_symbols, disposition: include, implementation_state: retained, reason: Source-native class inventory.}
+          - {field: terms.relation_symbols, disposition: include, implementation_state: retained, reason: Source-native relation inventory.}
+          - {field: axioms.instance, disposition: include, implementation_state: retained, reason: Source membership assertions.}
+          - {field: axioms.subclass, disposition: include, implementation_state: retained, reason: Source type hierarchy.}
+          - {field: axioms.subrelation, disposition: include, implementation_state: retained, reason: Source relation hierarchy.}
+          - {field: axioms.argument_constraints, disposition: include, implementation_state: retained, reason: Domain and range restrictions.}
+          - {field: axioms.disjoint, disposition: include, implementation_state: retained, reason: Explicit incompatibility constraints.}
+          - {field: source.formula_refs, disposition: include, implementation_state: retained, reason: "Module, formula index, line, and digest provenance."}
+          - {field: documentation.text, disposition: exclude, implementation_state: not_applicable, reason: Excludes donor prose and the separately licensed Wikipedia-derived documentation identified by ADR-0040.}
+          - {field: formulas.raw_text, disposition: exclude, implementation_state: not_applicable, reason: Release retains structured assertions and source references rather than raw KIF text.}
+          - {field: excluded_modules, disposition: exclude, implementation_state: not_applicable, reason: The 20 v2-excluded modules remain outside the release inventory.}
+excluded_candidates:
+  - candidate_key: nombank
+    family: nombank
+    disposition: deferred_internal_only
+    version_status: not_pinned_not_selected
+    reason: Internal use is allowed, but no version/component is selected and no public redistribution basis is established.
+  - candidate_key: wordnet
+    family: wordnet
+    disposition: deferred_not_selected
+    version_status: not_pinned_not_selected
+    reason: Existing derivative traces do not substitute for a pinned source-native first-release component.
+  - candidate_key: verbnet
+    family: verbnet
+    disposition: deferred_not_selected
+    version_status: not_pinned_not_selected
+    reason: Existing derivative traces do not substitute for a pinned source-native first-release component.
+  - candidate_key: wikidata
+    family: wikidata
+    disposition: deferred_not_selected
+    version_status: not_pinned_not_selected
+    reason: A bounded property and qualifier selection has not been designed for this release.
+  - candidate_key: semlink
+    family: semlink
+    disposition: deferred_not_selected
+    version_status: not_pinned_not_selected
+    reason: No newly adopted permission, exact dependency, or selected source component exists.
+coverage_rules:
+  - construction: verbal_predicates
+    default: {status: selected_unmeasured, source_keys: [propbank_frames_34, framenet_17, sumo_root_kif], note: "All three selected inventories can contribute, but M3 must disposition records per domain."}
+  - construction: nominal_references
+    default: {status: explicit_gap, source_keys: [], note: No nominal donor component is selected; NomBank remains internal-only and unselected.}
+  - construction: adjectival_state_predication
+    default: {status: selected_unmeasured, source_keys: [framenet_17, sumo_root_kif], note: Frame and ontology fields are selected; record-level domain coverage is unmeasured.}
+  - construction: light_verb_constructions
+    default: {status: selected_unmeasured, source_keys: [propbank_frames_34, framenet_17], note: Rolesets and frames are selected; construction-level coverage remains an M3 disposition.}
+  - construction: alternations_converses
+    default: {status: selected_unmeasured, source_keys: [framenet_17], note: Directional frame and frame-element relations are selected; mappings remain unreviewed.}
+  - construction: negation_modality_aspect
+    default: {status: contract_only, source_keys: [], note: "M1 represents scope distinctions, but no selected donor field supplies a complete inventory."}
+  - construction: quantities_comparisons
+    default: {status: contract_only, source_keys: [], note: "M1 represents quantification, but the selected donors have no audited construction inventory."}
+    domain_overrides:
+      measurement: {status: selected_unmeasured, source_keys: [sumo_root_kif], note: SUMO relation and constraint fields are selected for measurement coverage disposition in M3.}
+  - construction: temporal_scope
+    default: {status: contract_only, source_keys: [], note: "M1 represents temporal scope, but no selected donor field supplies a complete temporal construction inventory."}
+  - construction: generic_kind_claims
+    default: {status: selected_unmeasured, source_keys: [sumo_root_kif], note: "SUMO type, instance, and hierarchy assertions are selected; linguistic realization remains unmeasured."}
+  - construction: nested_attributed_claims
+    default: {status: contract_only, source_keys: [], note: "M1 separates propositions, assertions, attribution, and support, but no selected donor component inventories nesting."}

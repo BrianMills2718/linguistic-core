@@ -5,6 +5,26 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-09 — M2 finite first-release inventory accepted
+
+M2 fixes the first-release denominator in an executable manifest: exact pinned
+PropBank 3.4, FrameNet 1.7, and approved SUMO v2 components; 37 included fields;
+five explicitly deferred candidates; and all 80 cells of the ten-construction by
+eight-domain coverage matrix. Source identities, target pack identity, rights
+evidence, component counts, evidence hashes, and selected-source references now
+fail visibly on drift. The retained JSON and Markdown reports keep publication
+status `not_authorized`.
+
+One initial field claim was rejected during model reconciliation: FrameNet's
+current projection retains semantic types on frame elements, not frames. The
+inventory therefore excludes `frame.semantic_types` and retains only
+`frame_elements.semantic_types`. PropBank examples are the sole selected field
+marked `not_yet_retained`, which makes them the narrow first M3 slice.
+
+NomBank remains authorized only as a possible internal input and is not selected
+or pinned. No donor bytes were broadly ingested; no published pack, restricted
+source, consumer, release, deployment, or cross-repository contract changed.
+
 ## 2026-09-09 — M1 executable semantic contract accepted
 
 M1 now executes rather than describing the acquisition-family semantics. A
