@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@3
+revision: linguistic-core-roadmap@4
 status: active
 owner: Brian Mills
 dependencies: []
@@ -32,9 +32,10 @@ or publication.
 **Artifact consumer / decision value:** the next authorized implementation
 session uses this document to select the dependency-ready construction slice
 without reopening the product thesis or inventing later-stage detail.
-**Last outcome-bearing update:** `linguistic-core-roadmap@3`, 2026-09-09;
-roadmap structure reconciled to the current pack and retained evidence. No
-semantic behavior changed in this documentation update.
+**Last outcome-bearing update:** `linguistic-core-roadmap@4`, 2026-09-09;
+M1 accepted with an executable semantic contract and 11 passing acquisition
+construction assertions over the exact declared `linguistic_core@0.3.3`
+closure. No published pack or consumer changed.
 
 ## Contents
 
@@ -140,26 +141,27 @@ internal-only source.
   role correspondences, and symmetric role pairs over its ancestors.
 - The pack compiles, loads, and is consumed by `onto-canon6` through a pinned
   external dependency. That proves a live package seam, not full semantic use.
-- The semantic contract is partly prose and partly implicit in present schemas.
-  Proposition/assertion/occurrence identity, scope, directional mapping
-  semantics, conditions, and loss-aware projections are not yet encoded as one
-  enforceable contract.
-- Current reachability/scoring code treats similarity and specialization as
-  collapsing relations and scans multiple pack directories, so its results
-  cannot certify one exact release's semantic behavior.
+- The M1 semantic-construction contract now encodes predicate, proposition,
+  occurrence, assertion, and support identity; polarity, modality, aspect,
+  time, attribution, and quantification scope; directional conditioned
+  mappings; role transforms; and explicit loss classifications.
+- The construction loader resolves only the exact target and its declared
+  ancestors. The existing reachability check now uses that loader for
+  `linguistic_core@0.3.3` and no longer treats specialization as equality.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
-- Technical execution is partial, the planned construction report is not yet
-  reviewable, and the stakeholder outcome has not yet been observed.
+- M1's retained JSON and Markdown report is reviewable at
+  `evaluation/semantic_construction/`; broader inventory, donor preservation,
+  integration, and release work remain unstarted or partial.
 
 Progress is intentionally separated:
 
 | Progress class | Current state |
 |---|---|
-| Outcome | Not observed: no finite, semantically specified integrated closure yet produces the canonical construction report |
-| Enabling | Implemented in part: versioned packs, compiler, provenance fields, relation sections, tests, and a live package consumer seam exist |
-| Process | Active: `durable_solo` route and one canonical living roadmap are recorded and machine-validated at the planning-path boundary |
+| Outcome | M1 observed: the exact current closure produces the acquisition construction report; the finite integrated release outcome remains future work |
+| Enabling | Implemented through M1: versioned packs, exact closure loader, executable semantic contract, explicit failures, tests, and a live package consumer seam exist |
+| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M2 is the next unstarted milestone |
 
 ## Backward Path and Dependencies
 
@@ -173,16 +175,16 @@ inspectable integrated semantic report
 
 | Capability | Canonical owner / seam | Dependency | Current evidence | State |
 |---|---|---|---|---|
-| Semantic contract | Linguistic Core schemas, compiler contracts, and construction assertions | hard | commitments exist in this design; no unified executable contract | first missing boundary |
+| Semantic contract | Linguistic Core schemas, compiler contracts, and construction assertions | hard | 11/11 acquisition assertions pass against exact 0.3.3 closure with retained report | accepted for M1 |
 | Finite source inventory | Linguistic Core source configuration and retained inputs | hard | historical source manifests and coverage reports exist; first-release denominator is not fixed | conditional on contract fields |
 | Source-preserving compilation | Linguistic Core compiler and versioned pack manifests | hard | current packs compile, but selected donor meaning is incompletely retained | partial |
 | Mapping adjudication | Linguistic Core mapping/provenance records | hard | explicit relation sections ship; semantics and role alignments are not certified | partial |
 | Reference package load | `linguistic_core` package seam consumed by `onto-canon6` | evidence | pinned external consumer exists | reuse; no consumer rewrite |
 | Internal nominal donor option | private NomBank source boundary | optional | Brian authorized internal use; incremental construction value and retained components are undecided | exploration required after inventory contract |
 
-The first missing boundary is therefore the executable semantic contract, not
-additional bulk ingestion. The shortest path stays inside this repository until
-the exact closure can produce the directly inspectable report.
+The executable semantic contract is no longer the first missing boundary. The
+next boundary is M2's finite source inventory and field/rights disposition;
+bulk ingestion remains premature until that denominator exists.
 
 ## Critical Path
 
@@ -208,35 +210,34 @@ five stages while later donors remain explicitly unintegrated.
 
 | Milestone | Planning state | Inspectable output / stable boundary | Required capability and evidence | Promotion or replan trigger |
 |---|---|---|---|---|
-| M1. Executable semantic contract | `fully_specifiable_now` | Acquisition construction report against one exact 0.3.3 closure, including the reversed-role failure | Encode identity levels, scope, mapping direction/conditions, role transforms, and loss; focused assertions pass | Promote when the report is retained and unsupported operations fail visibly; replan if the current pack shape cannot express a required distinction |
-| M2. Finite first-release inventory | `conditional` | Pinned donor/component/field/rights manifest plus two-axis coverage matrix | M1 identifies the fields and unsupported states the inventory must carry | Promote after M1 stabilizes the contract; replan if a selected donor cannot legally or technically supply a required field |
+| M1. Executable semantic contract | `accepted` | Retained JSON and Markdown acquisition construction reports against exact 0.3.3 closure, including reversed-role failure | 11/11 focused assertions pass; unsupported direction, mapping, role, scope, occurrence, and support operations fail visibly | Reopen only if a later construction exposes a contract distinction M1 cannot express |
+| M2. Finite first-release inventory | `fully_specifiable_now` | Pinned donor/component/field/rights manifest plus two-axis coverage matrix | M1 identifies the fields and unsupported states the inventory must carry | Promote after every selected component and field has a rights and inclusion disposition; replan if a selected donor cannot legally or technically supply a required field |
 | M3. Source-preserving donor slices | `conditional` | Reproducible donor records retaining definitions, roles, restrictions, examples where permitted, and native links | M2 denominator and field dispositions; reconciliation against exact retained inputs | Promote donor-by-donor when selected records are accounted for; do not wait for every later donor to exercise compilation |
 | M4. Deliberate integration | `conditional` | Reviewed directional mappings with role transforms, conditions, provenance, and explicit unresolved cases | M1 operations plus M3 preserved records; donor-native links reused before generated proposals | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
 | M5. Coherent integrated release candidate | `conditional` | Exact closure builds, loads, and emits the canonical report across the selected matrix | M1-M4 accepted for the finite release boundary | Human gate before public release; reset the candidate if reproducibility or source-rights lineage fails |
 | M6. Consumer-specific profiles and feedback | `deliberately_deferred` | Smaller loss-declaring projections and downstream observations | One coherent integrated release candidate and a named consumer need | Resume only after M5; application results may shape profiles, not retroactively gate construction of the foundation |
 
-**Execution frontier:** M1 is the sole active outcome-bearing goal. It is a
-vertical because it preserves the real pack, compiler/load boundary, semantic
-decisions, and a directly inspectable result.
+**Execution frontier:** M1 is accepted. M2 is the next dependency-ready
+outcome-bearing milestone, but has not started in this M1-only lane.
 
-**Design frontier:** only M2's inventory fields and rights/disposition contract
-are worth shaping early, because they depend on and exercise M1. Detailed donor
+**Design frontier:** M2's inventory fields and rights/disposition contract are
+now ready to shape. Detailed donor
 ingestion, mapping campaigns, release mechanics, and consumer profiles remain
 conditional; specifying them now would encode guesses as commitments.
 
 ## Active Slice
 
-Specify the mapping and scope contract using the acquisition examples below,
-then repair the existing validation route to exercise that contract against
-**one explicitly selected pack version and its declared ancestors**.
+M1 is complete. Its accepted implementation specifies the mapping and scope
+contract using the acquisition examples below and exercises it against **one
+explicitly selected pack version and its declared ancestors**.
 
-The current reachability/scoring scripts use a `COLLAPSING` set containing
+Before M1, the reachability/scoring scripts used a `COLLAPSING` set containing
 `exactMatch`, `closeMatch`, `broaderThan`, and `narrowerThan`, and use
 unordered predicate pairs. They also glob across pack directories, including
-candidates. Thus “reachable” currently does not establish sound equivalence
-or capability in a particular published version. Fix that before using these
-scores to certify mapping semantics. This document changes the plan, not those
-scripts or the already-published packs.
+candidates. M1 repaired the reachability loader to use the exact 0.3.3 closure
+and removed specialization from the equality set. “Reachable” still does not
+validate that a declared relationship is true, so it remains separate from the
+executable construction assertions.
 
 This slice does not authorize broad donor ingestion, a consumer-runtime rewrite,
 a new database backend, or application benchmark runs.
@@ -692,11 +693,9 @@ of internally sourced material remain later human-owned decisions.
 later milestone proposes selecting restricted NomBank components or publishing
 an integrated release.
 
-**Exact next action:** specify the M1 contract for identity, scope, mapping
-operations, role transforms, and loss; encode the acquisition cases as
-construction assertions; then update the reachability/validation route to load
-only `linguistic_core@0.3.3` and its declared ancestors and emit the retained
-construction report.
+**Exact next action:** open a new M2 lane to define the finite first-release
+inventory schema and two-axis coverage matrix, then disposition candidate
+donor components and fields—including rights—without ingesting them.
 
 ## The sibling project, and why it is not a competitor
 

@@ -1,0 +1,192 @@
+{
+  "schema_version": "semantic-construction-cases.v1",
+  "cases": [
+    {
+      "case_id": "verbal_nominal_same_proposition",
+      "description": "Acme acquired Beta and Beta's acquisition by Acme preserve the proposition.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:acme-beta", "occurrence_id": "occ:deal-1", "assertion_id": "assert:verbal", "support_record_id": "support:wire-1"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q1", "attribution": "wire-1", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:acme-beta", "occurrence_id": "occ:deal-1", "assertion_id": "assert:nominal", "support_record_id": "support:wire-1"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q1", "attribution": "wire-1", "quantification": "specific"}
+      },
+      "request": {"identity_level": "proposition", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "allowed",
+      "expected_reason": "ALLOWED"
+    },
+    {
+      "case_id": "purchase_to_acquisition_allowed",
+      "description": "Buying may project to acquiring when the commercial condition and lost consideration are explicit.",
+      "source": {
+        "identity": {"predicate_id": "lc:buy_purchase", "proposition_id": "prop:purchase-1", "occurrence_id": "occ:deal-2", "assertion_id": "assert:purchase-1", "support_record_id": "support:wire-2"},
+        "roles": {"lc.role.buyer": "entity:acme", "lc.role.goods": "entity:beta", "lc.role.seller": "entity:gamma"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "wire-2", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:purchase-1", "occurrence_id": "occ:deal-2", "assertion_id": "assert:purchase-1", "support_record_id": "support:wire-2"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta", "lc.role.source": "entity:gamma"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "wire-2", "quantification": "specific"}
+      },
+      "request": {"identity_level": "proposition", "direction": "source_to_target", "conditions": ["commercial_transaction"], "role_transforms": [{"source_role_id": "lc.role.buyer", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.goods", "target_role_id": "lc.role.theme"}, {"source_role_id": "lc.role.seller", "target_role_id": "lc.role.source"}], "loss": {"classification": "lossy", "lost_distinctions": ["commercial_consideration"]}},
+      "expected_status": "allowed",
+      "expected_reason": "ALLOWED"
+    },
+    {
+      "case_id": "acquisition_to_purchase_rejected",
+      "description": "Acquiring does not license the stronger claim that a purchase occurred.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:acquisition-2", "occurrence_id": "occ:deal-3", "assertion_id": "assert:acquisition-2", "support_record_id": "support:wire-3"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta", "lc.role.source": "entity:gamma"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "wire-3", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:buy_purchase", "proposition_id": "prop:acquisition-2", "occurrence_id": "occ:deal-3", "assertion_id": "assert:acquisition-2", "support_record_id": "support:wire-3"},
+        "roles": {"lc.role.buyer": "entity:acme", "lc.role.goods": "entity:beta", "lc.role.seller": "entity:gamma"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "wire-3", "quantification": "specific"}
+      },
+      "request": {"identity_level": "proposition", "direction": "source_to_target", "conditions": ["commercial_transaction"], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.buyer"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.goods"}, {"source_role_id": "lc.role.source", "target_role_id": "lc.role.seller"}], "loss": {"classification": "unsupported", "lost_distinctions": []}},
+      "expected_status": "rejected",
+      "expected_reason": "MAPPING_DIRECTION_UNSUPPORTED"
+    },
+    {
+      "case_id": "seller_buyer_perspectives_same_transaction",
+      "description": "Acme sold Beta to Gamma and Gamma bought Beta from Acme normalize to the same transaction roles.",
+      "source": {
+        "identity": {"predicate_id": "lc:buy_purchase", "proposition_id": "prop:transaction-1", "occurrence_id": "occ:transaction-1", "assertion_id": "assert:seller-wording", "support_record_id": "support:wire-4"},
+        "roles": {"lc.role.seller": "entity:acme", "lc.role.goods": "entity:beta", "lc.role.buyer": "entity:gamma"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q3", "attribution": "wire-4", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:buy_purchase", "proposition_id": "prop:transaction-1", "occurrence_id": "occ:transaction-1", "assertion_id": "assert:buyer-wording", "support_record_id": "support:wire-4"},
+        "roles": {"lc.role.buyer": "entity:gamma", "lc.role.goods": "entity:beta", "lc.role.seller": "entity:acme"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q3", "attribution": "wire-4", "quantification": "specific"}
+      },
+      "request": {"identity_level": "occurrence", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.seller", "target_role_id": "lc.role.seller"}, {"source_role_id": "lc.role.goods", "target_role_id": "lc.role.goods"}, {"source_role_id": "lc.role.buyer", "target_role_id": "lc.role.buyer"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "allowed",
+      "expected_reason": "ALLOWED"
+    },
+    {
+      "case_id": "buyer_seller_swap_rejected",
+      "description": "A buyer/seller reversal cannot masquerade as the same transaction.",
+      "source": {
+        "identity": {"predicate_id": "lc:buy_purchase", "proposition_id": "prop:transaction-1", "occurrence_id": "occ:transaction-1", "assertion_id": "assert:swapped", "support_record_id": "support:wire-4"},
+        "roles": {"lc.role.buyer": "entity:acme", "lc.role.goods": "entity:beta", "lc.role.seller": "entity:gamma"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q3", "attribution": "wire-4", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:buy_purchase", "proposition_id": "prop:transaction-1", "occurrence_id": "occ:transaction-1", "assertion_id": "assert:correct", "support_record_id": "support:wire-4"},
+        "roles": {"lc.role.buyer": "entity:gamma", "lc.role.goods": "entity:beta", "lc.role.seller": "entity:acme"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q3", "attribution": "wire-4", "quantification": "specific"}
+      },
+      "request": {"identity_level": "occurrence", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.buyer", "target_role_id": "lc.role.buyer"}, {"source_role_id": "lc.role.goods", "target_role_id": "lc.role.goods"}, {"source_role_id": "lc.role.seller", "target_role_id": "lc.role.seller"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "rejected",
+      "expected_reason": "ROLE_FILLER_MISMATCH"
+    },
+    {
+      "case_id": "agreement_is_not_completed_acquisition",
+      "description": "An agreement to acquire remains distinct from a completed acquisition.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:intended-deal", "occurrence_id": "occ:intended-deal", "assertion_id": "assert:intended", "support_record_id": "support:wire-5"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "intended", "aspect": "prospective", "temporal_scope": "future", "attribution": "wire-5", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:completed-deal", "occurrence_id": "occ:completed-deal", "assertion_id": "assert:completed", "support_record_id": "support:wire-5"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q4", "attribution": "wire-5", "quantification": "specific"}
+      },
+      "request": {"identity_level": "proposition", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "rejected",
+      "expected_reason": "SCOPE_MISMATCH"
+    },
+    {
+      "case_id": "denial_preserves_embedded_proposition",
+      "description": "A denial can refer to the same embedded acquisition proposition without becoming a positive assertion.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:rumored-deal", "occurrence_id": "occ:rumored-deal", "assertion_id": "assert:denial", "support_record_id": "support:denial"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "negative", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q1", "attribution": "spokesperson", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:rumored-deal", "occurrence_id": "occ:rumored-deal", "assertion_id": "assert:claim", "support_record_id": "support:rumor"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "possible", "aspect": "completed", "temporal_scope": "2026-Q1", "attribution": "rumor", "quantification": "specific"}
+      },
+      "request": {"identity_level": "proposition", "direction": "source_to_target", "conditions": ["compare_embedded_proposition"], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "allowed",
+      "expected_reason": "ALLOWED"
+    },
+    {
+      "case_id": "denial_not_same_assertion",
+      "description": "The denial and positive report are not the same assertion.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:rumored-deal", "occurrence_id": "occ:rumored-deal", "assertion_id": "assert:denial", "support_record_id": "support:denial"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "negative", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q1", "attribution": "spokesperson", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:rumored-deal", "occurrence_id": "occ:rumored-deal", "assertion_id": "assert:claim", "support_record_id": "support:rumor"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "possible", "aspect": "completed", "temporal_scope": "2026-Q1", "attribution": "rumor", "quantification": "specific"}
+      },
+      "request": {"identity_level": "assertion", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "rejected",
+      "expected_reason": "SCOPE_MISMATCH"
+    },
+    {
+      "case_id": "repeated_participants_distinct_occurrences",
+      "description": "The same participants in two acquisitions do not make one occurrence.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:repeat", "occurrence_id": "occ:repeat-1", "assertion_id": "assert:repeat-1", "support_record_id": "support:repeat-1"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026", "attribution": "ledger", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:repeat", "occurrence_id": "occ:repeat-2", "assertion_id": "assert:repeat-2", "support_record_id": "support:repeat-2"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026", "attribution": "ledger", "quantification": "specific"}
+      },
+      "request": {"identity_level": "occurrence", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "rejected",
+      "expected_reason": "IDENTITY_MISMATCH level=occurrence"
+    },
+    {
+      "case_id": "two_sources_same_proposition",
+      "description": "Two sources may support the same acquisition proposition.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:corroborated", "occurrence_id": "occ:corroborated", "assertion_id": "assert:corroborated", "support_record_id": "support:source-a"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "source-a", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:corroborated", "occurrence_id": "occ:corroborated", "assertion_id": "assert:corroborated", "support_record_id": "support:source-b"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "source-b", "quantification": "specific"}
+      },
+      "request": {"identity_level": "proposition", "direction": "source_to_target", "conditions": ["compare_embedded_proposition"], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "allowed",
+      "expected_reason": "ALLOWED"
+    },
+    {
+      "case_id": "support_records_remain_distinct",
+      "description": "Corroborating sources remain separate support records.",
+      "source": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:corroborated", "occurrence_id": "occ:corroborated", "assertion_id": "assert:corroborated", "support_record_id": "support:source-a"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "joint-record", "quantification": "specific"}
+      },
+      "target": {
+        "identity": {"predicate_id": "lc:acquire_get_obtain", "proposition_id": "prop:corroborated", "occurrence_id": "occ:corroborated", "assertion_id": "assert:corroborated", "support_record_id": "support:source-b"},
+        "roles": {"lc.role.recipient": "entity:acme", "lc.role.theme": "entity:beta"},
+        "scope": {"polarity": "positive", "modality": "asserted", "aspect": "completed", "temporal_scope": "2026-Q2", "attribution": "joint-record", "quantification": "specific"}
+      },
+      "request": {"identity_level": "support", "direction": "source_to_target", "conditions": [], "role_transforms": [{"source_role_id": "lc.role.recipient", "target_role_id": "lc.role.recipient"}, {"source_role_id": "lc.role.theme", "target_role_id": "lc.role.theme"}], "loss": {"classification": "lossless", "lost_distinctions": []}},
+      "expected_status": "rejected",
+      "expected_reason": "IDENTITY_MISMATCH level=support_record"
+    }
+  ]
+}
