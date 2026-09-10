@@ -1,3 +1,16 @@
+---
+schema_version: "1.1"
+artifact_type: initiative_roadmap
+id: linguistic-core-semantic-vocabulary
+revision: linguistic-core-roadmap@2
+status: active
+owner: Brian Mills
+dependencies: []
+planning_path: durable_solo
+planning_path_ref: ../planning/PLANNING_PATH.json
+planning_path_sha256: sha256:4ca96561133f0e17e3e35784f9c871ac2e723955da919ae4f43c40963d461dcf
+---
+
 # The Semantic Predicate Vocabulary — design
 
 **Status: current living design.** This is the authority for what Linguistic
@@ -9,20 +22,28 @@ This repository owns the vocabulary, its source mappings, and its compiler.
 `onto-canon6` is a consumer; its extraction and reasoning runtime are not owned
 here.
 
+**Actor:** Brian and future authorized coding agents continuing the build.
+**Continuity consumer:** a fresh session resuming without this conversation.
+**Maturity boundary:** prototype construction toward a versioned release; the
+active slice does not publish a new pack or change a consumer contract.
+
 ## Contents
 
-- [Goal](#goal)
-- [What to do, in order](#what-to-do-in-order)
+- [Outcome](#outcome)
+- [Critical Path](#critical-path)
+- [Active Slice](#active-slice)
 - [What richness actually buys](#what-richness-actually-buys)
 - [What the representation contains — first draft](#what-the-representation-contains--first-draft)
 - [Proposed architecture](#proposed-architecture)
 - [Canonicalization is the hard part, and there is evidence](#canonicalization-is-the-hard-part-and-there-is-evidence)
-- [Current state](#current-state-of-the-object-linguistic-core)
+- [Canonical Probe](#canonical-probe)
+- [Current Evidence](#current-evidence)
 - [Failure modes, prevention, and recovery](#failure-modes-prevention-and-recovery)
 - [Open questions](#open-questions)
+- [Decision](#decision)
 - [Related work and evidence](#related-work-and-where-the-evidence-lives)
 
-## Goal
+## Outcome
 
 Build the broadest, richest, best-integrated combination of decades of pre-LLM
 linguistic and ontological research into a single vocabulary, valued as an
@@ -59,7 +80,7 @@ The public vocabulary and any separate paid product retain the boundary in
 [ADR-0040](../adr/0040-sumo-module-licensing-publish-under-open-terms.md).
 Internal-only source experiments are a separate publication scope.
 
-## What to do, in order
+## Critical Path
 
 This is a **construction roadmap**, not a sequence of experiments asking
 whether the foundation deserves to exist. Construction checks establish that
@@ -79,7 +100,7 @@ exercising the compiler. Carry one stable acquisition example through each
 increment, then expand the declared matrix. A source slice may traverse all
 five stages while later donors remain explicitly unintegrated.
 
-### The immediate next bounded slice
+## Active Slice
 
 Specify the mapping and scope contract using the acquisition examples below,
 then repair the existing validation route to exercise that contract against
@@ -95,6 +116,15 @@ scripts or the already-published packs.
 
 This slice does not authorize broad donor ingestion, a consumer-runtime rewrite,
 a new database backend, or application benchmark runs.
+
+**Focused check:** the acquisition examples below must distinguish identity,
+direction, roles, and scope against one named pack closure. Unsupported mapping
+operations fail visibly. Existing published packs remain unchanged during this
+slice.
+
+**Exact next action:** encode the mapping/scope contract and update the current
+reachability validator to load only an explicitly selected release and its
+declared ancestors.
 
 ### A finite first-release boundary
 
@@ -299,7 +329,16 @@ appropriate acquisition sense and conditions. The reverse does not establish
 purchase: acquisition can have other means. The two are not losslessly
 interchangeable simply because the application wants one acquisition category.
 
-### Construction assertions: the stable acquisition example
+## Canonical Probe
+
+Starting state: the published 0.3.3 relation layer and the acquisition examples
+below. Action: compile/load one explicitly selected pack closure, then request
+each permitted or forbidden projection. Inspectable output: a retained report
+showing the source meaning, target meaning, role transform, scope, decision, and
+reason for every case. A reversed buyer/seller mapping is the negative case.
+Passing this probe establishes the implemented mapping contract for these cases;
+it does not establish complete linguistic coverage or downstream application
+quality.
 
 | Input/operation | Required behavior |
 |---|---|
@@ -370,7 +409,7 @@ that this entire representation works, nor does a low use of one feature in one
 corpus show that the feature should be removed from an application-independent
 foundation. Comparative application tests are not the construction gate.
 
-## Current state of the object (`linguistic-core`)
+## Current Evidence
 
 The repository's current pack is
 [`linguistic_core@0.3.3`](../../ontology_packs/linguistic_core/0.3.3/manifest.yaml),
@@ -463,6 +502,19 @@ These are construction decisions, not reopened questions about the goal:
 Canonical-layer architecture, upstream coreference ownership, this repository's
 compiler ownership, and the right to build before application benchmarking are
 settled; they are not open gates.
+
+## Decision
+
+**Planning path: `durable_solo`.** One contributor directs reversible work that
+continues across sessions, so the living design remains the one durable roadmap.
+Do not add a work-unit graph, packet per slice, or separate roadmap. Reassess the
+path for a slice that introduces concurrent writers, mutates an adopted shared
+contract, performs a persistent migration, enters a governed registry, or makes
+a consequential external change.
+
+The construction-first outcome and five-stage sequence are accepted. No human
+decision is required for the active slice. NomBank adoption and any publication
+of internally sourced material remain later human-owned decisions.
 
 ## The sibling project, and why it is not a competitor
 

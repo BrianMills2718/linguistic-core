@@ -5,6 +5,25 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-09 — Company Planning durable-solo conformance
+
+Brian clarified that personal, single-owner work is a lighter Company Planning
+route rather than an exemption from its enforceable contracts. The living design
+remains the only roadmap and now carries the required structural frontmatter and
+headings, an explicit actor and continuity consumer, maturity boundary, active
+slice, canonical acquisition probe, exact next action, and decision surface.
+
+The selected path is `durable_solo`: one contributor, reversible work, known
+boundary, and continuity across sessions. A separate hash-bound
+`PlanningPathDecisionV1` records the structured facts for the Company Planning
+validator. No work graph, packet-per-slice, duplicate status tracker, or second
+roadmap was added. The route must be reassessed when a slice introduces actual
+coordination, shared-contract mutation, migration, registry participation, or
+consequential external action.
+
+This is planning conformance, not implementation evidence for the semantic
+contract. No pack or consumer behavior changed.
+
 ## 2026-09-09 — Construction-first roadmap and meaning-preserving integration
 
 Brian requested an update after reviewing the plan. The goal remains a broad,

@@ -35,11 +35,13 @@ the parts that live in other repositories. Read it before proposing any change
 to the pack's shape. `docs/design/DESIGN_LOG.md` records what changed in it and
 why.
 
-The [construction roadmap](docs/design/SEMANTIC_PREDICATE_VOCABULARY.md#what-to-do-in-order)
+The [construction roadmap](docs/design/SEMANTIC_PREDICATE_VOCABULARY.md#critical-path)
 builds the semantic contract, bounds source coverage, preserves donor meaning,
 integrates explicit mappings, and compiles a coherent release. Its next slice
 is precise mapping/scope semantics and exact-version construction checks.
 Downstream benchmark wins are not a prerequisite for building the foundation.
+The roadmap declares and justifies its machine-checkable `durable_solo`
+[planning path](docs/planning/PLANNING_PATH.json).
 
 ## What's here
 
