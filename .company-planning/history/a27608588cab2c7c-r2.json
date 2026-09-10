@@ -1,0 +1,58 @@
+{
+  "active_slice": {
+    "description": "Build and exercise the acquisition-family semantic construction contract against exact linguistic_core@0.3.3 closure",
+    "next_action": null,
+    "requires_external_action": false,
+    "requires_spend": false,
+    "slice_id": "m1-executable-semantic-contract",
+    "status": "accepted",
+    "target_revision": "linguistic-core-m1-v1"
+  },
+  "authority": {
+    "external_action_authorized": false,
+    "human_decision": null,
+    "human_decision_required": false,
+    "implementation_authorized": true,
+    "spend_cap_usd": 0,
+    "spend_used_usd": 0
+  },
+  "circuit_breakers": {
+    "context_integrity_valid": true,
+    "max_same_boundary_failures": 3,
+    "runtime_integrity_valid": true
+  },
+  "completion": {
+    "evidence_revision": "4ca30881c3e357c740ff0738f1a82834cbd1092d",
+    "receipt_ref": "git:4ca30881c3e357c740ff0738f1a82834cbd1092d:evaluation/semantic_construction/acquisition_construction_report_v1.json#sha256=6025086257c922299e1256c5c930eac16697495135e511297719f6678606a27a",
+    "remaining_ready_work": 0,
+    "requested": true,
+    "verifier_outcome": "pass"
+  },
+  "cursor_id": "linguistic-core-m1-semantic-contract-v1",
+  "cursor_revision": 2,
+  "failure_state": {
+    "boundary": null,
+    "last_failure_ref": null,
+    "same_boundary_failures": 0
+  },
+  "goal_ref": "roadmap:linguistic-core-roadmap@3#M1",
+  "lifecycle_state": "complete",
+  "observations": [
+    {
+      "boundary": "semantic-construction-contract",
+      "evidence_ref": "git:4ca30881c3e357c740ff0738f1a82834cbd1092d:evaluation/semantic_construction/acquisition_construction_report_v1.json#sha256=6025086257c922299e1256c5c930eac16697495135e511297719f6678606a27a",
+      "kind": "authentic_result",
+      "observation_id": "obs-m1-acquisition-report",
+      "outcome": "pass"
+    }
+  ],
+  "plan_revision": "linguistic-core-roadmap@3",
+  "ready_alternatives": [],
+  "record_type": "plan_execution_cursor",
+  "schema_version": "1.0",
+  "target": {
+    "branch": "m1/executable-semantic-contract-20260909",
+    "repository": "BrianMills2718/linguistic-core",
+    "worktree": "/home/brian/code/linguistic-core/worktrees/m1/executable-semantic-contract-20260909"
+  }
+}

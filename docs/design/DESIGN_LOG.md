@@ -5,6 +5,26 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-09 — M1 executable semantic contract accepted
+
+M1 now executes rather than describing the acquisition-family semantics. A
+strict typed contract separates predicate, proposition, occurrence, assertion,
+and support identities; carries polarity, modality, aspect, temporal scope,
+attribution, and quantification; and requires directional mappings, named
+conditions, explicit role transforms, and a loss classification.
+
+The retained construction report records 11 passing assertions against the
+exact declared closure `linguistic_core@0.3.0 -> 0.3.1 -> 0.3.2 -> 0.3.3`.
+It permits purchase-to-acquisition only as a conditioned lossy projection and
+visibly rejects the reverse strengthening, buyer/seller reversal, scope
+mismatch, repeated-occurrence collapse, support-record collapse, and absent
+predicate mappings. The existing reachability checker now loads that same
+closure and no longer treats `broaderThan` or `narrowerThan` as equality.
+
+No published pack, donor inventory, consumer, application benchmark,
+restricted source, deployment, or release changed. M2 is now the next
+dependency-ready milestone, but was not started in this M1 lane.
+
 ## 2026-09-09 — Company Planning execution roadmap
 
 The construction-first design was expanded into the durable solo roadmap that
