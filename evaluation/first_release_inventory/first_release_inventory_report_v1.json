@@ -1,7 +1,7 @@
 {
   "schema_version": "linguistic-first-release-inventory-report-v1",
   "inventory_id": "linguistic-core-first-release",
-  "inventory_revision": "linguistic-core-first-release-inventory@1",
+  "inventory_revision": "linguistic-core-first-release-inventory@2",
   "target_pack": {
     "pack_id": "linguistic_core",
     "pack_version": "0.3.3"
@@ -10,7 +10,7 @@
   "selected_donor_count": 3,
   "included_component_count": 3,
   "included_field_count": 37,
-  "not_yet_retained_field_count": 1,
+  "not_yet_retained_field_count": 0,
   "excluded_candidate_count": 5,
   "coverage_cells": [
     {
@@ -694,5 +694,5 @@
     "explicit_gap": 8,
     "out_of_scope_first_release": 0
   },
-  "evidence_sha256": "097cdf1e2a61349fc018c3cf7e542db3cd0b7d1861208297098d927c78ee56ed"
+  "evidence_sha256": "afcad5369d5865fa0c9fc98310327f60485e7795c88488a3d4e67abc0b294ea5"
 }

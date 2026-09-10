@@ -5,6 +5,31 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-09 — M3 PropBank examples retained
+
+M3 closes the finite inventory's sole selected `not_yet_retained` field. The
+existing source-native PropBank projection now preserves each example's exact
+decoded sentence, source label, relation location and text, ordered argument
+types/spans/text, optional AMR, and optional note. Unknown example attributes or
+children fail visibly instead of being discarded.
+
+The authentic run verified all 7,566 files at exact commit `c66e0cc` and tree
+`d1e1ef0`, applied the two already-declared syntax repairs, retained 23,434
+examples and 56,914 example arguments, and emitted a loadable projection with
+content digest `e2628942`. Its stable `buy.01` record preserves buyer, item, and
+seller annotations. The inventory now reports zero selected fields awaiting
+retention.
+
+The real source exposed one case with an empty argument annotation and one with
+an empty relation annotation. Rejected: treating these as malformed or silently
+dropping them. Their declared types and spans remain meaningful, so M3 preserves
+the exact empty text while retaining strict structural checks around it.
+
+Only the compact reconciliation receipt is committed; raw source files and the
+complete generated projection remain external. No published pack, NomBank
+scope, consumer, publication, release, deployment, or cross-repository contract
+changed. M4 deliberate integration is now dependency-ready.
+
 ## 2026-09-09 — M2 finite first-release inventory accepted
 
 M2 fixes the first-release denominator in an executable manifest: exact pinned

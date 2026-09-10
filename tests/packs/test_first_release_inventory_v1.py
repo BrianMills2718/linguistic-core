@@ -38,7 +38,7 @@ def test_canonical_inventory_is_finite_pinned_and_matrix_complete() -> None:
         len({(item.construction, item.domain) for item in report.coverage_cells}) == 80
     )
     assert report.coverage_counts["explicit_gap"] == 8
-    assert report.not_yet_retained_field_count == 1
+    assert report.not_yet_retained_field_count == 0
     assert [
         item.components[0].count.selected for item in inventory.selected_donors
     ] == [
@@ -48,6 +48,11 @@ def test_canonical_inventory_is_finite_pinned_and_matrix_complete() -> None:
     ]
     assert "Publication status: **not_authorized**" in render_inventory_markdown(
         inventory, report
+    )
+    assert any(
+        ref.path
+        == "evaluation/propbank_examples/propbank_examples_reconciliation_v1.json"
+        for ref in inventory.supporting_evidence
     )
 
 

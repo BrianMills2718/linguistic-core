@@ -1,0 +1,53 @@
+{
+  "acquisition_example": {
+    "example_index": 4,
+    "record": {
+      "amr": null,
+      "arguments": [
+        {
+          "argument_type": "ARG0",
+          "end": "1",
+          "start": "0",
+          "text": "The company"
+        },
+        {
+          "argument_type": "ARG1",
+          "end": "6",
+          "start": "3",
+          "text": "a wheel - loader"
+        },
+        {
+          "argument_type": "ARG2",
+          "end": "8",
+          "start": "7",
+          "text": "from Dresser"
+        }
+      ],
+      "name": "buy-v: With seller:",
+      "note": null,
+      "relation": {
+        "text": "bought",
+        "token_locations": "2"
+      },
+      "source": "",
+      "text": "The company bought a wheel - loader from Dresser ."
+    },
+    "roleset_id": "buy.01",
+    "source_relative_path": "frames/buy.xml"
+  },
+  "completeness": "complete_with_declared_syntax_repairs",
+  "example_amr_count": 447,
+  "example_argument_count": 56914,
+  "example_count": 23434,
+  "example_note_count": 2,
+  "example_relation_count": 23299,
+  "parsed_file_count": 7566,
+  "projection_content_sha256": "e2628942b04c0bc66bb6081c4e953548a29970574ac8ec73fa626f9ce2dd59b0",
+  "roleset_count": 11208,
+  "schema_version": "propbank-example-reconciliation-v1",
+  "selected_payload_sha256": "22606e705b97b8d9c90f673e6a7023e4852aef736b9d935e01fd31049b29fb04",
+  "source_commit_sha": "c66e0ccf28b53f00051b187db83e937b5bee2e32",
+  "source_file_count": 7566,
+  "source_key": "propbank_frames_34",
+  "source_tree_sha": "d1e1ef0c13c5ec6e06096b1448cb5f65d4e1b8c7"
+}

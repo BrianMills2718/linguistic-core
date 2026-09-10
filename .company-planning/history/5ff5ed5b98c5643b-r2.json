@@ -1,0 +1,58 @@
+{
+  "active_slice": {
+    "description": "Retain PropBank examples in source-native records and reconcile the path against the exact pinned PropBank component",
+    "next_action": null,
+    "requires_external_action": false,
+    "requires_spend": false,
+    "slice_id": "m3-propbank-examples",
+    "status": "accepted",
+    "target_revision": "linguistic-core-m3-propbank-examples-v1"
+  },
+  "authority": {
+    "external_action_authorized": false,
+    "human_decision": null,
+    "human_decision_required": false,
+    "implementation_authorized": true,
+    "spend_cap_usd": 0,
+    "spend_used_usd": 0
+  },
+  "circuit_breakers": {
+    "context_integrity_valid": true,
+    "max_same_boundary_failures": 3,
+    "runtime_integrity_valid": true
+  },
+  "completion": {
+    "evidence_revision": "4aaefc14e2d9aaa828ece39263744e74fe626ff3",
+    "receipt_ref": "git:4aaefc14e2d9aaa828ece39263744e74fe626ff3:evaluation/propbank_examples/propbank_examples_reconciliation_v1.json#sha256=b9a808f60f1d07055d3194aa5dd18571eb771f2342b61a9a4e1328ffed7d9be2",
+    "remaining_ready_work": 0,
+    "requested": true,
+    "verifier_outcome": "pass"
+  },
+  "cursor_id": "linguistic-core-m3-propbank-examples-v1",
+  "cursor_revision": 2,
+  "failure_state": {
+    "boundary": null,
+    "last_failure_ref": null,
+    "same_boundary_failures": 0
+  },
+  "goal_ref": "goal:linguistic-core-roadmap-5-m3",
+  "lifecycle_state": "active",
+  "observations": [
+    {
+      "boundary": "exact-propbank-example-projection",
+      "evidence_ref": "git:4aaefc14e2d9aaa828ece39263744e74fe626ff3:evaluation/propbank_examples/propbank_examples_reconciliation_v1.json#sha256=b9a808f60f1d07055d3194aa5dd18571eb771f2342b61a9a4e1328ffed7d9be2",
+      "kind": "authentic_result",
+      "observation_id": "obs-m3-exact-propbank-examples",
+      "outcome": "pass"
+    }
+  ],
+  "plan_revision": "linguistic-core-roadmap@5",
+  "ready_alternatives": [],
+  "record_type": "plan_execution_cursor",
+  "schema_version": "1.0",
+  "target": {
+    "branch": "m3/propbank-examples-20260909",
+    "repository": "BrianMills2718/linguistic-core",
+    "worktree": "/home/brian/code/linguistic-core/worktrees/m3/propbank-examples-20260909"
+  }
+}
