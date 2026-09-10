@@ -5,6 +5,29 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-09 — Company Planning execution roadmap
+
+The construction-first design was expanded into the durable solo roadmap that
+the next implementation session can execute. The goal and five construction
+stages did not change. Added: the inspectable outcome and non-claim, present
+technical/review/observation state, backward dependency chain, capability-owner
+seams, epistemic milestone horizon, execution and design frontiers, explicit
+active-slice containment, uncertainty dispositions, human gates, and
+continue/scale/change/reset controls.
+
+The first missing boundary is the executable semantic contract. Therefore M1,
+not bulk donor ingestion, is the sole execution frontier: it must produce a
+retained human-readable acquisition construction report against one exact
+0.3.3 closure and reject a reversed buyer/seller mapping. M2 may shape the
+inventory fields next; later donor campaigns, integration, release, and
+consumer profiles remain conditional on observed earlier outputs.
+
+This records no application-uplift admission gate. `onto-canon6` remains a
+reused package-load evidence seam, not a runtime-change dependency. NomBank
+remains eligible for an internal profile but unselected, and publication of
+internal-only material remains a human gate. No code, pack, consumer, source
+selection, publication, or release state changed.
+
 ## 2026-09-09 — Company Planning durable-solo conformance
 
 Brian clarified that personal, single-owner work is a lighter Company Planning

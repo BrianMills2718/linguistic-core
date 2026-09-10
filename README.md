@@ -42,6 +42,11 @@ is precise mapping/scope semantics and exact-version construction checks.
 Downstream benchmark wins are not a prerequisite for building the foundation.
 The roadmap declares and justifies its machine-checkable `durable_solo`
 [planning path](docs/planning/PLANNING_PATH.json).
+It also records the current truth, backward dependency chain, milestone
+horizon, execution frontier, decision/assumption ledger, and course controls
+needed for a fresh session to continue the build without reopening settled
+questions. The active frontier is the executable semantic contract and its
+inspectable acquisition construction report.
 
 ## What's here
 

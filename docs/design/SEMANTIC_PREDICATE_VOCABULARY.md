@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@2
+revision: linguistic-core-roadmap@3
 status: active
 owner: Brian Mills
 dependencies: []
@@ -26,11 +26,24 @@ here.
 **Continuity consumer:** a fresh session resuming without this conversation.
 **Maturity boundary:** prototype construction toward a versioned release; the
 active slice does not publish a new pack or change a consumer contract.
+**Selected controls:** durable continuity, one writer, reversible repository
+changes, no consequential external action, and explicit human gates for spend
+or publication.
+**Artifact consumer / decision value:** the next authorized implementation
+session uses this document to select the dependency-ready construction slice
+without reopening the product thesis or inventing later-stage detail.
+**Last outcome-bearing update:** `linguistic-core-roadmap@3`, 2026-09-09;
+roadmap structure reconciled to the current pack and retained evidence. No
+semantic behavior changed in this documentation update.
 
 ## Contents
 
 - [Outcome](#outcome)
+- [Outcome Boundaries](#outcome-boundaries)
+- [Current Truth](#current-truth)
+- [Backward Path and Dependencies](#backward-path-and-dependencies)
 - [Critical Path](#critical-path)
+- [Milestone Horizon](#milestone-horizon)
 - [Active Slice](#active-slice)
 - [What richness actually buys](#what-richness-actually-buys)
 - [What the representation contains — first draft](#what-the-representation-contains--first-draft)
@@ -40,6 +53,8 @@ active slice does not publish a new pack or change a consumer contract.
 - [Current Evidence](#current-evidence)
 - [Failure modes, prevention, and recovery](#failure-modes-prevention-and-recovery)
 - [Open questions](#open-questions)
+- [Decisions and Assumptions](#decisions-and-assumptions)
+- [Course Controls](#course-controls)
 - [Decision](#decision)
 - [Related work and evidence](#related-work-and-where-the-evidence-lives)
 
@@ -80,6 +95,95 @@ The public vocabulary and any separate paid product retain the boundary in
 [ADR-0040](../adr/0040-sumo-module-licensing-publish-under-open-terms.md).
 Internal-only source experiments are a separate publication scope.
 
+In plain language: **for Brian and future authorized coding agents, change the
+current broad but semantically under-specified 0.3.3 pack into a reproducibly
+compiled, directly inspectable semantic vocabulary whose identities, roles,
+scope, mappings, source meanings, and declared limitations survive across
+versions.** The current investment boundary is an internal prototype advancing
+toward a finite integrated release, not a public release or application product.
+
+## Outcome Boundaries
+
+**Canonical outcome probe:** start from one pinned source inventory, the
+published 0.3.3 closure, and the stable acquisition examples; compile the
+selected release closure; load it through the reference package interface; and
+request permitted and forbidden mappings. The directly inspectable artifact is
+a retained semantic-construction report showing each source reading, canonical
+reading, identity level, roles, scope, mapping operation, information loss,
+decision, and provenance. The negative case swaps buyer and seller and must fail
+visibly.
+
+**Success evidence:** the finite selected inventory is fully dispositioned;
+construction assertions pass against the exact reproducible closure; unsupported
+or lossy operations are reported rather than silently accepted; and the same
+closure loads through the existing `linguistic_core` package seam. This is
+construction evidence for the object itself.
+
+**Non-claim:** this does not establish extraction accuracy, application uplift,
+complete coverage of language, a working reasoner, or production readiness.
+Those require separate consumers and evidence after the foundation exists.
+
+**Non-goals for this initiative:** application workflow semantics, entity
+resolution, extraction policy, truth maintenance, world-state execution, a new
+database backend, and a proprietary redistribution of donor-derived content.
+
+**Authority limits:** ordinary reversible repository planning and construction
+may proceed autonomously. Pause for paid model/data access, public release or
+publication, a changed consumer contract, destructive migration, concurrent
+writers on the same seam, or any redistribution decision involving an
+internal-only source.
+
+## Current Truth
+
+- `linguistic_core@0.3.3` is the canonical merged pack. It contains a 5,995
+  predicate / 908 role composed closure and adds explicit predicate relations,
+  role correspondences, and symmetric role pairs over its ancestors.
+- The pack compiles, loads, and is consumed by `onto-canon6` through a pinned
+  external dependency. That proves a live package seam, not full semantic use.
+- The semantic contract is partly prose and partly implicit in present schemas.
+  Proposition/assertion/occurrence identity, scope, directional mapping
+  semantics, conditions, and loss-aware projections are not yet encoded as one
+  enforceable contract.
+- Current reachability/scoring code treats similarity and specialization as
+  collapsing relations and scans multiple pack directories, so its results
+  cannot certify one exact release's semantic behavior.
+- WordNet and VerbNet source preservation, nominal coverage, richer donor
+  fields, and reviewed role alignment remain incomplete. NomBank is permitted
+  for an internal profile but is neither selected nor publishable by default.
+- Technical execution is partial, the planned construction report is not yet
+  reviewable, and the stakeholder outcome has not yet been observed.
+
+Progress is intentionally separated:
+
+| Progress class | Current state |
+|---|---|
+| Outcome | Not observed: no finite, semantically specified integrated closure yet produces the canonical construction report |
+| Enabling | Implemented in part: versioned packs, compiler, provenance fields, relation sections, tests, and a live package consumer seam exist |
+| Process | Active: `durable_solo` route and one canonical living roadmap are recorded and machine-validated at the planning-path boundary |
+
+## Backward Path and Dependencies
+
+```text
+inspectable integrated semantic report
+  <- compile, load, and request allowed/forbidden projections
+  <- enforce identity, role, scope, mapping, and loss decisions
+  <- preserve selected donor records and adjudicated mappings
+  <- pin the exact source inventory, fields, rights, and pack ancestry
+```
+
+| Capability | Canonical owner / seam | Dependency | Current evidence | State |
+|---|---|---|---|---|
+| Semantic contract | Linguistic Core schemas, compiler contracts, and construction assertions | hard | commitments exist in this design; no unified executable contract | first missing boundary |
+| Finite source inventory | Linguistic Core source configuration and retained inputs | hard | historical source manifests and coverage reports exist; first-release denominator is not fixed | conditional on contract fields |
+| Source-preserving compilation | Linguistic Core compiler and versioned pack manifests | hard | current packs compile, but selected donor meaning is incompletely retained | partial |
+| Mapping adjudication | Linguistic Core mapping/provenance records | hard | explicit relation sections ship; semantics and role alignments are not certified | partial |
+| Reference package load | `linguistic_core` package seam consumed by `onto-canon6` | evidence | pinned external consumer exists | reuse; no consumer rewrite |
+| Internal nominal donor option | private NomBank source boundary | optional | Brian authorized internal use; incremental construction value and retained components are undecided | exploration required after inventory contract |
+
+The first missing boundary is therefore the executable semantic contract, not
+additional bulk ingestion. The shortest path stays inside this repository until
+the exact closure can produce the directly inspectable report.
+
 ## Critical Path
 
 This is a **construction roadmap**, not a sequence of experiments asking
@@ -99,6 +203,26 @@ Stages are dependencies, not a requirement to finish every donor before
 exercising the compiler. Carry one stable acquisition example through each
 increment, then expand the declared matrix. A source slice may traverse all
 five stages while later donors remain explicitly unintegrated.
+
+## Milestone Horizon
+
+| Milestone | Planning state | Inspectable output / stable boundary | Required capability and evidence | Promotion or replan trigger |
+|---|---|---|---|---|
+| M1. Executable semantic contract | `fully_specifiable_now` | Acquisition construction report against one exact 0.3.3 closure, including the reversed-role failure | Encode identity levels, scope, mapping direction/conditions, role transforms, and loss; focused assertions pass | Promote when the report is retained and unsupported operations fail visibly; replan if the current pack shape cannot express a required distinction |
+| M2. Finite first-release inventory | `conditional` | Pinned donor/component/field/rights manifest plus two-axis coverage matrix | M1 identifies the fields and unsupported states the inventory must carry | Promote after M1 stabilizes the contract; replan if a selected donor cannot legally or technically supply a required field |
+| M3. Source-preserving donor slices | `conditional` | Reproducible donor records retaining definitions, roles, restrictions, examples where permitted, and native links | M2 denominator and field dispositions; reconciliation against exact retained inputs | Promote donor-by-donor when selected records are accounted for; do not wait for every later donor to exercise compilation |
+| M4. Deliberate integration | `conditional` | Reviewed directional mappings with role transforms, conditions, provenance, and explicit unresolved cases | M1 operations plus M3 preserved records; donor-native links reused before generated proposals | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
+| M5. Coherent integrated release candidate | `conditional` | Exact closure builds, loads, and emits the canonical report across the selected matrix | M1-M4 accepted for the finite release boundary | Human gate before public release; reset the candidate if reproducibility or source-rights lineage fails |
+| M6. Consumer-specific profiles and feedback | `deliberately_deferred` | Smaller loss-declaring projections and downstream observations | One coherent integrated release candidate and a named consumer need | Resume only after M5; application results may shape profiles, not retroactively gate construction of the foundation |
+
+**Execution frontier:** M1 is the sole active outcome-bearing goal. It is a
+vertical because it preserves the real pack, compiler/load boundary, semantic
+decisions, and a directly inspectable result.
+
+**Design frontier:** only M2's inventory fields and rights/disposition contract
+are worth shaping early, because they depend on and exercise M1. Detailed donor
+ingestion, mapping campaigns, release mechanics, and consumer profiles remain
+conditional; specifying them now would encode guesses as commitments.
 
 ## Active Slice
 
@@ -122,9 +246,25 @@ direction, roles, and scope against one named pack closure. Unsupported mapping
 operations fail visibly. Existing published packs remain unchanged during this
 slice.
 
-**Exact next action:** encode the mapping/scope contract and update the current
-reachability validator to load only an explicitly selected release and its
-declared ancestors.
+**Visible result:** a human-readable retained construction report for the
+acquisition example family, backed by machine assertions, rather than a score or
+predicate count.
+
+**Input / output and affected boundaries:** input is one named 0.3.3 closure and
+the acquisition cases; output is the report plus validated contract records.
+Only Linguistic Core's contract, exact-version loader/validator, and focused
+tests change. The `onto-canon6` runtime and published pack contents do not.
+
+**Implementation constraints:** preserve existing IDs and released artifacts;
+do not reinterpret `closeMatch`, `broaderThan`, or `narrowerThan` as equality;
+keep occurrence, proposition, and assertion identity distinct; retain mapping
+direction, conditions, role transforms, provenance, and declared loss.
+
+**Failure, containment, and rollback:** unsupported operations fail with an
+inspectable reason. If 0.3.3 cannot carry the contract without changing its
+published meaning, add a new candidate contract/version rather than rewriting
+0.3.3. The branch and generated candidate artifacts remain recoverable Git
+state; no consumer migration occurs in this slice.
 
 ### A finite first-release boundary
 
@@ -503,6 +643,38 @@ Canonical-layer architecture, upstream coreference ownership, this repository's
 compiler ownership, and the right to build before application benchmarking are
 settled; they are not open gates.
 
+## Decisions and Assumptions
+
+| Choice or uncertainty | Disposition | Reason / evidence | Affected boundary |
+|---|---|---|---|
+| Build the broad foundation before application comparison | `human_set` | Brian rejected downstream uplift as an admission test for constructing its prerequisite | initiative outcome and sequencing |
+| Preserve donor meanings behind a canonical layer rather than flattening all sources | `human_set` | accepted design and current architecture | representation and integration |
+| Run M1 before further bulk ingestion | `agent_decided_reversible` | the executable semantic contract is the first missing boundary and prevents new ambiguous rows | execution frontier |
+| Reuse the current package/consumer seam without changing `onto-canon6` | `agent_decided_reversible` | a live pinned dependency already exists; this slice can prove the object through its own load boundary | reference observation |
+| Treat exact donor versions and fields as M2 output | `agent_decided_reversible` | selecting them before M1 would assume contract fields not yet fixed | release boundary |
+| NomBank may be evaluated only in a private internal profile | `human_set` | Brian authorized internal use but explicitly did not select it | source and publication boundary |
+| The current pack can support M1 through additive candidate contracts | `assumption` | existing versioning and contract machinery suggest this; if false, M1 replans a new candidate pack shape without rewriting releases | active slice |
+| Publication of NomBank-derived or other internal-only outputs | `human_required` | internal-use permission is not redistribution authority | release gate only |
+
+## Course Controls
+
+- **Continue** while each increment makes the acquisition report more complete
+  or removes a demonstrated direct blocker to it.
+- **Change tactics** after two supporting increments without a new inspectable
+  report capability, or after three failures at the same semantic boundary
+  without new evidence; return to the smallest real acquisition case.
+- **Scale** from one example family to the two-axis coverage matrix only after
+  M1's exact closure and negative case pass. Scale donor-by-donor, preserving a
+  finite denominator and explicit unresolved states.
+- **Reset the candidate, not the initiative**, if the representation cannot
+  preserve identity/scope/role distinctions, exact compilation is not
+  reproducible, or selected-source rights cannot be traced. Do not silently
+  weaken the contract to keep a green score.
+- **Stop and request human action** only for spend, publication/redistribution,
+  a material outcome change, destructive migration, or a real concurrent-write
+  collision. Application benchmark results may later change profiles or
+  priorities; they do not invalidate the construction-first outcome by default.
+
 ## Decision
 
 **Planning path: `durable_solo`.** One contributor directs reversible work that
@@ -515,6 +687,16 @@ a consequential external change.
 The construction-first outcome and five-stage sequence are accepted. No human
 decision is required for the active slice. NomBank adoption and any publication
 of internally sourced material remain later human-owned decisions.
+
+**Human decisions:** none for M1. The next human gate is only encountered if a
+later milestone proposes selecting restricted NomBank components or publishing
+an integrated release.
+
+**Exact next action:** specify the M1 contract for identity, scope, mapping
+operations, role transforms, and loss; encode the acquisition cases as
+construction assertions; then update the reachability/validation route to load
+only `linguistic_core@0.3.3` and its declared ancestors and emit the retained
+construction report.
 
 ## The sibling project, and why it is not a competitor
 
