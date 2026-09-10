@@ -7,6 +7,23 @@
         <role n="0" descr="examiner" />
         <role n="1" descr="records" />
       </roles>
+      <example name="audit-v: transitive" src="fixture">
+        <text>The reviewer audited the records .</text>
+        <propbank>
+          <rel relloc="2">audited</rel>
+          <arg type="ARG0" start="0" end="1">The reviewer</arg>
+          <arg type="ARG1" start="3" end="4">the records</arg>
+        </propbank>
+        <amr version="fixture-1">(a / audit-01)</amr>
+        <note>Fixture source note.</note>
+      </example>
+      <example name="audit-v: source-empty annotation" src="fixture">
+        <text>Audit.</text>
+        <propbank>
+          <rel relloc="?" />
+          <arg type="ARG0" start="?" end="?" />
+        </propbank>
+      </example>
     </roleset>
   </predicate>
 </frameset>

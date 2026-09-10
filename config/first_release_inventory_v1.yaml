@@ -1,6 +1,6 @@
 schema_version: linguistic-first-release-inventory-v1
 inventory_id: linguistic-core-first-release
-revision: linguistic-core-first-release-inventory@1
+revision: linguistic-core-first-release-inventory@2
 target_pack:
   pack_id: linguistic_core
   pack_version: 0.3.3
@@ -20,6 +20,8 @@ supporting_evidence:
     sha256: 7bdbb10512f94d10cdeae7334a830d0ccb84e3b921d45b71da99aa395bab7f92
   - path: docs/runs/artifacts/plan0147_linguistic_crosswalk_coverage_v1.json
     sha256: d6bda5f96e7dfd5a3e4862a4e7d3f0974302de24076be823eac9dae6d643177e
+  - path: evaluation/propbank_examples/propbank_examples_reconciliation_v1.json
+    sha256: b9a808f60f1d07055d3194aa5dd18571eb771f2342b61a9a4e1328ffed7d9be2
 selected_donors:
   - source_key: propbank_frames_34
     family: propbank
@@ -58,7 +60,7 @@ selected_donors:
           - {field: arguments.description, disposition: include, implementation_state: retained, reason: Retains role meaning instead of ARG-number-only alignment.}
           - {field: arguments.role_links, disposition: include, implementation_state: retained, reason: Preserves donor-native role crosswalks before generated proposals.}
           - {field: roleset.lexical_links, disposition: include, implementation_state: retained, reason: Preserves donor-native sense links.}
-          - {field: examples, disposition: include, implementation_state: not_yet_retained, reason: Selected for M3 because examples disambiguate rolesets; current projection omits them.}
+          - {field: examples, disposition: include, implementation_state: retained, reason: "Source text and native relation, argument, AMR, note, and provenance fields are retained by M3 and reconciled against the exact pinned component."}
           - {field: source.xml_bytes, disposition: exclude, implementation_state: not_applicable, reason: Raw donor files remain in the external cache rather than the release artifact.}
   - source_key: framenet_17
     family: framenet

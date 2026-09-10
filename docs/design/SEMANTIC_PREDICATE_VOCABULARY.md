@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@5
+revision: linguistic-core-roadmap@6
 status: active
 owner: Brian Mills
 dependencies: []
@@ -32,10 +32,10 @@ or publication.
 **Artifact consumer / decision value:** the next authorized implementation
 session uses this document to select the dependency-ready construction slice
 without reopening the product thesis or inventing later-stage detail.
-**Last outcome-bearing update:** `linguistic-core-roadmap@5`, 2026-09-09;
-M2 accepted with an executable finite inventory of three pinned donors, three
-selected components, 37 included fields, five deferred candidates, and all 80
-construction-by-domain cells. No published pack or consumer changed.
+**Last outcome-bearing update:** `linguistic-core-roadmap@6`, 2026-09-09;
+M3 accepted after the last selected field, PropBank examples, was retained and
+reconciled against all 7,566 exact pinned source files. No published pack or
+consumer changed.
 
 ## Contents
 
@@ -153,19 +153,22 @@ internal-only source.
   for an internal profile but is neither selected nor publishable by default.
 - M2 fixes the first-release denominator at the exact pinned PropBank 3.4,
   FrameNet 1.7, and approved SUMO v2 components. Every component and field has
-  an inclusion, implementation, and rights disposition; PropBank examples are
-  the sole selected field not yet retained.
-- M1 and M2 reports are reviewable at `evaluation/semantic_construction/` and
-  `evaluation/first_release_inventory/`. Donor preservation, integration, and
-  release work remain unstarted or partial.
+  an inclusion, implementation, and rights disposition.
+- M3 closes the inventory's last `not_yet_retained` field. The exact PropBank
+  projection now carries 23,434 source examples with their sentence, source
+  label, relation and argument annotations, optional AMR, and optional note;
+  source-empty annotation text is preserved instead of discarded.
+- M1-M3 evidence is reviewable at `evaluation/semantic_construction/`,
+  `evaluation/first_release_inventory/`, and `evaluation/propbank_examples/`.
+  Mapping adjudication and release work remain future work.
 
 Progress is intentionally separated:
 
 | Progress class | Current state |
 |---|---|
-| Outcome | M1 and M2 observed: the exact closure produces the acquisition report and the first-release inventory has a finite, rights-dispositioned denominator; the integrated release remains future work |
-| Enabling | Implemented through M2: exact closure loading, executable semantic contract, pinned source identities, component/field dispositions, structured evidence bindings, and a complete two-axis matrix |
-| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M3 is the next dependency-ready milestone |
+| Outcome | M1-M3 observed: the exact closure produces the acquisition report, the release denominator is finite, and every selected donor field is retained; deliberate integration remains future work |
+| Enabling | Source-native PropBank records now preserve examples alongside roles, definitions, and links; the exact-source reconciliation records counts, digest, and a loadable buyer/item/seller example |
+| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M4 is the next dependency-ready milestone |
 
 ## Backward Path and Dependencies
 
@@ -181,14 +184,14 @@ inspectable integrated semantic report
 |---|---|---|---|---|
 | Semantic contract | Linguistic Core schemas, compiler contracts, and construction assertions | hard | 11/11 acquisition assertions pass against exact 0.3.3 closure with retained report | accepted for M1 |
 | Finite source inventory | Linguistic Core source configuration and retained M2 inventory/report | hard | exact donor identities, component counts, fields, rights, exclusions, and 80 matrix cells validate against pinned evidence | accepted for M2 |
-| Source-preserving compilation | Linguistic Core compiler and versioned pack manifests | hard | current packs compile, but selected donor meaning is incompletely retained | partial |
+| Source-preserving compilation | Linguistic Core donor projection contracts and compilers | hard | every M2-selected field is retained; exact PropBank compile reconciles 23,434 examples with no unrepaired files | accepted for M3 |
 | Mapping adjudication | Linguistic Core mapping/provenance records | hard | explicit relation sections ship; semantics and role alignments are not certified | partial |
 | Reference package load | `linguistic_core` package seam consumed by `onto-canon6` | evidence | pinned external consumer exists | reuse; no consumer rewrite |
 | Internal nominal donor option | private NomBank source boundary | optional | Brian authorized internal use; incremental construction value and retained components are undecided | exploration required after inventory contract |
 
-The finite first-release denominator is no longer missing. The next boundary is
-M3's source-preserving donor work against that inventory; broad or unselected
-ingestion remains outside the boundary.
+Selected donor fields are now source-preserved. The next boundary is M4's
+deliberate directional mapping and adjudication; broad or unselected ingestion
+remains outside the boundary.
 
 ## Critical Path
 
@@ -216,26 +219,25 @@ five stages while later donors remain explicitly unintegrated.
 |---|---|---|---|---|
 | M1. Executable semantic contract | `accepted` | Retained JSON and Markdown acquisition construction reports against exact 0.3.3 closure, including reversed-role failure | 11/11 focused assertions pass; unsupported direction, mapping, role, scope, occurrence, and support operations fail visibly | Reopen only if a later construction exposes a contract distinction M1 cannot express |
 | M2. Finite first-release inventory | `accepted` | Pinned donor/component/field/rights manifest plus complete 10-by-8 coverage matrix | Three donor identities and component counts validate against exact evidence; 37 included fields and five deferred candidates have explicit dispositions | Reopen if source identity, rights evidence, component counts, or the target closure changes |
-| M3. Source-preserving donor slices | `fully_specifiable_now` | Reproducible donor records retaining definitions, roles, restrictions, examples where permitted, and native links | M2 denominator and field dispositions; reconciliation against exact retained inputs | Promote donor-by-donor when selected records are accounted for; do not wait for every later donor to exercise compilation |
-| M4. Deliberate integration | `conditional` | Reviewed directional mappings with role transforms, conditions, provenance, and explicit unresolved cases | M1 operations plus M3 preserved records; donor-native links reused before generated proposals | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
+| M3. Source-preserving donor slices | `accepted` | Reproducible donor records retaining all 37 selected fields, including PropBank examples and native annotations | Existing pinned projections plus exact M3 PropBank reconciliation; inventory reports zero selected fields not retained | Reopen if a selected field, donor identity, or projection digest changes |
+| M4. Deliberate integration | `fully_specifiable_now` | Reviewed directional mappings with role transforms, conditions, provenance, and explicit unresolved cases | M1 operations plus M3 preserved records; donor-native links reused before generated proposals | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
 | M5. Coherent integrated release candidate | `conditional` | Exact closure builds, loads, and emits the canonical report across the selected matrix | M1-M4 accepted for the finite release boundary | Human gate before public release; reset the candidate if reproducibility or source-rights lineage fails |
 | M6. Consumer-specific profiles and feedback | `deliberately_deferred` | Smaller loss-declaring projections and downstream observations | One coherent integrated release candidate and a named consumer need | Resume only after M5; application results may shape profiles, not retroactively gate construction of the foundation |
 
-**Execution frontier:** M1 and M2 are accepted. M3 is the next dependency-ready
-outcome-bearing milestone; begin with the one selected field explicitly marked
-`not_yet_retained`, PropBank examples, against the existing pinned projection.
+**Execution frontier:** M1-M3 are accepted. M4 is the next dependency-ready
+outcome-bearing milestone; begin with the acquisition-family native links and
+directional role transforms already exercised by M1.
 
-**Design frontier:** M3 may now be designed donor-by-donor against the fixed M2
-denominator. Mapping campaigns, release mechanics, and consumer profiles remain
+**Design frontier:** one bounded M4 mapping family may now be designed against
+the preserved records. Release mechanics and consumer profiles remain
 conditional; specifying them now would encode guesses as commitments.
 
 ## Active Slice
 
-M2 is complete. Its accepted inventory binds `linguistic_core@0.3.3` to exact
-PropBank, FrameNet, and approved SUMO source identities; gives each selected
-component and field a rights and inclusion disposition; explicitly defers
-NomBank, WordNet, VerbNet, Wikidata, and SemLink; and expands all ten
-construction axes across all eight domain axes.
+M3 is complete. Its final narrow slice retains PropBank examples in the existing
+source-native projection and reconciles them against the exact M2-selected
+component. Together with the already retained fields, the inventory now reports
+zero selected fields awaiting retention.
 
 Before M1, the reachability/scoring scripts used a `COLLAPSING` set containing
 `exactMatch`, `closeMatch`, `broaderThan`, and `narrowerThan`, and use
@@ -245,32 +247,32 @@ and removed specialization from the equality set. “Reachable” still does not
 validate that a declared relationship is true, so it remains separate from the
 executable construction assertions.
 
-This slice did not ingest donor bytes, alter a published pack, select a
-restricted source, authorize release, rewrite a consumer runtime, or run an
-application benchmark.
+This slice used the exact external-cache PropBank checkout but did not retain raw
+donor files in Git, alter a published pack, select a restricted source,
+authorize release, rewrite a consumer runtime, or run an application benchmark.
 
-**Focused check:** exact source identities, rights dispositions, component
-counts, evidence hashes, target pack identity, selected-source references, and
-all 80 matrix cells must reconcile or fail visibly.
+**Focused check:** the exact 7,566-file source selection must compile with all
+declared repairs, retain every example field, load the acquisition example, and
+produce a deterministic content digest. Unknown example structures fail visibly.
 
-**Visible result:** a retained human-readable inventory report plus JSON report
-and two-axis coverage matrix, backed by machine assertions rather than an
-unbounded donor wish list.
+**Visible result:** a loadable projection in which `buy.01` exposes the sentence
+“The company bought a wheel - loader from Dresser .” with buyer, item, and seller
+annotations, plus a compact retained exact-source reconciliation receipt.
 
-**Input / output and affected boundaries:** inputs are the exact 0.3.3 manifest,
-the pinned source manifest, the SUMO module disposition, and retained source and
-crosswalk counts. Outputs are the inventory contract and reports. Only
-Linguistic Core planning, configuration, validation, and evaluation surfaces
-change. The `onto-canon6` runtime and published pack contents do not.
+**Input / output and affected boundaries:** input is the pinned PropBank commit,
+tree, selected-payload digest, and declared repair manifest. Output is the typed
+example record path and reconciliation receipt. Only Linguistic Core's donor
+projection, CLI, inventory evidence, and focused fixtures change.
 
-**Implementation constraints:** preserve exact donor and pack identities, bind
-counts and rights to structured retained evidence, treat excluded candidates as
-unselected, and keep publication explicitly unauthorized.
+**Implementation constraints:** preserve source order and decoded field content,
+including deliberately empty annotation text; reject unknown structure rather
+than silently dropping it; keep raw donor bytes external and publication
+explicitly unauthorized.
 
-**Failure, containment, and rollback:** evidence, identity, rights, count, or
-matrix drift fails with inspectable error codes. The branch and generated
-artifacts remain recoverable Git state; no donor cache, consumer, publication,
-or release is mutated.
+**Failure, containment, and rollback:** pin or payload drift, unknown example
+structure, unrepaired XML, a missing acquisition record, or content-hash drift
+fails visibly. The branch and compact report remain recoverable Git state; no
+consumer, publication, or release is mutated.
 
 ### A finite first-release boundary
 
@@ -697,10 +699,9 @@ of internally sourced material remain later human-owned decisions.
 later milestone proposes selecting restricted NomBank components or publishing
 an integrated release.
 
-**Exact next action:** open a new M3 lane for PropBank examples, the inventory's
-sole selected `not_yet_retained` field, and reconcile the resulting
-source-preserving records against the exact pinned PropBank component without
-changing published packs.
+**Exact next action:** open a new M4 lane for the acquisition mapping family and
+reconcile donor-native links into directional, conditioned mappings with role
+transforms and explicit unresolved cases, without changing published packs.
 
 ## The sibling project, and why it is not a competitor
 

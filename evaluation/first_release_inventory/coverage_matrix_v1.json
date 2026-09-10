@@ -1,7 +1,7 @@
 {
   "schema_version": "linguistic-two-axis-coverage-matrix-v1",
   "inventory_id": "linguistic-core-first-release",
-  "inventory_revision": "linguistic-core-first-release-inventory@1",
+  "inventory_revision": "linguistic-core-first-release-inventory@2",
   "cells": [
     {
       "construction": "verbal_predicates",

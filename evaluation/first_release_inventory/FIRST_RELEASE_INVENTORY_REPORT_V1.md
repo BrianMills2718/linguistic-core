@@ -23,7 +23,7 @@ This is a bounded selection contract, not donor ingestion, audited coverage, rel
   - `arguments.description` — `include` / `retained`: Retains role meaning instead of ARG-number-only alignment.
   - `arguments.role_links` — `include` / `retained`: Preserves donor-native role crosswalks before generated proposals.
   - `roleset.lexical_links` — `include` / `retained`: Preserves donor-native sense links.
-  - `examples` — `include` / `not_yet_retained`: Selected for M3 because examples disambiguate rolesets; current projection omits them.
+  - `examples` — `include` / `retained`: Source text and native relation, argument, AMR, note, and provenance fields are retained by M3 and reconciled against the exact pinned component.
   - `source.xml_bytes` — `exclude` / `not_applicable`: Raw donor files remain in the external cache rather than the release artifact.
 
 ### `framenet_17` — framenet (1.7)
@@ -102,8 +102,8 @@ This is a bounded selection contract, not donor ingestion, audited coverage, rel
 ## Counts and boundary
 
 - Selected donors: 3; included components: 3; included fields: 37.
-- Included fields not yet retained: 1.
+- Included fields not yet retained: 0.
 - Matrix cells: 80 ({'selected_unmeasured': 41, 'contract_only': 31, 'explicit_gap': 8, 'out_of_scope_first_release': 0}).
 - Excluded/deferred candidate sources: 5.
-- Evidence digest: `097cdf1e2a61349fc018c3cf7e542db3cd0b7d1861208297098d927c78ee56ed`.
+- Evidence digest: `afcad5369d5865fa0c9fc98310327f60485e7795c88488a3d4e67abc0b294ea5`.
 - Public release remains unauthorized; restricted and unselected sources remain outside the build.
