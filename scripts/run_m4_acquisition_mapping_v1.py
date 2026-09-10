@@ -15,6 +15,7 @@ from linguistic_core.contracts import PackRef  # noqa: E402
 from linguistic_core.m4_acquisition_mapping_v1 import (  # noqa: E402
     build_report,
     load_jsonl,
+    load_m3_evidence,
     render_report,
 )
 from linguistic_core.semantic_construction_v1 import (  # noqa: E402
@@ -46,21 +47,34 @@ def main() -> int:
     if not separator or not pack_id or not pack_version:
         parser.error("--pack must be an exact pack_id@semantic-version")
     selection = json.loads(args.selection.read_text(encoding="utf-8"))
-    source_cases = ROOT / "evaluation/semantic_construction/acquisition_cases_v1.json"
-    selected_ids = set(selection["case_ids"])
-    cases = tuple(case for case in load_cases(source_cases) if case.case_id in selected_ids)
+    if selection.get("schema_version") != "m4-acquisition-mapping-case-selection.v1":
+        parser.error("selection manifest schema mismatch")
+    source_cases = (args.selection.parent / selection["source_cases"]).resolve()
+    declared_ids = tuple(selection["case_ids"])
+    if len(set(declared_ids)) != len(declared_ids):
+        parser.error("selection manifest contains duplicate case IDs")
+    all_cases = tuple(load_cases(source_cases))
+    cases = tuple(case for case in all_cases if case.case_id in set(declared_ids))
     closure = load_exact_pack_closure(
         ROOT / "ontology_packs", PackRef(pack_id=pack_id, pack_version=pack_version)
     )
     donor_asset = ROOT / "ontology_packs/linguistic_core/0.3.0/semantic_mappings.jsonl"
+    reconciliation_asset = ROOT / "evaluation/propbank_examples/propbank_examples_reconciliation_v1.json"
+    try:
+        case_manifest = str(args.selection.relative_to(ROOT))
+    except ValueError:
+        case_manifest = str(args.selection)
     report = build_report(
         closure=closure,
         cases=cases,
-        case_manifest=str(args.selection.relative_to(ROOT)),
+        case_manifest=case_manifest,
         donor_mapping_asset=str(donor_asset.relative_to(ROOT)),
         predicate_relation_asset="ontology_packs/linguistic_core/0.3.3/predicate_relations.jsonl",
         role_correspondence_asset="ontology_packs/linguistic_core/0.3.3/role_correspondences.jsonl",
         donor_rows=load_jsonl(donor_asset),
+        m3_evidence=load_m3_evidence(reconciliation_asset),
+        m3_reconciliation_asset=str(reconciliation_asset.relative_to(ROOT)),
+        manifest_case_ids=declared_ids,
     )
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
     args.markdown_output.write_text(render_report(report), encoding="utf-8")

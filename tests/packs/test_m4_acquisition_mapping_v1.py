@@ -14,6 +14,7 @@ from linguistic_core.contracts import PackRef
 from linguistic_core.m4_acquisition_mapping_v1 import (
     build_report,
     load_jsonl,
+    load_m3_evidence,
     render_report,
 )
 from linguistic_core.semantic_construction_v1 import load_cases, load_exact_pack_closure
@@ -24,7 +25,7 @@ CASES = ROOT / "evaluation/semantic_construction/acquisition_cases_v1.json"
 DONOR = ROOT / "ontology_packs/linguistic_core/0.3.0/semantic_mappings.jsonl"
 
 
-def _report(*, donor_rows=None):
+def _report(*, donor_rows=None, manifest_case_ids=None):
     selection = json.loads(SELECTION.read_text(encoding="utf-8"))
     cases = tuple(
         case for case in load_cases(CASES) if case.case_id in set(selection["case_ids"])
@@ -40,6 +41,7 @@ def _report(*, donor_rows=None):
         predicate_relation_asset="ontology_packs/linguistic_core/0.3.3/predicate_relations.jsonl",
         role_correspondence_asset="ontology_packs/linguistic_core/0.3.3/role_correspondences.jsonl",
         donor_rows=tuple(load_jsonl(DONOR) if donor_rows is None else donor_rows),
+        manifest_case_ids=manifest_case_ids,
     )
 
 
@@ -55,6 +57,10 @@ def test_acquisition_mapping_binds_donor_roles_and_direction() -> None:
     assert mapping.lost_distinctions == ("commercial_consideration",)
     assert len(mapping.role_transforms) == 3
     assert all(item.source_donor.source_key == "propbank_nltk" for item in mapping.role_transforms)
+    assert mapping.source_evidence.roleset_id == "buy.01"
+    assert mapping.source_evidence.arguments[2] == ("ARG2", "7", "8", "from Dresser")
+    assert mapping.ambiguity_disposition == "resolved_by_exact_source_alignment"
+    assert mapping.role_transforms[0].donor_assertion == "source_native_propbank_role"
 
 
 def test_reverse_and_role_swap_remain_explicit_rejections() -> None:
@@ -76,6 +82,33 @@ def test_missing_donor_role_evidence_fails_closed() -> None:
     ]
     with pytest.raises(ValueError, match="M4_DONOR_ROLE_EVIDENCE_MISSING"):
         _report(donor_rows=rows)
+
+
+def test_forged_donor_provenance_fails_closed() -> None:
+    rows = list(load_jsonl(DONOR))
+    for row in rows:
+        if row.get("canonical_id") == "lc:buy_purchase:lc.role.buyer" and row.get("source_key") == "propbank_nltk":
+            row["source_id"] = "buy-01:ARG9"
+            break
+    with pytest.raises(ValueError, match="M4_DONOR_PROVENANCE_INVALID"):
+        _report(donor_rows=rows)
+
+
+def test_m3_provenance_drift_fails_closed(tmp_path: Path) -> None:
+    payload = json.loads((ROOT / "evaluation/propbank_examples/propbank_examples_reconciliation_v1.json").read_text())
+    payload["source_tree_sha"] = "0" * 40
+    path = tmp_path / "reconciliation.json"
+    path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError, match="M4_M3_EVIDENCE_PROVENANCE_DRIFT"):
+        load_m3_evidence(path)
+
+
+def test_manifest_extra_or_missing_ids_fails_closed() -> None:
+    ids = ("purchase_to_acquisition_allowed", "acquisition_to_purchase_rejected", "buyer_seller_swap_rejected")
+    with pytest.raises(ValueError, match="M4_SELECTION_MANIFEST_MISMATCH"):
+        _report(manifest_case_ids=ids + ("extra",))
+    with pytest.raises(ValueError, match="M4_SELECTION_MANIFEST_MISMATCH"):
+        _report(manifest_case_ids=ids[:2])
 
 
 def test_runner_json_mode_exposes_the_typed_candidate_report() -> None:
