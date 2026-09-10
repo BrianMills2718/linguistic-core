@@ -27,6 +27,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pack", default="linguistic_core@0.3.3")
     parser.add_argument(
+        "--json",
+        action="store_true",
+        help="emit the typed candidate report as JSON after writing the Markdown report",
+    )
+    parser.add_argument(
         "--selection",
         type=Path,
         default=ROOT / "evaluation/m4_acquisition_mapping/acquisition_mapping_cases_v1.json",
@@ -59,8 +64,11 @@ def main() -> int:
     )
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
     args.markdown_output.write_text(render_report(report), encoding="utf-8")
-    print(f"M4 acquisition mapping: {report.passed} passed, {report.failed} failed")
-    print(f"candidate mappings: {report.candidate_count}; digest: {report.content_sha256}")
+    if args.json:
+        print(report.model_dump_json(indent=2))
+    else:
+        print(f"M4 acquisition mapping: {report.passed} passed, {report.failed} failed")
+        print(f"candidate mappings: {report.candidate_count}; digest: {report.content_sha256}")
     return 0 if report.failed == 0 else 1
 
 

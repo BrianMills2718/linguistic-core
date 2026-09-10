@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -73,3 +76,19 @@ def test_missing_donor_role_evidence_fails_closed() -> None:
     ]
     with pytest.raises(ValueError, match="M4_DONOR_ROLE_EVIDENCE_MISSING"):
         _report(donor_rows=rows)
+
+
+def test_runner_json_mode_exposes_the_typed_candidate_report() -> None:
+    result = subprocess.run(
+        [sys.executable, "scripts/run_m4_acquisition_mapping_v1.py", "--json"],
+        cwd=ROOT,
+        env={**os.environ, "PYTHONPATH": "src"},
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["schema_version"] == "m4-acquisition-mapping-report.v1"
+    assert payload["passed"] == 3
+    assert payload["failed"] == 0
+    assert payload["directional_mappings"][0]["review_status"] == "candidate"
