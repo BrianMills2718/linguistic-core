@@ -1,11 +1,11 @@
 {
   "active_slice": {
     "description": "Build and exercise the acquisition-family semantic construction contract against exact linguistic_core@0.3.3 closure",
-    "next_action": "Implement the strict contract, exact closure loader, acquisition assertions, visible failures, and retained reports.",
+    "next_action": null,
     "requires_external_action": false,
     "requires_spend": false,
     "slice_id": "m1-executable-semantic-contract",
-    "status": "executing",
+    "status": "accepted",
     "target_revision": "linguistic-core-m1-v1"
   },
   "authority": {
@@ -22,22 +22,30 @@
     "runtime_integrity_valid": true
   },
   "completion": {
-    "evidence_revision": null,
-    "receipt_ref": null,
-    "remaining_ready_work": 1,
-    "requested": false,
-    "verifier_outcome": null
+    "evidence_revision": "4ca30881c3e357c740ff0738f1a82834cbd1092d",
+    "receipt_ref": "git:4ca30881c3e357c740ff0738f1a82834cbd1092d:evaluation/semantic_construction/acquisition_construction_report_v1.json#sha256=6025086257c922299e1256c5c930eac16697495135e511297719f6678606a27a",
+    "remaining_ready_work": 0,
+    "requested": true,
+    "verifier_outcome": "pass"
   },
   "cursor_id": "linguistic-core-m1-semantic-contract-v1",
-  "cursor_revision": 1,
+  "cursor_revision": 2,
   "failure_state": {
     "boundary": null,
     "last_failure_ref": null,
     "same_boundary_failures": 0
   },
   "goal_ref": "roadmap:linguistic-core-roadmap@3#M1",
-  "lifecycle_state": "active",
-  "observations": [],
+  "lifecycle_state": "complete",
+  "observations": [
+    {
+      "boundary": "semantic-construction-contract",
+      "evidence_ref": "git:4ca30881c3e357c740ff0738f1a82834cbd1092d:evaluation/semantic_construction/acquisition_construction_report_v1.json#sha256=6025086257c922299e1256c5c930eac16697495135e511297719f6678606a27a",
+      "kind": "authentic_result",
+      "observation_id": "obs-m1-acquisition-report",
+      "outcome": "pass"
+    }
+  ],
   "plan_revision": "linguistic-core-roadmap@3",
   "ready_alternatives": [],
   "record_type": "plan_execution_cursor",
