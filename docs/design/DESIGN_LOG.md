@@ -1,5 +1,27 @@
 # Design log
 
+## 2026-09-13 — Analytic construction frozen as a versioned consumer profile
+
+The successful eleven-schema Evidence → Action fixture is now pinned by a
+consumer-profile contract rather than left as an unversioned test artifact.
+`analytic:evidence_to_action@0.1.0` declares its namespace owner, exact relation
+and assertion grammar versions, exact bundle digest, exact schema set, and top
+feedback assertion. This makes the dependency direction inspectable without
+publishing analytic workflow concepts as Linguistic Core vocabulary.
+
+Two view contracts make the projection principle concrete. The binary
+semantic-binding view omits observation model, scope, uncertainty, and
+provenance; the compact interpretation-license table omits the nested semantic
+binding, models, assumptions, design conditions, and provenance. Validation
+requires every source role to be selected or explicitly omitted and forbids an
+n-ary relation from declaring a binary projection lossless.
+
+The next slice executes those projection contracts and emits explicit loss
+receipts. The canonical object remains the grouped relation assertion; generated
+graph/table views are downstream and cannot silently become equivalent source
+semantics. No published pack or consumer runtime changed in this slice.
+
+
 ## 2026-09-13 — Full Evidence → Action consumer profile composes in the grammar
 
 The analytic stress test now covers eleven consumer-owned relation schemas:

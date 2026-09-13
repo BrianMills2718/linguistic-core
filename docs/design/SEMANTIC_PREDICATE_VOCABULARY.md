@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@11
+revision: linguistic-core-roadmap@12
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,11 +36,11 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
-**Last design review:** `linguistic-core-roadmap@11`, 2026-09-13; the
-analytic consumer stress test now covers the compact end-to-end Evidence →
-Action relation profile. Eleven consumer-owned schemas compose from
-representation projection through feedback, including method output reused as a
-downstream representation, without new LC vocabulary or runtime semantics.
+**Last design review:** `linguistic-core-roadmap@12`, 2026-09-13; the
+successful eleven-schema analytic construction is now captured as a versioned
+consumer-profile contract with exact grammar/bundle dependencies and declared
+loss-aware binary/table projections. The profile remains consumer-owned and is
+not part of the published LC vocabulary.
 
 ## Contents
 
@@ -185,6 +185,11 @@ internal-only source.
   decision application, action realization, and feedback. The nested graph from
   feedback reaches every schema type, and one method output retains one identity
   when reused as a downstream representation.
+- The construction is pinned as candidate consumer profile
+  `analytic:evidence_to_action@0.1.0`, with explicit dependency on the generic
+  relation/assertion grammar and two declared lossy projections. Projection
+  validation requires every source role to be selected or explicitly omitted;
+  n-ary-to-binary views cannot claim lossless equivalence.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
@@ -832,14 +837,14 @@ encountered if a later milestone proposes selecting restricted NomBank
 components, publishing an integrated release, or materially changing a consumer
 contract.
 
-**Exact next action:** freeze the successful eleven-schema analytic construction
-as a versioned **consumer profile contract**, separate from the Linguistic Core
-vocabulary release. Specify profile identity/versioning, declared dependencies
-on the generic relation grammar, and loss-aware projection rules for deriving
-binary graph/table views from grouped relation assertions. Use the analytic
-profile as the first proof that a rich consumer can depend on LC's formal
-language without making its workflow ontology part of `lc:`. Do not publish the
-profile as Linguistic Core vocabulary or change the 0.3.3 pack.
+**Exact next action:** make the declared consumer-profile projections executable.
+Given one grouped relation assertion plus a projection rule, emit a typed binary
+edge or table-row view together with an explicit loss receipt naming every
+omitted role/filler. Prove this on the analytic semantic-binding and
+interpretation-license projections, and prove that the generated views cannot be
+round-tripped as equivalent canonical assertions when the projection is lossy.
+Keep projection output downstream of the canonical grouped relation object and
+do not change the published 0.3.3 vocabulary pack.
 
 ## The sibling project, and why it is not a competitor
 

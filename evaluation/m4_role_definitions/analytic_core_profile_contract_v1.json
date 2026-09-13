@@ -1,0 +1,74 @@
+{
+  "schema_version": "consumer-profile-contract.v1",
+  "profile_id": "analytic:evidence_to_action",
+  "profile_version": "0.1.0",
+  "owner_namespace": "analytic",
+  "status": "candidate",
+  "source_bundle": "analytic_core_relation_profile_v1.json",
+  "source_bundle_sha256": "dc7b2b6400f43961d52288e71557b59d8a71f69e819a0410eb460544c6a5fc57",
+  "grammar_dependency": {
+    "relation_schema_version": "relation-schema.v1",
+    "relation_assertion_bundle_version": "relation-assertion-bundle.v1",
+    "requires_objectification": true
+  },
+  "relation_schema_ids": [
+    "analytic:representation_projection",
+    "analytic:representation_transformation",
+    "analytic:semantic_binding",
+    "analytic:observation_model_profile",
+    "analytic:world_model_profile",
+    "analytic:analytic_methodology_profile",
+    "analytic:inference_relation",
+    "analytic:interpretation_license",
+    "analytic:decision_method_application",
+    "analytic:action_realization",
+    "analytic:feedback_update"
+  ],
+  "top_assertion_id": "assert:analytic.feedback.model-update",
+  "projections": [
+    {
+      "projection_id": "analytic.projection.semantic-binding-binary-v1",
+      "source_relation_schema_id": "analytic:semantic_binding",
+      "target_view": "binary_edge",
+      "selected_role_definition_ids": [
+        "analytic.roledef.semantic_binding.represented_element",
+        "analytic.roledef.semantic_binding.binding_kind",
+        "analytic.roledef.semantic_binding.referent"
+      ],
+      "endpoint_role_definition_ids": [
+        "analytic.roledef.semantic_binding.represented_element",
+        "analytic.roledef.semantic_binding.referent"
+      ],
+      "omitted_role_definition_ids": [
+        "analytic.roledef.semantic_binding.observation_model",
+        "analytic.roledef.semantic_binding.scope",
+        "analytic.roledef.semantic_binding.uncertainty",
+        "analytic.roledef.semantic_binding.provenance"
+      ],
+      "loss_classification": "lossy",
+      "loss_note": "Binary edge preserves represented element, binding kind, and referent but omits observation-model, scope, uncertainty, and provenance qualifications."
+    },
+    {
+      "projection_id": "analytic.projection.interpretation-license-table-v1",
+      "source_relation_schema_id": "analytic:interpretation_license",
+      "target_view": "table_row",
+      "selected_role_definition_ids": [
+        "analytic.roledef.interpretation_license.method_result",
+        "analytic.roledef.interpretation_license.scope",
+        "analytic.roledef.interpretation_license.licenses_claim_type"
+      ],
+      "endpoint_role_definition_ids": [],
+      "omitted_role_definition_ids": [
+        "analytic.roledef.interpretation_license.inference",
+        "analytic.roledef.interpretation_license.semantic_binding",
+        "analytic.roledef.interpretation_license.world_model",
+        "analytic.roledef.interpretation_license.observation_model",
+        "analytic.roledef.interpretation_license.assumption",
+        "analytic.roledef.interpretation_license.design_condition",
+        "analytic.roledef.interpretation_license.provenance"
+      ],
+      "loss_classification": "lossy",
+      "loss_note": "Compact table exposes result, scope, and claim type but omits the semantic, model, assumption, design, and provenance basis that licenses the interpretation."
+    }
+  ]
+}
