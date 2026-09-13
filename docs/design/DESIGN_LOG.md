@@ -5,6 +5,47 @@ History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains t
 2026-09-06 were written when the design lived in
 `linguistic-vocabulary-research/PLAN.md`.
 
+## 2026-09-12 — Predicate-local role definitions reconciled with World Substrate
+
+A cross-repository design review started from a practical question: whether the
+analytic/world-model architecture should be expressed inside Linguistic Core,
+and whether doing so required a new relation language. Reading the actual
+Linguistic Core fact-oriented brief and living design showed that the load-bearing
+answer was already here: typed n-ary facts, objectification, stable role
+identity, proposition/occurrence/assertion separation, and loss-aware projection
+were existing design commitments rather than a foreign architecture.
+
+The review therefore **did not create a second hyper-relational metamodel**.
+Instead it settled one missing distinction in the current representation
+contract: a reusable semantic **role concept** and a predicate/fact-type-local
+**role definition** are not the same object. A local role definition owns its
+local identity/name, player/filler restrictions, cardinality and constraint
+participation, and may ground to a reusable LC role concept such as agent,
+theme, recipient, source, or goal. Two local roles may ground to one reusable
+concept without becoming the same argument position; repeated player types and
+argument ordinals do not determine role identity.
+
+World Substrate supplied the concrete consumer stress test. Its implemented
+`SemanticBinding` already cites pinned LC predicate senses and reusable role ids,
+then keeps specialization, causal classification, represented bearer, selected
+mechanic, and interpretation limits downstream. Its `unheat` action is
+intentionally left unbound when the pinned LC extraction lacks an adequate
+reviewed sense instead of minting a local `lc:` term. This supports a richer LC
+role/relation contract while independently corroborating the accepted boundary
+that LC meaning does not install persistence, quantities, effects, scheduling,
+write authority, or commit semantics.
+
+M1-M3 remain accepted. The review did not discover evidence that invalidates
+their construction results. M4 remains the execution frontier, but its role
+transform work now explicitly includes an additive predicate-local
+role-definition record shape. The construction target is to prove that shape on
+the acquisition family plus one existing World Substrate semantic binding before
+changing a published pack or consumer contract.
+
+This update changes documentation/design only. No donor selection, published
+pack, consumer runtime, World Substrate mechanic, deployment, release, or
+publication changed.
+
 ## 2026-09-09 — M3 PropBank examples retained
 
 M3 closes the finite inventory's sole selected `not_yet_retained` field. The
