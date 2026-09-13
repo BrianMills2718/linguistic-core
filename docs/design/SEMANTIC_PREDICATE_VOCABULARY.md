@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@7
+revision: linguistic-core-roadmap@8
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,10 +36,11 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
-**Last design review:** `linguistic-core-roadmap@7`, 2026-09-12; the existing
-fact-oriented/n-ary lineage was reconciled against World Substrate's real
-semantic-binding contract. This clarified the target role model and downstream
-boundary but did not change a published pack or consumer contract.
+**Last design review:** `linguistic-core-roadmap@8`, 2026-09-13; the merged
+predicate-local role-definition construction was stress-tested against a
+World Substrate-owned relation schema. The role grammar is now explicitly
+application-independent: consumers may own namespaced relation schemas without
+those schemas becoming Linguistic Core vocabulary or execution semantics.
 
 ## Contents
 
@@ -163,6 +164,15 @@ internal-only source.
   interpretation limits downstream. That supports richer LC relation/role
   representation without moving effects or world-state execution into this
   repository.
+- The additive M4 role-definition construction probe is merged in source code:
+  it distinguishes predicate-local role identity from reusable `lc.role.*`
+  concepts and proves the acquisition transforms plus World Substrate `give`
+  compatibility without changing `linguistic_core@0.3.3`.
+- A consumer stress test exposed one further requirement: the reusable relation
+  grammar cannot be restricted to `lc:` ownership. Downstream schemas such as
+  `ws:semantic_binding` need their own local role identities (`ws.roledef.*`)
+  while optionally citing LC types/role concepts. The grammar is reusable; the
+  consumer schema remains consumer-owned.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
@@ -182,8 +192,8 @@ Progress is intentionally separated:
 | Progress class | Current state |
 |---|---|
 | Outcome | M1-M3 observed: the exact closure produces the acquisition report, the release denominator is finite, and every selected donor field is retained; deliberate integration remains future work |
-| Enabling | Source-native PropBank records now preserve examples alongside roles, definitions, and links; the exact-source reconciliation records counts, digest, and a loadable buyer/item/seller example |
-| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M4 is the next dependency-ready milestone |
+| Enabling | Source-native donor evidence is preserved; M4 now also has an executable acquisition mapping receipt and merged predicate-local role-definition probe, while the published pack remains unchanged |
+| Process | Active: `durable_solo` route and one canonical living roadmap remain machine-validated; M4 deliberate integration is in construction, not yet promoted as a release capability |
 
 ## Backward Path and Dependencies
 
@@ -422,6 +432,27 @@ binding contract is a useful stress test: it can cite LC sense/role concepts
 while keeping its causal class, bearer, mechanic, and interpretation limits in
 the consumer profile.
 
+### Settled 2026-09-13: the relation grammar is reusable; vocabulary ownership is not
+
+The local-role model is a representation grammar, not a requirement that every
+relation schema be owned by the `lc:` namespace. A downstream consumer may
+declare a relation such as `ws:semantic_binding` with locally owned roles such
+as `ws.roledef.semantic_binding.mechanic`. Those local roles may cite LC role
+concepts or LC filler types when semantically warranted, but they need not force
+a false global grounding.
+
+This preserves two boundaries at once:
+
+- Linguistic Core owns the formal grammar for role-typed relation schemas and
+  the reusable semantic vocabulary it actually publishes.
+- Consumers own application relation schemas, application-local filler types,
+  workflow/mechanic semantics, and execution authority. A consumer schema does
+  not become LC vocabulary merely because it is expressed in the LC grammar.
+
+The first construction probe uses World Substrate's semantic-binding contract.
+Its `mechanic` role remains explicitly consumer-owned consequence authority;
+representing that role does not say what effects the mechanic causes.
+
 ### The mapping relation vocabulary
 
 The existing nine names are retained, but their names are not executable
@@ -457,7 +488,8 @@ Keep three separable layers:
 2. **Canonical semantic layer:** stable `lc:` identities and the representation
    contract, including fact/relation schemas, predicate-local role definitions,
    reusable role concepts, proposition/occurrence/assertion identity, and scope.
-   No donor's identifiers alone define canonical identity.
+   The relation-schema grammar may be reused by consumer-owned namespaces, but
+   those consumer schemas remain outside the canonical LC vocabulary. No donor's identifiers alone define canonical identity.
 3. **Versioned mapping/projection layer:** explicit relations from donor senses
    to canonical meanings and between canonical meanings, with provenance,
    conditions, review status, role transforms, and declared information loss.
@@ -716,6 +748,7 @@ gates.
 | Preserve donor meanings behind a canonical layer rather than flattening all sources | `human_set` | accepted design and current architecture | representation and integration |
 | Predicate-local role definitions ground reusable role concepts | `human_set` | approved 2026-09-12 after reconciling the fact-oriented brief, LC's existing reusable roles, and World Substrate's real semantic-binding consumer | relation schema, role identity, M4 integration |
 | World Substrate mechanics remain downstream of LC meaning | `human_set` | accepted World Substrate semantic/mechanical boundary; richer LC semantics must not imply persistence/effects/commit authority | cross-repo boundary |
+| Relation-schema grammar may be reused by consumer namespaces | `agent_decided_reversible` | 2026-09-13 World Substrate stress test showed `lc:`-only local-role IDs cannot express a downstream schema without conflating grammar and vocabulary ownership | relation metamodel / consumer profiles |
 | Run M1 before further bulk ingestion | `agent_decided_reversible` | the executable semantic contract is the first missing boundary and prevents new ambiguous rows | execution frontier |
 | Reuse the current package/consumer seam without changing `onto-canon6` | `agent_decided_reversible` | a live pinned dependency already exists; this slice can prove the object through its own load boundary | reference observation |
 | Select exact PropBank 3.4, FrameNet 1.7, and approved SUMO v2 components for the first release | `agent_decided_reversible` | they are already pinned, rights-dispositioned, and backed by retained structured evidence; unpinned candidates remain explicit exclusions | first-release inventory |
@@ -762,13 +795,14 @@ encountered if a later milestone proposes selecting restricted NomBank
 components, publishing an integrated release, or materially changing a consumer
 contract.
 
-**Exact next action:** open the M4 acquisition mapping lane and reconcile
-donor-native links into directional, conditioned mappings with explicit role
-transforms. In the same additive construction lane, specify the
-predicate-local-role-definition record shape and prove it against the
-acquisition family plus one existing World Substrate semantic binding. Do not
-change published packs or consumer contracts until that construction evidence
-exists.
+**Exact next action:** complete the bounded consumer-owned relation-schema
+construction using World Substrate `ws:semantic_binding`, then exercise the next
+missing fact-oriented capability: an objectified/grouped relation filling a role
+in another relation without binary flattening. Use one concrete consumer case
+(such as a semantic binding referenced by a causal-event or analytic-license
+schema), retain explicit namespace ownership, and do not promote consumer
+workflow/mechanic semantics into the LC vocabulary. Published packs remain
+unchanged until this construction evidence justifies a versioned contract.
 
 ## The sibling project, and why it is not a competitor
 

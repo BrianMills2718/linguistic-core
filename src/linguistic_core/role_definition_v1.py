@@ -265,3 +265,130 @@ def build_probe_report(value: RoleDefinitionProbeInputV1) -> RoleDefinitionProbe
         content_sha256=digest,
         **body,
     )
+
+
+class RelationRoleDefinitionV1(_StrictModel):
+    """One locally owned role for any namespaced relation schema.
+
+    Unlike ``RoleDefinitionV1`` this is not restricted to ``lc:`` predicates.
+    Downstream consumers may own relation schemas in their own namespace while
+    optionally grounding a local role in a reusable Linguistic Core role
+    concept.
+    """
+
+    role_definition_id: str = Field(
+        pattern=r"^[a-z][a-z0-9_-]*\.roledef\.[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$"
+    )
+    relation_schema_id: str = Field(pattern=r"^[a-z][a-z0-9_-]*:[a-z][a-z0-9_]*$")
+    local_name: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    grounded_role_id: str | None = Field(default=None, pattern=r"^lc\.role\.")
+    expected_filler_type: str | None = Field(default=None, min_length=1)
+    min_count: int = Field(default=1, ge=0)
+    max_count: int | None = Field(default=1, ge=1)
+    presentation_ordinal: int = Field(ge=0)
+    constraints: tuple[str, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_cardinality(self) -> "RelationRoleDefinitionV1":
+        if self.max_count is not None and self.max_count < self.min_count:
+            raise ValueError("RELATION_ROLE_DEFINITION_CARDINALITY_INVALID")
+        return self
+
+
+class RelationSchemaV1(_StrictModel):
+    """Application-independent role-typed relation schema grammar."""
+
+    schema_version: Literal["relation-schema.v1"] = "relation-schema.v1"
+    relation_schema_id: str = Field(pattern=r"^[a-z][a-z0-9_-]*:[a-z][a-z0-9_]*$")
+    owner_namespace: str = Field(pattern=r"^[a-z][a-z0-9_-]*$")
+    review_status: Literal["candidate"] = "candidate"
+    roles: tuple[RelationRoleDefinitionV1, ...] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_local_role_set(self) -> "RelationSchemaV1":
+        namespace, relation_name = self.relation_schema_id.split(":", 1)
+        if namespace != self.owner_namespace:
+            raise ValueError("RELATION_SCHEMA_OWNER_NAMESPACE_MISMATCH")
+        expected_prefix = f"{namespace}.roledef.{relation_name}."
+        for role in self.roles:
+            if role.relation_schema_id != self.relation_schema_id:
+                raise ValueError("RELATION_ROLE_DEFINITION_SCHEMA_MISMATCH")
+            if not role.role_definition_id.startswith(expected_prefix):
+                raise ValueError("RELATION_ROLE_DEFINITION_NAMESPACE_MISMATCH")
+        ids = [role.role_definition_id for role in self.roles]
+        if len(ids) != len(set(ids)):
+            raise ValueError("RELATION_ROLE_DEFINITION_ID_DUPLICATE")
+        names = [role.local_name for role in self.roles]
+        if len(names) != len(set(names)):
+            raise ValueError("RELATION_ROLE_DEFINITION_LOCAL_NAME_DUPLICATE")
+        ordinals = [role.presentation_ordinal for role in self.roles]
+        if len(ordinals) != len(set(ordinals)):
+            raise ValueError("RELATION_ROLE_DEFINITION_PRESENTATION_ORDINAL_DUPLICATE")
+        return self
+
+    def role_by_name(self, local_name: str) -> RelationRoleDefinitionV1 | None:
+        return next((role for role in self.roles if role.local_name == local_name), None)
+
+
+class ConsumerRelationSchemaProbeInputV1(_StrictModel):
+    schema_version: Literal["consumer-relation-schema-probe-input.v1"]
+    consumer_id: str = Field(min_length=1)
+    source_contract_ref: str = Field(min_length=1)
+    relation_schema: RelationSchemaV1
+
+
+class ConsumerRelationSchemaProbeReportV1(_StrictModel):
+    schema_version: Literal["consumer-relation-schema-probe-report.v1"]
+    consumer_id: str
+    relation_schema_id: str
+    owner_namespace: str
+    role_definition_count: int = Field(ge=0)
+    grounded_role_count: int = Field(ge=0)
+    ungrounded_role_count: int = Field(ge=0)
+    repeatable_role_count: int = Field(ge=0)
+    checks: tuple[str, ...]
+    content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+def load_consumer_relation_schema_probe(
+    path: Path,
+) -> ConsumerRelationSchemaProbeInputV1:
+    try:
+        return ConsumerRelationSchemaProbeInputV1.model_validate_json(
+            path.read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeError, ValidationError) as exc:
+        raise ValueError(f"CONSUMER_RELATION_SCHEMA_PROBE_INVALID path={path}") from exc
+
+
+def build_consumer_relation_schema_probe_report(
+    value: ConsumerRelationSchemaProbeInputV1,
+) -> ConsumerRelationSchemaProbeReportV1:
+    schema = value.relation_schema
+    grounded = sum(role.grounded_role_id is not None for role in schema.roles)
+    repeatable = sum(role.max_count is None or role.max_count > 1 for role in schema.roles)
+    checks = (
+        "relation_schema_has_consumer_owned_namespace",
+        "relation_roles_have_local_identity",
+        "local_roles_may_optionally_ground_lc_role_concepts",
+        "role_cardinality_is_explicit",
+        "consumer_schema_does_not_become_lc_vocabulary",
+    )
+    body = {
+        "consumer_id": value.consumer_id,
+        "relation_schema_id": schema.relation_schema_id,
+        "owner_namespace": schema.owner_namespace,
+        "role_definition_count": len(schema.roles),
+        "grounded_role_count": grounded,
+        "ungrounded_role_count": len(schema.roles) - grounded,
+        "repeatable_role_count": repeatable,
+        "checks": checks,
+    }
+    digest = hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return ConsumerRelationSchemaProbeReportV1(
+        schema_version="consumer-relation-schema-probe-report.v1",
+        content_sha256=digest,
+        **body,
+    )
