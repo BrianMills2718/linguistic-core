@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@6
+revision: linguistic-core-roadmap@7
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,6 +36,10 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
+**Last design review:** `linguistic-core-roadmap@7`, 2026-09-12; the existing
+fact-oriented/n-ary lineage was reconciled against World Substrate's real
+semantic-binding contract. This clarified the target role model and downstream
+boundary but did not change a published pack or consumer contract.
 
 ## Contents
 
@@ -148,6 +152,17 @@ internal-only source.
 - The construction loader resolves only the exact target and its declared
   ancestors. The existing reachability check now uses that loader for
   `linguistic_core@0.3.3` and no longer treats specialization as equality.
+- The repository's fact-oriented design already commits to typed n-ary facts,
+  objectification, stable role identity, human-readable readings, and a
+  role-aware incidence/hypergraph normalization. Those are design commitments,
+  not evidence that every published predicate already exposes the final local
+  role-definition shape.
+- World Substrate is a current consumer stress test for this semantic boundary:
+  its `SemanticBinding` cites pinned LC predicate senses and reusable role ids,
+  then keeps causal classification, represented bearer, mechanic identity, and
+  interpretation limits downstream. That supports richer LC relation/role
+  representation without moving effects or world-state execution into this
+  repository.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
@@ -186,12 +201,14 @@ inspectable integrated semantic report
 | Finite source inventory | Linguistic Core source configuration and retained M2 inventory/report | hard | exact donor identities, component counts, fields, rights, exclusions, and 80 matrix cells validate against pinned evidence | accepted for M2 |
 | Source-preserving compilation | Linguistic Core donor projection contracts and compilers | hard | every M2-selected field is retained; exact PropBank compile reconciles 23,434 examples with no unrepaired files | accepted for M3 |
 | Mapping adjudication | Linguistic Core mapping/provenance records | hard | explicit relation sections ship; semantics and role alignments are not certified | partial |
+| Predicate-local role semantics | additive semantic contract over reusable LC roles | hard before coherent release | fact-oriented brief + current consumer stress test establish the need; published pack shape is not yet the final contract | design settled; serialization pending |
 | Reference package load | `linguistic_core` package seam consumed by `onto-canon6` | evidence | pinned external consumer exists | reuse; no consumer rewrite |
 | Internal nominal donor option | private NomBank source boundary | optional | Brian authorized internal use; incremental construction value and retained components are undecided | exploration required after inventory contract |
 
 Selected donor fields are now source-preserved. The next boundary is M4's
-deliberate directional mapping and adjudication; broad or unselected ingestion
-remains outside the boundary.
+deliberate directional mapping and adjudication, including enough contextual role
+semantics to make role transforms inspectable rather than positional guesses;
+broad or unselected ingestion remains outside the boundary.
 
 ## Critical Path
 
@@ -205,7 +222,7 @@ later guide application choices; they are not admission gates for this build.
 | 1. Fix the semantic contract | Specify identity layers, role fillers, scope, mapping operations, and loss-aware projections; turn the examples below into construction assertions | Each example has an explicit intended representation and allowed/forbidden transformation; unsupported features are named |
 | 2. Bound the first release | Pin exact donor versions, selected fields, source scope, and a two-axis coverage matrix | Every selected source record has a disposition; exclusions and unimplemented features are explicit |
 | 3. Preserve source meaning | Import selected definitions, roles, restrictions, examples where permitted, and native links without flattening them | Field-level reconciliation against pinned inputs; source assertions are distinguishable from authored/model mappings |
-| 4. Integrate deliberately | Use explicit donor crosswalks first; add contextual role alignments and adjudicated proposals where links are missing or inadequate | Mapping operation, direction, conditions, provenance, and review status are inspectable; no ARG-number-only equivalence |
+| 4. Integrate deliberately | Use explicit donor crosswalks first; add contextual role alignments, predicate-local role definitions where required, and adjudicated proposals where links are missing or inadequate | Mapping operation, direction, conditions, provenance, local/global role identity, and review status are inspectable; no ARG-number-only equivalence |
 | 5. Compile a coherent release | Compose the exact version closure, validate its semantics, and demonstrate loading/querying it through a reference consumer | Reproducible compilation from retained inputs and decisions; construction assertions pass against that closure; unsupported operations fail visibly |
 
 Stages are dependencies, not a requirement to finish every donor before
@@ -220,7 +237,7 @@ five stages while later donors remain explicitly unintegrated.
 | M1. Executable semantic contract | `accepted` | Retained JSON and Markdown acquisition construction reports against exact 0.3.3 closure, including reversed-role failure | 11/11 focused assertions pass; unsupported direction, mapping, role, scope, occurrence, and support operations fail visibly | Reopen only if a later construction exposes a contract distinction M1 cannot express |
 | M2. Finite first-release inventory | `accepted` | Pinned donor/component/field/rights manifest plus complete 10-by-8 coverage matrix | Three donor identities and component counts validate against exact evidence; 37 included fields and five deferred candidates have explicit dispositions | Reopen if source identity, rights evidence, component counts, or the target closure changes |
 | M3. Source-preserving donor slices | `accepted` | Reproducible donor records retaining all 37 selected fields, including PropBank examples and native annotations | Existing pinned projections plus exact M3 PropBank reconciliation; inventory reports zero selected fields not retained | Reopen if a selected field, donor identity, or projection digest changes |
-| M4. Deliberate integration | `fully_specifiable_now` | Reviewed directional mappings with role transforms, conditions, provenance, and explicit unresolved cases | M1 operations plus M3 preserved records; donor-native links reused before generated proposals | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
+| M4. Deliberate integration | `fully_specifiable_now` | Reviewed directional mappings with contextual role transforms, conditions, provenance, explicit unresolved cases, and an additive predicate-local role-definition contract | M1 operations plus M3 preserved records; donor-native links reused before generated proposals; fact-oriented role identity preserved | Promote mapping families only after contextual review; replan when donors encode genuinely incompatible distinctions |
 | M5. Coherent integrated release candidate | `conditional` | Exact closure builds, loads, and emits the canonical report across the selected matrix | M1-M4 accepted for the finite release boundary | Human gate before public release; reset the candidate if reproducibility or source-rights lineage fails |
 | M6. Consumer-specific profiles and feedback | `deliberately_deferred` | Smaller loss-declaring projections and downstream observations | One coherent integrated release candidate and a named consumer need | Resume only after M5; application results may shape profiles, not retroactively gate construction of the foundation |
 
@@ -228,9 +245,13 @@ five stages while later donors remain explicitly unintegrated.
 outcome-bearing milestone; begin with the acquisition-family native links and
 directional role transforms already exercised by M1.
 
-**Design frontier:** one bounded M4 mapping family may now be designed against
-the preserved records. Release mechanics and consumer profiles remain
-conditional; specifying them now would encode guesses as commitments.
+**Design frontier:** M4 must make contextual role semantics machine-explicit.
+The approved target is a predicate/fact-type-local role definition with stable
+local identity, optional grounding to a reusable LC role concept, filler/player
+constraints, and cardinality/constraint metadata. Prove the additive shape on
+the acquisition family and one existing World Substrate semantic binding before
+any published-pack or consumer-contract change. Release mechanics and consumer
+profiles remain conditional.
 
 ## Active Slice
 
@@ -340,7 +361,8 @@ from the present pack.
 | Event/process/state instance | An identity-bearing occurrence or state, with participants and applicable temporal scope |
 | Proposition | Truth-evaluable content that can fill a role in another proposition |
 | Assertion/support | A source's assertion of content, with attribution and provenance; repeated assertions need not create new proposition content |
-| Role | Stable typed slot, independent of argument ordinal and player type; fillers may include entities, values, propositions, and occurrence references |
+| Role concept | Reusable semantic role identity such as agent/theme/recipient where warranted; comparable across predicates, but not itself a predicate-local argument position |
+| Role definition | Stable predicate/fact-type-local slot with its own identity/name, optional grounding to a reusable role concept, permitted filler/player type, cardinality and constraint participation; independent of argument ordinal |
 | Scope | Explicit polarity, modality, aspect, attribution, temporal scope, and applicable quantification |
 | Value | Typed quantity/unit where specified; qualitative degree remains qualitative |
 | Reading | Human-readable template preserving role identity for review and verbalization |
@@ -375,6 +397,31 @@ Identity is part of normalization, but its complete decision procedure is not
 settled. Separate content identity, assertion identity, and occurrence identity
 first. Equivalence must respect roles, scope, and resolved references.
 
+### Settled 2026-09-12: predicate-local role definitions ground reusable role concepts
+
+A reusable role vocabulary and a predicate's argument positions are related but
+not identical semantic objects.
+
+- A **role concept** such as agent, theme, recipient, source, goal, or instrument
+  provides reusable semantic comparison across predicates when donor evidence
+  warrants it.
+- A **role definition** belongs to one predicate/fact type. It carries the
+  local role identity/name, player/filler restrictions, cardinality and
+  constraint participation, and may ground to one reusable role concept.
+- Two local roles may ground to the same role concept without becoming the same
+  argument position. Conversely, two predicates with the same player type do
+  not acquire aligned roles merely by position or type.
+- An n-ary fact/relation preserves the grouping of all role fillers as one
+  proposition. Binary edges are allowed as declared projections where useful;
+  they are not the canonical source of participant grouping.
+
+This refines the representation contract already supported by the fact-oriented
+hypergraph brief. It does not make application workflow semantics, world-state
+mechanics, or causal effects part of Linguistic Core. World Substrate's current
+binding contract is a useful stress test: it can cite LC sense/role concepts
+while keeping its causal class, bearer, mechanic, and interpretation limits in
+the consumer profile.
+
 ### The mapping relation vocabulary
 
 The existing nine names are retained, but their names are not executable
@@ -408,10 +455,12 @@ Keep three separable layers:
 1. **Preserved donor records:** native identifiers, versions, definitions,
    roles, restrictions, native mappings, and retained examples where permitted.
 2. **Canonical semantic layer:** stable `lc:` identities and the representation
-   contract. No donor's identifiers alone define canonical identity.
+   contract, including fact/relation schemas, predicate-local role definitions,
+   reusable role concepts, proposition/occurrence/assertion identity, and scope.
+   No donor's identifiers alone define canonical identity.
 3. **Versioned mapping/projection layer:** explicit relations from donor senses
    to canonical meanings and between canonical meanings, with provenance,
-   conditions, review status, and declared information loss.
+   conditions, review status, role transforms, and declared information loss.
 
 WordNet supplies a lexical-sense layer, not a mandatory identity authority for
 every entity, event, or proposition. VerbNet contributes role and alternation
@@ -577,6 +626,11 @@ or the richer proposition/scope contract above.
 - Role correspondences derived from matching PropBank argument positions need
   semantic checking. The current derivation script has explicit divergent-role
   exceptions; positional agreement is a proposal mechanism, not certification.
+- The published pack does not yet expose the settled predicate-local
+  `RoleDefinition` shape uniformly. Existing reusable role ids and
+  `predicate_role_edges` are useful source structure, but generic
+  `relation_argN` positions and global role ids alone cannot carry the complete
+  local name/grounding/player/cardinality contract now required by the design.
 - Candidate modifiers and value types are not equivalent to a published
   composed release. Do not import all candidates blindly: some roles already
   exist under identical or alternative identifiers.
@@ -617,13 +671,13 @@ rates belong to the cited runs, not to an unqualified present-tense score.
 | VF-05 | Nominal reference is unsupported | Cover nominal constructions explicitly; internal NomBank is an optional candidate |
 | VF-06, VF-07 | Over-collapse or under-collapse | Separate equivalence, entailment, and similarity; test roles and scope independently |
 | VF-08 | Broader coverage creates unmanaged mapping ambiguity | Anticipated design tension; preserve source senses and explicit profiles |
-| VF-09 | Incorrect cross-predicate role alignment | Published correspondences exist; argument positions alone do not validate them |
+| VF-09 | Incorrect cross-predicate role alignment | Published correspondences exist; argument positions alone do not validate them; predicate-local role definitions must preserve contextual identity before alignment |
 | VF-11 | Donor assertion and model proposal have indistinguishable trust status | Keep derivation method, source provenance, and review status separate |
 | VF-12 | Coverage is reported as correctness | Report denominator, dispositions, and quality evidence separately |
 | VF-13 | Measurement survives without reproducible artifact | Retain inputs, outputs, versions, and scoring semantics; label superseded runs |
 | VF-14 | Empty extraction silently means “nothing to say” | Consumer-owned behavior; integration probes must distinguish no content, unsupported meaning, and failure |
 | VF-15 | Claims lack cross-document identity/reference support | Specify reference/identity contract here; reconciliation runtime remains consumer-owned |
-| VF-16 | Role names are invented per extraction | Stable pack role identities; unsupported roles fail visibly |
+| VF-16 | Role names are invented per extraction | Stable pack role concepts plus predicate-local role definitions; unsupported roles fail visibly |
 | VF-17 | Entity-resolution errors are scored as vocabulary errors | Upstream responsibility; control resolved identities in construction assertions |
 | VF-18 | Symmetry is missing or overgeneralized | Symmetric role pairs ship; enforce only declared role permutations |
 
@@ -639,6 +693,9 @@ These are construction decisions, not reopened questions about the goal:
   internal profile, and which components would that profile retain?
 - What serialized identity/reference mechanism distinguishes proposition
   content, source assertion, and repeated event/process occurrences?
+- What additive serialized shape introduces predicate-local role-definition
+  identity, grounding, filler constraints, cardinality, and inheritance while
+  preserving existing reusable role ids and consumer compatibility?
 - How are mapping context, preconditions, role transforms, composition limits,
   and projection losses encoded and enforced?
 - Which scope, quantity/unit, temporal, generic, and process features enter the
@@ -647,8 +704,9 @@ These are construction decisions, not reopened questions about the goal:
   participation in the public artifact?
 
 Canonical-layer architecture, upstream coreference ownership, this repository's
-compiler ownership, and the right to build before application benchmarking are
-settled; they are not open gates.
+compiler ownership, the local-role/global-role conceptual distinction, and the
+right to build before application benchmarking are settled; they are not open
+gates.
 
 ## Decisions and Assumptions
 
@@ -656,6 +714,8 @@ settled; they are not open gates.
 |---|---|---|---|
 | Build the broad foundation before application comparison | `human_set` | Brian rejected downstream uplift as an admission test for constructing its prerequisite | initiative outcome and sequencing |
 | Preserve donor meanings behind a canonical layer rather than flattening all sources | `human_set` | accepted design and current architecture | representation and integration |
+| Predicate-local role definitions ground reusable role concepts | `human_set` | approved 2026-09-12 after reconciling the fact-oriented brief, LC's existing reusable roles, and World Substrate's real semantic-binding consumer | relation schema, role identity, M4 integration |
+| World Substrate mechanics remain downstream of LC meaning | `human_set` | accepted World Substrate semantic/mechanical boundary; richer LC semantics must not imply persistence/effects/commit authority | cross-repo boundary |
 | Run M1 before further bulk ingestion | `agent_decided_reversible` | the executable semantic contract is the first missing boundary and prevents new ambiguous rows | execution frontier |
 | Reuse the current package/consumer seam without changing `onto-canon6` | `agent_decided_reversible` | a live pinned dependency already exists; this slice can prove the object through its own load boundary | reference observation |
 | Select exact PropBank 3.4, FrameNet 1.7, and approved SUMO v2 components for the first release | `agent_decided_reversible` | they are already pinned, rights-dispositioned, and backed by retained structured evidence; unpinned candidates remain explicit exclusions | first-release inventory |
@@ -695,13 +755,20 @@ The construction-first outcome and five-stage sequence are accepted. No human
 decision is required for the active slice. NomBank adoption and any publication
 of internally sourced material remain later human-owned decisions.
 
-**Human decisions:** none for M2. The next human gate is only encountered if a
-later milestone proposes selecting restricted NomBank components or publishing
-an integrated release.
+**Human decisions:** the 2026-09-12 role-model review is incorporated: a
+predicate/fact type owns local role definitions that may ground reusable LC role
+concepts, and consumer mechanics remain downstream. The next human gate is only
+encountered if a later milestone proposes selecting restricted NomBank
+components, publishing an integrated release, or materially changing a consumer
+contract.
 
-**Exact next action:** open a new M4 lane for the acquisition mapping family and
-reconcile donor-native links into directional, conditioned mappings with role
-transforms and explicit unresolved cases, without changing published packs.
+**Exact next action:** open the M4 acquisition mapping lane and reconcile
+donor-native links into directional, conditioned mappings with explicit role
+transforms. In the same additive construction lane, specify the
+predicate-local-role-definition record shape and prove it against the
+acquisition family plus one existing World Substrate semantic binding. Do not
+change published packs or consumer contracts until that construction evidence
+exists.
 
 ## The sibling project, and why it is not a competitor
 
@@ -726,7 +793,8 @@ from schema lint and target enforcement. Set-like proposition content can
 coexist with distinct assertion/occurrence identities.
 
 Its PostgreSQL, MongoDB, GraphQL, and DSL implementation plans do not transfer
-into this vocabulary roadmap.
+into this vocabulary roadmap. Its fact-type/role/objectification semantics do:
+they are now explicitly reconciled with the canonical role model above.
 
 ## Local construction and integration evidence
 
@@ -755,6 +823,17 @@ The [design log](DESIGN_LOG.md) retains the dated interpretation of July
 `onto-canon6/document_map` work, September consumer wiring, and relation-layer
 release evidence. Consumer runtime questions belong to their primary source,
 not to this plan's historical account.
+
+World Substrate is a current semantic consumer/testbed, not a scope authority
+for Linguistic Core. Its primary [architecture](https://github.com/BrianMills2718/world-substrate/blob/main/docs/architecture.md),
+[Decision 003](https://github.com/BrianMills2718/world-substrate/blob/main/docs/decisions/003-semantic-mechanical-boundary.md),
+[semantic-binding contract](https://github.com/BrianMills2718/world-substrate/blob/main/docs/contracts/semantic-mechanical-binding-v0.md),
+and [`SemanticBinding` implementation](https://github.com/BrianMills2718/world-substrate/blob/main/src/world_substrate/semantic.py)
+show the boundary used in the 2026-09-12 stress test: LC sense/role identity is
+reused while causal class, bearer, mechanic identity, interpretation limits,
+and state mutation remain consumer-owned. `unheat` is deliberately left unbound
+when the pinned LC vocabulary lacks an adequate reviewed sense, rather than
+minting a local `lc:` term.
 
 The source conversation lives at
 `requirement-to-runtime-semantic-compiler/sources/semantic_interlingua_part1.md`.
