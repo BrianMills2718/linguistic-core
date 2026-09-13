@@ -9,8 +9,8 @@ Linguistic Core's fact-oriented design:
 
 The local role owns predicate context, a stable identity, local name,
 cardinality, and optional filler/constraint information.  Consumer profiles may
-bind to those local roles while keeping application mechanics outside Linguistic
-Core.
+bind their own participant names to those local roles while keeping application
+mechanics outside Linguistic Core.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ import json
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 
 class _StrictModel(BaseModel):
@@ -105,6 +105,9 @@ class ConsumerRoleProfileV1(_StrictModel):
         names = [item.consumer_role_name for item in self.mappings]
         if len(names) != len(set(names)):
             raise ValueError("CONSUMER_ROLE_NAME_DUPLICATE")
+        local_ids = [item.role_definition_id for item in self.mappings]
+        if len(local_ids) != len(set(local_ids)):
+            raise ValueError("CONSUMER_ROLE_DEFINITION_DUPLICATE")
         return self
 
 
@@ -129,10 +132,10 @@ def load_probe_input(path: Path) -> RoleDefinitionProbeInputV1:
     """Load one inspectable candidate fixture and fail closed on shape drift."""
 
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raw = path.read_text(encoding="utf-8")
+        return RoleDefinitionProbeInputV1.model_validate_json(raw)
+    except (OSError, UnicodeError, ValidationError) as exc:
         raise ValueError(f"ROLE_DEFINITION_PROBE_INPUT_INVALID path={path}") from exc
-    return RoleDefinitionProbeInputV1.model_validate(payload)
 
 
 def _schema_index(
@@ -185,11 +188,6 @@ def validate_consumer_profile(
             raise ValueError(
                 "CONSUMER_ROLE_DEFINITION_MISSING "
                 f"role_definition_id={mapping.role_definition_id}"
-            )
-        if role.local_name != mapping.consumer_role_name:
-            raise ValueError(
-                "CONSUMER_LOCAL_ROLE_MISMATCH "
-                f"consumer={mapping.consumer_role_name} local={role.local_name}"
             )
         if role.grounded_role_id != mapping.grounded_role_id:
             raise ValueError(
