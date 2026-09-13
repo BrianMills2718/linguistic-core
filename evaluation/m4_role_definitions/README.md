@@ -92,3 +92,19 @@ Run:
 PYTHONPATH=src python scripts/run_relation_assertion_probe_v1.py --json
 PYTHONPATH=src:. pytest -q tests/packs/test_relation_assertion_v1.py
 ```
+
+## Analytic InterpretationLicense probe
+
+`analytic_interpretation_license_v1.json` is the first direct Evidence → Action
+consumer profile over the generic relation grammar. It defines
+`analytic:semantic_binding` and `analytic:interpretation_license`, then
+objectifies one semantic binding inside an interpretation-license assertion.
+
+The license groups one method result with semantic grounding, optional
+world/observation models, assumptions and design conditions, provenance, scope,
+and licensed claim type. Provenance is mandatory; world-model cardinality is
+bounded; and the semantic binding cannot be replaced by a plain reference where
+the role declares `analytic:semantic_binding` as its filler relation schema.
+
+This construction requires no new `lc:` vocabulary and no new core mechanism
+beyond the merged relation-schema/objectification grammar.
