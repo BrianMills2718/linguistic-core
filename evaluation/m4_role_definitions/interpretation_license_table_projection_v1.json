@@ -1,0 +1,129 @@
+{
+  "schema_version": "consumer-projection-execution.v1",
+  "profile_id": "analytic:evidence_to_action",
+  "profile_version": "0.1.0",
+  "projection_id": "analytic.projection.interpretation-license-table-v1",
+  "target_view": "table_row",
+  "source_assertion_id": "assert:analytic.license.effect-claim",
+  "source_relation_schema_id": "analytic:interpretation_license",
+  "selected_roles": [
+    {
+      "role_definition_id": "analytic.roledef.interpretation_license.method_result",
+      "local_name": "method_result",
+      "fillers": [
+        {
+          "filler_kind": "reference",
+          "filler_id": "repr:fitted-causal-model-1"
+        }
+      ]
+    },
+    {
+      "role_definition_id": "analytic.roledef.interpretation_license.scope",
+      "local_name": "scope",
+      "fillers": [
+        {
+          "filler_kind": "reference",
+          "filler_id": "scope:posts-2026q2"
+        }
+      ]
+    },
+    {
+      "role_definition_id": "analytic.roledef.interpretation_license.licenses_claim_type",
+      "local_name": "licenses_claim_type",
+      "fillers": [
+        {
+          "filler_kind": "reference",
+          "filler_id": "claim-type:causal-effect"
+        }
+      ]
+    }
+  ],
+  "endpoint_fillers": [],
+  "loss_receipt": {
+    "projection_id": "analytic.projection.interpretation-license-table-v1",
+    "loss_classification": "lossy",
+    "omitted_roles": [
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.inference",
+        "local_name": "inference",
+        "fillers": [
+          {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.inference.effect-model"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.semantic_binding",
+        "local_name": "semantic_binding",
+        "fillers": [
+          {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.binding.exposure"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.world_model",
+        "local_name": "world_model",
+        "fillers": [
+          {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.world.diffusion"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.observation_model",
+        "local_name": "observation_model",
+        "fillers": [
+          {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.observation.exposure"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.assumption",
+        "local_name": "assumption",
+        "fillers": [
+          {
+            "filler_kind": "reference",
+            "filler_id": "assumption:no-unmeasured-confounding"
+          },
+          {
+            "filler_kind": "reference",
+            "filler_id": "assumption:positivity"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.design_condition",
+        "local_name": "design_condition",
+        "fillers": [
+          {
+            "filler_kind": "reference",
+            "filler_id": "design:observational-cohort"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.interpretation_license.provenance",
+        "local_name": "provenance",
+        "fillers": [
+          {
+            "filler_kind": "reference",
+            "filler_id": "provenance:dataset-v4"
+          },
+          {
+            "filler_kind": "reference",
+            "filler_id": "provenance:method-profile-v2"
+          }
+        ]
+      }
+    ],
+    "loss_note": "Compact table exposes result, scope, and claim type but omits the semantic, model, assumption, design, and provenance basis that licenses the interpretation.",
+    "canonical_equivalence": false
+  },
+  "content_sha256": "49ec8228ee1d38517c282425baadb0a641983a6dab7fa42385a47c5244a16096"
+}

@@ -157,3 +157,25 @@ It also declares two intentionally lossy projections:
 
 Projection validation requires every source role to be accounted for as selected
 or omitted. An n-ary relation cannot claim a binary projection is lossless.
+
+## Executed profile projections and loss receipts
+
+The profile's declared views are now executable through
+`consumer_projection_v1.py`. Projection output contains the selected role
+fillers, binary endpoint fillers when applicable, and a loss receipt that names
+every omitted role and the actual fillers omitted from this assertion.
+
+Retained deterministic examples:
+
+- `semantic_binding_binary_projection_v1.json` — endpoints are the represented
+  column and world-variable referent; binding kind remains an included edge
+  annotation; observation-model, scope, uncertainty, and provenance fillers are
+  named as omitted.
+- `interpretation_license_table_projection_v1.json` — exposes method result,
+  scope, and licensed claim type; explicitly records the omitted inference,
+  semantic binding, world/observation models, assumptions, design condition, and
+  provenance fillers.
+
+Both receipts carry `canonical_equivalence: false`. The API refuses a request to
+treat either lossy projection as an equivalent canonical round trip. Retained
+receipts are tested against fresh execution to surface projection drift.

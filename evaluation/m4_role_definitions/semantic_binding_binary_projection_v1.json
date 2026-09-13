@@ -1,0 +1,100 @@
+{
+  "schema_version": "consumer-projection-execution.v1",
+  "profile_id": "analytic:evidence_to_action",
+  "profile_version": "0.1.0",
+  "projection_id": "analytic.projection.semantic-binding-binary-v1",
+  "target_view": "binary_edge",
+  "source_assertion_id": "assert:analytic.binding.exposure",
+  "source_relation_schema_id": "analytic:semantic_binding",
+  "selected_roles": [
+    {
+      "role_definition_id": "analytic.roledef.semantic_binding.represented_element",
+      "local_name": "represented_element",
+      "fillers": [
+        {
+          "filler_kind": "reference",
+          "filler_id": "column:exposure_score"
+        }
+      ]
+    },
+    {
+      "role_definition_id": "analytic.roledef.semantic_binding.binding_kind",
+      "local_name": "binding_kind",
+      "fillers": [
+        {
+          "filler_kind": "reference",
+          "filler_id": "binding-kind:measures"
+        }
+      ]
+    },
+    {
+      "role_definition_id": "analytic.roledef.semantic_binding.referent",
+      "local_name": "referent",
+      "fillers": [
+        {
+          "filler_kind": "reference",
+          "filler_id": "world-variable:exposure"
+        }
+      ]
+    }
+  ],
+  "endpoint_fillers": [
+    {
+      "filler_kind": "reference",
+      "filler_id": "column:exposure_score"
+    },
+    {
+      "filler_kind": "reference",
+      "filler_id": "world-variable:exposure"
+    }
+  ],
+  "loss_receipt": {
+    "projection_id": "analytic.projection.semantic-binding-binary-v1",
+    "loss_classification": "lossy",
+    "omitted_roles": [
+      {
+        "role_definition_id": "analytic.roledef.semantic_binding.observation_model",
+        "local_name": "observation_model",
+        "fillers": [
+          {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.observation.exposure"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.semantic_binding.scope",
+        "local_name": "scope",
+        "fillers": [
+          {
+            "filler_kind": "reference",
+            "filler_id": "scope:posts-2026q2"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.semantic_binding.uncertainty",
+        "local_name": "uncertainty",
+        "fillers": [
+          {
+            "filler_kind": "reference",
+            "filler_id": "uncertainty:measurement-u1"
+          }
+        ]
+      },
+      {
+        "role_definition_id": "analytic.roledef.semantic_binding.provenance",
+        "local_name": "provenance",
+        "fillers": [
+          {
+            "filler_kind": "reference",
+            "filler_id": "provenance:semantic-review-v1"
+          }
+        ]
+      }
+    ],
+    "loss_note": "Binary edge preserves represented element, binding kind, and referent but omits observation-model, scope, uncertainty, and provenance qualifications.",
+    "canonical_equivalence": false
+  },
+  "content_sha256": "30545d875b36a30dcb3c12839c3ef13929a3191f7c93cbca46a4945c8ebb67f4"
+}
