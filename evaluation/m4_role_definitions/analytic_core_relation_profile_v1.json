@@ -1,0 +1,1855 @@
+{
+  "schema_version": "relation-assertion-bundle.v1",
+  "schemas": [
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:representation_projection",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.semantic_source",
+          "relation_schema_id": "analytic:representation_projection",
+          "local_name": "semantic_source",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticSource",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.representation",
+          "relation_schema_id": "analytic:representation_projection",
+          "local_name": "representation",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Representation",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.representation_kind",
+          "relation_schema_id": "analytic:representation_projection",
+          "local_name": "representation_kind",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:RepresentationKind",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.preserves_semantics",
+          "relation_schema_id": "analytic:representation_projection",
+          "local_name": "preserves_semantics",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticDimension",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.omits_semantics",
+          "relation_schema_id": "analytic:representation_projection",
+          "local_name": "omits_semantics",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticDimension",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.provenance",
+          "relation_schema_id": "analytic:representation_projection",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:representation_transformation",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.source_projection",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "source_projection",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:representation_projection",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.input_representation",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "input_representation",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Representation",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.procedure",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "procedure",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Procedure",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.output_representation",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "output_representation",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Representation",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.preserves",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "preserves",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticDimension",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.creates",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "creates",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticDimension",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.aggregates",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "aggregates",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticDimension",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.loses",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "loses",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SemanticDimension",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.provenance",
+          "relation_schema_id": "analytic:representation_transformation",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 8,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:semantic_binding",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.represented_element",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "represented_element",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:RepresentedElement",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.binding_kind",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "binding_kind",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:BindingKind",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.referent",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "referent",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Referent",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.observation_model",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "observation_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:observation_model_profile",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.scope",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "scope",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Scope",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.uncertainty",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "uncertainty",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Uncertainty",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.provenance",
+          "relation_schema_id": "analytic:semantic_binding",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:observation_model_profile",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.world_variable",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "world_variable",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:WorldVariable",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.observed_variable",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "observed_variable",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ObservedVariable",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.measurement_rule",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "measurement_rule",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:MeasurementRule",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.sampling_rule",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "sampling_rule",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:SamplingRule",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.noise_model",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "noise_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:NoiseModel",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.assumption",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "assumption",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Assumption",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.provenance",
+          "relation_schema_id": "analytic:observation_model_profile",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:world_model_profile",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.world_variable",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "world_variable",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:WorldVariable",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.relation",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "relation",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:WorldRelation",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.process",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "process",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:WorldProcess",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.mechanism",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "mechanism",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Mechanism",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.stochastic_law",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "stochastic_law",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:StochasticLaw",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.assumption",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "assumption",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Assumption",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.scope",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "scope",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Scope",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.provenance",
+          "relation_schema_id": "analytic:world_model_profile",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:analytic_methodology_profile",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.methodology",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "methodology",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Methodology",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.procedure",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "procedure",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Procedure",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.requires_structure",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "requires_structure",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:RepresentationCapability",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.supports_aim",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "supports_aim",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:AnalyticAim",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.uses_inference_mode",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "uses_inference_mode",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:InferenceMode",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.produces_output_type",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "produces_output_type",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:OutputType",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.requires_condition",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "requires_condition",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:MethodCondition",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.potential_claim_type",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "potential_claim_type",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ClaimType",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.provenance",
+          "relation_schema_id": "analytic:analytic_methodology_profile",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 8,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:inference_relation",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.methodology_profile",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "methodology_profile",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:analytic_methodology_profile",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.input_preparation",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "input_preparation",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:representation_transformation",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.input_representation",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "input_representation",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Representation",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.world_model",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "world_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:world_model_profile",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.output",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "output",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:MethodResult",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.epistemic_status",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "epistemic_status",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:EpistemicStatus",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.scope",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "scope",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Scope",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.provenance",
+          "relation_schema_id": "analytic:inference_relation",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:interpretation_license",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.inference",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "inference",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:inference_relation",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.method_result",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "method_result",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:MethodResult",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.semantic_binding",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "semantic_binding",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:semantic_binding",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.world_model",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "world_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:world_model_profile",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.observation_model",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "observation_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:observation_model_profile",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.assumption",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "assumption",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Assumption",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.design_condition",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "design_condition",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:DesignCondition",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.provenance",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.scope",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "scope",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Scope",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 8,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.licenses_claim_type",
+          "relation_schema_id": "analytic:interpretation_license",
+          "local_name": "licenses_claim_type",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ClaimType",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 9,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:decision_method_application",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.method",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "method",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:DecisionMethod",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.licensed_basis",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "licensed_basis",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:interpretation_license",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.objective",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "objective",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Objective",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.constraint",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "constraint",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:DecisionConstraint",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.consequence_model",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "consequence_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:world_model_profile",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.affordance",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "affordance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Affordance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.risk_preference",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "risk_preference",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:RiskPreference",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.governance",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "governance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:GovernanceConstraint",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.output_decision",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "output_decision",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Decision",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 8,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.provenance",
+          "relation_schema_id": "analytic:decision_method_application",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 9,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:action_realization",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.action_realization.decision_application",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "decision_application",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:decision_method_application",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.decision",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "decision",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Decision",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.selected_affordance",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "selected_affordance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Affordance",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.capability",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "capability",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Capability",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.effector",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "effector",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Effector",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.action_attempt",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "action_attempt",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ActionAttempt",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.intended_effect",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "intended_effect",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:IntendedEffect",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.observed_effect",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "observed_effect",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ObservedEffect",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 7,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.feedback",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "feedback",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:FeedbackSignal",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 8,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.provenance",
+          "relation_schema_id": "analytic:action_realization",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 9,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "analytic:feedback_update",
+      "owner_namespace": "analytic",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.action_realization",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "action_realization",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:action_realization",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.observed_effect",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "observed_effect",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ObservedEffect",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.target_world_model",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "target_world_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:world_model_profile",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.target_observation_model",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "target_observation_model",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:observation_model_profile",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.update_kind",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "update_kind",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:UpdateKind",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.output_revision",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "output_revision",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:ModelRevision",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 5,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.provenance",
+          "relation_schema_id": "analytic:feedback_update",
+          "local_name": "provenance",
+          "grounded_role_id": null,
+          "expected_filler_type": "analytic:Provenance",
+          "min_count": 1,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "assert:analytic.projection.case-table",
+      "relation_schema_id": "analytic:representation_projection",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.semantic_source",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-core:study-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.representation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:case-table-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.representation_kind",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "representation-kind:tabular"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.preserves_semantics",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:stable-identity"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.preserves_semantics",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:typed-variables"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.omits_semantics",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:source-wording"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_projection.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:projection-v1"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.transform.model-matrix",
+      "relation_schema_id": "analytic:representation_transformation",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.source_projection",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.projection.case-table"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.input_representation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:case-table-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.procedure",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "procedure:design-matrix-builder-v2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.output_representation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:model-matrix-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.preserves",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:variable-identity"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.creates",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:encoded-covariates"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:matrix-build-v2"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.observation.exposure",
+      "relation_schema_id": "analytic:observation_model_profile",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.world_variable",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "world-variable:exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.observed_variable",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "column:exposure_score"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.measurement_rule",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "measurement-rule:exposure-coding-v3"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.sampling_rule",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "sampling-rule:platform-cohort-v1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.noise_model",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "noise-model:coding-error-v1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.assumption",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "assumption:measurement-stability"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.observation_model_profile.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:measurement-review-v3"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.world.diffusion",
+      "relation_schema_id": "analytic:world_model_profile",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.world_variable",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "world-variable:exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.world_variable",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "world-variable:adoption"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.relation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "world-relation:exposure-adoption"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.mechanism",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "mechanism:diffusion-influence"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.assumption",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "assumption:stable-unit-treatment"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.scope",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "scope:posts-2026q2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.world_model_profile.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:world-model-v2"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.binding.exposure",
+      "relation_schema_id": "analytic:semantic_binding",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.represented_element",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "column:exposure_score"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.binding_kind",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "binding-kind:measures"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.referent",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "world-variable:exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.observation_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.observation.exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.scope",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "scope:posts-2026q2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.uncertainty",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "uncertainty:measurement-u1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.semantic_binding.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:semantic-review-v1"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.methodology.causal-estimation",
+      "relation_schema_id": "analytic:analytic_methodology_profile",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.methodology",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "methodology:causal-estimation-v1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.procedure",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "procedure:doubly-robust-estimator-v2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.requires_structure",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "representation-capability:cases-by-variables"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.supports_aim",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "analytic-aim:evaluate-interventions"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.uses_inference_mode",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "inference-mode:induction"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.produces_output_type",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "output-type:fitted-causal-model"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.requires_condition",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "condition:identification"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.requires_condition",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "condition:measurement-validity"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.potential_claim_type",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "claim-type:causal-effect"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.analytic_methodology_profile.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:method-profile-v2"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.inference.effect-model",
+      "relation_schema_id": "analytic:inference_relation",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.methodology_profile",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.methodology.causal-estimation"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.input_preparation",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.transform.model-matrix"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.input_representation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:model-matrix-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.world_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.world.diffusion"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.output",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:fitted-causal-model-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.epistemic_status",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "epistemic-status:estimated"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.scope",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "scope:posts-2026q2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.inference_relation.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:inference-run-v7"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.transform.intervention-simulator",
+      "relation_schema_id": "analytic:representation_transformation",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.input_representation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:fitted-causal-model-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.procedure",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "procedure:compile-intervention-simulator-v1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.output_representation",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:intervention-simulator-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.preserves",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:variable-identity"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.creates",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "semantic-dimension:executable-interventions"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.representation_transformation.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:simulator-compile-v1"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.license.effect-claim",
+      "relation_schema_id": "analytic:interpretation_license",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.inference",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.inference.effect-model"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.method_result",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "repr:fitted-causal-model-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.semantic_binding",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.binding.exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.world_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.world.diffusion"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.observation_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.observation.exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.assumption",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "assumption:no-unmeasured-confounding"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.assumption",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "assumption:positivity"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.design_condition",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "design:observational-cohort"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:dataset-v4"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:method-profile-v2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.scope",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "scope:posts-2026q2"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.interpretation_license.licenses_claim_type",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "claim-type:causal-effect"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.decision.intervention-choice",
+      "relation_schema_id": "analytic:decision_method_application",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.method",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "decision-method:constrained-utility"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.licensed_basis",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.license.effect-claim"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.objective",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "objective:reduce-harm"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.constraint",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "constraint:budget-100"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.consequence_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.world.diffusion"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.affordance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "affordance:reduce-exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.risk_preference",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "risk-preference:conservative"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.governance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "governance:review-required"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.output_decision",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "decision:reduce-exposure-10pct"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.decision_method_application.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:decision-review-v1"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.action.reduce-exposure",
+      "relation_schema_id": "analytic:action_realization",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.action_realization.decision_application",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.decision.intervention-choice"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.decision",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "decision:reduce-exposure-10pct"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.selected_affordance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "affordance:reduce-exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.capability",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "capability:ranking-adjustment"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.effector",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "effector:ranking-service"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.action_attempt",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "action-attempt:ranking-change-1"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.intended_effect",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "effect:intended-exposure-minus-10pct"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.observed_effect",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "effect:observed-exposure-minus-8pct"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.feedback",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "feedback:post-intervention-monitoring"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.action_realization.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:action-log-v1"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:analytic.feedback.model-update",
+      "relation_schema_id": "analytic:feedback_update",
+      "bindings": [
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.action_realization",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.action.reduce-exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.observed_effect",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "effect:observed-exposure-minus-8pct"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.target_world_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.world.diffusion"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.target_observation_model",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:analytic.observation.exposure"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.update_kind",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "update-kind:posterior-review"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.output_revision",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "model-revision:diffusion-v3-candidate"
+          }
+        },
+        {
+          "role_definition_id": "analytic.roledef.feedback_update.provenance",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "provenance:feedback-review-v1"
+          }
+        }
+      ]
+    }
+  ],
+  "top_assertion_id": "assert:analytic.feedback.model-update"
+}
