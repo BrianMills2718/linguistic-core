@@ -137,3 +137,23 @@ lose.
 
 All schemas remain `analytic:` consumer vocabulary. The construction uses the
 Linguistic Core grammar but adds no analytic concepts to the `lc:` namespace.
+
+## Versioned analytic consumer profile contract
+
+`analytic_core_profile_contract_v1.json` freezes the successful construction as
+`analytic:evidence_to_action@0.1.0`. The manifest pins the exact relation bundle
+digest, the `relation-schema.v1` and `relation-assertion-bundle.v1` grammar
+versions, the exact eleven-schema set, and the feedback assertion used as the
+composition entry point.
+
+It also declares two intentionally lossy projections:
+
+- a binary semantic-binding view that keeps represented element, binding kind,
+  and referent while omitting observation-model, scope, uncertainty, and
+  provenance qualifications; and
+- a compact interpretation-license table that keeps method result, scope, and
+  licensed claim type while omitting the semantic/model/assumption/design/
+  provenance basis for the license.
+
+Projection validation requires every source role to be accounted for as selected
+or omitted. An n-ary relation cannot claim a binary projection is lossless.
