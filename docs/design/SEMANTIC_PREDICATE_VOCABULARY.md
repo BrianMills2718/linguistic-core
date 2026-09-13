@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@8
+revision: linguistic-core-roadmap@9
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,11 +36,11 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
-**Last design review:** `linguistic-core-roadmap@8`, 2026-09-13; the merged
-predicate-local role-definition construction was stress-tested against a
-World Substrate-owned relation schema. The role grammar is now explicitly
-application-independent: consumers may own namespaced relation schemas without
-those schemas becoming Linguistic Core vocabulary or execution semantics.
+**Last design review:** `linguistic-core-roadmap@9`, 2026-09-13; the
+consumer-owned relation grammar was extended with first-class relation
+assertions and objectification. A World Substrate causal-event probe now
+references a grouped semantic-binding assertion without binary flattening; no
+published pack or consumer execution contract changes.
 
 ## Contents
 
@@ -453,6 +453,31 @@ The first construction probe uses World Substrate's semantic-binding contract.
 Its `mechanic` role remains explicitly consumer-owned consequence authority;
 representing that role does not say what effects the mechanic causes.
 
+### Settled 2026-09-13: grouped relation assertions are first-class fillers
+
+A relation schema describes a proposition type; a relation assertion gives one
+grouped proposition an identity and explicit role bindings. That assertion may
+then fill a role in another relation. This is the objectification boundary the
+fact-oriented design requires.
+
+The construction contract therefore distinguishes:
+
+- the relation schema and its locally owned role definitions;
+- one relation assertion identity;
+- role bindings within that assertion; and
+- a filler reference that may point to an external semantic object or to another
+  relation assertion.
+
+When a role's declared filler type is itself a known relation schema, a plain
+reference is insufficient: the filler must point to an assertion of that schema.
+This preserves participant grouping and prevents a binary projection from
+silently substituting for the richer fact. A World Substrate probe demonstrates
+`ws:causal_event` referring to an objectified `ws:semantic_binding` assertion.
+
+This is representation, not truth or execution. Objectifying a semantic binding
+does not make its mechanic causal in the real world, nor does it transfer World
+Substrate's commit authority into Linguistic Core.
+
 ### The mapping relation vocabulary
 
 The existing nine names are retained, but their names are not executable
@@ -795,14 +820,15 @@ encountered if a later milestone proposes selecting restricted NomBank
 components, publishing an integrated release, or materially changing a consumer
 contract.
 
-**Exact next action:** complete the bounded consumer-owned relation-schema
-construction using World Substrate `ws:semantic_binding`, then exercise the next
-missing fact-oriented capability: an objectified/grouped relation filling a role
-in another relation without binary flattening. Use one concrete consumer case
-(such as a semantic binding referenced by a causal-event or analytic-license
-schema), retain explicit namespace ownership, and do not promote consumer
-workflow/mechanic semantics into the LC vocabulary. Published packs remain
-unchanged until this construction evidence justifies a versioned contract.
+**Exact next action:** use the now-demonstrated relation/objectification grammar
+to encode one analytic consumer relation, starting with
+`analytic:interpretation_license`. Its roles should reference a method result,
+semantic binding(s), world/observation model(s), assumptions/design conditions,
+provenance/scope, and a licensed claim type without promoting those analytic
+concepts into the `lc:` vocabulary. This is the first direct test that the same
+relation grammar can carry the Evidence → Action analytic architecture rather
+than only linguistic and World Substrate schemas. Published packs remain
+unchanged until that consumer construction earns a versioned contract.
 
 ## The sibling project, and why it is not a competitor
 

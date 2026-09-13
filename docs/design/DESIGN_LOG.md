@@ -1,5 +1,29 @@
 # Design log
 
+## 2026-09-13 — Relation assertions can fill roles without binary flattening
+
+The consumer-owned relation-schema probe left one fact-oriented requirement
+unimplemented: a grouped relation could be described as a schema but could not
+yet participate as a first-class filler in another relation. The new bounded
+construction adds identity-bearing relation assertions, explicit role bindings,
+and filler references that distinguish ordinary references from nested relation
+assertions.
+
+The World Substrate probe objectifies one `ws:semantic_binding` assertion and
+binds it to the `semantic_binding` role of `ws:causal_event`. The validator
+requires the nested assertion to exist, to have the relation schema declared by
+the outer role's filler type, and to satisfy the inner/outer role cardinalities.
+A plain reference in that role fails visibly, so a binary edge cannot silently
+replace the grouped proposition.
+
+This remains a representation contract only. World Substrate owns its causal
+mechanics and event authority; Linguistic Core supplies the reusable grammar.
+The next consumer stress test is the analytic architecture, beginning with an
+`analytic:interpretation_license` relation that composes method results, semantic
+bindings, models, assumptions, provenance, and licensed claim type. No published
+pack or consumer runtime changed in this slice.
+
+
 ## 2026-09-13 — Relation grammar generalized to consumer-owned schemas
 
 The merged predicate-local role-definition probe exposed a boundary the design
