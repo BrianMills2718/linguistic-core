@@ -1,0 +1,222 @@
+{
+  "schema_version": "relation-assertion-bundle.v1",
+  "schemas": [
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "ws:semantic_binding",
+      "owner_namespace": "ws",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.sense",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "sense",
+          "grounded_role_id": null,
+          "expected_filler_type": "lc:PredicateSense",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.participant_profile",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "participant_profile",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:ParticipantRoleProfile",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.specialization",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "specialization",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:SemanticSpecialization",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.causal_class",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "causal_class",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:CausalClass",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 3,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.causal_bearer",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "causal_bearer",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:CausalBearer",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 4,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.mechanic",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "mechanic",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:Mechanic",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 5,
+          "constraints": [
+            "consumer-owned consequence authority"
+          ]
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.interpretation_limit",
+          "relation_schema_id": "ws:semantic_binding",
+          "local_name": "interpretation_limit",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:InterpretationLimit",
+          "min_count": 0,
+          "max_count": null,
+          "presentation_ordinal": 6,
+          "constraints": []
+        }
+      ]
+    },
+    {
+      "schema_version": "relation-schema.v1",
+      "relation_schema_id": "ws:causal_event",
+      "owner_namespace": "ws",
+      "review_status": "candidate",
+      "roles": [
+        {
+          "role_definition_id": "ws.roledef.causal_event.causal_bearer",
+          "relation_schema_id": "ws:causal_event",
+          "local_name": "causal_bearer",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:CausalBearer",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 0,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.causal_event.semantic_binding",
+          "relation_schema_id": "ws:causal_event",
+          "local_name": "semantic_binding",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:semantic_binding",
+          "min_count": 0,
+          "max_count": 1,
+          "presentation_ordinal": 1,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.causal_event.mechanic",
+          "relation_schema_id": "ws:causal_event",
+          "local_name": "mechanic",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:Mechanic",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 2,
+          "constraints": []
+        },
+        {
+          "role_definition_id": "ws.roledef.causal_event.resulting_state",
+          "relation_schema_id": "ws:causal_event",
+          "local_name": "resulting_state",
+          "grounded_role_id": null,
+          "expected_filler_type": "ws:WorldRevision",
+          "min_count": 1,
+          "max_count": 1,
+          "presentation_ordinal": 3,
+          "constraints": []
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "assert:binding.give.1",
+      "relation_schema_id": "ws:semantic_binding",
+      "bindings": [
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.sense",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "lc:give_transfer"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.participant_profile",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "ws.profile:binding.give.v0"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.causal_class",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "ws.causal_class:primitive_intentional_action"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.causal_bearer",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "actor:robinson"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.semantic_binding.mechanic",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "mechanism.ownership.give"
+          }
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert:event.give.1",
+      "relation_schema_id": "ws:causal_event",
+      "bindings": [
+        {
+          "role_definition_id": "ws.roledef.causal_event.causal_bearer",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "actor:robinson"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.causal_event.semantic_binding",
+          "filler": {
+            "filler_kind": "relation_assertion",
+            "filler_id": "assert:binding.give.1"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.causal_event.mechanic",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "mechanism.ownership.give"
+          }
+        },
+        {
+          "role_definition_id": "ws.roledef.causal_event.resulting_state",
+          "filler": {
+            "filler_kind": "reference",
+            "filler_id": "world-revision:42"
+          }
+        }
+      ]
+    }
+  ],
+  "top_assertion_id": "assert:event.give.1"
+}

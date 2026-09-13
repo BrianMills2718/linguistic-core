@@ -71,3 +71,24 @@ Run:
 PYTHONPATH=src python scripts/run_consumer_relation_schema_probe_v1.py --json
 PYTHONPATH=src:. pytest -q tests/packs/test_consumer_relation_schema_v1.py
 ```
+
+## Relation assertion / objectification probe
+
+`world_substrate_objectification_v1.json` adds the next fact-oriented layer over
+relation schemas: identity-bearing relation assertions with explicit role
+bindings. A role filler may reference another relation assertion, preserving the
+inner relation's participant grouping rather than flattening it into unrelated
+binary edges.
+
+The concrete probe objectifies one `ws:semantic_binding` assertion and binds it
+to the `semantic_binding` role of a `ws:causal_event` assertion. The validator
+checks relation-schema identity, role cardinality, nested assertion existence,
+and nested relation type. A plain reference is rejected where the role expects
+a relation assertion.
+
+Run:
+
+```bash
+PYTHONPATH=src python scripts/run_relation_assertion_probe_v1.py --json
+PYTHONPATH=src:. pytest -q tests/packs/test_relation_assertion_v1.py
+```
