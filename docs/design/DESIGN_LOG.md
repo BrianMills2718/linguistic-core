@@ -1,5 +1,29 @@
 # Design log
 
+## 2026-09-13 — Relation grammar generalized to consumer-owned schemas
+
+The merged predicate-local role-definition probe exposed a boundary the design
+had not yet made executable: its first contract hard-coded `lc:` predicate and
+`lc.roledef.*` ownership. That is sufficient for Linguistic Core predicates but
+not for the stated goal of letting downstream systems express their own schemas
+in the same role-typed language.
+
+A bounded World Substrate stress test now represents `ws:semantic_binding` as a
+consumer-owned relation schema with seven explicit local roles, cardinalities,
+and filler types. None of those application-local roles is falsely promoted to
+a global LC thematic role, while the `sense` filler can still cite an LC type.
+The `mechanic` role remains World Substrate-owned consequence authority: the
+grammar describes that participant position but supplies no effects, scheduling,
+write authority, or commit semantics.
+
+This settles the ownership rule: Linguistic Core owns the reusable relation
+grammar and its published `lc:` vocabulary; consumers may own namespaced
+relation schemas expressed in that grammar. The next construction pressure point
+is objectification / relation-as-role-filler so grouped propositions can compose
+without binary flattening. No published pack or consumer runtime changes in this
+LC slice.
+
+
 History of updates to `SEMANTIC_PREDICATE_VOCABULARY.md`, which never contains this log
 — see the living-document convention this repo follows. Entries before
 2026-09-06 were written when the design lived in

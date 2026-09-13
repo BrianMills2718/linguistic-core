@@ -1,0 +1,90 @@
+{
+  "schema_version": "consumer-relation-schema-probe-input.v1",
+  "consumer_id": "world-substrate",
+  "source_contract_ref": "world-substrate:semantic-mechanical-binding-v0",
+  "relation_schema": {
+    "schema_version": "relation-schema.v1",
+    "relation_schema_id": "ws:semantic_binding",
+    "owner_namespace": "ws",
+    "review_status": "candidate",
+    "roles": [
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.sense",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "sense",
+        "grounded_role_id": null,
+        "expected_filler_type": "lc:PredicateSense",
+        "min_count": 1,
+        "max_count": 1,
+        "presentation_ordinal": 0,
+        "constraints": []
+      },
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.participant_profile",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "participant_profile",
+        "grounded_role_id": null,
+        "expected_filler_type": "ws:ParticipantRoleProfile",
+        "min_count": 1,
+        "max_count": 1,
+        "presentation_ordinal": 1,
+        "constraints": []
+      },
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.specialization",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "specialization",
+        "grounded_role_id": null,
+        "expected_filler_type": "ws:SemanticSpecialization",
+        "min_count": 0,
+        "max_count": 1,
+        "presentation_ordinal": 2,
+        "constraints": []
+      },
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.causal_class",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "causal_class",
+        "grounded_role_id": null,
+        "expected_filler_type": "ws:CausalClass",
+        "min_count": 1,
+        "max_count": 1,
+        "presentation_ordinal": 3,
+        "constraints": []
+      },
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.causal_bearer",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "causal_bearer",
+        "grounded_role_id": null,
+        "expected_filler_type": "ws:CausalBearer",
+        "min_count": 0,
+        "max_count": 1,
+        "presentation_ordinal": 4,
+        "constraints": []
+      },
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.mechanic",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "mechanic",
+        "grounded_role_id": null,
+        "expected_filler_type": "ws:Mechanic",
+        "min_count": 0,
+        "max_count": 1,
+        "presentation_ordinal": 5,
+        "constraints": ["mechanic remains consumer-owned consequence authority"]
+      },
+      {
+        "role_definition_id": "ws.roledef.semantic_binding.interpretation_limit",
+        "relation_schema_id": "ws:semantic_binding",
+        "local_name": "interpretation_limit",
+        "grounded_role_id": null,
+        "expected_filler_type": "ws:InterpretationLimit",
+        "min_count": 0,
+        "max_count": null,
+        "presentation_ordinal": 6,
+        "constraints": []
+      }
+    ]
+  }
+}

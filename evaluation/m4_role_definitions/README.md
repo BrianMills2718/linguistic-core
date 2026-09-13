@@ -48,3 +48,26 @@ pytest -q tests/packs/test_role_definition_v1.py tests/packs/test_m4_acquisition
 ```
 
 Passing establishes only that this candidate shape can preserve local role identity while remaining backward-compatible with the bounded acquisition mapping and one real consumer binding. It does **not** publish the schema, certify all role alignments, add filler-type evidence, or change World Substrate mechanics.
+
+## Consumer-owned relation schema probe
+
+`world_substrate_relation_schema_v1.json` exercises the same role-typed grammar
+against a downstream relation owned by another namespace. It represents
+`ws:semantic_binding` with local `ws.roledef.*` roles while leaving all seven
+roles ungrounded to global LC thematic roles where no such equivalence is
+warranted. Filler types may still cite LC types (for example the predicate
+sense) or World Substrate-owned types.
+
+This is the boundary the first predicate-local probe could not express: the
+language is reusable outside the `lc:` namespace, but the resulting application
+schema does not become Linguistic Core vocabulary. In particular, the
+`mechanic` role is explicitly World Substrate-owned consequence authority; its
+presence in a relation schema says what participant occupies that role, not what
+effects the mechanic produces.
+
+Run:
+
+```bash
+PYTHONPATH=src python scripts/run_consumer_relation_schema_probe_v1.py --json
+PYTHONPATH=src:. pytest -q tests/packs/test_consumer_relation_schema_v1.py
+```
