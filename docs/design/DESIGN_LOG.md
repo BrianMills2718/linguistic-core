@@ -1,5 +1,26 @@
 # Design log
 
+## 2026-09-13 — InterpretationLicense fits the generic relation grammar
+
+The first direct analytic consumer stress test required no new Linguistic Core
+primitive. `analytic:semantic_binding` is represented as a grouped relation
+assertion, and `analytic:interpretation_license` references that assertion while
+also grouping a method result, world/observation model references, assumptions,
+design conditions, provenance, scope, and licensed claim type.
+
+The validator preserves the semantic-binding grouping, requires provenance,
+enforces single-world-model cardinality, and rejects replacing the nested
+semantic binding with a plain reference. This is construction evidence that the
+same role-typed/objectification grammar can carry at least one load-bearing
+Evidence → Action relation without absorbing analytic workflow vocabulary into
+`lc:`.
+
+The next slice expands this from one relation to the compact canonical analytic
+relation set and validates one type-level Evidence → Action composition,
+including a result that may itself become a representation for downstream work.
+No published pack or consumer runtime changes in this slice.
+
+
 ## 2026-09-13 — Relation assertions can fill roles without binary flattening
 
 The consumer-owned relation-schema probe left one fact-oriented requirement

@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@9
+revision: linguistic-core-roadmap@10
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,11 +36,11 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
-**Last design review:** `linguistic-core-roadmap@9`, 2026-09-13; the
-consumer-owned relation grammar was extended with first-class relation
-assertions and objectification. A World Substrate causal-event probe now
-references a grouped semantic-binding assertion without binary flattening; no
-published pack or consumer execution contract changes.
+**Last design review:** `linguistic-core-roadmap@10`, 2026-09-13; the merged
+relation-schema/objectification grammar was exercised against the first direct
+Evidence → Action analytic consumer schema. `analytic:interpretation_license`
+composes an objectified `analytic:semantic_binding` without new LC vocabulary
+or runtime semantics.
 
 ## Contents
 
@@ -173,6 +173,12 @@ internal-only source.
   `ws:semantic_binding` need their own local role identities (`ws.roledef.*`)
   while optionally citing LC types/role concepts. The grammar is reusable; the
   consumer schema remains consumer-owned.
+- The same grammar now carries an `analytic:` consumer probe: an
+  `InterpretationLicense` assertion groups a method result with a nested semantic
+  binding, world/observation-model references, assumptions/design conditions,
+  provenance/scope, and licensed claim type. The probe required no additional
+  LC vocabulary, which is positive construction evidence for the generic
+  relation grammar rather than an adoption of analytic concepts into LC.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
@@ -820,15 +826,15 @@ encountered if a later milestone proposes selecting restricted NomBank
 components, publishing an integrated release, or materially changing a consumer
 contract.
 
-**Exact next action:** use the now-demonstrated relation/objectification grammar
-to encode one analytic consumer relation, starting with
-`analytic:interpretation_license`. Its roles should reference a method result,
-semantic binding(s), world/observation model(s), assumptions/design conditions,
-provenance/scope, and a licensed claim type without promoting those analytic
-concepts into the `lc:` vocabulary. This is the first direct test that the same
-relation grammar can carry the Evidence → Action analytic architecture rather
-than only linguistic and World Substrate schemas. Published packs remain
-unchanged until that consumer construction earns a versioned contract.
+**Exact next action:** extend the successful analytic consumer probe into the
+small canonical Evidence → Action relation set: representation projection and
+transformation, semantic binding, observation/world-model profiles, analytic
+methodology, inference, interpretation license, decision application, action
+realization, and feedback. Then validate one type-level Evidence → Action
+composition across those schemas, including at least one result that becomes a
+downstream representation. Keep the entire `analytic:` profile consumer-owned;
+do not promote analytic workflow concepts into the `lc:` vocabulary merely
+because the common grammar can express them.
 
 ## The sibling project, and why it is not a competitor
 
