@@ -1,5 +1,28 @@
 # Design log
 
+## 2026-09-13 — Loss-aware projections are executable, not just declared
+
+The consumer-profile projection contract now executes against grouped relation
+assertions. A projected view retains selected role fillers and carries a loss
+receipt containing each omitted role plus the actual fillers omitted from the
+source assertion. The API marks lossy outputs non-equivalent and refuses a
+canonical round-trip equivalence request for them.
+
+Two deterministic analytic receipts are retained. The semantic-binding binary
+view keeps the represented element, binding kind, and referent while naming the
+omitted observation model, scope, uncertainty, and provenance. The compact
+interpretation-license table keeps method result, scope, and claim type while
+naming the omitted nested inference/semantic/model/assumption/design/provenance
+basis. Tests compare both retained receipts to fresh execution so view drift is
+visible.
+
+This completes the current consumer stress-test arc from typed local roles, to
+consumer-owned relation schemas, to objectification, to versioned profiles, to
+loss-aware views. The next construction step returns to LC's own M4 acquisition
+mapping and adds predicate-local role-definition identity to its existing
+directional role transforms without changing the published pack.
+
+
 ## 2026-09-13 — Analytic construction frozen as a versioned consumer profile
 
 The successful eleven-schema Evidence → Action fixture is now pinned by a

@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@12
+revision: linguistic-core-roadmap@13
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,11 +36,11 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
-**Last design review:** `linguistic-core-roadmap@12`, 2026-09-13; the
-successful eleven-schema analytic construction is now captured as a versioned
-consumer-profile contract with exact grammar/bundle dependencies and declared
-loss-aware binary/table projections. The profile remains consumer-owned and is
-not part of the published LC vocabulary.
+**Last design review:** `linguistic-core-roadmap@13`, 2026-09-13; the
+consumer-profile projection principle is now executable. Binary/table views are
+derived from grouped assertions with deterministic loss receipts naming omitted
+roles and fillers, and lossy views are refused canonical round-trip equivalence.
+The analytic profile remains consumer-owned conformance evidence.
 
 ## Contents
 
@@ -190,6 +190,10 @@ internal-only source.
   relation/assertion grammar and two declared lossy projections. Projection
   validation requires every source role to be selected or explicitly omitted;
   n-ary-to-binary views cannot claim lossless equivalence.
+- Those projection rules now execute against real grouped assertions. Retained
+  binary/table receipts carry selected fillers plus explicit omitted
+  role/filler values and `canonical_equivalence: false`; a lossy view cannot be
+  promoted back to equivalent canonical semantics.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
@@ -837,14 +841,14 @@ encountered if a later milestone proposes selecting restricted NomBank
 components, publishing an integrated release, or materially changing a consumer
 contract.
 
-**Exact next action:** make the declared consumer-profile projections executable.
-Given one grouped relation assertion plus a projection rule, emit a typed binary
-edge or table-row view together with an explicit loss receipt naming every
-omitted role/filler. Prove this on the analytic semantic-binding and
-interpretation-license projections, and prove that the generated views cannot be
-round-tripped as equivalent canonical assertions when the projection is lossy.
-Keep projection output downstream of the canonical grouped relation object and
-do not change the published 0.3.3 vocabulary pack.
+**Exact next action:** return the generic machinery to Linguistic Core's own M4
+integration path. Extend the acquisition-family directional mapping report to
+identify the predicate-local source and target role definitions used by each
+role transform, while retaining the existing reusable `lc.role.*` concepts and
+exact donor evidence. This tests the new role grammar in LC's real mapping
+construction rather than only consumer conformance fixtures. Do not change the
+published 0.3.3 pack until that additive M4 report passes its existing negative
+cases and exact-source checks.
 
 ## The sibling project, and why it is not a competitor
 
