@@ -108,3 +108,32 @@ the role declares `analytic:semantic_binding` as its filler relation schema.
 
 This construction requires no new `lc:` vocabulary and no new core mechanism
 beyond the merged relation-schema/objectification grammar.
+
+## Full analytic core relation profile
+
+`analytic_core_relation_profile_v1.json` expands the successful
+`InterpretationLicense` probe into one coherent Evidence → Action consumer
+profile with eleven relation schemas:
+
+1. representation projection;
+2. representation transformation;
+3. semantic binding;
+4. observation-model profile;
+5. world-model profile;
+6. analytic-methodology profile;
+7. inference relation;
+8. interpretation license;
+9. decision-method application;
+10. action realization; and
+11. feedback update.
+
+The fixture contains twelve grouped assertions and fifteen nested relation
+fillers. Starting at the feedback-update assertion, the nested assertion graph
+reaches every schema type. One fitted causal model deliberately keeps the same
+identity while serving as the inference output, the interpretation license's
+method result, and the input representation of a later transformation. This is
+the compositional case that a one-way pipeline or disjoint class hierarchy would
+lose.
+
+All schemas remain `analytic:` consumer vocabulary. The construction uses the
+Linguistic Core grammar but adds no analytic concepts to the `lc:` namespace.

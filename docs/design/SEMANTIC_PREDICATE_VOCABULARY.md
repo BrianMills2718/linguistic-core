@@ -2,7 +2,7 @@
 schema_version: "1.1"
 artifact_type: initiative_roadmap
 id: linguistic-core-semantic-vocabulary
-revision: linguistic-core-roadmap@10
+revision: linguistic-core-roadmap@11
 status: active
 owner: Brian Mills
 dependencies: []
@@ -36,11 +36,11 @@ without reopening the product thesis or inventing later-stage detail.
 M3 accepted after the last selected field, PropBank examples, was retained and
 reconciled against all 7,566 exact pinned source files. No published pack or
 consumer changed.
-**Last design review:** `linguistic-core-roadmap@10`, 2026-09-13; the merged
-relation-schema/objectification grammar was exercised against the first direct
-Evidence → Action analytic consumer schema. `analytic:interpretation_license`
-composes an objectified `analytic:semantic_binding` without new LC vocabulary
-or runtime semantics.
+**Last design review:** `linguistic-core-roadmap@11`, 2026-09-13; the
+analytic consumer stress test now covers the compact end-to-end Evidence →
+Action relation profile. Eleven consumer-owned schemas compose from
+representation projection through feedback, including method output reused as a
+downstream representation, without new LC vocabulary or runtime semantics.
 
 ## Contents
 
@@ -179,6 +179,12 @@ internal-only source.
   provenance/scope, and licensed claim type. The probe required no additional
   LC vocabulary, which is positive construction evidence for the generic
   relation grammar rather than an adoption of analytic concepts into LC.
+- That analytic construction now extends end to end across eleven relation
+  schemas: representation projection/transformation, semantic binding,
+  observation and world models, methodology, inference, interpretation license,
+  decision application, action realization, and feedback. The nested graph from
+  feedback reaches every schema type, and one method output retains one identity
+  when reused as a downstream representation.
 - WordNet and VerbNet source preservation, nominal coverage, richer donor
   fields, and reviewed role alignment remain incomplete. NomBank is permitted
   for an internal profile but is neither selected nor publishable by default.
@@ -826,15 +832,14 @@ encountered if a later milestone proposes selecting restricted NomBank
 components, publishing an integrated release, or materially changing a consumer
 contract.
 
-**Exact next action:** extend the successful analytic consumer probe into the
-small canonical Evidence → Action relation set: representation projection and
-transformation, semantic binding, observation/world-model profiles, analytic
-methodology, inference, interpretation license, decision application, action
-realization, and feedback. Then validate one type-level Evidence → Action
-composition across those schemas, including at least one result that becomes a
-downstream representation. Keep the entire `analytic:` profile consumer-owned;
-do not promote analytic workflow concepts into the `lc:` vocabulary merely
-because the common grammar can express them.
+**Exact next action:** freeze the successful eleven-schema analytic construction
+as a versioned **consumer profile contract**, separate from the Linguistic Core
+vocabulary release. Specify profile identity/versioning, declared dependencies
+on the generic relation grammar, and loss-aware projection rules for deriving
+binary graph/table views from grouped relation assertions. Use the analytic
+profile as the first proof that a rich consumer can depend on LC's formal
+language without making its workflow ontology part of `lc:`. Do not publish the
+profile as Linguistic Core vocabulary or change the 0.3.3 pack.
 
 ## The sibling project, and why it is not a competitor
 

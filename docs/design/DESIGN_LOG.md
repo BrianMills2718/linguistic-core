@@ -1,5 +1,28 @@
 # Design log
 
+## 2026-09-13 — Full Evidence → Action consumer profile composes in the grammar
+
+The analytic stress test now covers eleven consumer-owned relation schemas:
+representation projection and transformation, semantic binding, observation
+and world-model profiles, analytic methodology, inference, interpretation
+license, decision-method application, action realization, and feedback update.
+The retained construction fixture contains twelve grouped assertions and fifteen
+nested relation fillers.
+
+Starting from feedback, the nested assertion graph reaches every schema type. A
+fitted causal model also retains one identifier while serving three roles: the
+inference output, the interpretation license's method result, and the input
+representation for a downstream transformation. That construction demonstrates
+why result and representation are roles an object may play rather than mutually
+exclusive top-level classes.
+
+No new core primitive or `lc:` analytic vocabulary was required. The next
+boundary is packaging/versioning: freeze this as a consumer profile contract and
+define declared lossy projections from grouped relation assertions to simpler
+graph/table views without confusing those views with the canonical semantics.
+No published Linguistic Core pack or consumer runtime changes in this slice.
+
+
 ## 2026-09-13 — InterpretationLicense fits the generic relation grammar
 
 The first direct analytic consumer stress test required no new Linguistic Core
