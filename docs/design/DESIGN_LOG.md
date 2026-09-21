@@ -1,5 +1,26 @@
 # Design log
 
+## 2026-09-21 — Candidate applications restored to the design
+
+The design's use-case section had been reduced to one paragraph when the design
+moved here from `linguistic-vocabulary-research` (retired 2026-09-06). A
+comparison on 2026-09-21 found the earlier discussion's application list —
+framing detection, gold-standard evaluation against PropBank and FrameNet,
+cross-lingual comparison, obligation typing, agent interoperability, and the
+grouped list of normalization, interface, reasoning and generation uses — had
+not been carried over. It is restored under "Candidate applications" in
+`SEMANTIC_PREDICATE_VOCABULARY.md`, labelled as proposed uses that have not been
+measured against this object. External facts in that text (for example that
+PropBank and FrameNet exist for other languages) were carried over from the
+earlier discussion and not re-verified.
+
+The same comparison found other sections of the retired plan much shorter here:
+licensing, the Wikidata-scoped-to-states argument, and the canonicalization
+evidence. Those were not restored, since some of the trimming may have followed
+the 2026-09-06 review that corrected nine claims. The full earlier text remains
+readable in the archived `BrianMills2718/linguistic-vocabulary-research`
+repository at commit `37da967` (`PLAN.md`, `LOG.md`).
+
 ## 2026-09-13 — Loss-aware projections are executable, not just declared
 
 The consumer-profile projection contract now executes against grouped relation
