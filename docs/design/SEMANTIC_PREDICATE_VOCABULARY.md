@@ -643,6 +643,72 @@ Claims about claims require nesting; contradiction analysis additionally needs
 compatible subjects, times, scopes, and logical commitments. An attributed
 possibility is not automatically contradicted by an assertion of actuality.
 
+### Candidate applications (ideas, not claims)
+
+These come from the design discussion recorded in the retired
+`linguistic-vocabulary-research` repository (2026-09-04 to 2026-09-06). They are
+proposed uses, not delivered capabilities, and nothing here has been measured
+against this object. External facts cited below were taken from that discussion
+and were not re-verified here.
+
+**Uses that need breadth.** A small fixed vocabulary flattens the distinctions
+these depend on.
+
+- **Framing detection.** The same event described as an attack, a raid, or an
+  operation is one event with three stances. Predicate choice carries the
+  framing, so a rich vocabulary could make it measurable. The earlier discussion
+  named an existing Iran-framing fixture (four federal instruments) as a
+  bounded first test; whether framing detection recurs as a real workflow and
+  beats a manual baseline was left open.
+- **Gold-standard evaluation.** PropBank and FrameNet are answer keys written by
+  linguists. A crosswalk to them would turn extraction quality from a judgment
+  on a few paragraphs into a score over many expert-labeled sentences.
+- **Cross-lingual comparison.** PropBank and FrameNet are reported to exist for
+  other languages, which would let the predicate act as the shared layer for
+  comparison across languages.
+- **Obligation and compliance typing.** Regulations and contracts are dense with
+  *must*, *shall*, *may* and *is exempt from*. Typing obligations would let a
+  policy be checked against the regulation it claims to satisfy. This needs fine
+  deontic distinctions that a small pack would not carry.
+- **Agent interoperability.** One agent says `purchase`, another `acquisition`,
+  a third `change_of_control`. A shared layer could record that these are the
+  same concept and how their arguments correspond. The earlier discussion called
+  this the most current framing and the least explored.
+
+**Uses a small fixed vocabulary serves equally well:** cross-study comparison,
+policy tracing, agent-memory durability, action grounding.
+
+**Pattern (inference from the earlier discussion, not measured):** breadth pays
+off where the task is comparison across something, such as sources, languages,
+time, or schemes. A single project analyzing its own documents does not need it.
+
+**The fuller list, grouped by what each needs from the object:**
+
+- *Normalization, many phrasings to one representation.* Retrieval that treats
+  "Microsoft's acquisition of X," "X was bought by Microsoft," and "Microsoft
+  purchased X" as one thing; schema integration between organizations whose
+  `Customer`, `Client` and `Account` differ; explainability that names the
+  frame, sense and type two statements share instead of asserting similarity.
+- *Interface, one representation to many systems.* Natural-language front ends
+  where language compiles to a semantic form and then to a query or call,
+  making the step auditable rather than prompt-dependent; agent
+  interoperability as above; a semantic control plane for a composable software
+  library, where capabilities declare what they provide and consume in shared
+  terms.
+- *Reasoning and state.* World modeling with events that carry preconditions and
+  effects; planning as the same transition model read in reverse;
+  counterfactual and scenario simulation over typed state; organizational
+  digital twins where suppliers, contracts and obligations are live state.
+- *Generation and evaluation.* Synthetic training data in which one formal
+  representation yields many varied phrasings of the same meaning; benchmarks
+  targeting sense distinction, role assignment, paraphrase equivalence and type
+  consistency.
+
+Most of these are normalization or interface uses. That suggests the object's
+value is concentrated in being an interface, with the reasoning applications
+downstream of it rather than beside it. This too is an inference from the
+earlier discussion.
+
 ## Wikidata belongs in the design, scoped to states
 
 Wikidata is a candidate for relation/state coverage and lexical alignment,
