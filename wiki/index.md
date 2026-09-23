@@ -13,7 +13,7 @@ Public, license-cleared predicate and relation vocabulary compiled from SUMO, Pr
 
 ## Read next
 
-- [Operating rules](../CLAUDE.md)
+- [Operating rules](../AGENTS.md)
 - [Project overview](../README.md)
 
 ## Coverage and unknowns
