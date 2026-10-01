@@ -4,7 +4,7 @@
   "provenance": {
     "purpose": "Probe whether six concepts can be decomposed into explicit grounded factors and projected into DOLCE, BFO, and UFO without asserting premature equivalence.",
     "authority": "Experimental evaluation artifact only; it does not modify linguistic_core@0.3.3 or the living design.",
-    "literature_status": "Top-level ontology projection targets were spot-checked against official or maintainer documentation on 2026-10-01. PMG-to-factor derivations and semantic-basis classifications remain hypotheses requiring review."
+    "literature_status": "DOLCE/BFO/UFO targets were spot-checked against official or maintainer documentation. On 2026-10-01 the six English target words were checked against the NSM v20 English prime chart and the Longman Defining Vocabulary list: none is an NSM prime; all six occur in the LDV. PMG-to-factor derivations remain hypotheses requiring review."
   },
   "factors": [
     {
@@ -103,25 +103,6 @@
       ]
     },
     {
-      "id": "gf:support_relation",
-      "label": "support relation",
-      "kind": "relational_pattern",
-      "basis": [
-        "sensorimotor",
-        "learned"
-      ],
-      "dependencies": [
-        "gf:persistent_object_pattern"
-      ],
-      "evidence": [
-        {
-          "kind": "sensorimotor",
-          "status": "candidate",
-          "note": "Contact, relative geometry, load/pressure, and resistance to downward displacement are candidate lower-level cues."
-        }
-      ]
-    },
-    {
       "id": "gf:support_disposition",
       "label": "support disposition",
       "kind": "disposition_pattern",
@@ -136,47 +117,7 @@
         {
           "kind": "learned",
           "status": "candidate",
-          "note": "Generalizes from actual support episodes to counterfactual capacity under suitable conditions."
-        }
-      ]
-    },
-    {
-      "id": "gf:sitting_body_configuration",
-      "label": "sitting body configuration",
-      "kind": "persistent_pattern",
-      "basis": [
-        "sensorimotor",
-        "learned"
-      ],
-      "dependencies": [
-        "gf:persistent_object_pattern"
-      ],
-      "evidence": [
-        {
-          "kind": "sensorimotor",
-          "status": "candidate",
-          "note": "Characteristic torso/hip/leg configuration and pressure/contact pattern; precise invariants are unresolved."
-        }
-      ]
-    },
-    {
-      "id": "gf:sitting_event_pattern",
-      "label": "sitting event pattern",
-      "kind": "transition_pattern",
-      "basis": [
-        "sensorimotor",
-        "learned"
-      ],
-      "dependencies": [
-        "gf:sitting_body_configuration",
-        "gf:support_relation",
-        "gf:temporal_occurrence_pattern"
-      ],
-      "evidence": [
-        {
-          "kind": "learned",
-          "status": "candidate",
-          "note": "Integrates bodily configuration, support relation, and temporal transition into an action/event category."
+          "note": "Counterfactual generalization from observed load-bearing episodes: under relevant conditions, an object is expected to instantiate the support relation."
         }
       ]
     },
@@ -200,8 +141,129 @@
       ]
     },
     {
-      "id": "gf:conventional_seating_function",
-      "label": "conventional seating function",
+      "id": "gf:contact_pattern",
+      "label": "contact pattern",
+      "kind": "relational_pattern",
+      "basis": [
+        "phenomenal",
+        "sensorimotor"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "Co-located boundary/contact cues between tracked persistent patterns; does not by itself imply support."
+        }
+      ]
+    },
+    {
+      "id": "gf:relative_position_pattern",
+      "label": "relative position pattern",
+      "kind": "relational_pattern",
+      "basis": [
+        "phenomenal",
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "Stable above/below and orientation relations between tracked patterns; gravity-relative interpretation remains an assumption to make explicit."
+        }
+      ]
+    },
+    {
+      "id": "gf:load_response_pattern",
+      "label": "load-response pattern",
+      "kind": "transition_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:contact_pattern",
+        "gf:relative_position_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "Applied body/object load covaries with pressure/contact while relative position remains bounded rather than collapsing or continuing downward."
+        }
+      ]
+    },
+    {
+      "id": "gf:support_relation",
+      "label": "support relation",
+      "kind": "relational_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:contact_pattern",
+        "gf:relative_position_pattern",
+        "gf:load_response_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "Constructed relation: a load-bearing interaction pattern assembled from contact, relative position, and bounded load response. It is not admitted as a grounding primitive."
+        }
+      ]
+    },
+    {
+      "id": "gf:body_posture_configuration",
+      "label": "body posture configuration",
+      "kind": "persistent_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern",
+        "gf:contact_pattern",
+        "gf:relative_position_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "A learned configuration over body-part geometry, joint/proprioceptive state, and contact distribution. No sitting label is assumed at this layer."
+        }
+      ]
+    },
+    {
+      "id": "gf:posture_transition_pattern",
+      "label": "posture transition pattern",
+      "kind": "transition_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:body_posture_configuration",
+        "gf:temporal_occurrence_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "Tracks transition into, persistence of, or transition out of a body-posture configuration without presupposing the lexical category sit."
+        }
+      ]
+    },
+    {
+      "id": "gf:conventional_postural_support_function",
+      "label": "conventional postural-support function",
       "kind": "role_pattern",
       "basis": [
         "social",
@@ -209,14 +271,14 @@
       ],
       "dependencies": [
         "gf:support_disposition",
-        "gf:sitting_event_pattern",
+        "gf:body_posture_configuration",
         "gf:artifact_status"
       ],
       "evidence": [
         {
           "kind": "social",
           "status": "candidate",
-          "note": "Captures conventional/intended use for sitting rather than mere accidental sit-ability."
+          "note": "A socially stabilized artifact function linking an object to recurrent supported body-posture configurations; this remains higher-level and is not a grounding primitive."
         }
       ]
     }
@@ -232,9 +294,11 @@
       ],
       "grounding_status": "partially_grounded",
       "semantic_basis": {
-        "nsm": "molecule_or_complex",
-        "longman": "not_checked",
-        "note": "Do not treat the English word as the grounding primitive; the probe treats red as a stabilized region in a quality space. NSM/Longman status needs direct lexical-source checking."
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "RED is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. This classifies lexical/definitional status only; it does not settle grounding.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
       },
       "ontology_projections": [
         {
@@ -293,9 +357,11 @@
       ],
       "grounding_status": "partially_grounded",
       "semantic_basis": {
-        "nsm": "not_checked",
-        "longman": "not_checked",
-        "note": "This probe is about earned persistence/identity structure, not the lexical item 'object'."
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "OBJECT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. This classifies lexical/definitional status only; it does not settle grounding.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
       },
       "ontology_projections": [
         {
@@ -355,9 +421,11 @@
       ],
       "grounding_status": "partially_grounded",
       "semantic_basis": {
-        "nsm": "not_checked",
-        "longman": "not_checked",
-        "note": "The experiment tests eventhood as structured temporal change before lexicalization."
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "EVENT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. This classifies lexical/definitional status only; it does not settle grounding.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
       },
       "ontology_projections": [
         {
@@ -413,14 +481,19 @@
       "label": "support",
       "target_level": "relation_category",
       "factorization": [
+        "gf:contact_pattern",
+        "gf:relative_position_pattern",
+        "gf:load_response_pattern",
         "gf:support_relation",
         "gf:support_disposition"
       ],
       "grounding_status": "partially_grounded",
       "semantic_basis": {
-        "nsm": "not_checked",
-        "longman": "not_checked",
-        "note": "Support is treated as a learned relational/dispositional structure, not merely a dictionary paraphrase."
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "SUPPORT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. LDV membership is evidence of definitional usefulness, not grounding primitiveness.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
       },
       "ontology_projections": [
         {
@@ -465,8 +538,9 @@
         }
       ],
       "open_gaps": [
-        "Specify mechanical/psychophysical observables sufficient for support without presupposing the word.",
-        "Separate current support relation from disposition to support."
+        "Ground gravity-relative direction and load/pressure cues without assuming a support relation in advance.",
+        "Specify when contact plus bounded displacement counts as support rather than attachment, suspension, friction, or incidental obstruction.",
+        "Separate an occurrent support episode from a disposition to support."
       ]
     },
     {
@@ -474,16 +548,18 @@
       "label": "sit",
       "target_level": "embodied_action_category",
       "factorization": [
-        "gf:sitting_body_configuration",
+        "gf:body_posture_configuration",
+        "gf:posture_transition_pattern",
         "gf:support_relation",
-        "gf:sitting_event_pattern",
         "gf:participant_in_occurrence"
       ],
       "grounding_status": "partially_grounded",
       "semantic_basis": {
-        "nsm": "not_checked",
-        "longman": "not_checked",
-        "note": "This is an embodied event category; lexical-resource classification remains future work."
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "SIT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. The grounding path therefore treats the lexical item as a higher-level category over posture, transition, participation, and support.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
       },
       "ontology_projections": [
         {
@@ -527,8 +603,9 @@
         }
       ],
       "open_gaps": [
-        "Define body configuration invariants across chairs, stools, floors, squatting, and atypical bodies.",
-        "Separate action, posture/state, transition into posture, and linguistic polysemy."
+        "Identify posture invariants across chairs, stools, floors, wheelchairs, atypical bodies, and language-specific senses without defining them as 'sitting'.",
+        "Separate entering the posture, maintaining the posture/state, and lexical polysemy.",
+        "Determine which support patterns are necessary, typical, or absent in borderline cases."
       ]
     },
     {
@@ -538,15 +615,17 @@
       "factorization": [
         "gf:persistent_object_pattern",
         "gf:support_disposition",
-        "gf:sitting_event_pattern",
+        "gf:body_posture_configuration",
         "gf:artifact_status",
-        "gf:conventional_seating_function"
+        "gf:conventional_postural_support_function"
       ],
       "grounding_status": "partially_grounded",
       "semantic_basis": {
-        "nsm": "molecule_or_complex",
-        "longman": "not_checked",
-        "note": "Chair is intentionally treated as a higher-order composition. Whether particular lexical decompositions match NSM/Longman should be tested separately."
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "CHAIR is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. It is modeled here as a higher-order artifact concept composed from grounded and social factors.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
       },
       "ontology_projections": [
         {
