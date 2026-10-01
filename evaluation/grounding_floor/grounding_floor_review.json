@@ -1,0 +1,190 @@
+{
+  "status": "experimental_grounding_floor_audit",
+  "checked_on": "2026-10-01",
+  "purpose": "Test whether candidate lower-level semantic factors can be decomposed into psychophysically measurable or sensorimotor structures rather than merely renamed at a lower layer.",
+  "scope_note": "This is independent of the open six-concept grounding PR and does not modify linguistic_core@0.3.3 or the living design.",
+  "sources": [
+    {
+      "id": "src:tactile_mechanoreceptors",
+      "title": "Skin and Mechanoreceptor Contribution to Tactile Input for Perception: A Review of Simulation Models",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9201416/",
+      "use": "Supports treating skin deformation, pressure-related patterns, vibration, and distributed mechanoreceptor activity as measurable inputs to tactile/contact evidence."
+    },
+    {
+      "id": "src:proprioception_methods",
+      "title": "Assessing proprioception: A critical review of methods",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6191985/",
+      "use": "Supports treating joint position, movement, and movement discrimination as measurable components of body-configuration estimates."
+    },
+    {
+      "id": "src:proprioception_accuracy",
+      "title": "The measurement of proprioceptive accuracy: A systematic literature review",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10105016/",
+      "use": "Supports measurable subcomponents including joint position, movement, trajectory, velocity, force, muscle tension, weight, and size."
+    },
+    {
+      "id": "src:gravity_verticality",
+      "title": "Gravity estimation and verticality perception",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6295197/",
+      "use": "Supports treating gravity-relative orientation as a multisensory estimate combining visual, vestibular, and somatosensory cues rather than a primitive symbolic relation."
+    },
+    {
+      "id": "src:object_persistence",
+      "title": "Features, as well as space and time, guide object persistence",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6999814/",
+      "use": "Supports treating persistence as constructed from spatiotemporal and feature-based correspondence rather than as an atomic object identity primitive."
+    },
+    {
+      "id": "src:object_file_coherence",
+      "title": "Staying in bounds: Contextual constraints on object-file coherence",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2690086/",
+      "use": "Supports the existence of mid-level object-file representations that track entities across time and motion, while leaving the exact grounding algorithm open."
+    }
+  ],
+  "candidate_primitives": [
+    {
+      "id": "gg:cutaneous_deformation_signal",
+      "label": "cutaneous deformation signal",
+      "measurement_status": "empirically_measurable",
+      "basis": [
+        "tactile",
+        "psychophysical"
+      ],
+      "source_ids": [
+        "src:tactile_mechanoreceptors"
+      ],
+      "note": "Local pressure, skin deformation, vibration, and stretch can be psychophysically manipulated and physiologically measured. This is evidence available to a learner; it is not itself a semantic relation."
+    },
+    {
+      "id": "gg:proprioceptive_configuration_signal",
+      "label": "proprioceptive configuration signal",
+      "measurement_status": "empirically_measurable",
+      "basis": [
+        "proprioceptive",
+        "sensorimotor"
+      ],
+      "source_ids": [
+        "src:proprioception_methods",
+        "src:proprioception_accuracy"
+      ],
+      "note": "Joint position and movement estimates provide a non-lexical basis for body-part configuration."
+    },
+    {
+      "id": "gg:force_load_signal",
+      "label": "force/load signal",
+      "measurement_status": "empirically_measurable",
+      "basis": [
+        "proprioceptive",
+        "tactile"
+      ],
+      "source_ids": [
+        "src:proprioception_accuracy",
+        "src:tactile_mechanoreceptors"
+      ],
+      "note": "Force, muscle tension, weight, and pressure are measurable submodalities. They do not by themselves identify support."
+    },
+    {
+      "id": "gg:gravity_reference_estimate",
+      "label": "gravity-reference estimate",
+      "measurement_status": "empirically_measurable",
+      "basis": [
+        "vestibular",
+        "visual",
+        "somatosensory"
+      ],
+      "source_ids": [
+        "src:gravity_verticality"
+      ],
+      "note": "Up/down and verticality are modeled as multisensory estimates with measurable bias and precision, not as unexplained symbolic axes."
+    },
+    {
+      "id": "gg:spatiotemporal_correspondence_evidence",
+      "label": "spatiotemporal correspondence evidence",
+      "measurement_status": "empirically_constrained",
+      "basis": [
+        "visual",
+        "temporal",
+        "learned"
+      ],
+      "source_ids": [
+        "src:object_persistence",
+        "src:object_file_coherence"
+      ],
+      "note": "Continuity across position, time, motion, and features provides evidence that successive perceptual episodes belong together; this stops short of assuming a full object identity relation."
+    },
+    {
+      "id": "gg:displacement_change_signal",
+      "label": "displacement/change signal",
+      "measurement_status": "empirically_measurable",
+      "basis": [
+        "visual",
+        "proprioceptive",
+        "temporal"
+      ],
+      "source_ids": [
+        "src:proprioception_methods",
+        "src:object_persistence"
+      ],
+      "note": "Changes in relative position over time can be measured before assigning semantic labels such as stable, falling, or supported."
+    }
+  ],
+  "audited_factors": [
+    {
+      "target": "contact",
+      "verdict": "decomposable_but_inferential",
+      "proposed_dependencies": [
+        "gg:cutaneous_deformation_signal",
+        "gg:spatiotemporal_correspondence_evidence"
+      ],
+      "construction": "A contact hypothesis is licensed when sensory evidence supports coincident boundary interaction, e.g. cutaneous deformation or other cross-modal evidence synchronized with the tracked external pattern.",
+      "remaining_gap": "Physical contact can occur without conscious tactile evidence and tactile signals can be ambiguous. The semantic factor should therefore represent evidence/estimated contact, not silently equate sensation with metaphysical contact."
+    },
+    {
+      "target": "relative position",
+      "verdict": "decomposable_but_reference_frame_dependent",
+      "proposed_dependencies": [
+        "gg:proprioceptive_configuration_signal",
+        "gg:gravity_reference_estimate",
+        "gg:spatiotemporal_correspondence_evidence"
+      ],
+      "construction": "Relative-position estimates combine tracked locations/configurations with an explicit reference frame; gravity-relative above/below requires a gravity estimate rather than an ungrounded axis.",
+      "remaining_gap": "Egocentric, allocentric, object-centered, and gravity-centered reference frames must be represented separately rather than collapsed into one generic spatial relation."
+    },
+    {
+      "target": "load response",
+      "verdict": "decomposable_and_testable",
+      "proposed_dependencies": [
+        "gg:force_load_signal",
+        "gg:displacement_change_signal",
+        "gg:cutaneous_deformation_signal"
+      ],
+      "construction": "A load-response pattern is a learned covariance between applied force/load evidence, contact/pressure evidence, and observed displacement or stability over time.",
+      "remaining_gap": "The learner still needs a criterion for the time window and comparison baseline; bounded displacement is not by itself equivalent to support."
+    },
+    {
+      "target": "body posture",
+      "verdict": "decomposable_as_multimodal_configuration",
+      "proposed_dependencies": [
+        "gg:proprioceptive_configuration_signal",
+        "gg:gravity_reference_estimate",
+        "gg:cutaneous_deformation_signal"
+      ],
+      "construction": "Body posture is represented as a learned multimodal configuration over joint/body position, gravity orientation, and contact distribution, without a lexical posture label.",
+      "remaining_gap": "There is no reason to expect one fixed geometry for categories such as sitting. Category learning must operate over families of variable configurations."
+    },
+    {
+      "target": "persistence",
+      "verdict": "decomposable_but_identity_not_yet_derived",
+      "proposed_dependencies": [
+        "gg:spatiotemporal_correspondence_evidence"
+      ],
+      "construction": "Persistence begins as evidence that successive perceptual episodes form a coherent track under spatiotemporal continuity and feature correspondence.",
+      "remaining_gap": "A coherent track is not yet a philosophically or ontologically complete identity criterion. Occlusion, replacement, splitting, merging, and indistinguishable duplicates remain adversarial cases."
+    }
+  ],
+  "overall_verdict": {
+    "result": "promising_but_not_grounding_complete",
+    "summary": "The audit does not hit a bottomless renaming regress at these five factors. Each can be pushed into measurable sensory variables or empirically constrained correspondence processes. However, several semantic commitments remain inferential: contact is estimated rather than directly identical with touch, spatial relations require reference frames, persistence still lacks a full identity criterion, and category-level equivalence classes remain learned constructions.",
+    "next_gate": "Build a tiny executable measurement-to-factor specimen for one support episode and one posture/persistence episode, with raw observables separated from inferred factors and explicit uncertainty."
+  }
+}
