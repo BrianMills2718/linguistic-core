@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/BrianMills2718/linguistic-core/evaluation/semantic_grounding/grounding_ir.schema.json",
+  "title": "Experimental Grounding IR specimen",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "status",
+    "provenance",
+    "factors",
+    "concepts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1-experimental"
+    },
+    "status": {
+      "const": "candidate_probe"
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "purpose",
+        "authority",
+        "literature_status"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "authority": {
+          "type": "string"
+        },
+        "literature_status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "factors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/factor"
+      }
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/concept"
+      }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": [
+        "kind",
+        "status",
+        "note"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "phenomenal",
+            "psychophysical",
+            "sensorimotor",
+            "learned",
+            "social",
+            "formal",
+            "literature"
+          ]
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "supported",
+            "unresolved",
+            "not_applicable"
+          ]
+        },
+        "note": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "projection": {
+      "type": "object",
+      "required": [
+        "ontology",
+        "target",
+        "relation",
+        "preserved",
+        "lost_or_added",
+        "status"
+      ],
+      "properties": {
+        "ontology": {
+          "enum": [
+            "DOLCE",
+            "BFO",
+            "UFO"
+          ]
+        },
+        "target": {
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "structural_analogue",
+            "licenses_classification_as",
+            "partial_projection",
+            "no_direct_counterpart"
+          ]
+        },
+        "preserved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lost_or_added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "source_checked",
+            "unresolved"
+          ]
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "factor": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "basis",
+        "dependencies",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^gf:"
+        },
+        "label": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "quality_token",
+            "quality_space",
+            "region",
+            "persistent_pattern",
+            "transition_pattern",
+            "participation_pattern",
+            "part_whole_pattern",
+            "dependence_pattern",
+            "disposition_pattern",
+            "role_pattern",
+            "agentive_pattern",
+            "symbolic_construction",
+            "relational_pattern"
+          ]
+        },
+        "basis": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "phenomenal",
+              "psychophysical",
+              "sensorimotor",
+              "learned",
+              "social",
+              "formal"
+            ]
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "concept": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "target_level",
+        "factorization",
+        "grounding_status",
+        "semantic_basis",
+        "ontology_projections",
+        "open_gaps"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^gc:"
+        },
+        "label": {
+          "type": "string"
+        },
+        "target_level": {
+          "enum": [
+            "phenomenal_category",
+            "ontological_category",
+            "event_category",
+            "relation_category",
+            "embodied_action_category",
+            "lexical_concept"
+          ]
+        },
+        "factorization": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "grounding_status": {
+          "enum": [
+            "candidate_grounded",
+            "partially_grounded",
+            "symbolically_grounded_only",
+            "unresolved"
+          ]
+        },
+        "semantic_basis": {
+          "type": "object",
+          "required": [
+            "nsm",
+            "longman",
+            "note"
+          ],
+          "properties": {
+            "nsm": {
+              "enum": [
+                "prime_candidate",
+                "molecule_or_complex",
+                "not_checked",
+                "not_applicable"
+              ]
+            },
+            "longman": {
+              "enum": [
+                "defining_vocabulary_candidate",
+                "not_checked",
+                "not_applicable"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ontology_projections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/projection"
+          }
+        },
+        "open_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
