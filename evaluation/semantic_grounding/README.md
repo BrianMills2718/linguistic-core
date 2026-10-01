@@ -20,7 +20,7 @@ They deliberately span quality-space structure, persistence, temporal occurrence
 ## Artifact
 
 - `grounding_ir.schema.json` defines a small experimental Grounding IR.
-- `six_concept_specimen.json` instantiates 11 candidate factors and 6 target concepts.
+- `six_concept_specimen.json` instantiates a revised candidate factorization and 6 target concepts.
 
 The key representation rule is that ontology mappings are **projections**, not presumed equivalences. Each projection records structure preserved and structure lost or added.
 
@@ -56,7 +56,9 @@ Top-level ontology targets were spot-checked on 2026-10-01 against maintainer/of
 - BFO 2020: https://github.com/BFO-ontology/BFO-2020
 - gUFO usage guide: https://nemo-ufes.github.io/gufo/overview.html
 
-Longman's defining vocabulary is independently documented by Pearson as a controlled vocabulary of about 2,000 common words, but this probe does **not** yet classify the six lexical targets against the actual defining list. NSM classifications are likewise left `not_checked` unless the entry is only being treated conservatively as non-primitive.
+The six target words were checked directly against the NSM v20 English semantic-prime chart and the Longman Defining Vocabulary list. None of the six is an NSM prime; all six appear in the Longman defining list. See `semantic_basis_comparison.md` and `semantic_basis_comparison.json`.
+
+The factor-boundary audit also found that the original `support` and `sit` decompositions were too close to the target words. They have been decomposed further into contact, relative-position, load-response, body-posture, and posture-transition structure. See `factor_boundary_review.md`.
 
 The PMG-to-factor derivations are hypotheses from the current Phenomenal Meaning Generator design, not validated cognitive-science results.
 
