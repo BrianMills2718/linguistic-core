@@ -259,6 +259,7 @@
             "nsm": {
               "enum": [
                 "prime_candidate",
+                "not_prime",
                 "molecule_or_complex",
                 "not_checked",
                 "not_applicable"
@@ -272,6 +273,12 @@
               ]
             },
             "note": {
+              "type": "string"
+            },
+            "nsm_source": {
+              "type": "string"
+            },
+            "longman_source": {
               "type": "string"
             }
           },
