@@ -128,3 +128,26 @@ Those remain separate factors to compose later.
 
 No v2 dataset rows or outcomes had been inspected when the v2 protocol was
 written.
+
+### v2 acquisition metadata
+
+`discover_yareta_v2.py` now resolves the preregistered participant/trial scope
+against Yareta's public archive-data API without reading signal contents. The
+retained `acquisition_manifest_v2.json` freezes:
+
+- **126** paired walking trials;
+- **252** files: one synchronized CSV plus one raw C3D per trial;
+- **321,936,880 bytes** total;
+- each Yareta data-file ID, path, size and SHA-256;
+- canonical selection SHA-256
+  `0cdcc0ca7774648cfd189a9f00c39c49edd6ba036dd39346766e7447fffbe594`.
+
+The manifest covers only `P02` through `P10` from the preregistered split
+and only `SlowGait`, `Gait`, and `FastGait` trials. Every selected trial
+has both the synchronized CSV and same-stem raw C3D reference file.
+
+At the time of this checkpoint, Yareta's public metadata API and archive
+preparation flow work, but anonymous per-file download returns HTTP 500 even
+after requesting the documented per-file token. No v2 signal rows have
+therefore been downloaded or scored. This is recorded as an access-layer
+blocker, not worked around by changing the preregistered dataset or protocol.
