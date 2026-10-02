@@ -1,0 +1,227 @@
+{
+  "schema": "linguistic-core.load-bearing-contact-experiment-plan.v1",
+  "status": "preregistered_before_recording_download",
+  "created_date": "2026-10-02",
+  "dataset": {
+    "name": "Gait in Parkinson's Disease",
+    "version": "1.0.0",
+    "physionet_slug": "gaitpdb",
+    "doi": "10.13026/C24H3N",
+    "license": "Open Data Commons Attribution License v1.0",
+    "dataset_url": "https://physionet.org/content/gaitpdb/1.0.0/",
+    "format_url": "https://physionet.org/content/gaitpdb/1.0.0/format.txt",
+    "sha256_manifest_url": "https://physionet.org/files/gaitpdb/1.0.0/SHA256SUMS.txt",
+    "sampling_rate_hz": 100,
+    "columns": {
+      "time_seconds": 1,
+      "left_individual_force_sensors_n": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "right_individual_force_sensors_n": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "left_total_force_reference_n": 18,
+      "right_total_force_reference_n": 19
+    }
+  },
+  "cohort_selection": {
+    "rule": "Ga study, healthy controls (Co), normal walk number 01 only",
+    "rationale": "Keep the grounding target about foot-ground load evidence and avoid clinical classification.",
+    "selected_files": [
+      {
+        "file": "GaCo01_01.txt",
+        "sha256": "81bcedc0f72c1c6804d7830627431a6c1b76e9ddb42de0cf1ae2f418848c13a4"
+      },
+      {
+        "file": "GaCo02_01.txt",
+        "sha256": "8e36793cbe901f5fd1f14af2e553353978f2a997b2121b41dcc0e05b8c64d87f"
+      },
+      {
+        "file": "GaCo03_01.txt",
+        "sha256": "ca21dadbd47f5f56ac37ea6cf3067d0f98e8936bb2830396aa3c5b0d387db216"
+      },
+      {
+        "file": "GaCo04_01.txt",
+        "sha256": "26993b245b8af95d54260d58eeca5bf6763b7a31a27d765c0956f25c80deb470"
+      },
+      {
+        "file": "GaCo05_01.txt",
+        "sha256": "0f27d32fe94b4625c63c1e8d8e4d928b2ecb298449ef13a4720b5cb7ce9137bf"
+      },
+      {
+        "file": "GaCo06_01.txt",
+        "sha256": "8aa3f20001fc1a7ffa6817798fd3725e9c03d17a2d26dea9d2074204e3c1393f"
+      },
+      {
+        "file": "GaCo07_01.txt",
+        "sha256": "da3abce1fcc869579532d403dd83e7721f5e7d26638b477de2d2f22ba3296751"
+      },
+      {
+        "file": "GaCo08_01.txt",
+        "sha256": "d3b841f9c2f87f32695e94ea9484c0676a26219adf9e1c3bbd333dff12694b35"
+      },
+      {
+        "file": "GaCo09_01.txt",
+        "sha256": "eb147fc7720d3a9b6a2d49cf0c933f3aa2fdd8e69034cf7b950458b47a9bf740"
+      },
+      {
+        "file": "GaCo10_01.txt",
+        "sha256": "3366191a37c3a2690b4de37cad163147c9830d249cede12974d2950a646f5dc0"
+      },
+      {
+        "file": "GaCo11_01.txt",
+        "sha256": "8a63bb940b4ce6c47b9671f4c079f69e442d03861f77fe00b054628656dc70df"
+      },
+      {
+        "file": "GaCo12_01.txt",
+        "sha256": "dd7fb0d273e22bad4cad4148f2c485c7211a8c2dec711ce72abedfb904bf3d0d"
+      },
+      {
+        "file": "GaCo13_01.txt",
+        "sha256": "6eceafb84b1fd22961b948d99d3e904aee998d86f9a96ed87fd9e457f2257c32"
+      },
+      {
+        "file": "GaCo14_01.txt",
+        "sha256": "38cae7a4487154249b538166a8d9ad6bf6ba15291d8098b0cb82a44555b6bd2f"
+      },
+      {
+        "file": "GaCo15_01.txt",
+        "sha256": "1b453442895c963281305d79957976e00e7fb1c8a75cfe2b0629090002f32895"
+      },
+      {
+        "file": "GaCo16_01.txt",
+        "sha256": "4b6ff4e02652ac920089103e1d7846a3651f47e84897a972577bad8e7220a42f"
+      },
+      {
+        "file": "GaCo17_01.txt",
+        "sha256": "645e7511464f94b5757bc881bc592ee40ca3b0cc4b02f607cfff2f698a6910c8"
+      },
+      {
+        "file": "GaCo22_01.txt",
+        "sha256": "b7833f4ecb0c825fad9a729fd341646e0663d9452fa85b6fb98a1669cb00ec70"
+      }
+    ]
+  },
+  "split": {
+    "split_unit": "subject",
+    "held_out_rule": "selected subject number modulo 4 equals 0",
+    "calibration_subjects": [
+      "GaCo01",
+      "GaCo02",
+      "GaCo03",
+      "GaCo05",
+      "GaCo06",
+      "GaCo07",
+      "GaCo09",
+      "GaCo10",
+      "GaCo11",
+      "GaCo13",
+      "GaCo14",
+      "GaCo15",
+      "GaCo17",
+      "GaCo22"
+    ],
+    "evaluation_subjects": [
+      "GaCo04",
+      "GaCo08",
+      "GaCo12",
+      "GaCo16"
+    ],
+    "note": "Fixed before any recording outcomes are observed."
+  },
+  "semantic_target": {
+    "unit": "foot x non-overlapping time window",
+    "classes": [
+      "load_bearing_contact_evidence",
+      "no_load_bearing_contact_evidence",
+      "REFUSAL:transition_or_uncertain"
+    ],
+    "claim_boundary": "Evidence for sustained vertical load-bearing contact only. It is not equivalent to metaphysical contact or the full support relation."
+  },
+  "evidence_separation": {
+    "inference_inputs": "Eight individual VGRF sensors for one foot only.",
+    "withheld_reference": "Recorded per-foot total-force channel.",
+    "forbidden_inputs": [
+      "clinical group label",
+      "demographics",
+      "disease severity",
+      "opposite foot total-force reference"
+    ],
+    "reference_role": "Physical reference channel used only after inference for scoring."
+  },
+  "fixed_rules": {
+    "window_samples": 20,
+    "window_duration_ms": 200,
+    "window_stride_samples": 20,
+    "no_load_force_max_n": 20,
+    "load_bearing_force_min_n": 100,
+    "persistence_fraction": 0.8,
+    "inference_force_per_sample": "sum of the eight individual VGRF sensors for the foot",
+    "classification": [
+      "load_bearing_contact_evidence if >=80% of samples have inferred force >=100 N",
+      "no_load_bearing_contact_evidence if >=80% of samples have inferred force <=20 N",
+      "otherwise REFUSAL:transition_or_uncertain"
+    ],
+    "reference_construction": [
+      "Apply the same temporal band rules to the withheld total-force channel.",
+      "Reference refusal windows are excluded from binary error rates but reported as ambiguous physical-reference intervals."
+    ],
+    "tuning_policy": "No threshold changes based on calibration or held-out outcomes in v1. If thresholds are empirically inadequate, report the failure and create a separately versioned plan."
+  },
+  "robustness_tests": {
+    "external_data": [
+      "stance/load windows",
+      "swing/near-zero-load windows",
+      "loading/unloading transition windows"
+    ],
+    "synthetic_or_transformed": [
+      {
+        "test": "sensor_order_permutation",
+        "expectation": "exactly invariant"
+      },
+      {
+        "test": "single_sensor_dropout",
+        "expectation": "report coverage/error degradation separately; no tuning"
+      },
+      {
+        "test": "left_right_logic_symmetry",
+        "expectation": "same rule for each foot"
+      }
+    ]
+  },
+  "metrics": [
+    "coverage on non-ambiguous withheld-reference windows",
+    "false load-bearing positives",
+    "false no-load predictions",
+    "refusal count and rate",
+    "per-subject metrics",
+    "sensor-permutation invariance",
+    "single-sensor-dropout degradation"
+  ],
+  "stop_rules": [
+    "Do not claim full support grounding from force evidence alone.",
+    "Do not change v1 thresholds after seeing outcomes.",
+    "Do not expand vocabulary because this probe succeeds.",
+    "A failed external probe is retained as evidence."
+  ],
+  "execution_state": {
+    "format_and_sha256_manifest_retrieved": true,
+    "recording_rows_downloaded": false,
+    "outcomes_observed": false,
+    "reason": "Guarded WSL probe failed before the recording download command launched."
+  }
+}
