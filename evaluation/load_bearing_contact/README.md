@@ -1,6 +1,15 @@
 # Load-bearing contact grounding probe
 
-This directory contains a preregistered second external-data grounding experiment.
+This directory contains the second external-data grounding-family work.
+
+**v1 is retained as a failed preregistration.** After the selected PhysioNet
+recordings were acquired, the proposed per-foot total-force reference was found
+to be exactly the sum of the eight individual sensor inputs to floating-point
+roundoff across every scanned row. See `RESULT_V1_INVALID.md` and
+`reference_independence_audit_v1.json`.
+
+The replacement independent-reference protocol is preregistered in
+`experiment_plan_v2.json` before its dataset is downloaded.
 
 The target is deliberately **not** the full lexical/ontological relation `support`.
 It is one lower-level factor beneath support:
@@ -107,6 +116,15 @@ Those remain separate factors to compose later.
 
 ## Current state
 
-The plan and exact selected-file hashes are durable on the research branch.
-The guarded WSL transport failed before the selected recordings were downloaded,
-so no result metrics exist yet.
+- `experiment_plan_v1.json`: immutable original preregistration.
+- `reference_independence_audit_v1.json`: 18 files / 218,142 rows audited;
+  proposed total-force reference is algebraically derived from the inference
+  sensors, so v1 is invalid for external validation.
+- `RESULT_V1_INVALID.md`: human-readable failure record.
+- `experiment_plan_v2.json`: replacement protocol using the University of
+  Geneva/Yareta multimodal gait dataset. Pressure-insole channels are the
+  inference source; optoelectronic foot-strike/foot-off events are the
+  independent primary reference.
+
+No v2 dataset rows or outcomes had been inspected when the v2 protocol was
+written.
