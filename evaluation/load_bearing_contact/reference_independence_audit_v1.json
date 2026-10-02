@@ -1,0 +1,38 @@
+{
+  "schema": "linguistic-core.load-bearing-contact-reference-audit.v1",
+  "status": "invalid_for_external_validation",
+  "audited_plan": "evaluation/load_bearing_contact/experiment_plan_v1.json",
+  "dataset": {
+    "name": "Gait in Parkinson's Disease",
+    "physionet_version": "1.0.0",
+    "doi": "10.13026/C24H3N"
+  },
+  "acquisition": {
+    "selected_recordings": 18,
+    "all_selected_sha256_verified": true,
+    "total_rows_scanned": 218142,
+    "rows_per_recording": 12119
+  },
+  "reference_independence_test": {
+    "left_formula": "sum(columns 2..9) compared with column 18",
+    "right_formula": "sum(columns 10..17) compared with column 19",
+    "max_abs_difference_left_n": 2.2737367544323206e-13,
+    "max_abs_difference_right_n": 2.2737367544323206e-13,
+    "rows_with_abs_difference_gt_1e_9_left": 0,
+    "rows_with_abs_difference_gt_1e_9_right": 0,
+    "interpretation": "The recorded per-foot total-force channels are numerically identical to the sums of the eight individual per-foot force sensors to floating-point roundoff across every scanned row."
+  },
+  "consequence": {
+    "external_validation_valid": false,
+    "reason": "The preregistered inference force is exactly the sum of the eight individual sensors, while the proposed reference channel is the same sum. Scoring the fixed rules against that channel would evaluate an algebraic identity, not independent sensor-to-factor generalization.",
+    "metrics_not_reported_as_grounding_evidence": true,
+    "threshold_changes_made": false,
+    "held_out_outcomes_used_for_tuning": false
+  },
+  "retained_value": [
+    "The acquisition and hash-verification path was exercised successfully.",
+    "The failure demonstrates why reference-channel independence must be audited before semantic scoring.",
+    "The preregistration remains immutable evidence of the original design and is not rewritten after inspection."
+  ],
+  "next_action": "Use a dataset with an inference channel and independently derived contact reference."
+}
