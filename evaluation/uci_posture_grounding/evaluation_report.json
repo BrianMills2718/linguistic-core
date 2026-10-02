@@ -1,0 +1,913 @@
+{
+  "calibration": {
+    "fixed_quantiles": {
+      "motion_lower": 0.25,
+      "static_upper": 0.9
+    },
+    "source": "official train subjects only",
+    "thresholds": {
+      "motion_accel_magnitude_std_lower": 0.09432224350419241,
+      "motion_gyro_magnitude_rms_lower": 0.7945077383783178,
+      "static_accel_magnitude_std_upper": 0.009151488938889379,
+      "static_gyro_magnitude_rms_upper": 0.08156129078874601
+    }
+  },
+  "dataset": {
+    "archive_sha256": "4ac4ae064227c07045a99551876b54d204837e995e298b6488559e209b3deb09",
+    "doi": "10.24432/C54G7M",
+    "label_role": "calibration/evaluation reference only; never passed into prediction",
+    "name": "Smartphone-Based Recognition of Human Activities and Postural Transitions",
+    "sampling_rate_hz": 50,
+    "uci_id": 341,
+    "window_policy": "one deterministic central window per labeled segment, up to 128 synchronized samples",
+    "window_samples": 128
+  },
+  "interpretation_limits": [
+    "This is a narrow operational probe of stable-vs-nonstatic evidence, not a universal definition of posture or transition.",
+    "Activity annotations are reference labels, not world truth and not inference inputs.",
+    "Dynamic activities and postural transitions are collapsed to the same non-static prediction target; subset metrics are reported separately.",
+    "No threshold was fit or changed using official test subjects or rotated test observations.",
+    "Raw sensor rows are not included in the report."
+  ],
+  "licensing": {
+    "bundled_archive_readme": "states that any commercial use is prohibited",
+    "current_uci_catalog": "CC BY 4.0",
+    "redistribution_policy_for_this_probe": "no raw sensor rows or archive bytes are committed while the source statements conflict"
+  },
+  "models": {
+    "axis_dependent_baseline": {
+      "description": "invariant motion factors plus diagnostic mean-Z ~= +1g gate for candidate stable predictions",
+      "metrics": {
+        "accuracy_on_covered": 1.0,
+        "accuracy_overall_with_refusals_as_not_correct": 0.6794520547945205,
+        "confusion": {
+          "motion_or_transition_evidence": {
+            "REFUSAL:uncertain": 10,
+            "motion_or_transition_evidence": 247,
+            "stable_posture_evidence": 0
+          },
+          "stable_posture_evidence": {
+            "REFUSAL:uncertain": 107,
+            "motion_or_transition_evidence": 0,
+            "stable_posture_evidence": 1
+          }
+        },
+        "correct_total": 248,
+        "coverage": 0.6794520547945205,
+        "covered": 248,
+        "failures_bounded": [
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 3,
+            "label_end": 1398,
+            "label_start": 298,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 912,
+            "window_start": 784
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 3,
+            "label_end": 2627,
+            "label_start": 1686,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 2221,
+            "window_start": 2093
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 3,
+            "label_end": 3904,
+            "label_start": 2770,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 3401,
+            "window_start": 3273
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 3,
+            "label_end": 5139,
+            "label_start": 4323,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 4795,
+            "window_start": 4667
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 3,
+            "label_end": 6190,
+            "label_start": 5418,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 5868,
+            "window_start": 5740
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 3,
+            "label_end": 7367,
+            "label_start": 6416,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 6956,
+            "window_start": 6828
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 4,
+            "label_end": 1351,
+            "label_start": 524,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 1002,
+            "window_start": 874
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 4,
+            "label_end": 2309,
+            "label_start": 1512,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 1975,
+            "window_start": 1847
+          },
+          {
+            "activity": "SIT_TO_STAND",
+            "activity_id": 8,
+            "experiment": 4,
+            "label_end": 2448,
+            "label_start": 2310,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 2,
+            "window_end_exclusive": 2443,
+            "window_start": 2315
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 4,
+            "label_end": 3337,
+            "label_start": 2449,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 2957,
+            "window_start": 2829
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 4,
+            "label_end": 4348,
+            "label_start": 3543,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 4010,
+            "window_start": 3882
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 4,
+            "label_end": 5301,
+            "label_start": 4491,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 4960,
+            "window_start": 4832
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 4,
+            "label_end": 6417,
+            "label_start": 5456,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 2,
+            "window_end_exclusive": 6001,
+            "window_start": 5873
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 7,
+            "label_end": 1291,
+            "label_start": 198,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 809,
+            "window_start": 681
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 7,
+            "label_end": 2381,
+            "label_start": 1528,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 2019,
+            "window_start": 1891
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 7,
+            "label_end": 3416,
+            "label_start": 2512,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 3028,
+            "window_start": 2900
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 7,
+            "label_end": 4816,
+            "label_start": 3749,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 4347,
+            "window_start": 4219
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 7,
+            "label_end": 5896,
+            "label_start": 5032,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 5528,
+            "window_start": 5400
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 7,
+            "label_end": 7109,
+            "label_start": 6121,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 6679,
+            "window_start": 6551
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 8,
+            "label_end": 1292,
+            "label_start": 230,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 825,
+            "window_start": 697
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 8,
+            "label_end": 2430,
+            "label_start": 1471,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 2015,
+            "window_start": 1887
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 8,
+            "label_end": 3438,
+            "label_start": 2574,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 3070,
+            "window_start": 2942
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 8,
+            "label_end": 4574,
+            "label_start": 3758,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 4230,
+            "window_start": 4102
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 8,
+            "label_end": 5600,
+            "label_start": 4785,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 5257,
+            "window_start": 5129
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 8,
+            "label_end": 6681,
+            "label_start": 5836,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 6323,
+            "window_start": 6195
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 17,
+            "label_end": 1212,
+            "label_start": 453,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 897,
+            "window_start": 769
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 17,
+            "label_end": 2156,
+            "label_start": 1331,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 1808,
+            "window_start": 1680
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 17,
+            "label_end": 3234,
+            "label_start": 2263,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 2813,
+            "window_start": 2685
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 17,
+            "label_end": 5585,
+            "label_start": 4461,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 5087,
+            "window_start": 4959
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 17,
+            "label_end": 6682,
+            "label_start": 5790,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 6300,
+            "window_start": 6172
+          }
+        ],
+        "subset_predictions": {
+          "dynamic": {
+            "REFUSAL:uncertain": 0,
+            "motion_or_transition_evidence": 149,
+            "stable_posture_evidence": 0,
+            "total": 149
+          },
+          "static": {
+            "REFUSAL:uncertain": 107,
+            "motion_or_transition_evidence": 0,
+            "stable_posture_evidence": 1,
+            "total": 108
+          },
+          "transition": {
+            "REFUSAL:uncertain": 10,
+            "motion_or_transition_evidence": 98,
+            "stable_posture_evidence": 0,
+            "total": 108
+          }
+        },
+        "total": 365
+      }
+    },
+    "rotation_invariant": {
+      "description": "acceleration-magnitude variability and angular-speed magnitude RMS only",
+      "metrics": {
+        "accuracy_on_covered": 1.0,
+        "accuracy_overall_with_refusals_as_not_correct": 0.9260273972602739,
+        "confusion": {
+          "motion_or_transition_evidence": {
+            "REFUSAL:uncertain": 10,
+            "motion_or_transition_evidence": 247,
+            "stable_posture_evidence": 0
+          },
+          "stable_posture_evidence": {
+            "REFUSAL:uncertain": 17,
+            "motion_or_transition_evidence": 0,
+            "stable_posture_evidence": 91
+          }
+        },
+        "correct_total": 338,
+        "coverage": 0.9260273972602739,
+        "covered": 338,
+        "failures_bounded": [
+          {
+            "activity": "SIT_TO_STAND",
+            "activity_id": 8,
+            "experiment": 4,
+            "label_end": 2448,
+            "label_start": 2310,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 2,
+            "window_end_exclusive": 2443,
+            "window_start": 2315
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 8,
+            "label_end": 1292,
+            "label_start": 230,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 825,
+            "window_start": 697
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 8,
+            "label_end": 2430,
+            "label_start": 1471,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 2015,
+            "window_start": 1887
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 8,
+            "label_end": 4574,
+            "label_start": 3758,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 4,
+            "window_end_exclusive": 4230,
+            "window_start": 4102
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 17,
+            "label_end": 3234,
+            "label_start": 2263,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 2813,
+            "window_start": 2685
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 17,
+            "label_end": 6682,
+            "label_start": 5790,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 6300,
+            "window_start": 6172
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 18,
+            "label_end": 2454,
+            "label_start": 1592,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 2087,
+            "window_start": 1959
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 18,
+            "label_end": 3522,
+            "label_start": 2552,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 3101,
+            "window_start": 2973
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 18,
+            "label_end": 4702,
+            "label_start": 3782,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 9,
+            "window_end_exclusive": 4306,
+            "window_start": 4178
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 20,
+            "label_end": 1249,
+            "label_start": 423,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 10,
+            "window_end_exclusive": 900,
+            "window_start": 772
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 20,
+            "label_end": 5583,
+            "label_start": 4619,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 10,
+            "window_end_exclusive": 5165,
+            "window_start": 5037
+          },
+          {
+            "activity": "LAYING",
+            "activity_id": 6,
+            "experiment": 24,
+            "label_end": 5082,
+            "label_start": 4105,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 12,
+            "window_end_exclusive": 4658,
+            "window_start": 4530
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 25,
+            "label_end": 3635,
+            "label_start": 2790,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 12,
+            "window_end_exclusive": 3277,
+            "window_start": 3149
+          },
+          {
+            "activity": "STAND_TO_SIT",
+            "activity_id": 7,
+            "experiment": 36,
+            "label_end": 2505,
+            "label_start": 2199,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 18,
+            "window_end_exclusive": 2416,
+            "window_start": 2288
+          },
+          {
+            "activity": "SIT_TO_STAND",
+            "activity_id": 8,
+            "experiment": 36,
+            "label_end": 3731,
+            "label_start": 3550,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 18,
+            "window_end_exclusive": 3705,
+            "window_start": 3577
+          },
+          {
+            "activity": "STAND_TO_SIT",
+            "activity_id": 7,
+            "experiment": 37,
+            "label_end": 2359,
+            "label_start": 2133,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 18,
+            "window_end_exclusive": 2310,
+            "window_start": 2182
+          },
+          {
+            "activity": "SIT_TO_STAND",
+            "activity_id": 8,
+            "experiment": 37,
+            "label_end": 3494,
+            "label_start": 3319,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 18,
+            "window_end_exclusive": 3471,
+            "window_start": 3343
+          },
+          {
+            "activity": "STAND_TO_LIE",
+            "activity_id": 11,
+            "experiment": 37,
+            "label_end": 4927,
+            "label_start": 4684,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 18,
+            "window_end_exclusive": 4870,
+            "window_start": 4742
+          },
+          {
+            "activity": "STAND_TO_SIT",
+            "activity_id": 7,
+            "experiment": 40,
+            "label_end": 2272,
+            "label_start": 2072,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 20,
+            "window_end_exclusive": 2236,
+            "window_start": 2108
+          },
+          {
+            "activity": "SIT_TO_STAND",
+            "activity_id": 8,
+            "experiment": 40,
+            "label_end": 3799,
+            "label_start": 3618,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 20,
+            "window_end_exclusive": 3773,
+            "window_start": 3645
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 40,
+            "label_end": 5014,
+            "label_start": 3800,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 20,
+            "window_end_exclusive": 4471,
+            "window_start": 4343
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 40,
+            "label_end": 8038,
+            "label_start": 6938,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 20,
+            "window_end_exclusive": 7552,
+            "window_start": 7424
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 41,
+            "label_end": 1713,
+            "label_start": 303,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 20,
+            "window_end_exclusive": 1072,
+            "window_start": 944
+          },
+          {
+            "activity": "STANDING",
+            "activity_id": 5,
+            "experiment": 41,
+            "label_end": 4293,
+            "label_start": 3061,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 20,
+            "window_end_exclusive": 3741,
+            "window_start": 3613
+          },
+          {
+            "activity": "SITTING",
+            "activity_id": 4,
+            "experiment": 41,
+            "label_end": 7321,
+            "label_start": 6102,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "stable_posture_evidence",
+            "user": 20,
+            "window_end_exclusive": 6776,
+            "window_start": 6648
+          },
+          {
+            "activity": "STAND_TO_LIE",
+            "activity_id": 11,
+            "experiment": 48,
+            "label_end": 5007,
+            "label_start": 4514,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 24,
+            "window_end_exclusive": 4825,
+            "window_start": 4697
+          },
+          {
+            "activity": "SIT_TO_STAND",
+            "activity_id": 8,
+            "experiment": 49,
+            "label_end": 3157,
+            "label_start": 3034,
+            "predicted": "REFUSAL:uncertain",
+            "reference": "motion_or_transition_evidence",
+            "user": 24,
+            "window_end_exclusive": 3158,
+            "window_start": 3034
+          }
+        ],
+        "subset_predictions": {
+          "dynamic": {
+            "REFUSAL:uncertain": 0,
+            "motion_or_transition_evidence": 149,
+            "stable_posture_evidence": 0,
+            "total": 149
+          },
+          "static": {
+            "REFUSAL:uncertain": 17,
+            "motion_or_transition_evidence": 0,
+            "stable_posture_evidence": 91,
+            "total": 108
+          },
+          "transition": {
+            "REFUSAL:uncertain": 10,
+            "motion_or_transition_evidence": 98,
+            "stable_posture_evidence": 0,
+            "total": 108
+          }
+        },
+        "total": 365
+      }
+    }
+  },
+  "rotation_robustness": {
+    "baseline_prediction_stability": 0.993607305936073,
+    "baseline_z_alignment_gate_stability": 0.9908675799086758,
+    "baseline_z_alignment_gate_true_original_count": 2,
+    "baseline_z_alignment_gate_true_original_fraction": 0.005479452054794521,
+    "comparisons": 1095,
+    "invariant_prediction_stability": 1.0,
+    "max_abs_invariant_accel_feature_drift": 5.551115123125783e-17,
+    "max_abs_invariant_gyro_feature_drift": 2.220446049250313e-16,
+    "rotations": [
+      "x90",
+      "y90",
+      "z90"
+    ]
+  },
+  "schema": "linguistic-core.uci-posture-grounding-evaluation.v1",
+  "segment_counts": {
+    "test": {
+      "by_activity": {
+        "LAYING": 36,
+        "LIE_TO_SIT": 18,
+        "LIE_TO_STAND": 18,
+        "SITTING": 36,
+        "SIT_TO_LIE": 18,
+        "SIT_TO_STAND": 18,
+        "STANDING": 36,
+        "STAND_TO_LIE": 18,
+        "STAND_TO_SIT": 18,
+        "WALKING": 36,
+        "WALKING_DOWNSTAIRS": 58,
+        "WALKING_UPSTAIRS": 55
+      },
+      "by_subset": {
+        "dynamic": 149,
+        "static": 108,
+        "transition": 108
+      },
+      "total": 365
+    },
+    "train": {
+      "by_activity": {
+        "LAYING": 84,
+        "LIE_TO_SIT": 42,
+        "LIE_TO_STAND": 40,
+        "SITTING": 84,
+        "SIT_TO_LIE": 42,
+        "SIT_TO_STAND": 44,
+        "STANDING": 84,
+        "STAND_TO_LIE": 40,
+        "STAND_TO_SIT": 42,
+        "WALKING": 91,
+        "WALKING_DOWNSTAIRS": 128,
+        "WALKING_UPSTAIRS": 128
+      },
+      "by_subset": {
+        "dynamic": 347,
+        "static": 252,
+        "transition": 250
+      },
+      "total": 849
+    }
+  },
+  "split": {
+    "overlap": [],
+    "source": "official UCI Train/Test subject partition",
+    "test_subjects": [
+      2,
+      4,
+      9,
+      10,
+      12,
+      13,
+      18,
+      20,
+      24
+    ],
+    "train_subjects": [
+      1,
+      3,
+      5,
+      6,
+      7,
+      8,
+      11,
+      14,
+      15,
+      16,
+      17,
+      19,
+      21,
+      22,
+      23,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ]
+  }
+}

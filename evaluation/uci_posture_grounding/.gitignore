@@ -1,0 +1,5 @@
+.cache/
+uci_341_raw/
+specimen_fixtures*.jsonl
+__pycache__/
+*.pyc
