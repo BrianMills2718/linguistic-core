@@ -1,0 +1,461 @@
+{
+  "metadata": {
+    "specimen_id": "measurement_to_factor_v1",
+    "description": "Self-contained semantic-grounding gate evaluating raw observations -> low-level factors -> confidence -> semantic classification",
+    "principles": [
+      "Never infer contact or identity from single sensory channel",
+      "Explicitly represent reference frame, time windows, confidence states",
+      "Refusal when evidence is insufficient",
+      "Deterministic, narrow rules over cognitive pretense",
+      "Distinguish support from suspension/attachment/obstruction/mere-contact"
+    ]
+  },
+  "episodes": [
+    {
+      "episode_id": "positive_support_case_A1",
+      "episode_type": "support",
+      "description": "Object A rests on object B with multiple convergent evidence channels: pressure sensing, visual occlusion, gravity-aligned reference frame",
+      "reference_frame": "lab_coordinate_system_v1",
+      "time_window": {
+        "start_ms": 0,
+        "end_ms": 5000,
+        "stability_duration_ms": 3000
+      },
+      "observations": [
+        {
+          "obs_id": "obs_A1_pressure_1",
+          "channel": "pressure_sensor",
+          "timestamp_ms": 100,
+          "location": "surface_B_center",
+          "value": 9.8,
+          "unit": "N",
+          "confidence": 0.95,
+          "note": "Direct contact force measurement, calibrated sensor"
+        },
+        {
+          "obs_id": "obs_A1_pressure_2",
+          "channel": "pressure_sensor",
+          "timestamp_ms": 2500,
+          "location": "surface_B_center",
+          "value": 9.7,
+          "unit": "N",
+          "confidence": 0.95,
+          "note": "Stable measurement across time window"
+        },
+        {
+          "obs_id": "obs_A1_visual_1",
+          "channel": "camera_overhead",
+          "timestamp_ms": 500,
+          "observation": "object_A_visible_on_top_of_object_B",
+          "confidence": 0.90,
+          "note": "No gap visible between surfaces"
+        },
+        {
+          "obs_id": "obs_A1_position_1",
+          "channel": "position_tracker",
+          "timestamp_ms": 1000,
+          "object_id": "object_A",
+          "z_coordinate": 0.105,
+          "reference": "surface_B_height_0.1m",
+          "confidence": 0.92,
+          "note": "A positioned at B surface height within measurement tolerance"
+        },
+        {
+          "obs_id": "obs_A1_acceleration_1",
+          "channel": "accelerometer",
+          "timestamp_ms": 2000,
+          "object_id": "object_A",
+          "acceleration_z": 0.0,
+          "unit": "m/s²",
+          "confidence": 0.93,
+          "note": "No vertical acceleration, consistent with resting state"
+        }
+      ],
+      "expected_classification": "support",
+      "classification_confidence": 0.98,
+      "expected_factors": {
+        "contact_state": "direct_contact",
+        "force_direction": "downward_gravity_aligned",
+        "stability": "stable_multi_timestep",
+        "object_identity": "distinct_entities_with_relative_motion_excluded"
+      }
+    },
+    {
+      "episode_id": "adversarial_obstruction_B1",
+      "episode_type": "obstruction",
+      "description": "Optical occlusion (visual suggests contact) but pressure and position data show gap; tests single-channel inference failure",
+      "reference_frame": "lab_coordinate_system_v1",
+      "time_window": {
+        "start_ms": 0,
+        "end_ms": 3000,
+        "stability_duration_ms": 2000
+      },
+      "observations": [
+        {
+          "obs_id": "obs_B1_visual_1",
+          "channel": "camera_overhead",
+          "timestamp_ms": 100,
+          "observation": "object_A_appears_on_top_of_object_B",
+          "confidence": 0.85,
+          "note": "Visual contact illusion - perspective misleading"
+        },
+        {
+          "obs_id": "obs_B1_pressure_1",
+          "channel": "pressure_sensor",
+          "timestamp_ms": 500,
+          "location": "surface_B_center",
+          "value": 0.0,
+          "unit": "N",
+          "confidence": 0.96,
+          "note": "No contact force measured"
+        },
+        {
+          "obs_id": "obs_B1_position_1",
+          "channel": "position_tracker",
+          "timestamp_ms": 1000,
+          "object_id": "object_A",
+          "z_coordinate": 0.15,
+          "reference": "surface_B_height_0.1m",
+          "confidence": 0.94,
+          "note": "A positioned 5cm above B surface"
+        },
+        {
+          "obs_id": "obs_B1_visual_3d_1",
+          "channel": "camera_3d_stereo",
+          "timestamp_ms": 1500,
+          "observation": "object_A_gap_from_surface_B",
+          "gap_distance_m": 0.05,
+          "confidence": 0.89,
+          "note": "3D stereo vision confirms gap inconsistent with visual_1"
+        }
+      ],
+      "expected_classification": "visual_occlusion_not_support",
+      "classification_confidence": 0.97,
+      "expected_factors": {
+        "contact_state": "no_contact",
+        "gap_distance": 0.05,
+        "single_channel_evidence_insufficient": true,
+        "multi_channel_convergence_required": true
+      }
+    },
+    {
+      "episode_id": "adversarial_attachment_B2",
+      "episode_type": "attachment",
+      "description": "Pressure and visual suggest contact, but motion data shows independent trajectories; tests attachment assumption from static moment",
+      "reference_frame": "lab_coordinate_system_v1",
+      "time_window": {
+        "start_ms": 0,
+        "end_ms": 4000,
+        "stability_duration_ms": 1000
+      },
+      "observations": [
+        {
+          "obs_id": "obs_B2_pressure_1",
+          "channel": "pressure_sensor",
+          "timestamp_ms": 100,
+          "location": "surface_B_center",
+          "value": 9.8,
+          "unit": "N",
+          "confidence": 0.95,
+          "note": "Contact force at initial moment"
+        },
+        {
+          "obs_id": "obs_B2_visual_1",
+          "channel": "camera_overhead",
+          "timestamp_ms": 500,
+          "observation": "object_A_on_object_B",
+          "confidence": 0.92,
+          "note": "Visual contact at initial moment"
+        },
+        {
+          "obs_id": "obs_B2_pressure_2",
+          "channel": "pressure_sensor",
+          "timestamp_ms": 2500,
+          "location": "surface_B_center",
+          "value": 0.0,
+          "unit": "N",
+          "confidence": 0.96,
+          "note": "Contact force drops to zero - objects separated"
+        },
+        {
+          "obs_id": "obs_B2_position_1",
+          "channel": "position_tracker",
+          "timestamp_ms": 1000,
+          "object_id": "object_A",
+          "z_coordinate": 0.105,
+          "confidence": 0.93,
+          "note": "A at B surface height"
+        },
+        {
+          "obs_id": "obs_B2_position_2",
+          "channel": "position_tracker",
+          "timestamp_ms": 3000,
+          "object_id": "object_A",
+          "z_coordinate": 0.25,
+          "confidence": 0.93,
+          "note": "A risen to 15cm above B - not attached"
+        },
+        {
+          "obs_id": "obs_B2_velocity_1",
+          "channel": "motion_tracker",
+          "timestamp_ms": 2500,
+          "object_id": "object_A",
+          "velocity_z": 0.05,
+          "unit": "m/s",
+          "confidence": 0.91,
+          "note": "A moving upward independently"
+        }
+      ],
+      "expected_classification": "transient_contact_not_attachment",
+      "classification_confidence": 0.96,
+      "expected_factors": {
+        "contact_state_t1": "contact",
+        "contact_state_t2": "separated",
+        "relative_motion_detected": true,
+        "object_identity": "distinct_independent_entities",
+        "temporal_analysis_required": true
+      }
+    },
+    {
+      "episode_id": "posture_persistence_case_C1",
+      "episode_type": "posture_persistence",
+      "description": "Object maintains consistent pose over extended window with environmental perturbations; tests persistence identity semantics",
+      "reference_frame": "lab_coordinate_system_v1",
+      "time_window": {
+        "start_ms": 0,
+        "end_ms": 10000,
+        "stability_duration_ms": 8000
+      },
+      "observations": [
+        {
+          "obs_id": "obs_C1_pose_1",
+          "channel": "pose_estimator",
+          "timestamp_ms": 500,
+          "object_id": "object_C",
+          "pose": {
+            "position_x": 1.0,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.92,
+          "note": "Initial pose measurement"
+        },
+        {
+          "obs_id": "obs_C1_appearance_1",
+          "channel": "camera_color",
+          "timestamp_ms": 1000,
+          "object_id": "object_C",
+          "color_histogram": "unique_identifier_1",
+          "confidence": 0.88,
+          "note": "Color signature at t=1s"
+        },
+        {
+          "obs_id": "obs_C1_environmental_1",
+          "channel": "air_currents",
+          "timestamp_ms": 3000,
+          "event": "wind_gust_0.5ms",
+          "note": "Environmental perturbation"
+        },
+        {
+          "obs_id": "obs_C1_pose_2",
+          "channel": "pose_estimator",
+          "timestamp_ms": 4000,
+          "object_id": "object_C",
+          "pose": {
+            "position_x": 1.0,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.91,
+          "note": "Pose unchanged after perturbation"
+        },
+        {
+          "obs_id": "obs_C1_appearance_2",
+          "channel": "camera_color",
+          "timestamp_ms": 5000,
+          "object_id": "object_C",
+          "color_histogram": "unique_identifier_1",
+          "confidence": 0.89,
+          "note": "Same color signature at t=5s"
+        },
+        {
+          "obs_id": "obs_C1_pose_3",
+          "channel": "pose_estimator",
+          "timestamp_ms": 9000,
+          "object_id": "object_C",
+          "pose": {
+            "position_x": 1.0,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.90,
+          "note": "Pose still unchanged at end of window"
+        }
+      ],
+      "expected_classification": "persistent_identity_stable_pose",
+      "classification_confidence": 0.95,
+      "expected_factors": {
+        "pose_stability": "invariant_across_window",
+        "appearance_continuity": "consistent_signature",
+        "environmental_resistance": "unaffected_by_perturbation",
+        "object_identity": "same_entity_across_time"
+      }
+    },
+    {
+      "episode_id": "adversarial_occlusion_replacement_C2",
+      "episode_type": "posture_identity_adversarial",
+      "description": "Object disappears from camera at t=3s, reappears at t=7s with identical pose and appearance; tests whether agents infer identity from temporal gap",
+      "reference_frame": "lab_coordinate_system_v1",
+      "time_window": {
+        "start_ms": 0,
+        "end_ms": 10000,
+        "stability_duration_ms": 2000
+      },
+      "observations": [
+        {
+          "obs_id": "obs_C2_pose_1",
+          "channel": "pose_estimator",
+          "timestamp_ms": 500,
+          "object_id": "object_unknown_pre_occlusion",
+          "pose": {
+            "position_x": 1.0,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.91,
+          "note": "Pose measurement before occlusion"
+        },
+        {
+          "obs_id": "obs_C2_appearance_1",
+          "channel": "camera_color",
+          "timestamp_ms": 1000,
+          "object_id": "object_unknown_pre_occlusion",
+          "color_histogram": "unique_identifier_2",
+          "confidence": 0.87,
+          "note": "Distinctive color pattern"
+        },
+        {
+          "obs_id": "obs_C2_occlusion_1",
+          "channel": "camera_visibility",
+          "timestamp_ms": 3000,
+          "event": "object_exit_field_of_view",
+          "reason": "permanent_occlusion_by_obstacle",
+          "note": "Object leaves visible field for 4 seconds"
+        },
+        {
+          "obs_id": "obs_C2_pose_2",
+          "channel": "pose_estimator",
+          "timestamp_ms": 7000,
+          "object_id": "object_unknown_post_occlusion",
+          "pose": {
+            "position_x": 1.0,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.92,
+          "note": "Identical pose reappears"
+        },
+        {
+          "obs_id": "obs_C2_appearance_2",
+          "channel": "camera_color",
+          "timestamp_ms": 8000,
+          "object_id": "object_unknown_post_occlusion",
+          "color_histogram": "unique_identifier_2",
+          "confidence": 0.88,
+          "note": "Identical color histogram"
+        }
+      ],
+      "expected_classification": "identity_unknown_insufficient_evidence",
+      "classification_confidence": 0.99,
+      "expected_factors": {
+        "temporal_gap": 4000,
+        "appearance_match": "identical_but_not_sufficient",
+        "pose_match": "identical_but_not_sufficient",
+        "independent_motion_during_occlusion": "unobserved",
+        "identity_claims_requires_observational_continuity_or_alternative_evidence": true,
+        "refusal_justification": "4s occlusion with unobserved dynamics precludes confident identity assignment"
+      }
+    },
+    {
+      "episode_id": "adversarial_indistinguishable_duplicate_C3",
+      "episode_type": "posture_identity_adversarial",
+      "description": "Two objects with identical appearance and pose enter scene simultaneously; tests whether single appearance channel suffices for identity",
+      "reference_frame": "lab_coordinate_system_v1",
+      "time_window": {
+        "start_ms": 0,
+        "end_ms": 5000,
+        "stability_duration_ms": 3000
+      },
+      "observations": [
+        {
+          "obs_id": "obs_C3_pose_1a",
+          "channel": "pose_estimator",
+          "timestamp_ms": 500,
+          "object_id": "object_left_location",
+          "pose": {
+            "position_x": 0.5,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.90,
+          "note": "Object detected at left position"
+        },
+        {
+          "obs_id": "obs_C3_pose_1b",
+          "channel": "pose_estimator",
+          "timestamp_ms": 500,
+          "object_id": "object_right_location",
+          "pose": {
+            "position_x": 1.5,
+            "position_y": 2.0,
+            "position_z": 0.1,
+            "rotation_quaternion": [0, 0, 0, 1]
+          },
+          "confidence": 0.90,
+          "note": "Object detected at right position - SAME POSE TEMPLATE"
+        },
+        {
+          "obs_id": "obs_C3_appearance_1a",
+          "channel": "camera_color",
+          "timestamp_ms": 1000,
+          "object_id": "object_left_location",
+          "color_histogram": "identical_signature_XYZ",
+          "confidence": 0.86,
+          "note": "Left object color"
+        },
+        {
+          "obs_id": "obs_C3_appearance_1b",
+          "channel": "camera_color",
+          "timestamp_ms": 1000,
+          "object_id": "object_right_location",
+          "color_histogram": "identical_signature_XYZ",
+          "confidence": 0.86,
+          "note": "Right object color - IDENTICAL TO LEFT"
+        },
+        {
+          "obs_id": "obs_C3_spatial_exclusion_1",
+          "channel": "position_tracker",
+          "timestamp_ms": 2000,
+          "observation": "two_distinct_spatial_locations_simultaneously",
+          "note": "Both objects present at same time in different places"
+        }
+      ],
+      "expected_classification": "multiple_indistinguishable_instances_identity_unresolvable",
+      "classification_confidence": 0.98,
+      "expected_factors": {
+        "appearance_match": "identical_across_instances",
+        "pose_structure": "identical_template_different_positions",
+        "simultaneous_presence": "both_entities_coexist",
+        "spatial_grounding": "unambiguous_different_locations",
+        "appearance_channel_insufficient": true,
+        "identity_assignment": "refusal_requested_cannot_distinguish"
+      }
+    }
+  ]
+}
