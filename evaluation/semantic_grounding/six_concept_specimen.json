@@ -1,0 +1,682 @@
+{
+  "schema_version": "0.1-experimental",
+  "status": "candidate_probe",
+  "provenance": {
+    "purpose": "Probe whether six concepts can be decomposed into explicit grounded factors and projected into DOLCE, BFO, and UFO without asserting premature equivalence.",
+    "authority": "Experimental evaluation artifact only; it does not modify linguistic_core@0.3.3 or the living design.",
+    "literature_status": "DOLCE/BFO/UFO targets were spot-checked against official or maintainer documentation. On 2026-10-01 the six English target words were checked against the NSM v20 English prime chart and the Longman Defining Vocabulary list: none is an NSM prime; all six occur in the LDV. PMG-to-factor derivations remain hypotheses requiring review."
+  },
+  "factors": [
+    {
+      "id": "gf:phenomenal_similarity_space",
+      "label": "phenomenal similarity space",
+      "kind": "quality_space",
+      "basis": [
+        "phenomenal",
+        "psychophysical"
+      ],
+      "dependencies": [],
+      "evidence": [
+        {
+          "kind": "phenomenal",
+          "status": "candidate",
+          "note": "PMG posits intrinsic similarity/difference structure among phenomenal states."
+        },
+        {
+          "kind": "psychophysical",
+          "status": "candidate",
+          "note": "Psychophysical discrimination and similarity judgments may constrain this structure; exact recoverability is unresolved."
+        }
+      ]
+    },
+    {
+      "id": "gf:quality_region",
+      "label": "quality-space region",
+      "kind": "region",
+      "basis": [
+        "phenomenal",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:phenomenal_similarity_space"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "A category such as red can be represented as a learned/stabilized region rather than an atomic symbol."
+        }
+      ]
+    },
+    {
+      "id": "gf:persistent_object_pattern",
+      "label": "persistent object pattern",
+      "kind": "persistent_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "PMG proposes proto-object formation from temporal persistence, spatial continuity, feature co-occurrence, predictable transformation, and cross-modal agreement."
+        }
+      ]
+    },
+    {
+      "id": "gf:temporal_occurrence_pattern",
+      "label": "temporally extended occurrence",
+      "kind": "transition_pattern",
+      "basis": [
+        "phenomenal",
+        "learned"
+      ],
+      "dependencies": [],
+      "evidence": [
+        {
+          "kind": "phenomenal",
+          "status": "candidate",
+          "note": "Temporal succession is primitive in PMG; event identity is not yet derived."
+        }
+      ]
+    },
+    {
+      "id": "gf:participant_in_occurrence",
+      "label": "participant in occurrence",
+      "kind": "participation_pattern",
+      "basis": [
+        "learned",
+        "formal"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern",
+        "gf:temporal_occurrence_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "Stable bearers can be tracked across temporally structured changes; the exact derivation of participation remains to be formalized."
+        }
+      ]
+    },
+    {
+      "id": "gf:support_disposition",
+      "label": "support disposition",
+      "kind": "disposition_pattern",
+      "basis": [
+        "learned",
+        "formal"
+      ],
+      "dependencies": [
+        "gf:support_relation"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "Counterfactual generalization from observed load-bearing episodes: under relevant conditions, an object is expected to instantiate the support relation."
+        }
+      ]
+    },
+    {
+      "id": "gf:artifact_status",
+      "label": "artifact status",
+      "kind": "symbolic_construction",
+      "basis": [
+        "social",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "social",
+          "status": "candidate",
+          "note": "Requires socially/historically stabilized interpretation of an object as intentionally made or selected for functions."
+        }
+      ]
+    },
+    {
+      "id": "gf:contact_pattern",
+      "label": "contact pattern",
+      "kind": "relational_pattern",
+      "basis": [
+        "phenomenal",
+        "sensorimotor"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "Co-located boundary/contact cues between tracked persistent patterns; does not by itself imply support."
+        }
+      ]
+    },
+    {
+      "id": "gf:relative_position_pattern",
+      "label": "relative position pattern",
+      "kind": "relational_pattern",
+      "basis": [
+        "phenomenal",
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "Stable above/below and orientation relations between tracked patterns; gravity-relative interpretation remains an assumption to make explicit."
+        }
+      ]
+    },
+    {
+      "id": "gf:load_response_pattern",
+      "label": "load-response pattern",
+      "kind": "transition_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:contact_pattern",
+        "gf:relative_position_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "Applied body/object load covaries with pressure/contact while relative position remains bounded rather than collapsing or continuing downward."
+        }
+      ]
+    },
+    {
+      "id": "gf:support_relation",
+      "label": "support relation",
+      "kind": "relational_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:contact_pattern",
+        "gf:relative_position_pattern",
+        "gf:load_response_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "Constructed relation: a load-bearing interaction pattern assembled from contact, relative position, and bounded load response. It is not admitted as a grounding primitive."
+        }
+      ]
+    },
+    {
+      "id": "gf:body_posture_configuration",
+      "label": "body posture configuration",
+      "kind": "persistent_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:persistent_object_pattern",
+        "gf:contact_pattern",
+        "gf:relative_position_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "sensorimotor",
+          "status": "candidate",
+          "note": "A learned configuration over body-part geometry, joint/proprioceptive state, and contact distribution. No sitting label is assumed at this layer."
+        }
+      ]
+    },
+    {
+      "id": "gf:posture_transition_pattern",
+      "label": "posture transition pattern",
+      "kind": "transition_pattern",
+      "basis": [
+        "sensorimotor",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:body_posture_configuration",
+        "gf:temporal_occurrence_pattern"
+      ],
+      "evidence": [
+        {
+          "kind": "learned",
+          "status": "candidate",
+          "note": "Tracks transition into, persistence of, or transition out of a body-posture configuration without presupposing the lexical category sit."
+        }
+      ]
+    },
+    {
+      "id": "gf:conventional_postural_support_function",
+      "label": "conventional postural-support function",
+      "kind": "role_pattern",
+      "basis": [
+        "social",
+        "learned"
+      ],
+      "dependencies": [
+        "gf:support_disposition",
+        "gf:body_posture_configuration",
+        "gf:artifact_status"
+      ],
+      "evidence": [
+        {
+          "kind": "social",
+          "status": "candidate",
+          "note": "A socially stabilized artifact function linking an object to recurrent supported body-posture configurations; this remains higher-level and is not a grounding primitive."
+        }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "gc:red",
+      "label": "red",
+      "target_level": "phenomenal_category",
+      "factorization": [
+        "gf:phenomenal_similarity_space",
+        "gf:quality_region"
+      ],
+      "grounding_status": "partially_grounded",
+      "semantic_basis": {
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "RED is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. This classifies lexical/definitional status only; it does not settle grounding.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
+      },
+      "ontology_projections": [
+        {
+          "ontology": "DOLCE",
+          "target": "Quality + quality region/quale",
+          "relation": "partial_projection",
+          "preserved": [
+            "particular quality/value distinction",
+            "quality-space location"
+          ],
+          "lost_or_added": [
+            "DOLCE adds bearer/dependence commitments not yet derived by PMG"
+          ],
+          "status": "source_checked",
+          "source": "https://www.loa.istc.cnr.it/old/Papers/DOLCE-EKAW.pdf"
+        },
+        {
+          "ontology": "BFO",
+          "target": "quality",
+          "relation": "partial_projection",
+          "preserved": [
+            "dependent quality bearer structure"
+          ],
+          "lost_or_added": [
+            "BFO core does not supply the same generalized quality-space geometry"
+          ],
+          "status": "source_checked",
+          "source": "https://github.com/BFO-ontology/BFO-2020"
+        },
+        {
+          "ontology": "UFO",
+          "target": "Quality + QualityValue",
+          "relation": "partial_projection",
+          "preserved": [
+            "reified quality",
+            "quality value, including multidimensional values"
+          ],
+          "lost_or_added": [
+            "UFO value structure does not by itself ground phenomenal similarity"
+          ],
+          "status": "source_checked",
+          "source": "https://nemo-ufes.github.io/gufo/overview.html"
+        }
+      ],
+      "open_gaps": [
+        "Define empirical relation between psychophysical measurements and the proposed phenomenal metric.",
+        "Separate a particular red-quality token from a learned red category and lexical sense."
+      ]
+    },
+    {
+      "id": "gc:object",
+      "label": "object",
+      "target_level": "ontological_category",
+      "factorization": [
+        "gf:persistent_object_pattern"
+      ],
+      "grounding_status": "partially_grounded",
+      "semantic_basis": {
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "OBJECT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. This classifies lexical/definitional status only; it does not settle grounding.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
+      },
+      "ontology_projections": [
+        {
+          "ontology": "DOLCE",
+          "target": "Endurant / Physical Object candidate",
+          "relation": "licenses_classification_as",
+          "preserved": [
+            "persistence across change",
+            "bearer-like identity"
+          ],
+          "lost_or_added": [
+            "DOLCE ontological commitments exceed the current developmental derivation"
+          ],
+          "status": "source_checked",
+          "source": "https://www.loa.istc.cnr.it/dolce/overview.html"
+        },
+        {
+          "ontology": "BFO",
+          "target": "independent continuant / object candidate",
+          "relation": "licenses_classification_as",
+          "preserved": [
+            "continuant-like persistence",
+            "object classification"
+          ],
+          "lost_or_added": [
+            "self-connectedness/internal-unity criteria are not yet derived"
+          ],
+          "status": "source_checked",
+          "source": "https://github.com/BFO-ontology/BFO-2020"
+        },
+        {
+          "ontology": "UFO",
+          "target": "Object / FunctionalComplex candidate",
+          "relation": "licenses_classification_as",
+          "preserved": [
+            "endurant object identity"
+          ],
+          "lost_or_added": [
+            "UFO identity-principle/type commitments require further derivation"
+          ],
+          "status": "source_checked",
+          "source": "https://nemo-ufes.github.io/gufo/overview.html"
+        }
+      ],
+      "open_gaps": [
+        "Specify transformation family under which object identity is preserved.",
+        "Distinguish perceptual object representation from mind-independent ontological object claims."
+      ]
+    },
+    {
+      "id": "gc:event",
+      "label": "event",
+      "target_level": "event_category",
+      "factorization": [
+        "gf:temporal_occurrence_pattern",
+        "gf:participant_in_occurrence"
+      ],
+      "grounding_status": "partially_grounded",
+      "semantic_basis": {
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "EVENT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. This classifies lexical/definitional status only; it does not settle grounding.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
+      },
+      "ontology_projections": [
+        {
+          "ontology": "DOLCE",
+          "target": "Perdurant / Event / Process candidate",
+          "relation": "licenses_classification_as",
+          "preserved": [
+            "temporal extension",
+            "participation"
+          ],
+          "lost_or_added": [
+            "event/process subtype distinctions need criteria not yet in PMG"
+          ],
+          "status": "source_checked",
+          "source": "https://www.loa.istc.cnr.it/dolce/overview.html"
+        },
+        {
+          "ontology": "BFO",
+          "target": "occurrent / process candidate",
+          "relation": "licenses_classification_as",
+          "preserved": [
+            "occurrence through time",
+            "material participation"
+          ],
+          "lost_or_added": [
+            "BFO process criteria add realist commitments"
+          ],
+          "status": "source_checked",
+          "source": "https://github.com/BFO-ontology/BFO-2020"
+        },
+        {
+          "ontology": "UFO",
+          "target": "Event",
+          "relation": "licenses_classification_as",
+          "preserved": [
+            "event identity",
+            "participation"
+          ],
+          "lost_or_added": [
+            "situation/event distinctions and identity conditions remain unresolved"
+          ],
+          "status": "source_checked",
+          "source": "https://nemo-ufes.github.io/gufo/overview.html"
+        }
+      ],
+      "open_gaps": [
+        "Derive event identity rather than assuming segmentation of temporal succession.",
+        "Define when continuous change becomes one event versus several."
+      ]
+    },
+    {
+      "id": "gc:support",
+      "label": "support",
+      "target_level": "relation_category",
+      "factorization": [
+        "gf:contact_pattern",
+        "gf:relative_position_pattern",
+        "gf:load_response_pattern",
+        "gf:support_relation",
+        "gf:support_disposition"
+      ],
+      "grounding_status": "partially_grounded",
+      "semantic_basis": {
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "SUPPORT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. LDV membership is evidence of definitional usefulness, not grounding primitiveness.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
+      },
+      "ontology_projections": [
+        {
+          "ontology": "DOLCE",
+          "target": "relation / quality / disposition-style extension",
+          "relation": "no_direct_counterpart",
+          "preserved": [
+            "participant structure can be represented"
+          ],
+          "lost_or_added": [
+            "no single checked core DOLCE class directly captures the proposed support disposition"
+          ],
+          "status": "unresolved"
+        },
+        {
+          "ontology": "BFO",
+          "target": "disposition realized in process",
+          "relation": "partial_projection",
+          "preserved": [
+            "counterfactual capacity",
+            "realization under conditions"
+          ],
+          "lost_or_added": [
+            "the specific mechanical support relation is domain-level, not BFO core"
+          ],
+          "status": "source_checked",
+          "source": "https://github.com/BFO-ontology/BFO-2020"
+        },
+        {
+          "ontology": "UFO",
+          "target": "IntrinsicMode/capability-like aspect + Event",
+          "relation": "partial_projection",
+          "preserved": [
+            "capability-like intrinsic aspect",
+            "manifestation in event"
+          ],
+          "lost_or_added": [
+            "exact support vocabulary is domain-level"
+          ],
+          "status": "source_checked",
+          "source": "https://nemo-ufes.github.io/gufo/overview.html"
+        }
+      ],
+      "open_gaps": [
+        "Ground gravity-relative direction and load/pressure cues without assuming a support relation in advance.",
+        "Specify when contact plus bounded displacement counts as support rather than attachment, suspension, friction, or incidental obstruction.",
+        "Separate an occurrent support episode from a disposition to support."
+      ]
+    },
+    {
+      "id": "gc:sit",
+      "label": "sit",
+      "target_level": "embodied_action_category",
+      "factorization": [
+        "gf:body_posture_configuration",
+        "gf:posture_transition_pattern",
+        "gf:support_relation",
+        "gf:participant_in_occurrence"
+      ],
+      "grounding_status": "partially_grounded",
+      "semantic_basis": {
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "SIT is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. The grounding path therefore treats the lexical item as a higher-level category over posture, transition, participation, and support.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
+      },
+      "ontology_projections": [
+        {
+          "ontology": "DOLCE",
+          "target": "Perdurant with participating physical object/person",
+          "relation": "partial_projection",
+          "preserved": [
+            "event/participation structure"
+          ],
+          "lost_or_added": [
+            "body-posture and support semantics remain domain-level"
+          ],
+          "status": "source_checked",
+          "source": "https://www.loa.istc.cnr.it/dolce/overview.html"
+        },
+        {
+          "ontology": "BFO",
+          "target": "process with material participant",
+          "relation": "partial_projection",
+          "preserved": [
+            "process and participation"
+          ],
+          "lost_or_added": [
+            "posture/support semantics remain domain-level"
+          ],
+          "status": "source_checked",
+          "source": "https://github.com/BFO-ontology/BFO-2020"
+        },
+        {
+          "ontology": "UFO",
+          "target": "Event with participating Object",
+          "relation": "partial_projection",
+          "preserved": [
+            "event and participant structure"
+          ],
+          "lost_or_added": [
+            "embodied action semantics remain domain-level"
+          ],
+          "status": "source_checked",
+          "source": "https://nemo-ufes.github.io/gufo/overview.html"
+        }
+      ],
+      "open_gaps": [
+        "Identify posture invariants across chairs, stools, floors, wheelchairs, atypical bodies, and language-specific senses without defining them as 'sitting'.",
+        "Separate entering the posture, maintaining the posture/state, and lexical polysemy.",
+        "Determine which support patterns are necessary, typical, or absent in borderline cases."
+      ]
+    },
+    {
+      "id": "gc:chair",
+      "label": "chair",
+      "target_level": "lexical_concept",
+      "factorization": [
+        "gf:persistent_object_pattern",
+        "gf:support_disposition",
+        "gf:body_posture_configuration",
+        "gf:artifact_status",
+        "gf:conventional_postural_support_function"
+      ],
+      "grounding_status": "partially_grounded",
+      "semantic_basis": {
+        "nsm": "not_prime",
+        "longman": "defining_vocabulary_candidate",
+        "note": "CHAIR is absent from the 2022 English NSM prime chart and present in the Longman Defining Vocabulary list. It is modeled here as a higher-order artifact concept composed from grounded and social factors.",
+        "nsm_source": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+        "longman_source": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html"
+      },
+      "ontology_projections": [
+        {
+          "ontology": "DOLCE",
+          "target": "Physical Object / Artifact extension + participation/function relations",
+          "relation": "partial_projection",
+          "preserved": [
+            "object persistence",
+            "participation in sitting"
+          ],
+          "lost_or_added": [
+            "artifact/function conventions require extension or added theory"
+          ],
+          "status": "source_checked",
+          "source": "https://www.loa.istc.cnr.it/dolce/overview.html"
+        },
+        {
+          "ontology": "BFO",
+          "target": "object + function/disposition",
+          "relation": "partial_projection",
+          "preserved": [
+            "object bearer",
+            "function/disposition realization"
+          ],
+          "lost_or_added": [
+            "conventional category boundary and lexical meaning are not supplied by BFO"
+          ],
+          "status": "source_checked",
+          "source": "https://github.com/BFO-ontology/BFO-2020"
+        },
+        {
+          "ontology": "UFO",
+          "target": "Object/FunctionalComplex + intrinsic/social aspects",
+          "relation": "partial_projection",
+          "preserved": [
+            "object structure",
+            "qualities/aspects",
+            "events/relations"
+          ],
+          "lost_or_added": [
+            "specific chair category and social convention remain domain-level"
+          ],
+          "status": "source_checked",
+          "source": "https://nemo-ufes.github.io/gufo/overview.html"
+        }
+      ],
+      "open_gaps": [
+        "Distinguish chair from stool, bench, seat, support surface, and accidental sitting affordances.",
+        "Represent prototype/typical features without converting them into necessary conditions.",
+        "Ground artifact/conventional function without making social convention a phenomenal primitive."
+      ]
+    }
+  ]
+}

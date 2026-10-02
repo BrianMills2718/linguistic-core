@@ -1,0 +1,55 @@
+{
+  "status": "source_checked_lexical_basis_comparison",
+  "checked_on": "2026-10-01",
+  "sources": {
+    "nsm": {
+      "label": "Chart of NSM Semantic Primes, English v20 (10 May 2022)",
+      "url": "https://nsm-approach.net/wp-content/uploads/2022/05/Chart-of-NSM-Semantic-Primes_English_v20_May-2022.pdf",
+      "interpretation": "Membership means the English exponent is listed as an NSM semantic prime. Non-membership does not by itself prove a particular decomposition or semantic-molecule analysis."
+    },
+    "longman": {
+      "label": "Longman Defining Vocabulary list",
+      "url": "https://www.pu-kumamoto.ac.jp/users_site/rlavin/resources/wordlists/LDV.html",
+      "interpretation": "Membership means the word appears in the controlled vocabulary used to write dictionary definitions. It does not imply semantic irreducibility or experiential grounding."
+    }
+  },
+  "targets": [
+    {
+      "word": "red",
+      "nsm_prime": false,
+      "longman_defining_vocabulary": true,
+      "conclusion": "Useful contrast: the word is available as a definitional-basis item in Longman but is not an NSM semantic prime. Grounding status must be decided independently."
+    },
+    {
+      "word": "object",
+      "nsm_prime": false,
+      "longman_defining_vocabulary": true,
+      "conclusion": "Useful contrast: the word is available as a definitional-basis item in Longman but is not an NSM semantic prime. Grounding status must be decided independently."
+    },
+    {
+      "word": "event",
+      "nsm_prime": false,
+      "longman_defining_vocabulary": true,
+      "conclusion": "Useful contrast: the word is available as a definitional-basis item in Longman but is not an NSM semantic prime. Grounding status must be decided independently."
+    },
+    {
+      "word": "support",
+      "nsm_prime": false,
+      "longman_defining_vocabulary": true,
+      "conclusion": "Useful contrast: the word is available as a definitional-basis item in Longman but is not an NSM semantic prime. Grounding status must be decided independently."
+    },
+    {
+      "word": "sit",
+      "nsm_prime": false,
+      "longman_defining_vocabulary": true,
+      "conclusion": "Useful contrast: the word is available as a definitional-basis item in Longman but is not an NSM semantic prime. Grounding status must be decided independently."
+    },
+    {
+      "word": "chair",
+      "nsm_prime": false,
+      "longman_defining_vocabulary": true,
+      "conclusion": "Useful contrast: the word is available as a definitional-basis item in Longman but is not an NSM semantic prime. Grounding status must be decided independently."
+    }
+  ],
+  "main_result": "All six targets are in the Longman Defining Vocabulary and none is an NSM semantic prime. This demonstrates why lexical primitive, definitional basis, and grounding primitive must remain separate fields."
+}
