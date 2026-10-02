@@ -1,0 +1,147 @@
+{
+  "schema": "linguistic-core.foot-ground-contact-experiment-plan.v2",
+  "status": "preregistered_before_dataset_download",
+  "created_date": "2026-10-02",
+  "supersedes_for_external_validation": "experiment_plan_v1.json",
+  "prior_failure": "reference_independence_audit_v1.json",
+  "semantic_target": {
+    "classes": [
+      "foot_ground_contact_evidence",
+      "no_foot_ground_contact_evidence",
+      "REFUSAL:near_event_or_uncertain"
+    ],
+    "claim_boundary": "A bounded foot-ground contact factor below support. This does not establish full support, metaphysical contact, or load-bearing role structure."
+  },
+  "dataset": {
+    "name": "Human gait and other movements - markers / inertial sensors / pressure insoles / force plates",
+    "repository": "Yareta, University of Geneva",
+    "doi": "10.26037/yareta:xkxgaw6ewjdhfntdhtj7upepxy",
+    "article_doi": "10.1038/s41597-023-02077-3",
+    "license": "CC BY 4.0",
+    "participants": 10,
+    "insole_sampling_hz": 100,
+    "optoelectronic_sampling_hz": 100,
+    "source_facts": [
+      "Two Moticon Insole3 pressure insoles with 16 pressure sensors per foot.",
+      "Synchronized CSV files contain optoelectronic marker trajectories, IMU signals, and insole data.",
+      "Walking gait events were detected from marker trajectories using the validated Zeni et al. algorithm and visually checked/corrected.",
+      "Force plates were not used for gait-event detection.",
+      "Vendor insole gait-event detection was not used.",
+      "Published synchronization precision is approximately 0.1 s; users are cautioned about synchronization."
+    ]
+  },
+  "trial_scope": {
+    "include": [
+      "slow gait",
+      "comfortable gait",
+      "fast gait"
+    ],
+    "exclude": [
+      "running",
+      "Timed Up and Go",
+      "2-minute gait",
+      "non-walking functional tasks"
+    ],
+    "rationale": "Restrict to walking trial classes for which gait-event generation was described and avoid extra task-specific timing/turnaround complications."
+  },
+  "participant_split": {
+    "excluded": [
+      "P01"
+    ],
+    "exclusion_reason": "No insole data were recorded for Participant 01.",
+    "calibration": [
+      "P02",
+      "P04",
+      "P05",
+      "P07",
+      "P08",
+      "P10"
+    ],
+    "evaluation": [
+      "P03",
+      "P06",
+      "P09"
+    ],
+    "note": "Fixed before Yareta data are downloaded or outcomes are inspected."
+  },
+  "evidence_separation": {
+    "inference_inputs": "Only the 16 pressure-sensor channels for the evaluated foot from synchronized insole data.",
+    "forbidden_inference_inputs": [
+      "optoelectronic markers",
+      "gait-event labels",
+      "force-plate channels",
+      "IMU channels",
+      "clinical/demographic metadata"
+    ],
+    "primary_reference": "Foot-strike and foot-off events derived from optoelectronic marker trajectories and visually checked/corrected by the dataset authors.",
+    "optional_secondary_reference": "Force-plate contact may be audited separately on steps crossing a force plate, but may not define or tune the primary v2 labels."
+  },
+  "preprocessing": {
+    "per_trial_per_foot_signal": "sum the 16 individual pressure-sensor channels",
+    "normalization": "Within each trial and foot, map the 5th percentile to 0 and 95th percentile to 1, then clip to [0,1]. This unsupervised normalization uses no gait-event labels.",
+    "window_samples": 20,
+    "window_duration_ms": 200,
+    "stride_samples": 20
+  },
+  "reference_construction": {
+    "stance": "from foot strike through the following foot off",
+    "swing": "from foot off through the following foot strike",
+    "synchronization_exclusion_margin_ms": 150,
+    "rule": "A scoring window is reference-contact or reference-no-contact only if the full 200 ms window lies at least 150 ms from every gait-event boundary. All other windows are REFUSAL:near_event_or_uncertain for reference purposes.",
+    "fail_closed_alignment": "If event times cannot be mapped unambiguously into the synchronized CSV time base, the affected trial is excluded and reported rather than heuristically shifted."
+  },
+  "calibration": {
+    "feature": "median normalized summed plantar pressure over the 200 ms window",
+    "candidate_center_thresholds": [
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8
+    ],
+    "refusal_half_width": 0.05,
+    "prediction_rule": [
+      "feature >= center + 0.05 => foot_ground_contact_evidence",
+      "feature <= center - 0.05 => no_foot_ground_contact_evidence",
+      "otherwise => REFUSAL:near_event_or_uncertain"
+    ],
+    "objective": "Choose the center threshold on calibration participants only to maximize balanced accuracy with refusals counted as incorrect.",
+    "tie_break": [
+      "higher coverage",
+      "lower center threshold"
+    ],
+    "freeze_before_evaluation": true
+  },
+  "evaluation_metrics": [
+    "coverage on held-out non-ambiguous reference windows",
+    "balanced accuracy with refusals counted incorrect",
+    "accuracy on covered windows",
+    "false contact predictions",
+    "false no-contact predictions",
+    "refusal rate",
+    "per-participant and per-foot metrics",
+    "excluded-trial count and reasons"
+  ],
+  "robustness": {
+    "sensor_order_permutation": "exact prediction invariance expected because the feature is the sum of per-foot pressure sensors",
+    "single_sensor_dropout": "drop each of 16 sensor channels separately on held-out data and report coverage/error/refusal degradation without retuning",
+    "left_right_symmetry": "same preprocessing, calibration threshold, and prediction code path for both feet"
+  },
+  "stop_rules": [
+    "Do not modify the participant split, synchronization margin, normalization, candidate threshold grid, refusal width, or calibration objective after outcome inspection.",
+    "Do not claim full support grounding from foot-ground contact evidence.",
+    "Do not treat force-plate or optoelectronic channels as inference inputs.",
+    "Retain failed or low-coverage held-out results.",
+    "Any material protocol change requires experiment_plan_v3.json."
+  ]
+}
