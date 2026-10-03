@@ -152,3 +152,53 @@ def test_balanced_accuracy_counts_refusal_as_incorrect():
     assert metrics["balanced_accuracy"] == pytest.approx(0.5)
     assert metrics["coverage"] == pytest.approx(0.5)
     assert metrics["refusals"] == 2
+
+
+def test_yareta_v2_integration_when_data_root_is_supplied(monkeypatch):
+    import importlib.util
+    import os
+
+    data_root_value = os.environ.get("YARETA_V2_DATA_ROOT")
+    if not data_root_value:
+        pytest.skip("YARETA_V2_DATA_ROOT not supplied")
+    if importlib.util.find_spec("ezc3d") is None:
+        pytest.skip("ezc3d not installed")
+
+    data_root = Path(data_root_value)
+    if not data_root.exists():
+        pytest.skip("YARETA_V2_DATA_ROOT does not exist")
+
+    plan = ROOT / "evaluation" / "load_bearing_contact" / "experiment_plan_v2.json"
+    manifest = (
+        ROOT
+        / "evaluation"
+        / "load_bearing_contact"
+        / "acquisition_manifest_v2.json"
+    )
+    report = evaluation.run_evaluation(plan, manifest, data_root)
+
+    assert report["result_status"] == "completed_negative_result"
+    assert report["primary_claim_supported"] is False
+    assert report["calibration"]["selected_center"] == pytest.approx(0.45)
+    assert report["reference"]["calibration_reference_counts"] == {
+        evaluation.CONTACT: 492,
+        evaluation.NO_CONTACT: 3,
+    }
+    assert report["reference"]["evaluation_reference_counts"] == {
+        evaluation.CONTACT: 271,
+        evaluation.NO_CONTACT: 9,
+    }
+
+    held_out = report["held_out"]
+    assert held_out["coverage"] == pytest.approx(0.9178571428571428)
+    assert held_out["balanced_accuracy_refusals_incorrect"] == pytest.approx(
+        0.5047150471504716
+    )
+    assert held_out["accuracy_on_covered"] == pytest.approx(0.4980544747081712)
+    assert held_out["false_contact"] == 4
+    assert held_out["false_no_contact"] == 125
+    assert held_out["refusals"] == 23
+
+    permutation = report["robustness"]["sensor_order_permutation"]
+    assert permutation["prediction_changes"] == 0
+    assert permutation["max_abs_feature_drift"] == 0.0
