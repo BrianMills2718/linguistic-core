@@ -9,7 +9,17 @@
     "archive_prepare_download": "202 then READY",
     "attempted_metadata_file_download_token": "200 with scoped cookie",
     "attempted_metadata_file_download": "500",
-    "order_dip_listing_anonymous": "401"
+    "order_dip_listing_anonymous": "401",
+    "archive_download_token": "200",
+    "archive_range_get": "206 Partial Content",
+    "archive_accept_ranges": "bytes",
+    "archive_content_range": "bytes 0-1023/2760098341",
+    "archive_content_type": "application/dlcm-dip",
+    "archive_format": "ZIP",
+    "archive_zip_entries": 775,
+    "selected_range_extraction_files": 252,
+    "selected_range_extraction_compressed_bytes": 169830263,
+    "selected_range_extraction_sha256_verified": true
   },
   "current_openapi": {
     "source": "https://access.yareta.unige.ch/docs/openapi/dlcm-openapi-3.0-access.json",
@@ -21,15 +31,9 @@
     "conclusion": "The failing per-file route used during diagnosis is absent from the current Access OpenAPI. Current DLCM exposes per-file binary download under DIP resources, while public anonymous dissemination is documented at archive level."
   },
   "remaining_minimal_diagnostic": {
-    "pending": true,
-    "reason": "Authorized machine went offline before execution.",
-    "request": "After archive download state is READY, obtain the archive-level download-token cookie and send one GET to /access/metadata/{archiveId}/download with Range: bytes=0-1023 using headers-only/streaming mode. If response is 200 instead of 206, dispose immediately without reading the body.",
-    "interpretations": {
-      "200": "Archive-level public download works but ignores Range; anonymous use likely requires whole-archive delivery.",
-      "206": "Archive-level public download supports byte ranges; per-file metadata route was the wrong endpoint.",
-      "500": "Archive-level dissemination itself is failing server-side for this archive.",
-      "401_or_403": "Contradicts documented Public archive-download role and would indicate deployment/access-policy mismatch."
-    }
+    "pending": false,
+    "result": "The documented archive-level public download route is healthy and supports HTTP byte ranges. The earlier metadata-per-file HTTP 500 came from an unsupported/legacy route absent from the current Access OpenAPI."
   },
-  "experiment_impact": "None. No v2 signal data have been inspected; the preregistered protocol and manifest remain unchanged."
+  "experiment_impact": "Range support enabled selective extraction of only the preregistered 252 files. No protocol parameter changed.",
+  "status": "completed"
 }
