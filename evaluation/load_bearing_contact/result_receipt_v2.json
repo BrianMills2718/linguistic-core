@@ -1,0 +1,111 @@
+{
+  "schema": "linguistic-core.yareta-foot-ground-contact-result-receipt.v2",
+  "result_status": "completed_negative_result",
+  "date": "2026-10-03",
+  "protocol": "evaluation/load_bearing_contact/experiment_plan_v2.json",
+  "acquisition_manifest": "evaluation/load_bearing_contact/acquisition_manifest_v2.json",
+  "source_integrity": {
+    "archive_bytes": 2760098341,
+    "archive_zip_entries": 775,
+    "selected_file_count": 252,
+    "selected_trial_pair_count": 126,
+    "selected_uncompressed_bytes": 321936880,
+    "selected_compressed_bytes": 169830263,
+    "acquisition_selection_sha256": "0cdcc0ca7774648cfd189a9f00c39c49edd6ba036dd39346766e7447fffbe594",
+    "all_selected_files_crc_and_sha256_verified": true
+  },
+  "access": {
+    "archive_download_token_status": 200,
+    "archive_range_status": 206,
+    "content_range": "bytes 0-1023/2760098341",
+    "accept_ranges": "bytes",
+    "archive_content_type": "application/dlcm-dip",
+    "archive_format": "ZIP"
+  },
+  "structural_audit": {
+    "trial_pairs": 126,
+    "csv_rows_equal_c3d_frames": 126,
+    "point_rate_100_hz": 126,
+    "event_group_present": 126,
+    "expected_event_labels_only": 126,
+    "expected_event_contexts_only": 126,
+    "pressure_channels_16_per_foot": 126,
+    "nonzero_first_frame_trials": [
+      {
+        "stem": "P06_S01_FastGait_02",
+        "first_frame": 59,
+        "origin_seconds": 0.59
+      },
+      {
+        "stem": "P06_S01_Gait_01",
+        "first_frame": 31,
+        "origin_seconds": 0.31
+      },
+      {
+        "stem": "P07_S01_Gait_04",
+        "first_frame": 45,
+        "origin_seconds": 0.45
+      }
+    ],
+    "alignment_rule": "adjusted EVENT time = C3D EVENT time - first_frame / 100 Hz",
+    "alignment_issues_after_adjustment": 0
+  },
+  "calibration": {
+    "reference_counts": {
+      "foot_ground_contact_evidence": 492,
+      "no_foot_ground_contact_evidence": 3
+    },
+    "reference_ambiguous_windows": 2337,
+    "selected_center": 0.45,
+    "selected_balanced_accuracy_refusals_incorrect": 0.7530487804878049,
+    "selected_coverage": 0.9515151515151515
+  },
+  "held_out": {
+    "participants": [
+      "P03",
+      "P06",
+      "P09"
+    ],
+    "reference_counts": {
+      "foot_ground_contact_evidence": 271,
+      "no_foot_ground_contact_evidence": 9
+    },
+    "reference_ambiguous_windows": 1186,
+    "total_reference_windows": 280,
+    "prediction_counts": {
+      "foot_ground_contact_evidence": 127,
+      "no_foot_ground_contact_evidence": 130,
+      "REFUSAL:near_event_or_uncertain": 23
+    },
+    "coverage": 0.9178571428571428,
+    "balanced_accuracy_refusals_incorrect": 0.5047150471504716,
+    "accuracy_all_refusals_incorrect": 0.45714285714285713,
+    "accuracy_on_covered": 0.4980544747081712,
+    "false_contact": 4,
+    "false_no_contact": 125,
+    "refusals": 23
+  },
+  "robustness": {
+    "sensor_order_permutation": {
+      "common_windows": 280,
+      "prediction_changes": 0,
+      "max_abs_feature_drift": 0
+    },
+    "single_sensor_dropout_balanced_accuracy_range": [
+      0.3899138991389914,
+      0.506560065600656
+    ],
+    "single_sensor_dropout_coverage_range": [
+      0.8964285714285715,
+      0.9321428571428572
+    ],
+    "note": "All 16 preregistered single-sensor dropout variants were evaluated without retuning; none rescued held-out performance."
+  },
+  "interpretation": {
+    "primary_claim_supported": false,
+    "conclusion": "The preregistered v2 protocol does not provide evidence for a robust pressure-to-foot-ground-contact grounding factor. The 150 ms event-boundary margin plus 200 ms non-overlapping windows left only 3 calibration no-contact windows versus 492 contact windows. The frozen calibration-selected center generalized at approximately chance balanced accuracy on held-out participants.",
+    "no_post_hoc_retuning": true,
+    "protocol_change_policy": "Any material change requires a separately versioned experiment plan. v2 remains unchanged."
+  },
+  "provenance_note": "This bounded receipt preserves metrics emitted by the completed evaluation process. A later Remote MCP agent restart removed the temporary full per-window JSON artifact. The committed evaluator is the reproducibility path for regenerating the full report from the frozen, hash-verified Yareta selection."
+}
