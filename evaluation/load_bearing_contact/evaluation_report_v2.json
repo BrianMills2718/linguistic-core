@@ -7296,3 +7296,1590 @@
               "prediction_counts": {
                 "REFUSAL:near_event_or_uncertain": 4,
                 "foot_ground_contact_evidence": 17,
+                "no_foot_ground_contact_evidence": 16
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 37
+              },
+              "refusals": 4
+            },
+            "P06:Right": {
+              "accuracy_all": 0.3953488372093023,
+              "accuracy_covered": 0.4358974358974359,
+              "balanced_accuracy": 0.20238095238095238,
+              "coverage": 0.9069767441860465,
+              "false_contact": 1,
+              "false_no_contact": 21,
+              "n": 43,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 18,
+                "no_foot_ground_contact_evidence": 21
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 42,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 4
+            },
+            "P09:Left": {
+              "accuracy_all": 0.30612244897959184,
+              "accuracy_covered": 0.3333333333333333,
+              "balanced_accuracy": null,
+              "coverage": 0.9183673469387755,
+              "false_contact": 0,
+              "false_no_contact": 30,
+              "n": 49,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 15,
+                "no_foot_ground_contact_evidence": 30
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 49
+              },
+              "refusals": 4
+            },
+            "P09:Right": {
+              "accuracy_all": 0.5087719298245614,
+              "accuracy_covered": 0.5471698113207547,
+              "balanced_accuracy": 0.45961538461538465,
+              "coverage": 0.9298245614035088,
+              "false_contact": 2,
+              "false_no_contact": 22,
+              "n": 57,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 29,
+                "no_foot_ground_contact_evidence": 24
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 52,
+                "no_foot_ground_contact_evidence": 5
+              },
+              "refusals": 4
+            }
+          },
+          "prediction_counts": {
+            "REFUSAL:near_event_or_uncertain": 22,
+            "foot_ground_contact_evidence": 126,
+            "no_foot_ground_contact_evidence": 132
+          },
+          "reference_counts": {
+            "foot_ground_contact_evidence": 271,
+            "no_foot_ground_contact_evidence": 9
+          },
+          "refusals": 22,
+          "total_reference_windows": 280
+        },
+        "sensor_index_1based": 13
+      },
+      {
+        "excluded_trial_feet": 0,
+        "metrics": {
+          "accuracy_all_refusals_incorrect": 0.4642857142857143,
+          "accuracy_on_covered": 0.49808429118773945,
+          "balanced_accuracy_refusals_incorrect": 0.4546945469454694,
+          "coverage": 0.9321428571428572,
+          "failures_bounded": [
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 360,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 340,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 40,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 120,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 100,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 340,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 320,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 40,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 280,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 260,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 140,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 120,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 80,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 60,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 280,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 200,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 180,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 280,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 140,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 120,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 220,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 120,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 100,
+              "stem": "P03_S01_Gait_07"
+            },
+            {
+              "end": 220,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 200,
+              "stem": "P03_S01_Gait_07"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 280,
+              "stem": "P03_S01_Gait_08"
+            },
+            {
+              "end": 200,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 180,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 220,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 200,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 380,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 360,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 440,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 420,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 600,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 580,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 620,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 600,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 760,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 740,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 820,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 800,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 880,
+              "participant": "P03",
+              "predicted": "foot_ground_contact_evidence",
+              "reference": "no_foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 860,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 100,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 80,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 160,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 140,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 280,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 320,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 300,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 340,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 320,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 420,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "no_foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 400,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 480,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 460,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 500,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 480,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 660,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 640,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 700,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 680,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 720,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 700,
+              "stem": "P03_S01_SlowGait_01"
+            }
+          ],
+          "false_contact": 4,
+          "false_no_contact": 127,
+          "per_participant_foot": {
+            "P03:Left": {
+              "accuracy_all": 0.48936170212765956,
+              "accuracy_covered": 0.5111111111111111,
+              "balanced_accuracy": 0.49444444444444446,
+              "coverage": 0.9574468085106383,
+              "false_contact": 1,
+              "false_no_contact": 21,
+              "n": 47,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 2,
+                "foot_ground_contact_evidence": 23,
+                "no_foot_ground_contact_evidence": 22
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 45,
+                "no_foot_ground_contact_evidence": 2
+              },
+              "refusals": 2
+            },
+            "P03:Right": {
+              "accuracy_all": 0.46808510638297873,
+              "accuracy_covered": 0.5116279069767442,
+              "balanced_accuracy": 0.2391304347826087,
+              "coverage": 0.9148936170212766,
+              "false_contact": 0,
+              "false_no_contact": 21,
+              "n": 47,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 22,
+                "no_foot_ground_contact_evidence": 21
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 46,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 4
+            },
+            "P06:Left": {
+              "accuracy_all": 0.5135135135135135,
+              "accuracy_covered": 0.5428571428571428,
+              "balanced_accuracy": null,
+              "coverage": 0.9459459459459459,
+              "false_contact": 0,
+              "false_no_contact": 16,
+              "n": 37,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 2,
+                "foot_ground_contact_evidence": 19,
+                "no_foot_ground_contact_evidence": 16
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 37
+              },
+              "refusals": 2
+            },
+            "P06:Right": {
+              "accuracy_all": 0.3953488372093023,
+              "accuracy_covered": 0.4473684210526316,
+              "balanced_accuracy": 0.20238095238095238,
+              "coverage": 0.8837209302325582,
+              "false_contact": 1,
+              "false_no_contact": 20,
+              "n": 43,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 5,
+                "foot_ground_contact_evidence": 18,
+                "no_foot_ground_contact_evidence": 20
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 42,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 5
+            },
+            "P09:Left": {
+              "accuracy_all": 0.32653061224489793,
+              "accuracy_covered": 0.34782608695652173,
+              "balanced_accuracy": null,
+              "coverage": 0.9387755102040817,
+              "false_contact": 0,
+              "false_no_contact": 30,
+              "n": 49,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 3,
+                "foot_ground_contact_evidence": 16,
+                "no_foot_ground_contact_evidence": 30
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 49
+              },
+              "refusals": 3
+            },
+            "P09:Right": {
+              "accuracy_all": 0.5789473684210527,
+              "accuracy_covered": 0.6111111111111112,
+              "balanced_accuracy": 0.5884615384615384,
+              "coverage": 0.9473684210526315,
+              "false_contact": 2,
+              "false_no_contact": 19,
+              "n": 57,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 3,
+                "foot_ground_contact_evidence": 32,
+                "no_foot_ground_contact_evidence": 22
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 52,
+                "no_foot_ground_contact_evidence": 5
+              },
+              "refusals": 3
+            }
+          },
+          "prediction_counts": {
+            "REFUSAL:near_event_or_uncertain": 19,
+            "foot_ground_contact_evidence": 130,
+            "no_foot_ground_contact_evidence": 131
+          },
+          "reference_counts": {
+            "foot_ground_contact_evidence": 271,
+            "no_foot_ground_contact_evidence": 9
+          },
+          "refusals": 19,
+          "total_reference_windows": 280
+        },
+        "sensor_index_1based": 14
+      },
+      {
+        "excluded_trial_feet": 0,
+        "metrics": {
+          "accuracy_all_refusals_incorrect": 0.4607142857142857,
+          "accuracy_on_covered": 0.50390625,
+          "balanced_accuracy_refusals_incorrect": 0.506560065600656,
+          "coverage": 0.9142857142857143,
+          "failures_bounded": [
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 360,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 340,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 40,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 120,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 100,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 340,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 320,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 40,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 280,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 260,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 140,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 120,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 80,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 60,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 280,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 200,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 180,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 280,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 140,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 120,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 220,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 120,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 100,
+              "stem": "P03_S01_Gait_07"
+            },
+            {
+              "end": 220,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 200,
+              "stem": "P03_S01_Gait_07"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 280,
+              "stem": "P03_S01_Gait_08"
+            },
+            {
+              "end": 200,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 180,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 220,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 200,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 380,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 360,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 440,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 420,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 600,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 580,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 620,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 600,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 760,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 740,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 820,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 800,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 880,
+              "participant": "P03",
+              "predicted": "foot_ground_contact_evidence",
+              "reference": "no_foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 860,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 100,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 80,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 160,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 140,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 320,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 300,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 340,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 320,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 480,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 460,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 500,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 480,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 660,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 640,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 720,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 700,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 40,
+              "stem": "P03_S01_SlowGait_02"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_SlowGait_02"
+            }
+          ],
+          "false_contact": 4,
+          "false_no_contact": 123,
+          "per_participant_foot": {
+            "P03:Left": {
+              "accuracy_all": 0.48936170212765956,
+              "accuracy_covered": 0.5111111111111111,
+              "balanced_accuracy": 0.49444444444444446,
+              "coverage": 0.9574468085106383,
+              "false_contact": 1,
+              "false_no_contact": 21,
+              "n": 47,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 2,
+                "foot_ground_contact_evidence": 23,
+                "no_foot_ground_contact_evidence": 22
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 45,
+                "no_foot_ground_contact_evidence": 2
+              },
+              "refusals": 2
+            },
+            "P03:Right": {
+              "accuracy_all": 0.5106382978723404,
+              "accuracy_covered": 0.5581395348837209,
+              "balanced_accuracy": 0.75,
+              "coverage": 0.9148936170212766,
+              "false_contact": 0,
+              "false_no_contact": 19,
+              "n": 47,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 23,
+                "no_foot_ground_contact_evidence": 20
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 46,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 4
+            },
+            "P06:Left": {
+              "accuracy_all": 0.4864864864864865,
+              "accuracy_covered": 0.5454545454545454,
+              "balanced_accuracy": null,
+              "coverage": 0.8918918918918919,
+              "false_contact": 0,
+              "false_no_contact": 15,
+              "n": 37,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 18,
+                "no_foot_ground_contact_evidence": 15
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 37
+              },
+              "refusals": 4
+            },
+            "P06:Right": {
+              "accuracy_all": 0.3953488372093023,
+              "accuracy_covered": 0.4594594594594595,
+              "balanced_accuracy": 0.20238095238095238,
+              "coverage": 0.8604651162790697,
+              "false_contact": 1,
+              "false_no_contact": 19,
+              "n": 43,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 6,
+                "foot_ground_contact_evidence": 18,
+                "no_foot_ground_contact_evidence": 19
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 42,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 6
+            },
+            "P09:Left": {
+              "accuracy_all": 0.3469387755102041,
+              "accuracy_covered": 0.3617021276595745,
+              "balanced_accuracy": null,
+              "coverage": 0.9591836734693877,
+              "false_contact": 0,
+              "false_no_contact": 30,
+              "n": 49,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 2,
+                "foot_ground_contact_evidence": 17,
+                "no_foot_ground_contact_evidence": 30
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 49
+              },
+              "refusals": 2
+            },
+            "P09:Right": {
+              "accuracy_all": 0.5263157894736842,
+              "accuracy_covered": 0.5882352941176471,
+              "balanced_accuracy": 0.5596153846153846,
+              "coverage": 0.8947368421052632,
+              "false_contact": 2,
+              "false_no_contact": 19,
+              "n": 57,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 6,
+                "foot_ground_contact_evidence": 29,
+                "no_foot_ground_contact_evidence": 22
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 52,
+                "no_foot_ground_contact_evidence": 5
+              },
+              "refusals": 6
+            }
+          },
+          "prediction_counts": {
+            "REFUSAL:near_event_or_uncertain": 24,
+            "foot_ground_contact_evidence": 128,
+            "no_foot_ground_contact_evidence": 128
+          },
+          "reference_counts": {
+            "foot_ground_contact_evidence": 271,
+            "no_foot_ground_contact_evidence": 9
+          },
+          "refusals": 24,
+          "total_reference_windows": 280
+        },
+        "sensor_index_1based": 15
+      },
+      {
+        "excluded_trial_feet": 0,
+        "metrics": {
+          "accuracy_all_refusals_incorrect": 0.45714285714285713,
+          "accuracy_on_covered": 0.5019607843137255,
+          "balanced_accuracy_refusals_incorrect": 0.5047150471504716,
+          "coverage": 0.9107142857142857,
+          "failures_bounded": [
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 360,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 340,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 40,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_Gait_01"
+            },
+            {
+              "end": 120,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 100,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 340,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 320,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 40,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 280,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 260,
+              "stem": "P03_S01_Gait_02"
+            },
+            {
+              "end": 140,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 120,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 80,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 60,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 280,
+              "stem": "P03_S01_Gait_03"
+            },
+            {
+              "end": 200,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 180,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 280,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 140,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 120,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 220,
+              "stem": "P03_S01_Gait_05"
+            },
+            {
+              "end": 120,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 100,
+              "stem": "P03_S01_Gait_07"
+            },
+            {
+              "end": 220,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 200,
+              "stem": "P03_S01_Gait_07"
+            },
+            {
+              "end": 300,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 280,
+              "stem": "P03_S01_Gait_08"
+            },
+            {
+              "end": 200,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 180,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 220,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 200,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 380,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 360,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 440,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 420,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 600,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 580,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 620,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 600,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 760,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 740,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 820,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 800,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 880,
+              "participant": "P03",
+              "predicted": "foot_ground_contact_evidence",
+              "reference": "no_foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 860,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 100,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 80,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 160,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 140,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 180,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 160,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 320,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 300,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 340,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 320,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 480,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 460,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 500,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 480,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 660,
+              "participant": "P03",
+              "predicted": "REFUSAL:near_event_or_uncertain",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 640,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 720,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Right",
+              "start": 700,
+              "stem": "P03_S01_SlowGait_01"
+            },
+            {
+              "end": 60,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 40,
+              "stem": "P03_S01_SlowGait_02"
+            },
+            {
+              "end": 240,
+              "participant": "P03",
+              "predicted": "no_foot_ground_contact_evidence",
+              "reference": "foot_ground_contact_evidence",
+              "side": "Left",
+              "start": 220,
+              "stem": "P03_S01_SlowGait_02"
+            }
+          ],
+          "false_contact": 4,
+          "false_no_contact": 123,
+          "per_participant_foot": {
+            "P03:Left": {
+              "accuracy_all": 0.48936170212765956,
+              "accuracy_covered": 0.5111111111111111,
+              "balanced_accuracy": 0.49444444444444446,
+              "coverage": 0.9574468085106383,
+              "false_contact": 1,
+              "false_no_contact": 21,
+              "n": 47,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 2,
+                "foot_ground_contact_evidence": 23,
+                "no_foot_ground_contact_evidence": 22
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 45,
+                "no_foot_ground_contact_evidence": 2
+              },
+              "refusals": 2
+            },
+            "P03:Right": {
+              "accuracy_all": 0.5106382978723404,
+              "accuracy_covered": 0.5581395348837209,
+              "balanced_accuracy": 0.75,
+              "coverage": 0.9148936170212766,
+              "false_contact": 0,
+              "false_no_contact": 19,
+              "n": 47,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 23,
+                "no_foot_ground_contact_evidence": 20
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 46,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 4
+            },
+            "P06:Left": {
+              "accuracy_all": 0.5135135135135135,
+              "accuracy_covered": 0.5588235294117647,
+              "balanced_accuracy": null,
+              "coverage": 0.918918918918919,
+              "false_contact": 0,
+              "false_no_contact": 15,
+              "n": 37,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 3,
+                "foot_ground_contact_evidence": 19,
+                "no_foot_ground_contact_evidence": 15
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 37
+              },
+              "refusals": 3
+            },
+            "P06:Right": {
+              "accuracy_all": 0.3953488372093023,
+              "accuracy_covered": 0.4594594594594595,
+              "balanced_accuracy": 0.20238095238095238,
+              "coverage": 0.8604651162790697,
+              "false_contact": 1,
+              "false_no_contact": 19,
+              "n": 43,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 6,
+                "foot_ground_contact_evidence": 18,
+                "no_foot_ground_contact_evidence": 19
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 42,
+                "no_foot_ground_contact_evidence": 1
+              },
+              "refusals": 6
+            },
+            "P09:Left": {
+              "accuracy_all": 0.30612244897959184,
+              "accuracy_covered": 0.3333333333333333,
+              "balanced_accuracy": null,
+              "coverage": 0.9183673469387755,
+              "false_contact": 0,
+              "false_no_contact": 30,
+              "n": 49,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 4,
+                "foot_ground_contact_evidence": 15,
+                "no_foot_ground_contact_evidence": 30
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 49
+              },
+              "refusals": 4
+            },
+            "P09:Right": {
+              "accuracy_all": 0.5263157894736842,
+              "accuracy_covered": 0.5882352941176471,
+              "balanced_accuracy": 0.5596153846153846,
+              "coverage": 0.8947368421052632,
+              "false_contact": 2,
+              "false_no_contact": 19,
+              "n": 57,
+              "prediction_counts": {
+                "REFUSAL:near_event_or_uncertain": 6,
+                "foot_ground_contact_evidence": 29,
+                "no_foot_ground_contact_evidence": 22
+              },
+              "reference_counts": {
+                "foot_ground_contact_evidence": 52,
+                "no_foot_ground_contact_evidence": 5
+              },
+              "refusals": 6
+            }
+          },
+          "prediction_counts": {
+            "REFUSAL:near_event_or_uncertain": 25,
+            "foot_ground_contact_evidence": 127,
+            "no_foot_ground_contact_evidence": 128
+          },
+          "reference_counts": {
+            "foot_ground_contact_evidence": 271,
+            "no_foot_ground_contact_evidence": 9
+          },
+          "refusals": 25,
+          "total_reference_windows": 280
+        },
+        "sensor_index_1based": 16
+      }
+    ]
+  },
+  "schema": "linguistic-core.yareta-foot-ground-contact-evaluation.v2",
+  "source_integrity": {
+    "all_selected_files_sha256_verified": true,
+    "plan_sha256": "cf7d489bcef310343788973b5430244aa8ea29d7d077eddf137c0a10f86f3162",
+    "selected_file_count": 252,
+    "selected_trial_pair_count": 126,
+    "selected_uncompressed_bytes": 321936880,
+    "selection_sha256": "0cdcc0ca7774648cfd189a9f00c39c49edd6ba036dd39346766e7447fffbe594"
+  }
+}
