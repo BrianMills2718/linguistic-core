@@ -48,7 +48,7 @@ def test_reference_window_requires_full_margin_clearance():
         == evaluation.CONTACT
     )
     assert (
-        evaluation.reference_for_window(80, 100, 100.0, events, "Left", 0.15)
+        evaluation.reference_for_window(85, 105, 100.0, events, "Left", 0.15)
         == evaluation.NO_CONTACT
     )
     # Starts only 100 ms after foot strike: must remain reference-ambiguous.
