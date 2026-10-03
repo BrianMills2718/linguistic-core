@@ -1,0 +1,35 @@
+{
+  "schema": "linguistic-core.yareta-access-diagnostic.v1",
+  "date": "2026-10-03",
+  "dlcm_version": "3.1.9",
+  "archive_id": "e72b9ec2-d097-45ac-8126-d04035407f51",
+  "observed": {
+    "public_archive_metadata": "200",
+    "public_archive_data_listing": "200",
+    "archive_prepare_download": "202 then READY",
+    "attempted_metadata_file_download_token": "200 with scoped cookie",
+    "attempted_metadata_file_download": "500",
+    "order_dip_listing_anonymous": "401"
+  },
+  "current_openapi": {
+    "source": "https://access.yareta.unige.ch/docs/openapi/dlcm-openapi-3.0-access.json",
+    "public_archive_download_route": "GET /access/metadata/{dipName}/download",
+    "public_archive_download_token_route": "GET /access/metadata/{dipName}/download-token",
+    "supported_dip_file_download_route": "GET /access/dip/{parentId}/data/{id}/download",
+    "supported_dip_file_download_token_route": "GET /access/dip/{parentId}/data/{id}/download-token",
+    "unsupported_attempted_route": "/access/metadata/{archiveId}/data/{fileId}/download",
+    "conclusion": "The failing per-file route used during diagnosis is absent from the current Access OpenAPI. Current DLCM exposes per-file binary download under DIP resources, while public anonymous dissemination is documented at archive level."
+  },
+  "remaining_minimal_diagnostic": {
+    "pending": true,
+    "reason": "Authorized machine went offline before execution.",
+    "request": "After archive download state is READY, obtain the archive-level download-token cookie and send one GET to /access/metadata/{archiveId}/download with Range: bytes=0-1023 using headers-only/streaming mode. If response is 200 instead of 206, dispose immediately without reading the body.",
+    "interpretations": {
+      "200": "Archive-level public download works but ignores Range; anonymous use likely requires whole-archive delivery.",
+      "206": "Archive-level public download supports byte ranges; per-file metadata route was the wrong endpoint.",
+      "500": "Archive-level dissemination itself is failing server-side for this archive.",
+      "401_or_403": "Contradicts documented Public archive-download role and would indicate deployment/access-policy mismatch."
+    }
+  },
+  "experiment_impact": "None. No v2 signal data have been inspected; the preregistered protocol and manifest remain unchanged."
+}
