@@ -147,7 +147,15 @@ and only `SlowGait`, `Gait`, and `FastGait` trials. Every selected trial
 has both the synchronized CSV and same-stem raw C3D reference file.
 
 At the time of this checkpoint, Yareta's public metadata API and archive
-preparation flow work, but anonymous per-file download returns HTTP 500 even
-after requesting the documented per-file token. No v2 signal rows have
-therefore been downloaded or scored. This is recorded as an access-layer
-blocker, not worked around by changing the preregistered dataset or protocol.
+preparation flow work. A diagnostic request to the archive-metadata per-file
+path returned HTTP 500 even after a token cookie, but the current DLCM 3.1.9
+Access OpenAPI does **not** define per-file binary download under
+`/access/metadata/{archive}/data/{file}`. It defines per-file binary download
+under prepared DIP resources and documents public anonymous dissemination at
+the archive level.
+
+See `yareta_access_diagnostic_v1.json`. The remaining least-invasive check is
+one 1 KiB archive-level Range GET against the documented public download
+endpoint. The authorized machine went offline before that request could be
+issued. No v2 signal rows have therefore been downloaded or scored, and the
+preregistered dataset/protocol remain unchanged.
