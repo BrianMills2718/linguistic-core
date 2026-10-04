@@ -1,0 +1,167 @@
+{
+  "schema": "linguistic-core.support-vertical-slice-simulation-plan.v1",
+  "status": "preregistered_before_simulation_implementation",
+  "created_date": "2026-10-04",
+  "purpose": "Decisive vertical test of whether support can be composed from reusable non-lexical factor interfaces without simulator semantic-label leakage.",
+  "semantic_target": {
+    "classes": [
+      "support_episode_evidence",
+      "non_support_evidence",
+      "REFUSAL:insufficient_or_conflicting_evidence"
+    ],
+    "factorization": [
+      "estimated_contact",
+      "gravity_relative_position",
+      "normal_load_transfer",
+      "bounded_relative_displacement",
+      "sustained_load_response",
+      "supporter_removal_dependence"
+    ],
+    "claim_boundary": "Operational evidence for a mechanical support episode/disposition. Not a universal lexical definition and not metaphysical proof."
+  },
+  "simulation": {
+    "dimensionality": "3D vectors with translational rigid-body dynamics; orientation fixed for v1 boxes",
+    "time_step_seconds": 0.002,
+    "episode_duration_seconds": 2,
+    "gravity_magnitude_m_s2": 9.81,
+    "upper_body_mass_kg": 1,
+    "supporter_mass_kg": 10,
+    "upper_body_half_extent_m": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "supporter_half_extent_m": [
+      0.5,
+      0.5,
+      0.1
+    ],
+    "contact_model": "unilateral normal spring-damper penalty force; no semantic support flag",
+    "contact_stiffness_n_m": 5000,
+    "contact_damping_n_s_m": 80,
+    "supporter_motion": "fixed except collapse episode where vertical compliance/failure is explicitly modeled",
+    "integrator": "semi-implicit Euler"
+  },
+  "raw_observables": [
+    "timestamp",
+    "gravity_vector",
+    "body_positions",
+    "body_velocities",
+    "body_accelerations",
+    "candidate_boundary_gap_or_penetration",
+    "contact_normal_vector_if_geometrically_intersecting",
+    "contact_force_vector",
+    "externally_applied_force_vector"
+  ],
+  "forbidden_inference_inputs": [
+    "episode name",
+    "expected semantic class",
+    "simulator support flag",
+    "attachment/joint ground-truth flag",
+    "supporter-removal expected outcome"
+  ],
+  "factor_rules": {
+    "estimated_contact": {
+      "rule": "candidate boundary separation <= 0.001 m for at least 80% of the final 0.5 s observation window AND median normal contact force >= 0.5 N",
+      "invariance": "rigid coordinate rotations/translations"
+    },
+    "gravity_relative_position": {
+      "rule": "projection of (upper_center - supporter_center) onto unit vector opposite gravity is positive and lateral projected footprint overlap is >= 0.5",
+      "invariance": "world+gravity rigid rotations/translations"
+    },
+    "normal_load_transfer": {
+      "rule": "median projection of contact force on unit vector opposite gravity over final 0.5 s >= 0.5 * upper_mass * |g|",
+      "invariance": "world+gravity rigid rotations/translations"
+    },
+    "bounded_relative_displacement": {
+      "rule": "upper-supporter relative displacement magnitude over final 0.5 s <= 0.01 m",
+      "invariance": "rigid coordinate rotations/translations"
+    },
+    "sustained_load_response": {
+      "rule": "estimated_contact AND normal_load_transfer AND bounded_relative_displacement",
+      "note": "No semantic support label is used."
+    },
+    "supporter_removal_dependence": {
+      "rule": "paired counterfactual from identical pre-removal state: removing candidate supporter causes upper-body displacement along gravity >= 0.05 m within 0.5 s more than the supporter-present continuation",
+      "role": "Disposition/counterfactual evidence; not required for the episode-level static composition but required for support_disposition evidence."
+    }
+  },
+  "semantic_composition": {
+    "support_episode_evidence": "estimated_contact AND gravity_relative_position AND sustained_load_response",
+    "non_support_evidence": "at least one required factor is confidently false and evidence is non-conflicting",
+    "refusal": "missing/contradictory/threshold-band evidence prevents confident composition",
+    "support_disposition_evidence": "support_episode_evidence AND supporter_removal_dependence AND stable_support_under_increased_load episode passes"
+  },
+  "episodes": [
+    {
+      "id": "ordinary_support",
+      "expected": "support_episode_evidence"
+    },
+    {
+      "id": "near_contact_gap",
+      "expected": "non_support_evidence"
+    },
+    {
+      "id": "lateral_contact",
+      "expected": "non_support_evidence"
+    },
+    {
+      "id": "attachment_suspension",
+      "expected": "non_support_evidence",
+      "ground_truth_only": "attachment state may define fixture physics but not inference"
+    },
+    {
+      "id": "insufficient_strength_collapse",
+      "expected": "non_support_evidence"
+    },
+    {
+      "id": "stable_support_increased_load",
+      "expected": "support_episode_evidence"
+    },
+    {
+      "id": "transient_collision",
+      "expected": "non_support_evidence"
+    },
+    {
+      "id": "coordinate_transform",
+      "expected": "same_as_ordinary_support"
+    },
+    {
+      "id": "gravity_transform",
+      "expected": "same_as_ordinary_support"
+    },
+    {
+      "id": "supporter_removal_counterfactual",
+      "expected": "supporter_removal_dependence_true"
+    }
+  ],
+  "transformation_tests": {
+    "coordinate_rotation": "Apply deterministic proper rotations to every raw vector and position around a transformed origin; factor and semantic predictions must be unchanged.",
+    "coordinate_translation": "Translate all positions by the same vector; predictions unchanged.",
+    "gravity_rotation": "Rotate bodies, forces, velocities and gravity together; predictions unchanged."
+  },
+  "decision_metrics": [
+    "episode classification agreement with preregistered expectations",
+    "factor-level truth table by episode",
+    "coordinate transformation prediction invariance",
+    "gravity transformation prediction invariance",
+    "counterfactual supporter-removal displacement delta",
+    "whether factor definitions require environment-specific changes"
+  ],
+  "go_criteria": [
+    "All 10 required episode families meet preregistered factor/semantic expectations or refuse only where the plan explicitly permits ambiguity.",
+    "Coordinate and gravity transformation tests preserve predictions.",
+    "Contact-only cases do not classify as support.",
+    "Stable increased-load and collapse episodes separate through load-response factors.",
+    "Supporter-removal counterfactual adds a measurable disposition signal.",
+    "A subsequent non-simulated adapter can instantiate the same factor interfaces without redefining them."
+  ],
+  "stop_or_narrow_criteria": [
+    "Inference requires semantic simulator labels.",
+    "Factor definitions must be rewritten for individual episode fixtures.",
+    "Transformation invariance fails under physically equivalent transformed states.",
+    "Load-response/counterfactual factors add no discriminative structure beyond fixture labels.",
+    "Cross-environment reuse later requires redefining factor semantics rather than adapting measurements."
+  ],
+  "versioning": "Any material rule/tolerance/episode change after implementation results requires simulation_plan_v2.json; v1 is retained."
+}
