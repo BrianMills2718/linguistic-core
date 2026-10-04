@@ -8,6 +8,13 @@ Ontology), [PropBank](https://propbank.github.io/), and
 [FrameNet](https://framenet.icsi.berkeley.edu/), with a governed pipeline for
 compiling, verifying, and extending it.
 
+A second, experimental research direction asks a deeper question: **can word
+meaning be represented with an explicit path from lexical concepts down to
+lower-level experiential, psychophysical, sensorimotor, learned, and social
+factors rather than only to more words?** See
+[Grounded word meaning](docs/design/GROUNDED_WORD_MEANING.md) for the conceptual
+overview and `evaluation/semantic_grounding/` for the current six-concept probe.
+
 This started as a component pack inside
 [onto-canon6](https://github.com/BrianMills2718/onto-canon6)'s
 governed-assertion middleware and was split into its own repository (see
@@ -35,6 +42,13 @@ the parts that live in other repositories. Read it before proposing any change
 to the pack's shape. `docs/design/DESIGN_LOG.md` records what changed in it and
 why.
 
+If you are specifically interested in **grounded definitions and the
+phenomenology-inspired meaning work**, start with
+**[Grounded word meaning](docs/design/GROUNDED_WORD_MEANING.md)**. It explains the
+experimental path from words such as `support`, `sit`, and `chair` to lower-level
+factors and then toward observable evidence, while keeping lexical definitions,
+ontology mappings, and sensory grounding distinct.
+
 The [construction roadmap](docs/design/SEMANTIC_PREDICATE_VOCABULARY.md#critical-path)
 builds the semantic contract, bounds source coverage, preserves donor meaning,
 integrates explicit mappings, and compiles a coherent release. Its next slice
@@ -48,15 +62,76 @@ needed for a fresh session to continue the build without reopening settled
 questions. The active frontier is the executable semantic contract and its
 inspectable acquisition construction report.
 
+## Grounded word meaning: an experimental research direction
+
+Ordinary dictionary definitions eventually bottom out in more language. This
+project is exploring whether some semantic definitions can instead expose a
+traceable grounding path:
+
+```text
+word or concept
+    ↓
+explicit semantic factors
+    ↓
+lower-level experiential / sensorimotor / learned structure
+    ↓
+observable evidence and uncertainty
+```
+
+For example, the current probe does **not** treat `support` as primitive merely
+because another ontology has a support relation. It decomposes the concept
+toward factors such as contact, relative position, load response, and
+persistence, then asks what perceptual or measurable evidence could justify
+those factors.
+
+Likewise, `sit` is investigated through body posture, posture transition,
+contact, load, and spatial relations; `chair` is treated as a higher-order
+artifact concept that also depends on learned functional and social structure.
+The point is not to claim that sensor readings *are* meaning. The point is to
+make the bridge from observations to factors to semantic classification
+explicit, inspectable, and able to refuse a grounding when the evidence is
+insufficient.
+
+The current work deliberately separates:
+
+- **lexical primitives** — irreducible within a lexical-semantic system;
+- **definitional vocabulary** — words chosen because they are useful for
+  defining other words;
+- **grounding primitives** — factors with an explicit lower-level experiential,
+  psychophysical, sensorimotor, learned, or social grounding path.
+
+The six-concept specimen currently covers `red`, `object`, `event`, `support`,
+`sit`, and `chair`. All remain **partially grounded**. That is a feature of the
+research method: missing derivations are exposed rather than papered over with
+asserted equivalences.
+
+See:
+
+- [Grounded word meaning](docs/design/GROUNDED_WORD_MEANING.md) — short conceptual
+  explanation and examples.
+- [Semantic grounding six-concept probe](evaluation/semantic_grounding/README.md)
+  — the current Grounding IR specimen.
+- [Grounding-floor audit](evaluation/grounding_floor/README.md) — where low-level
+  factors are checked against psychophysical and sensorimotor observables.
+- [Measurement-to-factor gate](evaluation/measurement_to_factor/README.md) —
+  executable evidence-to-factor classification with explicit refusal cases.
+
+This work is **experimental**. The Phenomenal Meaning Generator and Grounding IR
+are research hypotheses, not established cognitive-science results, and they do
+not currently alter the published `linguistic_core@0.3.3` pack.
+
 ## What's here
 
-- `docs/design/` — the living design, its log, and the fact-oriented
-  hypergraph brief it reconciles against.
+- `docs/design/` — the living design, its log, the grounded-word-meaning
+  overview, and the fact-oriented hypergraph brief it reconciles against.
 - `ontology_packs/linguistic_core/` — the versioned, compiled vocabulary
   pack (predicates, roles, entity types, hierarchy, constraints) as
   JSONL + a manifest per version.
 - `src/linguistic_core/` — the compiler, donor-mapping crosswalk, and
   two-independent-model-pass verification pipeline that produced it.
+- `evaluation/semantic_grounding/`, `evaluation/grounding_floor/`, and
+  `evaluation/measurement_to_factor/` — experimental grounded-semantics probes
+  connecting lexical concepts to lower-level factors and evidence.
 - `scripts/` — CLI entry points for compiling, auditing, and verifying
   the pack against its donor sources.
 - `tests/` — the pack's own standalone test suite (schema/compiler
@@ -85,7 +160,8 @@ This work derives from and is grateful to:
 `linguistic_core@0.3.3` is the current version: a relation-layer extension of
 `0.3.2`, adding predicate relations, role correspondences, and symmetric role
 pairs while inheriting its predicates, roles, and types. These declarations do
-not yet implement the full semantic contract in the construction roadmap.
+not yet implement the full semantic contract in the construction roadmap or
+the experimental grounded-word-meaning research described above.
 See the pack's own
 `ontology_packs/linguistic_core/<version>/manifest.yaml` for exact provenance
 per version.
