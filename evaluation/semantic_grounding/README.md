@@ -2,6 +2,8 @@
 
 **Status:** experimental candidate probe. This directory does not change the published `linguistic_core@0.3.3` pack, the compiler contract, or the living design.
 
+> **New to this work?** Start with [Grounded word meaning](../../docs/design/GROUNDED_WORD_MEANING.md). It explains why this probe tries to connect lexical concepts to lower-level experiential and sensorimotor factors instead of treating dictionary definitions or ontology mappings as the grounding layer.
+
 ## Question
 
 Can a small set of ordinary semantic targets be decomposed into explicit lower-level factors and then projected into multiple top-level ontologies without treating any one ontology's vocabulary as the grounding basis?
