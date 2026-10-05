@@ -8,8 +8,8 @@ import json, os, sys, traceback
 from pathlib import Path
 
 sys.path.insert(0, "src")
-from onto_canon6.ontology_runtime.loaders import compose_profile
-from onto_canon6.pipeline.text_extraction import TextExtractionService
+from onto_canon6.ontology.loaders import compose_profile
+from onto_canon6.authoring.text_extraction import TextExtractionService
 
 ROOT = Path(os.environ["SCRATCH"])
 SENTENCES = ["Acme will acquire Beta.", "Acme will not acquire Beta."]
