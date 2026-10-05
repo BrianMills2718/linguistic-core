@@ -3,8 +3,8 @@ negation filler's shape? Negated sentence only, 0.3.3-neg only, 5 runs."""
 import json, os, sys, traceback
 from pathlib import Path
 sys.path.insert(0, "src")
-from onto_canon6.ontology_runtime.loaders import compose_profile
-from onto_canon6.pipeline.text_extraction import TextExtractionService
+from onto_canon6.ontology.loaders import compose_profile
+from onto_canon6.authoring.text_extraction import TextExtractionService
 
 ROOT = Path(os.environ["SCRATCH"])
 TEXT = "Acme will not acquire Beta."
