@@ -30,7 +30,7 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).resolve().parents[1]
 PROPBANK = Path.home() / "code/onto-canon6/data/nltk_data/corpora/propbank.zip"
 OUT = ROOT / "ontology_packs/linguistic_core/_candidates/symmetric_role_pairs.jsonl"
-MODEL = "openrouter/openai/gpt-5.6-luna"
+MODEL = "openrouter/openai/gpt-6-luna"
 SHAPE = re.compile(r"\b(one|two|three|first|second|third|1|2)\b|\bhalf\b", re.I)
 
 

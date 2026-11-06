@@ -39,7 +39,7 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).resolve().parents[2]
 KEY = Path(__file__).parent / "canonicalization_key.jsonl"
 OUT = Path(__file__).parent
-MODEL = "openrouter/openai/gpt-5.6-luna"
+MODEL = "openrouter/openai/gpt-6-luna"
 SEED = 20260908
 DISTRACTORS = 3
 COLLAPSING = {"exactMatch", "closeMatch", "broaderThan", "narrowerThan"}
