@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PROPBANK = Path.home() / "code/onto-canon6/data/nltk_data/corpora/propbank.zip"
 COLLAPSING = {"exactMatch", "closeMatch", "broaderThan", "narrowerThan"}
 
-MODEL = "openrouter/openai/gpt-5.6-luna"
+MODEL = "openrouter/openai/gpt-6-luna"
 
 
 class _Alignment(BaseModel):

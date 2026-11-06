@@ -21,7 +21,7 @@ from pydantic import BaseModel, Field
 SEED = 20260907
 DONOR = Path.home() / "code/onto-canon6/data/sumo_plus.db"
 OUT = Path(__file__).parent
-MODEL = "openrouter/openai/gpt-5.6-luna"
+MODEL = "openrouter/openai/gpt-6-luna"
 
 Relation = Literal[
     "exactMatch", "closeMatch", "broaderThan", "narrowerThan",

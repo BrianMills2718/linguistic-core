@@ -186,7 +186,7 @@ evaluation:
     # openrouter/minimax/minimax-m3 was tried first and returned empty content
     # under native JSON schema on the `baseline` and `single_response_hardened`
     # variants (3/5 only), so it is not a drop-in here.
-    model_override: openrouter/openai/gpt-5.6-luna
+    model_override: openrouter/openai/gpt-6-luna
     # Required by llm_client's fail-closed model execution policy: any allowed
     # non-default route must carry a caller-recorded reason. Without it every
     # prompt_eval trial fails with zero cost and zero tokens, which reads like
